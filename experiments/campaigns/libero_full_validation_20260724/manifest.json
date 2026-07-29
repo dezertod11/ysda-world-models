@@ -1,0 +1,1214 @@
+{
+  "schema_version": 1,
+  "profile": "full_validation_8h",
+  "description": "Six-GPU, approximately eight-hour validation of Cosmos Policy failure detection and uncertainty-aware planning on fixed LIBERO-PRO boundary cases.",
+  "run_prefix": "libero_full_validation_20260724",
+  "created_at": "2026-07-24T02:14:48",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_8h.json",
+  "jobs": [
+    {
+      "name": "milk_calibration_main_n4",
+      "kind": "pro_planning_grid",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_calibration_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_calibration_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "20",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "230000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_calibration_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:0.5 uncertainty_penalty_action:1.0 uncertainty_penalty_action:2.0 uncertainty_penalty_action_chunk:1.0 uncertainty_penalty_action_max:1.0 uncertainty_penalty_value:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "calibration",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_calibration_main_n4",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_calibration_main_n4.json"
+    },
+    {
+      "name": "milk_calibration_combined_w025",
+      "kind": "pro_planning_grid",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_calibration_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_calibration_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "230000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_calibration_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "calibration",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.25",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_calibration_combined_w025",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_calibration_combined_w025.json"
+    },
+    {
+      "name": "milk_calibration_combined_w075",
+      "kind": "pro_planning_grid",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_calibration_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_calibration_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "230000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_calibration_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "calibration",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.75",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_calibration_combined_w075",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_calibration_combined_w075.json"
+    },
+    {
+      "name": "milk_holdout_main_n4",
+      "kind": "pro_planning_grid",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_holdout_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_holdout_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "20",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "330000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_holdout_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:0.5 uncertainty_penalty_action:1.0 uncertainty_penalty_action:2.0 uncertainty_penalty_action_chunk:1.0 uncertainty_penalty_action_max:1.0 uncertainty_penalty_value:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "holdout",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_holdout_main_n4",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_holdout_main_n4.json"
+    },
+    {
+      "name": "milk_holdout_combined_w025",
+      "kind": "pro_planning_grid",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_holdout_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_holdout_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "330000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_holdout_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "holdout",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.25",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_holdout_combined_w025",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_holdout_combined_w025.json"
+    },
+    {
+      "name": "milk_holdout_combined_w075",
+      "kind": "pro_planning_grid",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/milk_holdout_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__milk_holdout_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "330000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__milk_holdout_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "holdout",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.75",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__milk_holdout_combined_w075",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/milk_holdout_combined_w075.json"
+    },
+    {
+      "name": "yellow_generalization_main_n4",
+      "kind": "pro_planning_grid",
+      "gpu": "4",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/yellow_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__yellow_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_yellow_book",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "8",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "18",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "430000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__yellow_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:0.5 uncertainty_penalty_action:1.0 uncertainty_penalty_action:2.0 uncertainty_penalty_action_chunk:1.0 uncertainty_penalty_value:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "yellow_task8_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__yellow_generalization_main_n4",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/yellow_generalization_main_n4.json"
+    },
+    {
+      "name": "yellow_generalization_combined_w025",
+      "kind": "pro_planning_grid",
+      "gpu": "4",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/yellow_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__yellow_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_yellow_book",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "8",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "430000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__yellow_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "yellow_task8_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.25",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__yellow_generalization_combined_w025",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/yellow_generalization_combined_w025.json"
+    },
+    {
+      "name": "yellow_generalization_combined_w075",
+      "kind": "pro_planning_grid",
+      "gpu": "4",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/yellow_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__yellow_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_yellow_book",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "8",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "8",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "430000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__yellow_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "yellow_task8_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.75",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__yellow_generalization_combined_w075",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/yellow_generalization_combined_w075.json"
+    },
+    {
+      "name": "yellow_new_init_screen",
+      "kind": "pro_paired",
+      "gpu": "4",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs/libero_full_validation_20260724__yellow_new_init_screen__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__yellow_new_init_screen/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/yellow_new_init_screen",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "libero_full_validation_20260724__yellow_new_init_screen",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_yellow_book",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "8",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "1,2",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "431000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__yellow_new_init_screen",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "0",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_PRO_PAIRED_RESUME": "1",
+        "LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PAIRED_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT": "screen",
+        "LIBERO_PRO_PAIRED_CASE_ID": "yellow_task8_new_inits",
+        "LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT": "0.5"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/yellow_new_init_screen.json"
+    },
+    {
+      "name": "long_mug_generalization_main_n4",
+      "kind": "pro_planning_grid",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/long_mug_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__long_mug_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_10_with_mug",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "4",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "440000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "520",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__long_mug_generalization_main_n4",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:0.5 uncertainty_penalty_action:1.0 uncertainty_penalty_action:2.0 uncertainty_penalty_action_chunk:1.0 uncertainty_penalty_value:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "long_mug_task4_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__long_mug_generalization_main_n4",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/long_mug_generalization_main_n4.json"
+    },
+    {
+      "name": "long_mug_generalization_combined_w025",
+      "kind": "pro_planning_grid",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/long_mug_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__long_mug_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_10_with_mug",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "4",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "4",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "440000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "520",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__long_mug_generalization_combined_w025",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "long_mug_task4_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.25",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__long_mug_generalization_combined_w025",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/long_mug_generalization_combined_w025.json"
+    },
+    {
+      "name": "long_mug_generalization_combined_w075",
+      "kind": "pro_planning_grid",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/long_mug_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__long_mug_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_10_with_mug",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "4",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "4",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "440000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "520",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__long_mug_generalization_combined_w075",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "uncertainty_penalty_combined:1.0 uncertainty_penalty_combined:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "long_mug_task4_init0",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.75",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__long_mug_generalization_combined_w075",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/long_mug_generalization_combined_w075.json"
+    },
+    {
+      "name": "direct_detector_milk_calibration_vfd_n5",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs/libero_full_validation_20260724__direct_detector_milk_calibration_vfd_n5__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__direct_detector_milk_calibration_vfd_n5/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/direct_detector_milk_calibration_vfd_n5",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "libero_full_validation_20260724__direct_detector_milk_calibration_vfd_n5",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "5",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "36",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "250000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3,4",
+        "LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__direct_detector_milk_calibration_vfd_n5",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "0",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "1",
+        "LIBERO_PRO_PAIRED_RESUME": "1",
+        "LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PAIRED_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT": "calibration",
+        "LIBERO_PRO_PAIRED_CASE_ID": "direct_milk_task5_init0",
+        "LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT": "0.5"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/direct_detector_milk_calibration_vfd_n5.json"
+    },
+    {
+      "name": "direct_detector_milk_holdout_vfd_n5",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs/libero_full_validation_20260724__direct_detector_milk_holdout_vfd_n5__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__direct_detector_milk_holdout_vfd_n5/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/direct_detector_milk_holdout_vfd_n5",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "libero_full_validation_20260724__direct_detector_milk_holdout_vfd_n5",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "5",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "36",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "350000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3,4",
+        "LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__direct_detector_milk_holdout_vfd_n5",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "0",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "1",
+        "LIBERO_PRO_PAIRED_RESUME": "1",
+        "LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PAIRED_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT": "holdout",
+        "LIBERO_PRO_PAIRED_CASE_ID": "direct_milk_task5_init0",
+        "LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT": "0.5"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/direct_detector_milk_holdout_vfd_n5.json"
+    },
+    {
+      "name": "direct_detector_milk_new_init_screen",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs/libero_full_validation_20260724__direct_detector_milk_new_init_screen__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__direct_detector_milk_new_init_screen/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/direct_detector_milk_new_init_screen",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "libero_full_validation_20260724__direct_detector_milk_new_init_screen",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "5",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "10",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "450000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__direct_detector_milk_new_init_screen",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "0",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_PRO_PAIRED_RESUME": "1",
+        "LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PAIRED_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT": "screen",
+        "LIBERO_PRO_PAIRED_CASE_ID": "direct_milk_task5_new_inits",
+        "LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT": "0.5"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/direct_detector_milk_new_init_screen.json"
+    },
+    {
+      "name": "direct_detector_mug_generalization",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs/libero_full_validation_20260724__direct_detector_mug_generalization__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__direct_detector_mug_generalization/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/direct_detector_mug_generalization",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "libero_full_validation_20260724__direct_detector_mug_generalization",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_mug",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "0",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "24",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "451000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__direct_detector_mug_generalization",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "0",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_PRO_PAIRED_RESUME": "1",
+        "LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PAIRED_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PAIRED_CASE_ID": "direct_mug_task0_init0",
+        "LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT": "0.5"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/direct_detector_mug_generalization.json"
+    },
+    {
+      "name": "ablation_candidate_n2",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_candidate_n2",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_candidate_n2",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "16",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_candidate_n2",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_candidate_n2",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_candidate_n2.json"
+    },
+    {
+      "name": "ablation_candidate_n8",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_candidate_n8",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_candidate_n8",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3,4,5,6,7",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_candidate_n8",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_candidate_n8",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_candidate_n8.json"
+    },
+    {
+      "name": "ablation_requery_every8",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_requery_every8",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_requery_every8",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_requery_every8",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0 uncertainty_penalty_combined:1.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "8",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_requery_every8",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_requery_every8.json"
+    },
+    {
+      "name": "ablation_action_denoise10",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_action_denoise10",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_action_denoise10",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_action_denoise10",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "10",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_action_denoise10",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_action_denoise10.json"
+    },
+    {
+      "name": "ablation_autoregressive_chain",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_autoregressive_chain",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_autoregressive_chain",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "4",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_autoregressive_chain",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "autoregressive",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "3",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "3",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_autoregressive_chain",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_autoregressive_chain.json"
+    },
+    {
+      "name": "ablation_autoregressive_ensemble",
+      "kind": "pro_planning_grid",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_planning_strategy_grid.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/configs/ablation_autoregressive_ensemble",
+        "LIBERO_PRO_PLANNING_GRID_PREFIX": "libero_full_validation_20260724__ablation_autoregressive_ensemble",
+        "LIBERO_PRO_PLANNING_GRID_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PLANNING_GRID_TASK_IDS": "5",
+        "LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT": "2",
+        "LIBERO_PRO_PLANNING_GRID_BASE_SEED": "460000",
+        "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS": "0,1",
+        "LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/runs",
+        "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/analysis/libero_full_validation_20260724__ablation_autoregressive_ensemble",
+        "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": "max_value:0 uncertainty_penalty_action:1.0",
+        "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": "16",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE": "autoregressive",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE": "3",
+        "LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE": "3",
+        "LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES": "2",
+        "LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES": "3",
+        "LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_PLANNING_GRID_CASE_ID": "milk_task5_init0_ablation",
+        "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": "0.5",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/videos/libero_full_validation_20260724__ablation_autoregressive_ensemble",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/completed/ablation_autoregressive_ensemble.json"
+    }
+  ],
+  "status": "completed",
+  "finished_at": "2026-07-24T06:42:58",
+  "results": [
+    {
+      "job": "ablation_action_denoise10",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T04:53:04",
+      "finished_at": "2026-07-24T05:18:05",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_action_denoise10.log"
+    },
+    {
+      "job": "ablation_autoregressive_chain",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T05:18:05",
+      "finished_at": "2026-07-24T05:34:50",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_autoregressive_chain.log"
+    },
+    {
+      "job": "ablation_autoregressive_ensemble",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T05:34:50",
+      "finished_at": "2026-07-24T05:41:35",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_autoregressive_ensemble.log"
+    },
+    {
+      "job": "ablation_candidate_n2",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T03:28:54",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_candidate_n2.log"
+    },
+    {
+      "job": "ablation_candidate_n8",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T03:28:54",
+      "finished_at": "2026-07-24T04:11:32",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_candidate_n8.log"
+    },
+    {
+      "job": "ablation_requery_every8",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T04:11:33",
+      "finished_at": "2026-07-24T04:53:04",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/ablation_requery_every8.log"
+    },
+    {
+      "job": "direct_detector_milk_calibration_vfd_n5",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T03:08:25",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/direct_detector_milk_calibration_vfd_n5.log"
+    },
+    {
+      "job": "direct_detector_milk_holdout_vfd_n5",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T03:08:25",
+      "finished_at": "2026-07-24T04:02:53",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/direct_detector_milk_holdout_vfd_n5.log"
+    },
+    {
+      "job": "direct_detector_milk_new_init_screen",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T04:02:53",
+      "finished_at": "2026-07-24T04:23:26",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/direct_detector_milk_new_init_screen.log"
+    },
+    {
+      "job": "direct_detector_mug_generalization",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T04:23:26",
+      "finished_at": "2026-07-24T04:41:54",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/direct_detector_mug_generalization.log"
+    },
+    {
+      "job": "long_mug_generalization_combined_w025",
+      "gpu": "5",
+      "status": "completed",
+      "started_at": "2026-07-24T04:48:43",
+      "finished_at": "2026-07-24T04:57:32",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/long_mug_generalization_combined_w025.log"
+    },
+    {
+      "job": "long_mug_generalization_combined_w075",
+      "gpu": "5",
+      "status": "completed",
+      "started_at": "2026-07-24T04:57:32",
+      "finished_at": "2026-07-24T05:06:18",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/long_mug_generalization_combined_w075.log"
+    },
+    {
+      "job": "long_mug_generalization_main_n4",
+      "gpu": "5",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T04:48:43",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/long_mug_generalization_main_n4.log"
+    },
+    {
+      "job": "milk_calibration_combined_w025",
+      "gpu": "2",
+      "status": "completed",
+      "started_at": "2026-07-24T06:01:13",
+      "finished_at": "2026-07-24T06:17:35",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_calibration_combined_w025.log"
+    },
+    {
+      "job": "milk_calibration_combined_w075",
+      "gpu": "2",
+      "status": "completed",
+      "started_at": "2026-07-24T06:17:35",
+      "finished_at": "2026-07-24T06:34:23",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_calibration_combined_w075.log"
+    },
+    {
+      "job": "milk_calibration_main_n4",
+      "gpu": "2",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T06:01:13",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_calibration_main_n4.log"
+    },
+    {
+      "job": "milk_holdout_combined_w025",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-07-24T06:10:14",
+      "finished_at": "2026-07-24T06:26:34",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_holdout_combined_w025.log"
+    },
+    {
+      "job": "milk_holdout_combined_w075",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-07-24T06:26:34",
+      "finished_at": "2026-07-24T06:42:58",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_holdout_combined_w075.log"
+    },
+    {
+      "job": "milk_holdout_main_n4",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T06:10:14",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/milk_holdout_main_n4.log"
+    },
+    {
+      "job": "yellow_generalization_combined_w025",
+      "gpu": "4",
+      "status": "completed",
+      "started_at": "2026-07-24T05:28:36",
+      "finished_at": "2026-07-24T05:45:25",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/yellow_generalization_combined_w025.log"
+    },
+    {
+      "job": "yellow_generalization_combined_w075",
+      "gpu": "4",
+      "status": "completed",
+      "started_at": "2026-07-24T05:45:25",
+      "finished_at": "2026-07-24T06:02:26",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/yellow_generalization_combined_w075.log"
+    },
+    {
+      "job": "yellow_generalization_main_n4",
+      "gpu": "4",
+      "status": "completed",
+      "started_at": "2026-07-24T02:14:48",
+      "finished_at": "2026-07-24T05:28:36",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/yellow_generalization_main_n4.log"
+    },
+    {
+      "job": "yellow_new_init_screen",
+      "gpu": "4",
+      "status": "completed",
+      "started_at": "2026-07-24T06:02:26",
+      "finished_at": "2026-07-24T06:19:17",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/libero_full_validation_20260724/logs/yellow_new_init_screen.log"
+    }
+  ]
+}

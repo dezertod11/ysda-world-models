@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+source "$SCRIPT_DIR/cosmos_env_libero_pro.sh"
+
+RUN_PREFIX="${LIBERO_PRO_PLANNING_GRID_PREFIX:-planning_grid_$(date +%Y%m%d_%H%M%S)}"
+SUITES="${LIBERO_PRO_PLANNING_GRID_SUITES:-libero_spatial_with_milk}"
+TASK_IDS="${LIBERO_PRO_PLANNING_GRID_TASK_IDS:-5}"
+INIT_STATE_IDS="${LIBERO_PRO_PLANNING_GRID_INIT_STATE_IDS:-0}"
+MAX_ROLLOUTS="${LIBERO_PRO_PLANNING_GRID_MAX_ROLLOUTS_PER_INIT:-8}"
+BASE_SEED="${LIBERO_PRO_PLANNING_GRID_BASE_SEED:-97000}"
+UNCERTAINTY_SEEDS="${LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_SEEDS:-0,1,2,3}"
+MAX_TIMESTEPS="${LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS:-220}"
+PLANNING_ACTION_WEIGHT="${LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT:-0.5}"
+ROLLOUT_SEED_STEP="${LIBERO_PRO_PLANNING_GRID_ROLLOUT_SEED_STEP:-97}"
+NUM_OPEN_LOOP_STEPS="${LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS:-16}"
+NUM_DENOISING_STEPS_ACTION="${LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_ACTION:-5}"
+PREDICTION_MODE="${LIBERO_PRO_PLANNING_GRID_PREDICTION_MODE:-parallel}"
+NUM_DENOISING_STEPS_FUTURE_STATE="${LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_FUTURE_STATE:-1}"
+NUM_DENOISING_STEPS_VALUE="${LIBERO_PRO_PLANNING_GRID_NUM_DENOISING_STEPS_VALUE:-1}"
+NUM_FUTURE_STATE_SAMPLES="${LIBERO_PRO_PLANNING_GRID_NUM_FUTURE_STATE_SAMPLES:-1}"
+NUM_VALUE_SAMPLES="${LIBERO_PRO_PLANNING_GRID_NUM_VALUE_SAMPLES:-1}"
+VALUE_ENSEMBLE_AGGREGATION="${LIBERO_PRO_PLANNING_GRID_VALUE_ENSEMBLE_AGGREGATION:-average}"
+EXPERIMENT_SPLIT="${LIBERO_PRO_PLANNING_GRID_EXPERIMENT_SPLIT:-unspecified}"
+CASE_ID="${LIBERO_PRO_PLANNING_GRID_CASE_ID:-}"
+OUTPUT_DIR="${LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR:-$PROJECT_ROOT/experiments/uncertainty}"
+ANALYSIS_DIR="${LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR:-$OUTPUT_DIR/${RUN_PREFIX}__analysis}"
+FORCE="${LIBERO_PRO_PLANNING_GRID_FORCE:-0}"
+
+read -r -a STRATEGIES <<< "${LIBERO_PRO_PLANNING_GRID_STRATEGIES:-max_value uncertainty_penalty_action uncertainty_penalty_value uncertainty_penalty_combined}"
+read -r -a LAMBDAS <<< "${LIBERO_PRO_PLANNING_GRID_LAMBDAS:-0.25 0.5 1.0 2.0 3.0}"
+read -r -a STRATEGY_LAMBDAS <<< "${LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS:-}"
+
+mkdir -p "$OUTPUT_DIR" "$ANALYSIS_DIR"
+
+safe_token() {
+  printf '%s' "$1" | tr ',:/' '___' | tr '.' 'p'
+}
+
+run_names=()
+run_one() {
+  local strategy="$1"
+  local lambda="$2"
+    run_name="${RUN_PREFIX}__$(safe_token "$SUITES")__task$(safe_token "$TASK_IDS")__init$(safe_token "$INIT_STATE_IDS")__${strategy}__l$(safe_token "$lambda")"
+    run_names+=("$run_name")
+    trace_path="$OUTPUT_DIR/${run_name}__query_traces.csv"
+    completion_path="$OUTPUT_DIR/${run_name}__completed.json"
+
+    if [[ "$FORCE" != "1" && -s "$completion_path" ]]; then
+      echo "[grid] skip existing: $run_name"
+      return
+    fi
+
+    echo "[grid] run strategy=$strategy lambda=$lambda run_name=$run_name"
+    log_path="$OUTPUT_DIR/${run_name}__run.log"
+    if ! LIBERO_PRO_PAIRED_RUN_NAME="$run_name" \
+      LIBERO_PRO_PAIRED_SUITES="$SUITES" \
+      LIBERO_PRO_PAIRED_TASK_IDS="$TASK_IDS" \
+      LIBERO_PRO_PAIRED_INIT_STATE_IDS="$INIT_STATE_IDS" \
+      LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT="$MAX_ROLLOUTS" \
+      LIBERO_PRO_PAIRED_MIN_SUCCESS=999 \
+      LIBERO_PRO_PAIRED_MIN_FAILED=999 \
+      LIBERO_PRO_PAIRED_BASE_SEED="$BASE_SEED" \
+      LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS="$UNCERTAINTY_SEEDS" \
+      LIBERO_PRO_PAIRED_MAX_TIMESTEPS="$MAX_TIMESTEPS" \
+      LIBERO_PRO_PAIRED_ROLLOUT_SEED_STEP="$ROLLOUT_SEED_STEP" \
+      LIBERO_PRO_PAIRED_OUTPUT_DIR="$OUTPUT_DIR" \
+      LIBERO_PRO_PAIRED_PLANNING_STRATEGY="$strategy" \
+      LIBERO_PRO_PAIRED_PLANNING_RISK_LAMBDA="$lambda" \
+      LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT="$PLANNING_ACTION_WEIGHT" \
+      LIBERO_PRO_PAIRED_RESUME=1 \
+      LIBERO_PRO_PAIRED_NUM_OPEN_LOOP_STEPS="$NUM_OPEN_LOOP_STEPS" \
+      LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_ACTION="$NUM_DENOISING_STEPS_ACTION" \
+      LIBERO_PRO_PAIRED_PREDICTION_MODE="$PREDICTION_MODE" \
+      LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_FUTURE_STATE="$NUM_DENOISING_STEPS_FUTURE_STATE" \
+      LIBERO_PRO_PAIRED_NUM_DENOISING_STEPS_VALUE="$NUM_DENOISING_STEPS_VALUE" \
+      LIBERO_PRO_PAIRED_NUM_FUTURE_STATE_SAMPLES="$NUM_FUTURE_STATE_SAMPLES" \
+      LIBERO_PRO_PAIRED_NUM_VALUE_SAMPLES="$NUM_VALUE_SAMPLES" \
+      LIBERO_PRO_PAIRED_VALUE_ENSEMBLE_AGGREGATION="$VALUE_ENSEMBLE_AGGREGATION" \
+      LIBERO_PRO_PAIRED_EXPERIMENT_SPLIT="$EXPERIMENT_SPLIT" \
+      LIBERO_PRO_PAIRED_CASE_ID="$CASE_ID" \
+        "$SCRIPT_DIR/run_libero_pro_paired_prediction_collect.sh" >"$log_path" 2>&1; then
+      echo "[grid] failed: $run_name"
+      echo "[grid] log tail: $log_path"
+      tail -80 "$log_path"
+      exit 1
+    fi
+    tail -8 "$log_path" | sed 's/^/[grid]   /'
+}
+
+if [[ ${#STRATEGY_LAMBDAS[@]} -gt 0 ]]; then
+  for item in "${STRATEGY_LAMBDAS[@]}"; do
+    if [[ "$item" != *:* ]]; then
+      echo "[grid] invalid strategy/lambda item: $item (expected strategy:lambda)"
+      exit 2
+    fi
+    run_one "${item%%:*}" "${item##*:}"
+  done
+else
+  for strategy in "${STRATEGIES[@]}"; do
+    if [[ "$strategy" == "max_value" || "$strategy" == "first" ]]; then
+      lambda_values=("0")
+    else
+      lambda_values=("${LAMBDAS[@]}")
+    fi
+
+    for lambda in "${lambda_values[@]}"; do
+      run_one "$strategy" "$lambda"
+    done
+  done
+fi
+
+run_names_csv="$(IFS=,; echo "${run_names[*]}")"
+echo "[grid] compare: $run_names_csv"
+"$COSMOS_VENV/bin/python" "$SCRIPT_DIR/compare_real_planning_strategy_runs.py" \
+  --base-dir "$OUTPUT_DIR" \
+  --run-names "$run_names_csv" \
+  --output-dir "$ANALYSIS_DIR"
+
+echo "[grid] done: $ANALYSIS_DIR"

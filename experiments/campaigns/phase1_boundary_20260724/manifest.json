@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "profile": "boundary_search",
+  "description": "Searches for natural 20-80% success regimes that are informative for action-candidate ranking.",
+  "run_prefix": "phase1_boundary_20260724",
+  "created_at": "2026-07-24T00:12:16",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_v1.json",
+  "jobs": [
+    {
+      "name": "known_boundary_milk",
+      "kind": "pro_paired",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs/phase1_boundary_20260724__known_boundary_milk__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/analysis/phase1_boundary_20260724__known_boundary_milk/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/configs/known_boundary_milk",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_boundary_20260724__known_boundary_milk",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_milk",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "5",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "24",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "130000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "1",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/videos/phase1_boundary_20260724__known_boundary_milk",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/known_boundary_milk.json"
+    },
+    {
+      "name": "easy_control_mug",
+      "kind": "pro_paired",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs/phase1_boundary_20260724__easy_control_mug__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/analysis/phase1_boundary_20260724__easy_control_mug/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/configs/easy_control_mug",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_boundary_20260724__easy_control_mug",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_mug",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "0",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "131000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/videos/phase1_boundary_20260724__easy_control_mug",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/easy_control_mug.json"
+    },
+    {
+      "name": "spatial_distractor_screen",
+      "kind": "pro_paired",
+      "gpu": "4",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs/phase1_boundary_20260724__spatial_distractor_screen__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/analysis/phase1_boundary_20260724__spatial_distractor_screen/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/configs/spatial_distractor_screen",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_boundary_20260724__spatial_distractor_screen",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial_with_red_stick,libero_spatial_with_yellow_book,libero_spatial_with_blue_stick,libero_spatial_with_red_box,libero_spatial_with_diffpos_stick,libero_spatial_with_green_mug",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "0,5,8",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "132000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/videos/phase1_boundary_20260724__spatial_distractor_screen",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/spatial_distractor_screen.json"
+    },
+    {
+      "name": "goal_distractor_screen",
+      "kind": "pro_paired",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs/phase1_boundary_20260724__goal_distractor_screen__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/analysis/phase1_boundary_20260724__goal_distractor_screen/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/configs/goal_distractor_screen",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_boundary_20260724__goal_distractor_screen",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_goal_with_milk,libero_goal_with_mug,libero_goal_with_red_box,libero_goal_with_yellow_book,libero_goal_with_diffpos_stick",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "3,5,9",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "4",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "133000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "300",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/videos/phase1_boundary_20260724__goal_distractor_screen",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/goal_distractor_screen.json"
+    },
+    {
+      "name": "long_distractor_screen",
+      "kind": "pro_paired",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs/phase1_boundary_20260724__long_distractor_screen__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/analysis/phase1_boundary_20260724__long_distractor_screen/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/configs/long_distractor_screen",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_boundary_20260724__long_distractor_screen",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_10_with_milk,libero_10_with_mug,libero_10_with_red_box,libero_10_with_diffpos_stick",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "3,4,9",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "4",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "134000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "520",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/videos/phase1_boundary_20260724__long_distractor_screen",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/long_distractor_screen.json"
+    }
+  ],
+  "status": "failed",
+  "finished_at": "2026-07-24T01:07:20",
+  "results": [
+    {
+      "job": "easy_control_mug",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-07-24T00:12:16",
+      "finished_at": "2026-07-24T00:37:40",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/logs/easy_control_mug.log"
+    },
+    {
+      "job": "goal_distractor_screen",
+      "gpu": "5",
+      "status": "failed",
+      "return_code": -15,
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/logs/goal_distractor_screen.log"
+    },
+    {
+      "job": "known_boundary_milk",
+      "gpu": "2",
+      "status": "completed",
+      "started_at": "2026-07-24T00:12:16",
+      "finished_at": "2026-07-24T01:07:20",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/logs/known_boundary_milk.log"
+    },
+    {
+      "job": "long_distractor_screen",
+      "gpu": "2",
+      "status": "skipped",
+      "marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/completed/long_distractor_screen.json"
+    },
+    {
+      "job": "spatial_distractor_screen",
+      "gpu": "4",
+      "status": "failed",
+      "return_code": 1,
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/logs/spatial_distractor_screen.log"
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "profile": "id_controls",
+  "description": "In-distribution controls across short, goal-conditioned, and long-horizon LIBERO tasks.",
+  "run_prefix": "phase1_id_20260724",
+  "created_at": "2026-07-24T00:12:56",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_v1.json",
+  "jobs": [
+    {
+      "name": "id_spatial",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs/phase1_id_20260724__id_spatial__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/analysis/phase1_id_20260724__id_spatial/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/configs/id_spatial",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_id_20260724__id_spatial",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_spatial",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "0,5,8",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "121000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "220",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/videos/phase1_id_20260724__id_spatial",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/completed/id_spatial.json"
+    },
+    {
+      "name": "id_object",
+      "kind": "pro_paired",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs/phase1_id_20260724__id_object__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/analysis/phase1_id_20260724__id_object/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/configs/id_object",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_id_20260724__id_object",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_object",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "1,7,9",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "122000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/videos/phase1_id_20260724__id_object",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/completed/id_object.json"
+    },
+    {
+      "name": "id_goal",
+      "kind": "pro_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs/phase1_id_20260724__id_goal__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/analysis/phase1_id_20260724__id_goal/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/configs/id_goal",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_id_20260724__id_goal",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_goal",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "3,5,9",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "123000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "300",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/videos/phase1_id_20260724__id_goal",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/completed/id_goal.json"
+    },
+    {
+      "name": "id_long_horizon",
+      "kind": "pro_paired",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs/phase1_id_20260724__id_long_horizon__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/analysis/phase1_id_20260724__id_long_horizon/failure_modes"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/configs/id_long_horizon",
+        "LIBERO_PRO_PAIRED_RUN_NAME": "phase1_id_20260724__id_long_horizon",
+        "LIBERO_PRO_PAIRED_SUITES": "libero_10",
+        "LIBERO_PRO_PAIRED_TASK_IDS": "3,4,9",
+        "LIBERO_PRO_PAIRED_INIT_STATE_IDS": "0",
+        "LIBERO_PRO_PAIRED_MAX_ROLLOUTS_PER_INIT": "6",
+        "LIBERO_PRO_PAIRED_MIN_SUCCESS": "999",
+        "LIBERO_PRO_PAIRED_MIN_FAILED": "999",
+        "LIBERO_PRO_PAIRED_BASE_SEED": "124000",
+        "LIBERO_PRO_PAIRED_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_PAIRED_MAX_TIMESTEPS": "520",
+        "LIBERO_PRO_PAIRED_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/runs",
+        "LIBERO_PRO_PAIRED_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_PAIRED_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/videos/phase1_id_20260724__id_long_horizon",
+        "LIBERO_PRO_PAIRED_COLLECT_SAFETY_SIGNALS": "1",
+        "LIBERO_PRO_PAIRED_TERMINATE_ON_SAFETY_VIOLATION": "1",
+        "LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE": "0"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/completed/id_long_horizon.json"
+    }
+  ],
+  "status": "completed",
+  "finished_at": "2026-07-24T01:15:35",
+  "results": [
+    {
+      "job": "id_goal",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T00:40:26",
+      "finished_at": "2026-07-24T01:14:12",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_goal.log"
+    },
+    {
+      "job": "id_long_horizon",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T00:37:16",
+      "finished_at": "2026-07-24T01:15:35",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_long_horizon.log"
+    },
+    {
+      "job": "id_object",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-24T00:12:56",
+      "finished_at": "2026-07-24T00:37:16",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_object.log"
+    },
+    {
+      "job": "id_spatial",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-24T00:12:56",
+      "finished_at": "2026-07-24T00:40:26",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_spatial.log"
+    }
+  ]
+}

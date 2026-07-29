@@ -1,0 +1,51 @@
+{
+  "trace_file": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_valid_20260724/runs/phase1_boundary_valid_20260724__long_distractor_screen__query_traces.csv",
+  "num_query_rows": 311,
+  "num_episodes": 16,
+  "num_success": 13,
+  "num_failed": 3,
+  "num_safe_task_success": 13,
+  "failure_type_counts": {
+    "success": 13,
+    "target_drop_candidate": 2,
+    "timeout_partial_goal": 1
+  },
+  "diagnostics": {
+    "episode_target_lift_max": {
+      "mean": 0.11362896021943965,
+      "median": 0.11068197320047725,
+      "max": 0.1833383725274631
+    },
+    "episode_goal_progress_max": {
+      "mean": 0.90625,
+      "median": 1.0,
+      "max": 1.0
+    },
+    "episode_eef_dimensionless_jerk_proxy": {
+      "mean": 426776896.7279034,
+      "median": 128124181.65288192,
+      "max": 3341472633.985998
+    },
+    "target_drop_candidate": {
+      "mean": 0.5,
+      "median": 0.5,
+      "max": 1.0
+    },
+    "wrong_object_interaction_candidate": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "kinematic_deadlock_candidate": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "official_safety_violation": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    }
+  },
+  "online_feature_warning": "Columns prefixed observed_ and prediction_error_ are known only after executing the selected chunk. Do not use them as same-query planning inputs."
+}

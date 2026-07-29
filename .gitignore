@@ -1,0 +1,69 @@
+# Local credentials and machine-specific configuration
+.env
+.env.*
+*.env
+.secrets/
+secrets/
+credentials/
+*.pem
+*.key
+
+# Python environments and caches
+.venv*/
+venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Runtime and external checkouts reconstructed by the bootstrap script
+.external/
+.runtime/
+cosmos-policy/
+LIBERO-PRO/
+
+# Model weights and downloaded datasets
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.onnx
+datasets/
+checkpoints/
+
+# Raw experiment artifacts. Compact summaries and plots remain tracked.
+experiments/uncertainty/
+experiments/campaigns/**/runs/
+experiments/campaigns/**/videos/
+experiments/campaigns/**/logs/
+experiments/campaigns/**/*query_traces.csv
+experiments/campaigns/**/*query_traces.parquet
+experiments/campaigns/**/all_query_traces.parquet
+experiments/campaigns/**/temporal_conformal_detector_sweep.csv
+experiments/campaigns/**/time_aligned_features.csv
+
+# Generated media and logs
+rollouts/
+videos/
+logs/
+*.log
+output*.png
+output.jpeg
+future_image.png
+future_wrist_image.png
+
+# Notebook backups and superseded copies
+*.bak
+*.bak_*
+ysda_world_models_old_witout_paired_exp.ipynb
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+~$*
+*~

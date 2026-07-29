@@ -1,0 +1,5 @@
+benchmark_root: /mnt/d/Projects/YSDA/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero
+bddl_files: /mnt/d/Projects/YSDA/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/bddl_files
+init_states: /mnt/d/Projects/YSDA/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files
+datasets: /mnt/d/Projects/YSDA/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/datasets
+assets: /mnt/d/Projects/YSDA/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/assets

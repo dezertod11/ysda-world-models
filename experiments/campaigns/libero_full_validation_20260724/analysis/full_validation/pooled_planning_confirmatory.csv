@@ -1,0 +1,10 @@
+planning_strategy,planning_risk_lambda,planning_action_weight,cases,paired_rollouts,baseline_successes,strategy_successes,baseline_success_rate,strategy_success_rate,delta_success_rate,wins,losses,ties,mcnemar_exact_p
+uncertainty_penalty_action,0.5,0.5,3,50,33,31,0.66,0.62,-0.04,6,8,36,0.79052734375
+uncertainty_penalty_action,1.0,0.5,3,50,33,28,0.66,0.56,-0.1,9,14,27,0.4048728942871094
+uncertainty_penalty_action,2.0,0.5,3,50,33,27,0.66,0.54,-0.12,11,17,22,0.34492845088243484
+uncertainty_penalty_action_chunk,1.0,0.5,3,50,33,27,0.66,0.54,-0.12,5,11,34,0.210113525390625
+uncertainty_penalty_combined,1.0,0.5,3,50,33,26,0.66,0.52,-0.14,6,13,31,0.1670684814453125
+uncertainty_penalty_value,1.0,0.5,3,50,33,26,0.66,0.52,-0.14,8,15,27,0.21003961563110352
+uncertainty_penalty_action_max,1.0,0.5,1,20,14,11,0.7,0.55,-0.15,3,6,11,0.5078125
+uncertainty_penalty_value,2.0,0.5,3,50,33,25,0.66,0.5,-0.16,7,15,28,0.13380050659179688
+uncertainty_penalty_combined,2.0,0.5,3,50,33,24,0.66,0.48,-0.18,8,17,25,0.10775214433670044

@@ -1,0 +1,11 @@
+case_id,experiment_split,rollout_executions,successes,failures,success_rate,failure_types,drop_candidates_all,wrong_object_candidates_all,official_safety_violations
+direct_milk_task5_init0,calibration,36,17,19,0.4722222222222222,target_drop_candidate:10; timeout_no_goal:9,10,0,0
+direct_milk_task5_init0,holdout,36,16,20,0.4444444444444444,target_drop_candidate:12; timeout_no_goal:6; wrong_object_interaction_candidate:2,13,2,0
+direct_milk_task5_new_inits,screen,30,30,0,1.0,,0,0,0
+direct_mug_task0_init0,generalization,24,19,5,0.7916666666666666,target_drop_candidate:5,6,0,0
+long_mug_task4_init0,generalization,124,101,23,0.8145161290322581,target_drop_candidate:23,124,0,0
+milk_task5_init0,calibration,232,129,103,0.5560344827586207,timeout_no_goal:57; target_drop_candidate:45; wrong_object_interaction_candidate:1,45,2,0
+milk_task5_init0,holdout,232,110,122,0.47413793103448276,timeout_no_goal:66; target_drop_candidate:56,56,1,0
+milk_task5_init0_ablation,generalization,146,60,86,0.410958904109589,timeout_no_goal:47; target_drop_candidate:39,39,1,0
+yellow_task8_init0,generalization,194,98,96,0.5051546391752577,timeout_no_goal:82; wrong_object_interaction_candidate:9; target_drop_candidate:5,6,9,0
+yellow_task8_new_inits,screen,24,23,1,0.9583333333333334,target_drop_candidate:1,1,0,0

@@ -1,0 +1,8 @@
+{
+  "job": "milk_task5_init0_smoke",
+  "gpu": "2",
+  "status": "completed",
+  "started_at": "2026-07-24T00:06:16",
+  "finished_at": "2026-07-24T00:10:50",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_smoke_20260724/logs/milk_task5_init0_smoke.log"
+}

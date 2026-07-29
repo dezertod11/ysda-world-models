@@ -1,0 +1,1798 @@
+diff --git a/cosmos_policy/_src/imaginaire/modules/res_sampler.py b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
+old mode 100644
+new mode 100755
+index 6b0e7bd..926639b
+--- a/cosmos_policy/_src/imaginaire/modules/res_sampler.py
++++ b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
+@@ -126,6 +126,7 @@ class Sampler(torch.nn.Module):
+         S_max: float = float("inf"),
+         S_noise: float = 1,
+         solver_option: str = "2ab",
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+     ) -> torch.Tensor:
+         in_dtype = x_sigma_max.dtype
+ 
+@@ -148,7 +149,12 @@ class Sampler(torch.nn.Module):
+         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
+         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=True)
+ 
+-        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg).to(in_dtype)
++        return self._forward_impl(
++            float64_x0_fn,
++            x_sigma_max,
++            sampler_cfg,
++            denoiser_callback_fns=denoiser_callback_fns,
++        ).to(in_dtype)
+ 
+     @torch.no_grad()
+     def _forward_impl(
+@@ -157,6 +163,7 @@ class Sampler(torch.nn.Module):
+         noisy_input_B_StateShape: torch.Tensor,
+         sampler_cfg: Optional[SamplerConfig] = None,
+         callback_fns: Optional[List[Callable]] = None,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+     ) -> torch.Tensor:
+         """
+         Internal implementation of the forward pass.
+@@ -166,6 +173,8 @@ class Sampler(torch.nn.Module):
+             noisy_input_B_StateShape: Input tensor with noise.
+             sampler_cfg: Configuration for the sampler.
+             callback_fns: List of callback functions to be called during sampling.
++            denoiser_callback_fns: Callbacks invoked after every solver denoiser
++                evaluation with the noisy state, sigma, and x0 prediction.
+ 
+         Returns:
+             torch.Tensor: Denoised output tensor.
+@@ -179,7 +188,11 @@ class Sampler(torch.nn.Module):
+         ).to(noisy_input_B_StateShape.device)
+ 
+         denoised_output = differential_equation_solver(
+-            denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
++            denoiser_fn,
++            sigmas_L,
++            sampler_cfg.solver,
++            callback_fns=callback_fns,
++            denoiser_callback_fns=denoiser_callback_fns,
+         )(noisy_input_B_StateShape)
+ 
+         if sampler_cfg.sample_clean:
+@@ -217,6 +230,7 @@ def differential_equation_solver(
+     sigmas_L: torch.Tensor,
+     solver_cfg: SolverConfig,
+     callback_fns: Optional[List[Callable]] = None,
++    denoiser_callback_fns: Optional[List[Callable]] = None,
+ ) -> Callable[[torch.Tensor], torch.Tensor]:
+     """
+     Creates a differential equation solver function.
+@@ -226,6 +240,8 @@ def differential_equation_solver(
+         sigmas_L: Tensor of sigma values with shape [L,].
+         solver_cfg: Configuration for the solver.
+         callback_fns: Optional list of callback functions.
++        denoiser_callback_fns: Optional callbacks for individual denoiser
++            evaluations. The final clean prediction is intentionally excluded.
+ 
+     Returns:
+         A function that solves the differential equation.
+@@ -251,6 +267,20 @@ def differential_equation_solver(
+         """
+         ones_B = torch.ones(input_xT_B_StateShape.size(0), device=input_xT_B_StateShape.device, dtype=torch.float64)
+ 
++        def evaluate_x0(
++            noisy_state_B_StateShape: torch.Tensor,
++            sigma_B: torch.Tensor,
++        ) -> torch.Tensor:
++            x0_pred_B_StateShape = x0_fn(noisy_state_B_StateShape, sigma_B)
++            if denoiser_callback_fns:
++                for denoiser_callback_fn in denoiser_callback_fns:
++                    denoiser_callback_fn(
++                        noisy_state_B_StateShape=noisy_state_B_StateShape,
++                        sigma_B=sigma_B,
++                        x0_pred_B_StateShape=x0_pred_B_StateShape,
++                    )
++            return x0_pred_B_StateShape
++
+         def step_fn(
+             i_th: int, state: Tuple[torch.Tensor, Optional[List[torch.Tensor]]]
+         ) -> Tuple[torch.Tensor, Optional[List[torch.Tensor]]]:
+@@ -266,13 +296,13 @@ def differential_equation_solver(
+                 sigma_cur_0 = hat_sigma_cur_0
+ 
+             if solver_cfg.is_multi:
+-                x0_pred_B_StateShape = x0_fn(input_x_B_StateShape, sigma_cur_0 * ones_B)
++                x0_pred_B_StateShape = evaluate_x0(input_x_B_StateShape, sigma_cur_0 * ones_B)
+                 output_x_B_StateShape, x0_preds = update_step_fn(
+                     input_x_B_StateShape, sigma_cur_0 * ones_B, sigma_next_0 * ones_B, x0_pred_B_StateShape, x0_preds
+                 )
+             else:
+                 output_x_B_StateShape, x0_preds = update_step_fn(
+-                    input_x_B_StateShape, sigma_cur_0 * ones_B, sigma_next_0 * ones_B, x0_fn
++                    input_x_B_StateShape, sigma_cur_0 * ones_B, sigma_next_0 * ones_B, evaluate_x0
+                 )
+ 
+             if callback_fns:
+diff --git a/cosmos_policy/experiments/robot/cosmos_utils.py b/cosmos_policy/experiments/robot/cosmos_utils.py
+old mode 100644
+new mode 100755
+index 00c2845..7e06e12
+--- a/cosmos_policy/experiments/robot/cosmos_utils.py
++++ b/cosmos_policy/experiments/robot/cosmos_utils.py
+@@ -40,6 +40,7 @@ from cosmos_policy._src.predict2.inference.get_t5_emb import get_text_embedding
+ from cosmos_policy._src.predict2.utils.model_loader import load_model_from_checkpoint
+ from cosmos_policy.constants import ACTION_DIM
+ from cosmos_policy.datasets.dataset_utils import apply_jpeg_compression_np, resize_images
++from cosmos_policy.experiments.robot.libero.vfd_metrics import DenoisingTraceRecorder
+ from cosmos_policy.utils.utils import duplicate_array
+ 
+ # Initialize important constants
+@@ -57,6 +58,32 @@ t5_text_embeddings_newly_computed = False  # Global boolean - tracks whether new
+ # Configure numpy print settings - print to 3 decimals
+ np.set_printoptions(formatter={"float": lambda x: "{0:0.3f}".format(x)})
+ 
++_ORIGINAL_TRUNC_NORMAL = torch.nn.init.trunc_normal_
++_TRUNC_NORMAL_PATCHED = False
++
++
++def patch_cuda_trunc_normal_for_blackwell() -> None:
++    """Work around torch 2.7 CUDA trunc_normal_ failures on RTX 50-series GPUs."""
++    global _TRUNC_NORMAL_PATCHED
++    if _TRUNC_NORMAL_PATCHED or not torch.cuda.is_available():
++        return
++
++    major, _minor = torch.cuda.get_device_capability()
++    if major < 12:
++        return
++
++    def safe_trunc_normal_(tensor, mean=0.0, std=1.0, a=-2.0, b=2.0, generator=None):
++        if tensor.is_cuda and tensor.dtype is torch.float32:
++            with torch.no_grad():
++                cpu_tensor = torch.empty(tensor.shape, dtype=tensor.dtype, device="cpu")
++                _ORIGINAL_TRUNC_NORMAL(cpu_tensor, mean=mean, std=std, a=a, b=b)
++                tensor.copy_(cpu_tensor.to(device=tensor.device, non_blocking=True))
++            return tensor
++        return _ORIGINAL_TRUNC_NORMAL(tensor, mean=mean, std=std, a=a, b=b, generator=generator)
++
++    torch.nn.init.trunc_normal_ = safe_trunc_normal_
++    _TRUNC_NORMAL_PATCHED = True
++
+ 
+ def get_latent_indices_from_model_config(model):
+     """
+@@ -139,10 +166,6 @@ def download_hf_checkpoint(repo_id: str, cache_dir: str | None = None) -> str:
+     """
+     print(f"Downloading checkpoint from HuggingFace: {repo_id}")
+ 
+-    # Use HF_HOME environment variable if cache_dir not specified
+-    if cache_dir is None:
+-        cache_dir = os.environ.get("HF_HOME", None)
+-
+     # Download the entire repository
+     local_dir = snapshot_download(
+         repo_id=repo_id,
+@@ -189,10 +212,6 @@ def download_hf_file(hf_path: str, cache_dir: str | None = None) -> str:
+ 
+     print(f"Downloading file from HuggingFace: {hf_path}")
+ 
+-    # Use HF_HOME environment variable if cache_dir not specified
+-    if cache_dir is None:
+-        cache_dir = os.environ.get("HF_HOME", None)
+-
+     # Download the specific file
+     local_path = hf_hub_download(
+         repo_id=repo_id,
+@@ -275,6 +294,7 @@ def get_model(cfg):
+     Returns:
+         Tuple[torch.nn.Module, Config]: Tuple of (model, config)
+     """
++    patch_cuda_trunc_normal_for_blackwell()
+     print("Instantiating pretrained Cosmos model...")
+ 
+     # Resolve checkpoint path (download from HF if needed)
+@@ -400,6 +420,18 @@ def get_t5_embedding_from_cache(task_label: str) -> torch.Tensor:
+     if task_label in t5_text_embeddings_cache:
+         text_embedding = t5_text_embeddings_cache[task_label]
+     else:
++        canonical_task_label = (
++            task_label.replace("pick the akita black bowl", "pick up the black bowl")
++            .replace("cookies box", "cookie box")
++        )
++        if canonical_task_label in t5_text_embeddings_cache:
++            print(
++                "Using cached canonical T5 embedding for instruction: "
++                f"'{task_label}' -> '{canonical_task_label}'"
++            )
++            text_embedding = t5_text_embeddings_cache[canonical_task_label]
++            t5_text_embeddings_cache[task_label] = text_embedding
++            return text_embedding
+         print(f"Computing T5 embedding for new instruction: '{task_label}'...")
+         text_embedding = get_text_embedding(task_label)
+         t5_text_embeddings_cache[task_label] = text_embedding
+@@ -860,6 +892,7 @@ def get_action(
+     generate_future_state_and_value_in_parallel: bool = True,
+     worker_id: int = 0,
+     batch_size: int = 1,
++    record_denoising_trace: bool = False,
+ ) -> List[np.ndarray]:
+     """
+     Generate action predictions with the policy.
+@@ -876,6 +909,8 @@ def get_action(
+         generate_future_state_and_value_in_parallel (bool): Whether to generate future state and value in parallel with the actions
+         worker_id (int): Worker ID (if using parallel inference)
+         batch_size (int): Batch size for inference
++        record_denoising_trace (bool): Record compact block-wise intermediate
++            denoiser velocities for offline uncertainty analysis.
+ 
+     Returns:
+         Dict[str, Any]: Dictionary containing actions and related predictions
+@@ -1108,6 +1143,24 @@ def get_action(
+             "value_latent_idx": torch.tensor([value_latent_idx] * batch_size, dtype=torch.int64).cuda(),
+         }
+ 
++        denoising_trace_recorder = None
++        if record_denoising_trace:
++            trace_block_indices = {
++                "action": action_latent_idx,
++                "value": value_latent_idx,
++            }
++            if cfg.use_proprio:
++                trace_block_indices["future_proprio"] = future_proprio_latent_idx
++            if cfg.use_wrist_image:
++                trace_block_indices["future_wrist_image"] = future_wrist_image_latent_idx
++                if cfg.num_wrist_images == 2:
++                    trace_block_indices["future_wrist_image2"] = future_wrist_image2_latent_idx
++            if cfg.use_third_person_image:
++                trace_block_indices["future_image"] = future_image_latent_idx
++                if cfg.num_third_person_images == 2:
++                    trace_block_indices["future_image2"] = future_image2_latent_idx
++            denoising_trace_recorder = DenoisingTraceRecorder(trace_block_indices)
++
+         # Generate the output latent sequence - contains the predicted action chunk, future state, and value, but
+         # the action chunk is what we care about here
+         generated_latent_with_action, orig_clean_latent_frames = model.generate_samples_from_batch(
+@@ -1118,6 +1171,9 @@ def get_action(
+             is_negative_prompt=False,  # Negative prompt is for CFG
+             use_variance_scale=cfg.use_variance_scale,  # Whether to vary the magnitude of the initial noise - increases diversity slightly in generations
+             return_orig_clean_latent_frames=True,  # Return the original (pre-injection) latent frames - needed for future image visualizations
++            denoiser_callback_fns=(
++                [denoising_trace_recorder] if denoising_trace_recorder is not None else None
++            ),
+         )  # (B, C'=16, T', H'=28, W'=28)
+ 
+         # Extract the predicted action chunk from the generated sample
+@@ -1232,6 +1288,8 @@ def get_action(
+         if generate_future_state_and_value_in_parallel:
+             return_dict["future_image_predictions"] = future_image_predictions
+             return_dict["value_prediction"] = value_prediction
++        if denoising_trace_recorder is not None:
++            return_dict["denoising_trace"] = denoising_trace_recorder.as_dict()
+ 
+     return return_dict
+ 
+@@ -1471,6 +1529,7 @@ def get_value_prediction(
+         # For each future state sample we generated before (may be one sample, or more if using ensemble),
+         # get one or more value predictions and add to the values list
+         all_value_predictions = []
++        generated_value_samples = []
+         for fs_sample in future_state_samples_list:
+             if use_ensemble_value_predictions:
+                 assert batch_size == 1, "Ensemble value predictions only supported for batch size 1!"
+@@ -1495,6 +1554,7 @@ def get_value_prediction(
+                     generated_latent_with_value = model.generate_samples_from_batch(
+                         data_batch, **generate_value_sample_kwargs
+                     )  # (B, C'=16, T', H'=28, W'=28)
++                    generated_value_samples.append(generated_latent_with_value)
+                     # Get value predictions from the generated sample
+                     value_indices = torch.full(
+                         (batch_size,), -1, dtype=torch.int64, device=generated_latent_with_value.device
+@@ -1523,6 +1583,7 @@ def get_value_prediction(
+                 generated_latent_with_value = model.generate_samples_from_batch(
+                     data_batch, **generate_value_sample_kwargs
+                 )  # (B, C'=16, T', H'=28, W'=28)
++                generated_value_samples.append(generated_latent_with_value)
+                 # Get value predictions from the generated sample
+                 value_indices = torch.full(
+                     (batch_size,), -1, dtype=torch.int64, device=generated_latent_with_value.device
+@@ -1553,6 +1614,7 @@ def get_value_prediction(
+ 
+         return_dict = dict(
+             value_prediction=value_prediction,
++            generated_value_samples=generated_value_samples,
+         )
+ 
+     return return_dict
+diff --git a/cosmos_policy/experiments/robot/libero/libero_utils.py b/cosmos_policy/experiments/robot/libero/libero_utils.py
+old mode 100644
+new mode 100755
+index 9d7dd6a..b3107f7
+--- a/cosmos_policy/experiments/robot/libero/libero_utils.py
++++ b/cosmos_policy/experiments/robot/libero/libero_utils.py
+@@ -30,7 +30,11 @@ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
+ def get_libero_env(task, model_family, resolution=256):
+     """Initializes and returns the LIBERO environment, along with the task description."""
+     task_description = task.language
+-    task_bddl_file = os.path.join(get_libero_path("bddl_files"), task.problem_folder, task.bddl_file)
++    task_bddl_parts = [get_libero_path("bddl_files"), task.problem_folder]
++    if hasattr(task, "level"):
++        task_bddl_parts.append(f"L{int(task.level)}")
++    task_bddl_parts.append(task.bddl_file)
++    task_bddl_file = os.path.join(*task_bddl_parts)
+     env_args = {"bddl_file_name": task_bddl_file, "camera_heights": resolution, "camera_widths": resolution}
+     env = OffScreenRenderEnv(**env_args)
+     env.seed(0)  # IMPORTANT: seed seems to affect object positions even when using fixed initial state
+diff --git a/cosmos_policy/experiments/robot/libero/run_libero_eval.py b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
+old mode 100644
+new mode 100755
+index 8ced47f..13ba41e
+--- a/cosmos_policy/experiments/robot/libero/run_libero_eval.py
++++ b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
+@@ -178,6 +178,25 @@ TASK_MAX_STEPS = {
+ }
+ 
+ 
++def get_base_task_suite_name(task_suite_name: str) -> str:
++    """Map LIBERO-PRO perturbation suites back to the Cosmos-trained base suite."""
++    if task_suite_name.startswith("libero_10"):
++        return TaskSuite.LIBERO_10.value
++    if task_suite_name.startswith("libero_90"):
++        return TaskSuite.LIBERO_90.value
++    if task_suite_name.startswith("libero_spatial"):
++        return TaskSuite.LIBERO_SPATIAL.value
++    if task_suite_name.startswith("libero_object"):
++        return TaskSuite.LIBERO_OBJECT.value
++    if task_suite_name.startswith("libero_goal"):
++        return TaskSuite.LIBERO_GOAL.value
++    return task_suite_name
++
++
++def get_task_max_steps(task_suite_name: str) -> int:
++    return TASK_MAX_STEPS[get_base_task_suite_name(task_suite_name)]
++
++
+ @dataclass
+ class PolicyEvalConfig:
+     # fmt: off
+@@ -244,6 +263,7 @@ class PolicyEvalConfig:
+     num_trials_per_task: int = 50                                        # Number of rollouts per task
+     initial_states_path: str = "DEFAULT"                                 # "DEFAULT", or path to initial states JSON file
+     env_img_res: int = 256                                               # Resolution for rendering environment images (not policy input resolution)
++    max_eval_tasks: int = 0                                              # Optional local smoke-test limit; 0 means all tasks
+ 
+     #################################################################################################################
+     # Utils
+@@ -285,14 +305,15 @@ def validate_config(cfg: PolicyEvalConfig) -> None:
+             "Expecting `trained_with_image_aug==True` because model was trained with image augmentations!"
+         )
+ 
+-    # Validate task suite
+-    assert cfg.task_suite_name in [suite.value for suite in TaskSuite], f"Invalid task suite: {cfg.task_suite_name}"
++    # Validate task suite against the currently installed LIBERO package. This allows LIBERO-PRO suites.
++    benchmark_dict = benchmark.get_benchmark_dict()
++    assert cfg.task_suite_name in benchmark_dict, f"Invalid task suite: {cfg.task_suite_name}"
+ 
+ 
+ def check_unnorm_key(cfg: PolicyEvalConfig, model) -> None:
+     """Check that the model contains the action un-normalization key."""
+     # Initialize unnorm_key
+-    unnorm_key = cfg.task_suite_name
++    unnorm_key = get_base_task_suite_name(cfg.task_suite_name)
+ 
+     # In some cases, the key must be manually modified (e.g. after training on a modified version of the dataset
+     # with the suffix "_no_noops" in the dataset name)
+@@ -376,7 +397,7 @@ def run_episode(
+     replay_images = []
+     replay_wrist_images = [] if cfg.use_wrist_image else None
+     future_image_predictions_list = []
+-    max_steps = TASK_MAX_STEPS[cfg.task_suite_name]
++    max_steps = get_task_max_steps(cfg.task_suite_name)
+ 
+     # Best-of-N search variables
+     base_seed = cfg.seed  # Used for seed switching (if applicable)
+@@ -796,6 +817,25 @@ def run_task(
+     )
+ 
+ 
++def prewarm_libero_renderer(cfg: PolicyEvalConfig) -> None:
++    """Create one tiny LIBERO env before CUDA-heavy model init to stabilize WSL GLX."""
++    if os.environ.get("COSMOS_SKIP_LIBERO_RENDER_PREWARM") == "1":
++        return
++
++    try:
++        benchmark_dict = benchmark.get_benchmark_dict()
++        task_suite = benchmark_dict[cfg.task_suite_name]()
++        task = task_suite.get_task(0)
++        env, _task_description = get_libero_env(task, cfg.model_family, resolution=64)
++        obs = env.reset() or env.get_observation()
++        env.step(get_libero_dummy_action(cfg.model_family))
++        env.close()
++        if obs is not None:
++            print("LIBERO renderer prewarm complete.")
++    except Exception as exc:
++        print(f"LIBERO renderer prewarm skipped: {exc}")
++
++
+ @draccus.wrap()
+ def eval_libero(cfg: PolicyEvalConfig) -> float:
+     """Main function to evaluate a trained policy on LIBERO benchmark tasks."""
+@@ -823,6 +863,8 @@ def eval_libero(cfg: PolicyEvalConfig) -> float:
+     # Load Cosmos Policy dataset stats
+     dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
+ 
++    prewarm_libero_renderer(cfg)
++
+     # If using parallel inference, initialize worker pool
+     worker_pool = None
+     if cfg.use_parallel_inference:
+@@ -892,6 +934,8 @@ def eval_libero(cfg: PolicyEvalConfig) -> float:
+     benchmark_dict = benchmark.get_benchmark_dict()
+     task_suite = benchmark_dict[cfg.task_suite_name]()
+     num_tasks = task_suite.n_tasks
++    if cfg.max_eval_tasks > 0:
++        num_tasks = min(num_tasks, cfg.max_eval_tasks)
+ 
+     log_message(f"Task suite: {cfg.task_suite_name}", log_file)
+     log_message(f"Number of tasks: {num_tasks}", log_file)
+diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
+new file mode 100755
+index 0000000..735db26
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/safety_signals.py
+@@ -0,0 +1,558 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Post-action failure diagnostics for LIBERO and LIBERO-Safety rollouts.
++
++The official LIBERO-Safety signal is ``info["cost"]``.  The remaining signals
++in this module are explicitly named diagnostics or candidates: they are useful
++for separating natural failure modes in ordinary LIBERO / LIBERO-PRO, but they
++are not substitutes for task-specific safety constraints.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass
++from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
++
++import numpy as np
++
++
++@dataclass(frozen=True)
++class FailureDiagnosticThresholds:
++    """Thresholds for simulator-side failure candidates."""
++
++    target_lift_m: float = 0.035
++    target_drop_from_peak_m: float = 0.055
++    released_distance_m: float = 0.14
++    non_target_lift_m: float = 0.045
++    non_target_displacement_m: float = 0.12
++    deadlock_window_steps: int = 32
++    deadlock_stalled_path_m: float = 0.02
++    deadlock_oscillating_path_m: float = 0.12
++    deadlock_net_displacement_m: float = 0.025
++    deadlock_sign_flip_rate: float = 0.35
++
++
++def unwrap_libero_env(env: Any) -> Any:
++    """Return the innermost LIBERO task environment."""
++    current = env
++    visited = set()
++    while hasattr(current, "env") and id(current) not in visited:
++        visited.add(id(current))
++        candidate = getattr(current, "env")
++        if candidate is current:
++            break
++        current = candidate
++    return current
++
++
++def official_safety_costs(info: Any) -> Dict[str, float]:
++    """Extract non-zero official safety costs from an environment info dict."""
++    if not isinstance(info, Mapping):
++        return {}
++
++    raw_cost = info.get("cost", {})
++    if isinstance(raw_cost, Mapping):
++        costs: Dict[str, float] = {}
++        for key, value in raw_cost.items():
++            try:
++                numeric = float(value)
++            except (TypeError, ValueError):
++                continue
++            if np.isfinite(numeric) and numeric != 0.0:
++                costs[str(key)] = numeric
++        return costs
++
++    try:
++        numeric = float(raw_cost)
++    except (TypeError, ValueError):
++        numeric = 0.0
++    return {"cost": numeric} if np.isfinite(numeric) and numeric != 0.0 else {}
++
++
++def has_official_safety_violation(info: Any) -> bool:
++    """Whether LIBERO-Safety reported a constraint violation for this step."""
++    if official_safety_costs(info):
++        return True
++    if not isinstance(info, Mapping):
++        return False
++
++    for key in ("safety_violation", "unsafe", "constraint_violation"):
++        if bool(info.get(key, False)):
++            return True
++    return False
++
++
++def _safe_array(value: Any, expected_size: Optional[int] = None) -> Optional[np.ndarray]:
++    if value is None:
++        return None
++    try:
++        array = np.asarray(value, dtype=np.float64).reshape(-1)
++    except (TypeError, ValueError):
++        return None
++    if expected_size is not None and array.size < expected_size:
++        return None
++    if not np.all(np.isfinite(array)):
++        return None
++    return array
++
++
++def _sign_flip_rate(actions: Sequence[np.ndarray]) -> float:
++    if len(actions) < 2:
++        return 0.0
++    motion = np.stack(actions)[:, :-1]
++    previous = motion[:-1]
++    current = motion[1:]
++    active = (np.abs(previous) > 1e-5) & (np.abs(current) > 1e-5)
++    if not np.any(active):
++        return 0.0
++    flips = (np.sign(previous) != np.sign(current)) & active
++    return float(flips.sum() / active.sum())
++
++
++def _kinematic_metrics(positions: Sequence[np.ndarray], dt: float) -> Dict[str, float]:
++    result = {
++        "path_length": 0.0,
++        "net_displacement": 0.0,
++        "speed_mean": 0.0,
++        "speed_max": 0.0,
++        "acceleration_mean": 0.0,
++        "acceleration_max": 0.0,
++        "jerk_mean": 0.0,
++        "jerk_max": 0.0,
++        "dimensionless_jerk_proxy": 0.0,
++    }
++    if len(positions) < 2:
++        return result
++
++    xyz = np.stack(positions)
++    displacement = np.diff(xyz, axis=0)
++    distances = np.linalg.norm(displacement, axis=1)
++    path_length = float(distances.sum())
++    result["path_length"] = path_length
++    result["net_displacement"] = float(np.linalg.norm(xyz[-1] - xyz[0]))
++
++    velocity = displacement / dt
++    speed = np.linalg.norm(velocity, axis=1)
++    result["speed_mean"] = float(speed.mean())
++    result["speed_max"] = float(speed.max())
++    if len(velocity) < 2:
++        return result
++
++    acceleration = np.diff(velocity, axis=0) / dt
++    acceleration_norm = np.linalg.norm(acceleration, axis=1)
++    result["acceleration_mean"] = float(acceleration_norm.mean())
++    result["acceleration_max"] = float(acceleration_norm.max())
++    if len(acceleration) < 2:
++        return result
++
++    jerk = np.diff(acceleration, axis=0) / dt
++    jerk_norm = np.linalg.norm(jerk, axis=1)
++    result["jerk_mean"] = float(jerk_norm.mean())
++    result["jerk_max"] = float(jerk_norm.max())
++    duration = max(dt * (len(xyz) - 1), dt)
++    result["dimensionless_jerk_proxy"] = float(
++        duration**5 * np.sum(jerk_norm**2) * dt / max(path_length**2, 1e-8)
++    )
++    return result
++
++
++class SafetySignalTracker:
++    """Track official costs and simulator-side failure diagnostics."""
++
++    def __init__(
++        self,
++        env: Any,
++        initial_obs: Mapping[str, Any],
++        thresholds: FailureDiagnosticThresholds = FailureDiagnosticThresholds(),
++    ) -> None:
++        self.env = unwrap_libero_env(env)
++        self.thresholds = thresholds
++        control_freq = float(getattr(self.env, "control_freq", 20.0) or 20.0)
++        self.dt = 1.0 / control_freq
++
++        parsed_problem = getattr(self.env, "parsed_problem", {}) or {}
++        self.goal_states = list(parsed_problem.get("goal_state", []) or [])
++        self.object_states = getattr(self.env, "object_states_dict", {}) or {}
++        self.movable_objects = self._movable_object_names()
++        self.target_objects = self._target_object_names(parsed_problem)
++        self.non_target_objects = [
++            name for name in self.movable_objects if name not in set(self.target_objects)
++        ]
++
++        self.initial_object_positions = self._object_positions(initial_obs)
++        self.peak_target_z = {
++            name: float(position[2])
++            for name, position in self.initial_object_positions.items()
++            if name in self.target_objects
++        }
++        self.target_was_lifted = {name: False for name in self.target_objects}
++        self.drop_event_t: Optional[int] = None
++        self.wrong_object_event_t: Optional[int] = None
++        self.first_goal_progress_t: Optional[int] = None
++        self.first_target_lift_t: Optional[int] = None
++        self.official_violation_t: Optional[int] = None
++        self.official_cost_types: set[str] = set()
++
++        initial_eef = self._eef_position(initial_obs)
++        self.eef_positions: List[np.ndarray] = []
++        if initial_eef is not None:
++            self.eef_positions.append(initial_eef)
++        self.actions: List[np.ndarray] = []
++        self.records: List[Dict[str, float]] = []
++        self.initial_goal_progress = self._goal_progress()
++        self.max_goal_progress = self.initial_goal_progress
++
++    def _movable_object_names(self) -> List[str]:
++        names = []
++        for name, state in self.object_states.items():
++            if bool(getattr(state, "is_fixture", False)):
++                continue
++            if getattr(state, "object_state_type", "object") != "object":
++                continue
++            names.append(str(name))
++        return names
++
++    def _target_object_names(self, parsed_problem: Mapping[str, Any]) -> List[str]:
++        targets: List[str] = []
++        movable = set(self.movable_objects)
++        for state in self.goal_states:
++            if len(state) >= 2 and state[1] in movable and state[1] not in targets:
++                targets.append(state[1])
++        if targets:
++            return targets
++
++        for name in parsed_problem.get("obj_of_interest", []) or []:
++            if name in movable and name not in targets:
++                targets.append(name)
++        return targets
++
++    def _eef_position(self, obs: Mapping[str, Any]) -> Optional[np.ndarray]:
++        return _safe_array(obs.get("robot0_eef_pos"), expected_size=3)
++
++    def _object_positions(self, obs: Mapping[str, Any]) -> Dict[str, np.ndarray]:
++        positions: Dict[str, np.ndarray] = {}
++        for name in self.movable_objects:
++            state = self.object_states.get(name)
++            if state is not None and hasattr(state, "get_geom_state"):
++                try:
++                    position = _safe_array(state.get_geom_state().get("pos"), expected_size=3)
++                except (AttributeError, KeyError, TypeError, ValueError):
++                    position = None
++                if position is not None:
++                    positions[name] = position[:3].copy()
++                    continue
++
++            position = _safe_array(obs.get(f"{name}_pos"), expected_size=3)
++            if position is not None:
++                positions[name] = position[:3].copy()
++        return positions
++
++    def _goal_progress(self) -> float:
++        if not self.goal_states or not hasattr(self.env, "_eval_predicate"):
++            return float("nan")
++        satisfied = 0
++        for state in self.goal_states:
++            try:
++                satisfied += int(bool(self.env._eval_predicate(state)))
++            except (AttributeError, KeyError, TypeError, ValueError):
++                continue
++        return float(satisfied / len(self.goal_states))
++
++    def _robot_contact_counts(self) -> Tuple[int, int]:
++        sim = getattr(self.env, "sim", None)
++        if sim is None:
++            return 0, 0
++        try:
++            num_contacts = int(sim.data.ncon)
++        except (AttributeError, TypeError, ValueError):
++            return 0, 0
++
++        robot_patterns = ("robot0", "panda", "gripper", "finger", "hand")
++        target_tokens = tuple(name.lower() for name in self.target_objects)
++        robot_contacts = 0
++        target_contacts = 0
++        for index in range(num_contacts):
++            try:
++                contact = sim.data.contact[index]
++                name_1 = str(sim.model.geom_id2name(contact.geom1) or "").lower()
++                name_2 = str(sim.model.geom_id2name(contact.geom2) or "").lower()
++            except (AttributeError, IndexError, TypeError, ValueError):
++                continue
++            is_robot_1 = any(token in name_1 for token in robot_patterns)
++            is_robot_2 = any(token in name_2 for token in robot_patterns)
++            if is_robot_1 == is_robot_2:
++                continue
++            robot_contacts += 1
++            other_name = name_2 if is_robot_1 else name_1
++            if any(token in other_name for token in target_tokens):
++                target_contacts += 1
++        return robot_contacts, target_contacts
++
++    def mark_query_start(self) -> int:
++        """Return a marker used to summarize only the next executed chunk."""
++        return len(self.records)
++
++    def observe(
++        self,
++        obs: Mapping[str, Any],
++        action: Any,
++        t: int,
++        info: Optional[Mapping[str, Any]] = None,
++        task_success: bool = False,
++    ) -> None:
++        action_array = _safe_array(action)
++        if action_array is None:
++            action_array = np.zeros(7, dtype=np.float64)
++        self.actions.append(action_array)
++
++        eef = self._eef_position(obs)
++        if eef is not None:
++            self.eef_positions.append(eef[:3].copy())
++        object_positions = self._object_positions(obs)
++        progress = self._goal_progress()
++        if np.isfinite(progress):
++            if (
++                self.first_goal_progress_t is None
++                and np.isfinite(self.initial_goal_progress)
++                and progress > self.initial_goal_progress
++            ):
++                self.first_goal_progress_t = int(t)
++            self.max_goal_progress = float(np.nanmax([self.max_goal_progress, progress]))
++
++        max_target_lift = 0.0
++        min_target_eef_distance = float("nan")
++        for name in self.target_objects:
++            position = object_positions.get(name)
++            initial = self.initial_object_positions.get(name)
++            if position is None or initial is None:
++                continue
++            lift = float(position[2] - initial[2])
++            max_target_lift = max(max_target_lift, lift)
++            self.peak_target_z[name] = max(self.peak_target_z.get(name, float(position[2])), float(position[2]))
++            if lift >= self.thresholds.target_lift_m:
++                self.target_was_lifted[name] = True
++                if self.first_target_lift_t is None:
++                    self.first_target_lift_t = int(t)
++
++            distance = float(np.linalg.norm(position - eef[:3])) if eef is not None else float("nan")
++            if np.isfinite(distance):
++                min_target_eef_distance = float(
++                    np.nanmin([min_target_eef_distance, distance])
++                    if np.isfinite(min_target_eef_distance)
++                    else distance
++                )
++            dropped_from_peak = self.peak_target_z[name] - float(position[2])
++            released = not np.isfinite(distance) or distance >= self.thresholds.released_distance_m
++            if (
++                self.drop_event_t is None
++                and self.target_was_lifted.get(name, False)
++                and dropped_from_peak >= self.thresholds.target_drop_from_peak_m
++                and released
++                and not task_success
++            ):
++                self.drop_event_t = int(t)
++
++        max_non_target_displacement = 0.0
++        max_non_target_lift = 0.0
++        for name in self.non_target_objects:
++            position = object_positions.get(name)
++            initial = self.initial_object_positions.get(name)
++            if position is None or initial is None:
++                continue
++            displacement = float(np.linalg.norm(position - initial))
++            lift = float(position[2] - initial[2])
++            max_non_target_displacement = max(max_non_target_displacement, displacement)
++            max_non_target_lift = max(max_non_target_lift, lift)
++            if (
++                self.wrong_object_event_t is None
++                and (
++                    displacement >= self.thresholds.non_target_displacement_m
++                    or lift >= self.thresholds.non_target_lift_m
++                )
++            ):
++                self.wrong_object_event_t = int(t)
++
++        costs = official_safety_costs(info)
++        violation = bool(costs) or has_official_safety_violation(info)
++        if violation and self.official_violation_t is None:
++            self.official_violation_t = int(t)
++        self.official_cost_types.update(costs)
++        robot_contacts, target_contacts = self._robot_contact_counts()
++
++        self.records.append(
++            {
++                "t": float(t),
++                "goal_progress": progress,
++                "target_lift_max": float(max_target_lift),
++                "target_eef_distance_min": min_target_eef_distance,
++                "non_target_displacement_max": float(max_non_target_displacement),
++                "non_target_lift_max": float(max_non_target_lift),
++                "target_drop_candidate": float(self.drop_event_t is not None),
++                "wrong_object_interaction_candidate": float(self.wrong_object_event_t is not None),
++                "official_safety_violation": float(violation),
++                "official_safety_cost": float(sum(costs.values())),
++                "robot_contact_count": float(robot_contacts),
++                "robot_target_contact_count": float(target_contacts),
++                "action_motion_norm": float(np.linalg.norm(action_array[:-1])),
++            }
++        )
++
++    def _segment_positions(self, start: int, end: int) -> List[np.ndarray]:
++        if not self.eef_positions:
++            return []
++        first = max(0, min(start, len(self.eef_positions) - 1))
++        last = max(first + 1, min(end + 1, len(self.eef_positions)))
++        return self.eef_positions[first:last]
++
++    def query_summary(self, marker: int) -> Dict[str, float]:
++        """Summarize signals observed after executing one selected action chunk."""
++        segment = self.records[marker:]
++        if not segment:
++            return {}
++
++        def values(name: str) -> np.ndarray:
++            return np.asarray([record[name] for record in segment], dtype=np.float64)
++
++        positions = self._segment_positions(marker, len(self.records))
++        kinematics = _kinematic_metrics(positions, self.dt)
++        goal_progress = values("goal_progress")
++        finite_progress = goal_progress[np.isfinite(goal_progress)]
++        progress_start = self.initial_goal_progress
++        if marker > 0:
++            progress_start = float(self.records[marker - 1]["goal_progress"])
++        progress_end = float(finite_progress[-1]) if finite_progress.size else float("nan")
++        progress_delta = (
++            float(progress_end - progress_start)
++            if np.isfinite(progress_end) and np.isfinite(progress_start)
++            else float("nan")
++        )
++        actions = self.actions[marker:]
++
++        return {
++            "observed_goal_progress_end": progress_end,
++            "observed_goal_progress_delta": progress_delta,
++            "observed_target_lift_max": float(values("target_lift_max").max()),
++            "observed_target_eef_distance_min": float(
++                np.nanmin(values("target_eef_distance_min"))
++                if np.isfinite(values("target_eef_distance_min")).any()
++                else np.nan
++            ),
++            "observed_non_target_displacement_max": float(values("non_target_displacement_max").max()),
++            "observed_non_target_lift_max": float(values("non_target_lift_max").max()),
++            "observed_target_drop_candidate": float(values("target_drop_candidate").max()),
++            "observed_wrong_object_interaction_candidate": float(
++                values("wrong_object_interaction_candidate").max()
++            ),
++            "observed_official_safety_violation": float(values("official_safety_violation").max()),
++            "observed_official_safety_cost_sum": float(values("official_safety_cost").sum()),
++            "observed_robot_contact_count_sum": float(values("robot_contact_count").sum()),
++            "observed_robot_contact_count_max": float(values("robot_contact_count").max()),
++            "observed_robot_target_contact_count_sum": float(values("robot_target_contact_count").sum()),
++            "observed_action_motion_norm_mean": float(values("action_motion_norm").mean()),
++            "observed_action_motion_norm_max": float(values("action_motion_norm").max()),
++            "observed_action_sign_flip_rate": _sign_flip_rate(actions),
++            "observed_eef_path_length": kinematics["path_length"],
++            "observed_eef_net_displacement": kinematics["net_displacement"],
++            "observed_eef_speed_mean": kinematics["speed_mean"],
++            "observed_eef_acceleration_mean": kinematics["acceleration_mean"],
++            "observed_eef_jerk_mean": kinematics["jerk_mean"],
++            "observed_eef_jerk_max": kinematics["jerk_max"],
++            "observed_eef_dimensionless_jerk_proxy": kinematics["dimensionless_jerk_proxy"],
++        }
++
++    def _deadlock_candidate(self) -> bool:
++        window = min(self.thresholds.deadlock_window_steps, len(self.actions))
++        if window < 4:
++            return False
++        positions = self.eef_positions[-(window + 1) :]
++        kinematics = _kinematic_metrics(positions, self.dt)
++        sign_flip_rate = _sign_flip_rate(self.actions[-window:])
++        stalled = kinematics["path_length"] <= self.thresholds.deadlock_stalled_path_m
++        oscillating = (
++            kinematics["path_length"] >= self.thresholds.deadlock_oscillating_path_m
++            and kinematics["net_displacement"] <= self.thresholds.deadlock_net_displacement_m
++            and sign_flip_rate >= self.thresholds.deadlock_sign_flip_rate
++        )
++        return bool(stalled or oscillating)
++
++    def episode_summary(
++        self,
++        success: bool,
++        final_t: int,
++        max_steps: int,
++        safety_terminated: bool = False,
++    ) -> Dict[str, Any]:
++        """Return static labels and diagnostics to attach to every query row."""
++        deadlock = bool(not success and self._deadlock_candidate())
++        official_violation = self.official_violation_t is not None
++        drop = self.drop_event_t is not None
++        wrong_object = self.wrong_object_event_t is not None
++
++        if success:
++            failure_type = "success"
++        elif official_violation:
++            failure_type = "safety_constraint_violation"
++        elif drop:
++            failure_type = "target_drop_candidate"
++        elif wrong_object:
++            failure_type = "wrong_object_interaction_candidate"
++        elif deadlock:
++            failure_type = "kinematic_deadlock_candidate"
++        elif final_t >= max_steps and np.isfinite(self.max_goal_progress) and self.max_goal_progress > 0:
++            failure_type = "timeout_partial_goal"
++        elif final_t >= max_steps:
++            failure_type = "timeout_no_goal"
++        else:
++            failure_type = "environment_termination_without_success"
++
++        event_times = [
++            time
++            for time in (
++                self.official_violation_t,
++                self.drop_event_t,
++                self.wrong_object_event_t,
++            )
++            if time is not None
++        ]
++        failure_event_t = min(event_times) if event_times else (-1 if success else int(final_t))
++        full_kinematics = _kinematic_metrics(self.eef_positions, self.dt)
++        max_target_lift = max(
++            (
++                self.peak_target_z[name] - self.initial_object_positions[name][2]
++                for name in self.target_objects
++                if name in self.peak_target_z and name in self.initial_object_positions
++            ),
++            default=0.0,
++        )
++
++        return {
++            "failure_type": failure_type,
++            "failure_event_t": int(failure_event_t),
++            "safe_task_success": bool(success and not official_violation),
++            "safety_terminated": bool(safety_terminated),
++            "official_safety_violation": bool(official_violation),
++            "official_safety_violation_t": int(
++                self.official_violation_t if self.official_violation_t is not None else -1
++            ),
++            "official_safety_cost_types": ",".join(sorted(self.official_cost_types)),
++            "target_objects": ",".join(self.target_objects),
++            "target_drop_candidate": bool(drop),
++            "target_drop_candidate_t": int(self.drop_event_t if self.drop_event_t is not None else -1),
++            "wrong_object_interaction_candidate": bool(wrong_object),
++            "wrong_object_interaction_candidate_t": int(
++                self.wrong_object_event_t if self.wrong_object_event_t is not None else -1
++            ),
++            "kinematic_deadlock_candidate": bool(deadlock),
++            "episode_goal_progress_initial": float(self.initial_goal_progress),
++            "episode_goal_progress_max": float(self.max_goal_progress),
++            "episode_time_to_first_goal_progress": int(
++                self.first_goal_progress_t if self.first_goal_progress_t is not None else -1
++            ),
++            "episode_time_to_first_target_lift": int(
++                self.first_target_lift_t if self.first_target_lift_t is not None else -1
++            ),
++            "episode_target_lift_max": float(max_target_lift),
++            "episode_eef_path_length": full_kinematics["path_length"],
++            "episode_eef_net_displacement": full_kinematics["net_displacement"],
++            "episode_eef_jerk_mean": full_kinematics["jerk_mean"],
++            "episode_eef_dimensionless_jerk_proxy": full_kinematics["dimensionless_jerk_proxy"],
++        }
+diff --git a/cosmos_policy/experiments/robot/libero/vfd_metrics.py b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
+new file mode 100755
+index 0000000..eb2e4c5
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
+@@ -0,0 +1,290 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Denoising-trace utilities for flow-based Cosmos Policy uncertainty.
++
++There are two deliberately separate metrics in this module:
++
++* ``compute_blockwise_vfd`` implements the cross-model Vector Field
++  Disagreement (VFD) estimator.  It requires every ensemble model to be
++  evaluated along every ensemble trajectory.
++* ``summarize_flow_path_dispersion`` compares stochastic trajectories from one
++  model.  It is useful before an epistemic model ensemble is available, but it
++  is not called VFD because the vector fields are evaluated at different
++  points.
++"""
++
++from __future__ import annotations
++
++from collections.abc import Mapping, Sequence
++from typing import Any
++
++import numpy as np
++import torch
++
++TRACE_FORMAT_VERSION = 1
++
++
++def edm_sigma_to_flow_time(sigma: Any) -> Any:
++    """Map Cosmos EDM sigma to normalized flow time ``t = sigma / (1 + sigma)``."""
++    return sigma / (1.0 + sigma)
++
++
++def edm_sigma_to_vfd_weight(sigma: Any) -> Any:
++    """Return the VFD weight in Cosmos coordinates: ``kappa = 1 / sigma``."""
++    return 1.0 / sigma
++
++
++def edm_x0_to_flow_velocity(
++    noisy_state: torch.Tensor,
++    x0_prediction: torch.Tensor,
++    sigma: torch.Tensor | float,
++) -> torch.Tensor:
++    """Recover normalized-flow velocity from an EDM x0 prediction.
++
++    Cosmos uses ``x_sigma = x0 + sigma * epsilon``.  With normalized flow time
++    ``t = sigma / (1 + sigma)``, the corresponding velocity is
++
++    ``v_t = epsilon_hat - x0_hat``,
++    ``epsilon_hat = (x_sigma - x0_hat) / sigma``.
++    """
++    sigma_tensor = torch.as_tensor(sigma, dtype=noisy_state.dtype, device=noisy_state.device)
++    if torch.any(sigma_tensor <= 0):
++        raise ValueError("sigma must be strictly positive when recovering velocity")
++    while sigma_tensor.ndim < noisy_state.ndim:
++        sigma_tensor = sigma_tensor.unsqueeze(-1)
++    epsilon_prediction = (noisy_state - x0_prediction) / sigma_tensor
++    return epsilon_prediction - x0_prediction
++
++
++class DenoisingTraceRecorder:
++    """Record selected latent-frame velocities at every solver denoiser call.
++
++    The recorder is a sampler callback.  It immediately moves only requested
++    latent blocks to CPU float32, keeping GPU memory bounded and avoiding raw
++    image/latent trace persistence.
++    """
++
++    def __init__(self, block_indices: Mapping[str, int], sigma_floor: float = 1e-8):
++        self.block_indices = {
++            str(name): int(index)
++            for name, index in block_indices.items()
++            if index is not None and int(index) >= 0
++        }
++        self.sigma_floor = float(sigma_floor)
++        self._sigmas: list[float] = []
++        self._block_velocities: dict[str, list[np.ndarray]] = {
++            name: [] for name in self.block_indices
++        }
++        self.excluded_terminal_evaluations = 0
++
++    def __call__(
++        self,
++        *,
++        noisy_state_B_StateShape: torch.Tensor,
++        sigma_B: torch.Tensor,
++        x0_pred_B_StateShape: torch.Tensor,
++        **_: Any,
++    ) -> None:
++        sigma_values = sigma_B.detach().to(dtype=torch.float64).cpu().numpy().reshape(-1)
++        if sigma_values.size == 0 or not np.allclose(sigma_values, sigma_values[0]):
++            raise ValueError("DenoisingTraceRecorder expects one shared sigma across the batch")
++        sigma = float(sigma_values[0])
++        if not np.isfinite(sigma) or sigma <= self.sigma_floor:
++            self.excluded_terminal_evaluations += 1
++            return
++
++        velocity = edm_x0_to_flow_velocity(
++            noisy_state_B_StateShape,
++            x0_pred_B_StateShape,
++            sigma_B,
++        )
++        if velocity.ndim != 5:
++            raise ValueError(f"Expected latent shape (B,C,T,H,W), got {tuple(velocity.shape)}")
++
++        block_values: dict[str, np.ndarray] = {}
++        for name, latent_index in self.block_indices.items():
++            if latent_index >= velocity.shape[2]:
++                raise IndexError(
++                    f"Latent index {latent_index} for block {name!r} exceeds T={velocity.shape[2]}"
++                )
++            block_values[name] = (
++                velocity[:, :, latent_index, :, :]
++                .detach()
++                .to(dtype=torch.float32, device="cpu")
++                .numpy()
++                .copy()
++            )
++
++        self._sigmas.append(sigma)
++        for name, value in block_values.items():
++            self._block_velocities[name].append(value)
++
++    def as_dict(self) -> dict[str, Any]:
++        """Return a compact, serializable-in-memory trace dictionary."""
++        sigmas = np.asarray(self._sigmas, dtype=np.float64)
++        block_velocities = {
++            name: np.stack(values, axis=0)
++            for name, values in self._block_velocities.items()
++            if values
++        }
++        return {
++            "format_version": TRACE_FORMAT_VERSION,
++            "sigmas": sigmas,
++            "flow_times": edm_sigma_to_flow_time(sigmas),
++            "vfd_weights": edm_sigma_to_vfd_weight(sigmas) if sigmas.size else sigmas.copy(),
++            "block_velocities": block_velocities,
++            "excluded_terminal_evaluations": int(self.excluded_terminal_evaluations),
++        }
++
++
++def _validate_trace(trace: Mapping[str, Any]) -> tuple[np.ndarray, Mapping[str, Any]]:
++    sigmas = np.asarray(trace.get("sigmas", []), dtype=np.float64)
++    blocks = trace.get("block_velocities", {})
++    if sigmas.ndim != 1:
++        raise ValueError(f"Trace sigmas must have shape (L,), got {sigmas.shape}")
++    if not isinstance(blocks, Mapping):
++        raise TypeError("Trace block_velocities must be a mapping")
++    for name, values in blocks.items():
++        array = np.asarray(values)
++        if array.shape[0] != len(sigmas):
++            raise ValueError(
++                f"Block {name!r} has {array.shape[0]} denoising steps, expected {len(sigmas)}"
++            )
++    return sigmas, blocks
++
++
++def summarize_flow_path_dispersion(
++    traces: Sequence[Mapping[str, Any]],
++    sigma_floor: float = 1e-8,
++) -> dict[str, float]:
++    """Compare same-step velocities from stochastic trajectories of one model.
++
++    Each velocity was evaluated at that sample's own noisy state.  Consequently
++    this measures trajectory dispersion, not epistemic cross-model VFD.
++    Squared differences are averaged over all block elements, so action/value
++    and image blocks are dimension-normalized.
++    """
++    if len(traces) < 2:
++        return {}
++
++    validated = [_validate_trace(trace) for trace in traces]
++    reference_sigmas = validated[0][0]
++    if len(reference_sigmas) == 0:
++        return {}
++    for sigmas, _blocks in validated[1:]:
++        if sigmas.shape != reference_sigmas.shape or not np.allclose(
++            sigmas, reference_sigmas, rtol=1e-6, atol=1e-9
++        ):
++            return {
++                "flow_path_trace_aligned": 0.0,
++                "flow_path_num_members": float(len(traces)),
++            }
++
++    valid_steps = np.isfinite(reference_sigmas) & (reference_sigmas > float(sigma_floor))
++    if not valid_steps.any():
++        return {}
++    weights = edm_sigma_to_vfd_weight(reference_sigmas[valid_steps])
++    common_blocks = set(validated[0][1])
++    for _sigmas, blocks in validated[1:]:
++        common_blocks.intersection_update(blocks)
++
++    metrics: dict[str, float] = {
++        "flow_path_trace_aligned": 1.0,
++        "flow_path_num_members": float(len(traces)),
++        "flow_path_num_steps": float(valid_steps.sum()),
++        "flow_path_sigma_min": float(reference_sigmas[valid_steps].min()),
++        "flow_path_sigma_max": float(reference_sigmas[valid_steps].max()),
++    }
++    for block_name in sorted(common_blocks):
++        member_values = [
++            np.asarray(blocks[block_name], dtype=np.float32)[valid_steps]
++            for _sigmas, blocks in validated
++        ]
++        pairwise_step_mse = []
++        for left in range(len(member_values)):
++            for right in range(left + 1, len(member_values)):
++                difference = member_values[left] - member_values[right]
++                reduce_axes = tuple(range(1, difference.ndim))
++                pairwise_step_mse.append(np.mean(np.square(difference), axis=reduce_axes))
++        mean_step_mse = np.mean(np.stack(pairwise_step_mse, axis=0), axis=0)
++        prefix = f"flow_path_dispersion_{block_name}"
++        metrics[f"{prefix}_mse"] = float(mean_step_mse.mean())
++        metrics[f"{prefix}_vfd_weighted"] = float(np.mean(weights * mean_step_mse))
++        metrics[f"{prefix}_weight_normalized"] = float(
++            np.sum(weights * mean_step_mse) / np.sum(weights)
++        )
++    return metrics
++
++
++def compute_blockwise_vfd(
++    cross_evaluated_velocities: Mapping[str, Any],
++    sigmas: Any,
++    sigma_floor: float = 1e-8,
++) -> dict[str, float]:
++    """Compute exact block-wise VFD from cross-evaluated ensemble velocities.
++
++    For each block, velocities must have shape
++    ``(M_trajectory, M_evaluator, L_step, ...)``.  Element ``[i, j, l]`` is the
++    velocity predicted by model ``j`` at step ``l`` along model ``i``'s
++    trajectory.  The estimator is
++
++    ``mean_{i != j, l} [ (1 / sigma_{i,l}) *
++    mean_elements((v_{i,i,l} - v_{i,j,l})**2) ]``.
++
++    ``sigmas`` may have shape ``(L,)`` or ``(M, L)``.  Steps at or below
++    ``sigma_floor`` are excluded to avoid the singular terminal weight.
++    """
++    sigma_array = np.asarray(sigmas, dtype=np.float64)
++    results: dict[str, float] = {}
++
++    for block_name, raw_velocities in cross_evaluated_velocities.items():
++        velocities = np.asarray(raw_velocities, dtype=np.float32)
++        if velocities.ndim < 4:
++            raise ValueError(
++                f"Block {block_name!r} must have shape (M,M,L,...), got {velocities.shape}"
++            )
++        num_trajectories, num_evaluators, num_steps = velocities.shape[:3]
++        if num_trajectories != num_evaluators:
++            raise ValueError(
++                f"Block {block_name!r} needs a square model grid, got "
++                f"{num_trajectories} trajectories and {num_evaluators} evaluators"
++            )
++        if num_trajectories < 2:
++            raise ValueError("VFD requires at least two ensemble models")
++
++        if sigma_array.ndim == 1:
++            if sigma_array.shape != (num_steps,):
++                raise ValueError(f"Expected sigmas shape ({num_steps},), got {sigma_array.shape}")
++            block_sigmas = np.broadcast_to(sigma_array, (num_trajectories, num_steps))
++        elif sigma_array.ndim == 2:
++            if sigma_array.shape != (num_trajectories, num_steps):
++                raise ValueError(
++                    f"Expected sigmas shape ({num_trajectories},{num_steps}), got {sigma_array.shape}"
++                )
++            block_sigmas = sigma_array
++        else:
++            raise ValueError(f"sigmas must have shape (L,) or (M,L), got {sigma_array.shape}")
++
++        weighted_disagreements = []
++        reduce_axes = tuple(range(1, velocities.ndim - 2))
++        for trajectory_index in range(num_trajectories):
++            valid_steps = (
++                np.isfinite(block_sigmas[trajectory_index])
++                & (block_sigmas[trajectory_index] > float(sigma_floor))
++            )
++            if not valid_steps.any():
++                continue
++            weights = edm_sigma_to_vfd_weight(block_sigmas[trajectory_index, valid_steps])
++            reference = velocities[trajectory_index, trajectory_index, valid_steps]
++            for evaluator_index in range(num_evaluators):
++                if evaluator_index == trajectory_index:
++                    continue
++                difference = reference - velocities[trajectory_index, evaluator_index, valid_steps]
++                step_mse = np.mean(np.square(difference), axis=reduce_axes)
++                weighted_disagreements.extend((weights * step_mse).tolist())
++
++        if not weighted_disagreements:
++            results[str(block_name)] = float("nan")
++        else:
++            results[str(block_name)] = float(np.mean(weighted_disagreements))
++
++    return results
+diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
+old mode 100644
+new mode 100755
+index efbafee..115e6ed
+--- a/cosmos_policy/models/policy_text2world_model.py
++++ b/cosmos_policy/models/policy_text2world_model.py
+@@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
+ 
+ from __future__ import annotations
+ 
+-from typing import Dict, Optional, Tuple
++from typing import Callable, Dict, List, Optional, Tuple
+ 
+ import attrs
+ import torch
+@@ -716,6 +716,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+         skip_vae_encoding: bool = False,
+         previous_generated_latent: torch.Tensor = None,
+         return_orig_clean_latent_frames: bool = False,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         **kwargs,
+     ) -> torch.Tensor:
+         """
+@@ -740,6 +741,8 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             skip_vae_encoding (bool): Skip VAE encoding if True
+             previous_generated_latent (torch.Tensor): Previous generated sample
+             return_orig_clean_latent_frames (bool): Whether to return the clean latent frames
++            denoiser_callback_fns (list): Optional callbacks for intermediate
++                denoiser evaluations. Disabled by default.
+         """
+         self._normalize_video_databatch_inplace(data_batch)
+         self._augment_image_dim_inplace(data_batch)
+@@ -785,6 +788,10 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+ 
+         # NOTE: FlowUniPC scheduler support (inherited from base, keeping for compatibility)
+         if self.config.use_flowunipc_scheduler:
++            if denoiser_callback_fns:
++                raise NotImplementedError(
++                    "Denoising trace callbacks are currently supported by the EDM/RES sampler only"
++                )
+             # Use parent implementation for FlowUniPC
+             return super().generate_samples_from_batch(
+                 data_batch,
+@@ -826,6 +833,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             sigma_max=sigma_max * sigma_max_variance_scale,
+             sigma_min=self.sde.sigma_min * sigma_min_variance_scale,
+             solver_option=solver_option,
++            denoiser_callback_fns=denoiser_callback_fns,
+         )
+         if self.net.is_context_parallel_enabled:
+             samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
+diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
+old mode 100644
+new mode 100755
+index ef9e42c..df979ea
+--- a/cosmos_policy/modules/cosmos_sampler.py
++++ b/cosmos_policy/modules/cosmos_sampler.py
+@@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
+         S_max: float = float("inf"),
+         S_noise: float = 1,
+         solver_option: str = "2ab",
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+     ) -> torch.Tensor:
+         in_dtype = x_sigma_max.dtype
+ 
+@@ -90,7 +91,13 @@ class CosmosPolicySampler(Sampler):
+         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
+         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=sample_clean)
+ 
+-        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg, num_steps=num_steps).to(in_dtype)
++        return self._forward_impl(
++            float64_x0_fn,
++            x_sigma_max,
++            sampler_cfg,
++            denoiser_callback_fns=denoiser_callback_fns,
++            num_steps=num_steps,
++        ).to(in_dtype)
+ 
+     @torch.no_grad()
+     def _forward_impl(
+@@ -99,6 +106,7 @@ class CosmosPolicySampler(Sampler):
+         noisy_input_B_StateShape: torch.Tensor,
+         sampler_cfg: Optional[SamplerConfig] = None,
+         callback_fns: Optional[List[Callable]] = None,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         num_steps: int = 35,
+     ) -> torch.Tensor:
+         """
+@@ -109,6 +117,8 @@ class CosmosPolicySampler(Sampler):
+             noisy_input_B_StateShape: Input tensor with noise.
+             sampler_cfg: Configuration for the sampler.
+             callback_fns: List of callback functions to be called during sampling.
++            denoiser_callback_fns: Callbacks invoked after individual solver
++                denoiser evaluations.
+             num_steps: Number of denoising steps.
+ 
+         Returns:
+@@ -125,7 +135,11 @@ class CosmosPolicySampler(Sampler):
+         if num_steps > 1:
+             # Normal sampling
+             denoised_output = differential_equation_solver(
+-                denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
++                denoiser_fn,
++                sigmas_L,
++                sampler_cfg.solver,
++                callback_fns=callback_fns,
++                denoiser_callback_fns=denoiser_callback_fns,
+             )(noisy_input_B_StateShape)
+ 
+             if sampler_cfg.sample_clean:
+@@ -136,6 +150,15 @@ class CosmosPolicySampler(Sampler):
+             # Special case: num_steps==1
+             denoised_output = noisy_input_B_StateShape
+             ones = torch.ones(denoised_output.size(0), device=denoised_output.device, dtype=denoised_output.dtype)
+-            denoised_output = denoiser_fn(denoised_output, sigmas_L[0] * ones)
++            sigma_B = sigmas_L[0] * ones
++            x0_pred_B_StateShape = denoiser_fn(denoised_output, sigma_B)
++            if denoiser_callback_fns:
++                for denoiser_callback_fn in denoiser_callback_fns:
++                    denoiser_callback_fn(
++                        noisy_state_B_StateShape=denoised_output,
++                        sigma_B=sigma_B,
++                        x0_pred_B_StateShape=x0_pred_B_StateShape,
++                    )
++            denoised_output = x0_pred_B_StateShape
+ 
+         return denoised_output
+diff --git a/tests/test_planning_selection.py b/tests/test_planning_selection.py
+new file mode 100755
+index 0000000..420bd08
+--- /dev/null
++++ b/tests/test_planning_selection.py
+@@ -0,0 +1,90 @@
++from __future__ import annotations
++
++import numpy as np
++
++from cosmos_policy.experiments.robot.libero.uncertainty_comparison import (
++    select_planning_sample,
++)
++
++
++def sample(value: float) -> dict[str, object]:
++    return {
++        "actions": np.zeros((16, 7), dtype=np.float32),
++        "value_prediction": value,
++    }
++
++
++def sample_with_action_copies(value: float, first_std: float, later_std: float) -> dict[str, object]:
++    copy_a = np.zeros((16, 7), dtype=np.float32)
++    copy_b = np.full((16, 7), 2 * later_std, dtype=np.float32)
++    copy_b[0] = 2 * first_std
++    flat = np.concatenate([copy_a.reshape(-1), copy_b.reshape(-1)])
++    latent = flat.reshape(1, 1, 1, 1, -1)
++    return {
++        "actions": copy_a,
++        "value_prediction": value,
++        "generated_latent": latent,
++        "latent_indices": {
++            "action_latent_idx": 0,
++            "future_proprio_latent_idx": -1,
++            "value_latent_idx": -1,
++        },
++    }
++
++
++def test_single_candidate_selection_is_well_defined() -> None:
++    selected, diagnostics = select_planning_sample(
++        [sample(0.25)],
++        strategy="uncertainty_penalty_combined",
++    )
++
++    assert selected == 0
++    assert diagnostics["selected_value"] == 0.25
++    assert diagnostics["selected_value_z"] == 0.0
++    assert diagnostics["selected_risk"] == 0.0
++
++
++def test_multiple_candidate_selection_uses_array_zscore() -> None:
++    selected, diagnostics = select_planning_sample(
++        [sample(0.1), sample(0.8), sample(0.4)],
++        strategy="max_value",
++    )
++
++    assert selected == 1
++    assert diagnostics["max_value_sample_idx"] == 1.0
++    assert np.isclose(diagnostics["candidate_value_range"], 0.7)
++
++
++def test_action_uncertainty_penalty_can_override_max_value() -> None:
++    selected, diagnostics = select_planning_sample(
++        [
++            sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++            sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++        ],
++        strategy="uncertainty_penalty_action",
++        risk_lambda=2.0,
++    )
++
++    assert selected == 1
++    assert diagnostics["max_value_sample_idx"] == 0.0
++
++
++def test_first_step_and_chunk_aggregation_are_distinct() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=0.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.5, later_std=0.5),
++    ]
++
++    first_selected, _ = select_planning_sample(
++        candidates,
++        strategy="uncertainty_penalty_action",
++        risk_lambda=2.0,
++    )
++    chunk_selected, _ = select_planning_sample(
++        candidates,
++        strategy="uncertainty_penalty_action_chunk",
++        risk_lambda=2.0,
++    )
++
++    assert first_selected == 0
++    assert chunk_selected == 1
+diff --git a/tests/test_safety_signals.py b/tests/test_safety_signals.py
+new file mode 100755
+index 0000000..6153d3f
+--- /dev/null
++++ b/tests/test_safety_signals.py
+@@ -0,0 +1,140 @@
++from __future__ import annotations
++
++from types import SimpleNamespace
++
++import numpy as np
++
++from cosmos_policy.experiments.robot.libero.safety_signals import (
++    SafetySignalTracker,
++    has_official_safety_violation,
++    official_safety_costs,
++)
++
++
++class FakeObjectState:
++    object_state_type = "object"
++    is_fixture = False
++
++    def __init__(self, position):
++        self.position = np.asarray(position, dtype=np.float64)
++
++    def get_geom_state(self):
++        return {"pos": self.position}
++
++
++class FakeTaskEnv:
++    control_freq = 20
++
++    def __init__(self):
++        self.goal = False
++        self.parsed_problem = {
++            "goal_state": [("on", "target", "plate")],
++            "obj_of_interest": ["target", "plate"],
++        }
++        self.object_states_dict = {
++            "target": FakeObjectState([0.0, 0.0, 0.80]),
++            "plate": FakeObjectState([0.2, 0.0, 0.80]),
++            "distractor": FakeObjectState([-0.2, 0.0, 0.80]),
++        }
++        self.sim = SimpleNamespace(
++            data=SimpleNamespace(ncon=0),
++            model=SimpleNamespace(),
++        )
++
++    def _eval_predicate(self, _state):
++        return self.goal
++
++
++def make_tracker():
++    task_env = FakeTaskEnv()
++    wrapped = SimpleNamespace(env=task_env)
++    tracker = SafetySignalTracker(
++        wrapped,
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.85])},
++    )
++    return task_env, tracker
++
++
++def test_official_safety_cost_extraction():
++    info = {"cost": {"CheckRobotContact": 1, "Fall": 0}}
++    assert official_safety_costs(info) == {"CheckRobotContact": 1.0}
++    assert has_official_safety_violation(info)
++    assert not has_official_safety_violation({"cost": {"Fall": 0}})
++
++
++def test_target_drop_candidate_and_query_metrics():
++    env, tracker = make_tracker()
++    marker = tracker.mark_query_start()
++
++    env.object_states_dict["target"].position[:] = [0.0, 0.0, 0.89]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.90])},
++        np.ones(7),
++        t=1,
++    )
++    env.object_states_dict["target"].position[:] = [0.0, 0.0, 0.81]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.4, 0.0, 0.90])},
++        -np.ones(7),
++        t=2,
++    )
++
++    query = tracker.query_summary(marker)
++    episode = tracker.episode_summary(False, final_t=2, max_steps=10)
++    assert query["observed_target_drop_candidate"] == 1.0
++    assert query["observed_action_sign_flip_rate"] == 1.0
++    assert episode["failure_type"] == "target_drop_candidate"
++    assert episode["failure_event_t"] == 2
++
++
++def test_wrong_object_and_official_violation_priority():
++    env, tracker = make_tracker()
++    env.object_states_dict["distractor"].position[:] = [-0.2, 0.0, 0.94]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.85])},
++        np.zeros(7),
++        t=1,
++        info={"cost": {"Collide": 1}},
++    )
++
++    episode = tracker.episode_summary(False, final_t=1, max_steps=10, safety_terminated=True)
++    assert episode["wrong_object_interaction_candidate"]
++    assert episode["official_safety_violation"]
++    assert episode["failure_type"] == "safety_constraint_violation"
++    assert episode["official_safety_violation_t"] == 1
++
++
++def test_success_overrides_failure_candidates():
++    env, tracker = make_tracker()
++    env.object_states_dict["target"].position[:] = [0.0, 0.0, 0.90]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.91])},
++        np.zeros(7),
++        t=1,
++    )
++    env.object_states_dict["target"].position[:] = [0.2, 0.0, 0.80]
++    env.goal = True
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.4, 0.0, 0.90])},
++        np.zeros(7),
++        t=2,
++        task_success=True,
++    )
++
++    episode = tracker.episode_summary(True, final_t=2, max_steps=10)
++    assert episode["failure_type"] == "success"
++    assert episode["safe_task_success"]
++
++
++def test_stationary_failed_episode_is_deadlock_candidate():
++    _env, tracker = make_tracker()
++    for step in range(1, 9):
++        tracker.observe(
++            {"robot0_eef_pos": np.array([0.0, 0.0, 0.85])},
++            np.zeros(7),
++            t=step,
++        )
++
++    episode = tracker.episode_summary(False, final_t=8, max_steps=8)
++    assert episode["kinematic_deadlock_candidate"]
++    assert episode["failure_type"] == "kinematic_deadlock_candidate"
+diff --git a/tests/test_vfd_metrics.py b/tests/test_vfd_metrics.py
+new file mode 100755
+index 0000000..20bd33f
+--- /dev/null
++++ b/tests/test_vfd_metrics.py
+@@ -0,0 +1,131 @@
++from __future__ import annotations
++
++import copy
++
++import numpy as np
++import pytest
++import torch
++
++from cosmos_policy.experiments.robot.libero.vfd_metrics import (
++    DenoisingTraceRecorder,
++    compute_blockwise_vfd,
++    edm_x0_to_flow_velocity,
++    summarize_flow_path_dispersion,
++)
++
++
++def test_edm_x0_prediction_maps_to_flow_velocity() -> None:
++    x0 = torch.tensor([[[[[1.0]]], [[[2.0]]]]])
++    epsilon = torch.tensor([[[[[3.0]]], [[[5.0]]]]])
++    sigma = torch.tensor([2.0])
++    noisy_state = x0 + sigma.reshape(1, 1, 1, 1, 1) * epsilon
++
++    velocity = edm_x0_to_flow_velocity(noisy_state, x0, sigma)
++
++    torch.testing.assert_close(velocity, epsilon - x0)
++
++
++def test_sampler_trace_does_not_change_output() -> None:
++    try:
++        from cosmos_policy.modules.cosmos_sampler import CosmosPolicySampler
++    except Exception as error:
++        pytest.skip(f"Cosmos sampler runtime dependencies are unavailable: {error}")
++
++    sampler = CosmosPolicySampler()
++    noisy_state = torch.linspace(-2.0, 2.0, 32).reshape(1, 2, 2, 2, 4)
++
++    def x0_fn(x: torch.Tensor, sigma: torch.Tensor) -> torch.Tensor:
++        sigma_scale = sigma.reshape(-1, 1, 1, 1, 1)
++        return x / (1.0 + sigma_scale)
++
++    baseline = sampler(x0_fn, noisy_state.clone(), num_steps=5, solver_option="2ab")
++    recorder = DenoisingTraceRecorder({"first": 0, "second": 1})
++    traced = sampler(
++        x0_fn,
++        noisy_state.clone(),
++        num_steps=5,
++        solver_option="2ab",
++        denoiser_callback_fns=[recorder],
++    )
++    trace = recorder.as_dict()
++
++    assert torch.equal(baseline, traced)
++    assert trace["sigmas"].shape == (4,)
++    assert trace["block_velocities"]["first"].shape[0] == 4
++    assert np.all(trace["sigmas"] > 0)
++
++
++def test_identical_stochastic_traces_have_zero_path_dispersion() -> None:
++    trace = {
++        "sigmas": np.array([3.0, 1.0, 0.25]),
++        "block_velocities": {
++            "action": np.arange(24, dtype=np.float32).reshape(3, 1, 2, 2, 2),
++        },
++    }
++
++    metrics = summarize_flow_path_dispersion([trace, copy.deepcopy(trace)])
++
++    assert metrics["flow_path_dispersion_action_mse"] == 0.0
++    assert metrics["flow_path_dispersion_action_vfd_weighted"] == 0.0
++
++
++def test_identical_model_copies_have_zero_exact_vfd() -> None:
++    rng = np.random.default_rng(7)
++    trajectories = rng.normal(size=(2, 3, 4)).astype(np.float32)
++    cross_grid = np.empty((2, 2, 3, 4), dtype=np.float32)
++    for trajectory_index in range(2):
++        cross_grid[trajectory_index, 0] = trajectories[trajectory_index]
++        cross_grid[trajectory_index, 1] = trajectories[trajectory_index]
++
++    result = compute_blockwise_vfd({"action": cross_grid}, np.array([4.0, 1.0, 0.2]))
++
++    assert result["action"] == 0.0
++
++
++def test_exact_vfd_is_invariant_to_ensemble_permutation() -> None:
++    rng = np.random.default_rng(11)
++    velocities = rng.normal(size=(3, 3, 4, 2, 3)).astype(np.float32)
++    sigmas = np.array(
++        [
++            [8.0, 2.0, 0.5, 0.1],
++            [7.0, 1.8, 0.4, 0.08],
++            [9.0, 2.2, 0.6, 0.12],
++        ]
++    )
++    permutation = np.array([2, 0, 1])
++
++    original = compute_blockwise_vfd({"value": velocities}, sigmas)["value"]
++    permuted = compute_blockwise_vfd(
++        {"value": velocities[permutation][:, permutation]},
++        sigmas[permutation],
++    )["value"]
++
++    np.testing.assert_allclose(original, permuted, rtol=1e-7, atol=1e-7)
++
++
++def test_blockwise_vfd_is_dimension_normalized() -> None:
++    compact = np.zeros((2, 2, 1, 1), dtype=np.float32)
++    compact[0, 1, 0, 0] = 2.0
++    compact[1, 0, 0, 0] = 2.0
++    repeated = np.repeat(compact, repeats=128, axis=-1)
++
++    result = compute_blockwise_vfd(
++        {"compact": compact, "repeated": repeated},
++        np.array([1.0]),
++    )
++
++    np.testing.assert_allclose(result["compact"], result["repeated"])
++
++
++def test_terminal_sigma_is_excluded_from_vfd() -> None:
++    velocities = np.zeros((2, 2, 2, 1), dtype=np.float32)
++    velocities[0, 1, 1, 0] = 1000.0
++    velocities[1, 0, 1, 0] = -1000.0
++
++    result = compute_blockwise_vfd(
++        {"action": velocities},
++        np.array([1.0, 0.0]),
++        sigma_floor=1e-8,
++    )
++
++    assert result["action"] == 0.0

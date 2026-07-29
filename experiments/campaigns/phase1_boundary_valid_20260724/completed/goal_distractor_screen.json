@@ -1,0 +1,8 @@
+{
+  "job": "goal_distractor_screen",
+  "gpu": "5",
+  "status": "completed",
+  "started_at": "2026-07-24T00:16:43",
+  "finished_at": "2026-07-24T01:16:29",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_valid_20260724/logs/goal_distractor_screen.log"
+}

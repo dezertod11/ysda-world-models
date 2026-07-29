@@ -1,0 +1,8 @@
+*.ipynb linguist-language=Jupyter Notebook
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.mp4 binary
+*.parquet binary
+*.patch whitespace=-blank-at-eol,-blank-at-eof

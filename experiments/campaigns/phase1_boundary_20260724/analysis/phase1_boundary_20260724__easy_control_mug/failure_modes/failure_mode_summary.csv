@@ -1,0 +1,3 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_spatial_with_mug,success,8,1.0,1.0,89.5
+libero_spatial_with_mug,target_drop_candidate,4,0.0,0.0,220.0

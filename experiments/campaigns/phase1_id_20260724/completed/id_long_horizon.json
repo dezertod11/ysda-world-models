@@ -1,0 +1,8 @@
+{
+  "job": "id_long_horizon",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-07-24T00:37:16",
+  "finished_at": "2026-07-24T01:15:35",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_long_horizon.log"
+}

@@ -1,0 +1,8 @@
+{
+  "job": "id_spatial",
+  "gpu": "6",
+  "status": "completed",
+  "started_at": "2026-07-24T00:12:56",
+  "finished_at": "2026-07-24T00:40:26",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_id_20260724/logs/id_spatial.log"
+}

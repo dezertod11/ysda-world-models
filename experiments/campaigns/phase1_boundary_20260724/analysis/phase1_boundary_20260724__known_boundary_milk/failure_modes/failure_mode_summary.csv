@@ -1,0 +1,4 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_spatial_with_milk,success,12,1.0,1.0,145.0
+libero_spatial_with_milk,target_drop_candidate,3,0.0,0.0,220.0
+libero_spatial_with_milk,timeout_no_goal,9,0.0,0.0,220.0

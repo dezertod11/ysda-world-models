@@ -1,0 +1,5 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_goal_with_milk,success,12,1.0,1.0,76.0
+libero_goal_with_mug,success,11,1.0,1.0,174.0
+libero_goal_with_mug,target_drop_candidate,1,0.0,0.0,300.0
+libero_goal_with_yellow_book,success,12,1.0,1.0,129.5

@@ -1,0 +1,8 @@
+{
+  "job": "known_boundary_milk",
+  "gpu": "2",
+  "status": "completed",
+  "started_at": "2026-07-24T00:12:16",
+  "finished_at": "2026-07-24T01:07:20",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_boundary_20260724/logs/known_boundary_milk.log"
+}

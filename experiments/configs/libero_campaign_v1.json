@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "smoke": {
+      "description": "Two short rollouts on the known mixed-outcome task; validates model, videos, uncertainty, prediction errors, and failure diagnostics.",
+      "jobs": [
+        {
+          "name": "milk_task5_init0_smoke",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_with_milk",
+          "task_ids": "5",
+          "init_state_ids": "0",
+          "max_rollouts": 2,
+          "base_seed": 120000,
+          "uncertainty_seeds": "0,1",
+          "max_timesteps": 220,
+          "save_videos": true,
+          "collect_safety_signals": true
+        }
+      ]
+    },
+    "id_controls": {
+      "description": "In-distribution controls across short, goal-conditioned, and long-horizon LIBERO tasks.",
+      "jobs": [
+        {
+          "name": "id_spatial",
+          "kind": "pro_paired",
+          "suites": "libero_spatial",
+          "task_ids": "0,5,8",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 121000,
+          "max_timesteps": 220
+        },
+        {
+          "name": "id_object",
+          "kind": "pro_paired",
+          "suites": "libero_object",
+          "task_ids": "1,7,9",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 122000,
+          "max_timesteps": 280
+        },
+        {
+          "name": "id_goal",
+          "kind": "pro_paired",
+          "suites": "libero_goal",
+          "task_ids": "3,5,9",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 123000,
+          "max_timesteps": 300
+        },
+        {
+          "name": "id_long_horizon",
+          "kind": "pro_paired",
+          "suites": "libero_10",
+          "task_ids": "3,4,9",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 124000,
+          "max_timesteps": 520
+        }
+      ]
+    },
+    "boundary_search": {
+      "description": "Searches for natural 20-80% success regimes that are informative for action-candidate ranking.",
+      "jobs": [
+        {
+          "name": "known_boundary_milk",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_with_milk",
+          "task_ids": "5",
+          "init_state_ids": "0",
+          "max_rollouts": 24,
+          "base_seed": 130000,
+          "max_timesteps": 220,
+          "save_videos": true
+        },
+        {
+          "name": "easy_control_mug",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_with_mug",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 12,
+          "base_seed": 131000,
+          "max_timesteps": 220
+        },
+        {
+          "name": "spatial_distractor_screen",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_with_yellow_book",
+          "task_ids": "0,5,8",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 132000,
+          "max_timesteps": 220
+        },
+        {
+          "name": "goal_distractor_screen",
+          "kind": "pro_paired",
+          "suites": "libero_goal_with_milk,libero_goal_with_mug,libero_goal_with_yellow_book",
+          "task_ids": "3,5,9",
+          "init_state_ids": "0",
+          "max_rollouts": 4,
+          "base_seed": 133000,
+          "max_timesteps": 300
+        },
+        {
+          "name": "long_distractor_screen",
+          "kind": "pro_paired",
+          "suites": "libero_10_with_milk,libero_10_with_mug",
+          "task_ids": "3,4,9",
+          "init_state_ids": "0",
+          "max_rollouts": 4,
+          "base_seed": 134000,
+          "max_timesteps": 520
+        }
+      ]
+    },
+    "position_sweep": {
+      "description": "Monotone x/y object-position shifts for locating a controllable success/failure boundary.",
+      "jobs": [
+        {
+          "name": "object_position",
+          "kind": "pro_position_sweep",
+          "position_levels": [
+            "x0.1",
+            "x0.2",
+            "x0.3",
+            "x0.4",
+            "x0.5",
+            "y0.1",
+            "y0.2",
+            "y0.3",
+            "y0.4",
+            "y0.5"
+          ],
+          "suites": "libero_object_temp",
+          "task_ids": "0,5,9",
+          "init_state_ids": "0",
+          "max_rollouts": 8,
+          "base_seed": 140000,
+          "max_timesteps": 280
+        }
+      ]
+    },
+    "pro_ood_detection": {
+      "description": "Moderate and severe LIBERO-PRO shifts for OOD/failure detection, calibration, and abstention studies.",
+      "jobs": [
+        {
+          "name": "moderate_visual_language_ood",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_object,libero_spatial_lan",
+          "task_ids": "0,5,8",
+          "init_state_ids": "0",
+          "max_rollouts": 8,
+          "base_seed": 150000,
+          "max_timesteps": 220
+        },
+        {
+          "name": "severe_spatial_ood",
+          "kind": "pro_paired",
+          "suites": "libero_spatial_swap,libero_spatial_task",
+          "task_ids": "0,1,2",
+          "init_state_ids": "0",
+          "max_rollouts": 6,
+          "base_seed": 151000,
+          "max_timesteps": 220
+        },
+        {
+          "name": "severe_cross_suite_ood",
+          "kind": "pro_paired",
+          "suites": "libero_goal_swap,libero_goal_task,libero_object_swap,libero_object_task,libero_10_swap,libero_10_task",
+          "task_ids": "0,1,2",
+          "init_state_ids": "0",
+          "max_rollouts": 4,
+          "base_seed": 152000,
+          "max_timesteps": 520
+        }
+      ]
+    },
+    "planning_holdout": {
+      "description": "Fair same-seed comparison of max(value) against the two strongest uncertainty-aware strategies on a held-out seed block.",
+      "jobs": [
+        {
+          "name": "milk_task5_planning_holdout",
+          "kind": "pro_planning_grid",
+          "suites": "libero_spatial_with_milk",
+          "task_ids": "5",
+          "init_state_ids": "0",
+          "max_rollouts": 40,
+          "base_seed": 170000,
+          "uncertainty_seeds": "0,1,2,3",
+          "max_timesteps": 220,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0 uncertainty_penalty_value:2.0",
+          "save_videos": true
+        }
+      ]
+    },
+    "safety_physical": {
+      "description": "Zero-shot Cosmos Policy transfer to official LIBERO-Safety physical suites at levels L0/L1/L2.",
+      "jobs": [
+        {
+          "name": "safety_affordance",
+          "kind": "safety_paired",
+          "suites": "affordance",
+          "task_ids": "0,5,10",
+          "init_state_ids": "0",
+          "max_rollouts": 12,
+          "base_seed": 180000,
+          "max_timesteps": 520,
+          "save_videos": true
+        },
+        {
+          "name": "safety_obstacle_tabletop",
+          "kind": "safety_paired",
+          "suites": "obstacle_avoidance",
+          "task_ids": "0,5,10",
+          "init_state_ids": "0",
+          "max_rollouts": 12,
+          "base_seed": 181000,
+          "max_timesteps": 520,
+          "save_videos": true
+        },
+        {
+          "name": "safety_obstacle_human",
+          "kind": "safety_paired",
+          "suites": "obstacle_avoidance_human",
+          "task_ids": "0,5,10",
+          "init_state_ids": "0",
+          "max_rollouts": 12,
+          "base_seed": 182000,
+          "max_timesteps": 520,
+          "save_videos": true
+        },
+        {
+          "name": "safety_human_interaction",
+          "kind": "safety_paired",
+          "suites": "human_safety",
+          "task_ids": "0,5,10",
+          "init_state_ids": "0",
+          "max_rollouts": 12,
+          "base_seed": 183000,
+          "max_timesteps": 520,
+          "save_videos": true
+        }
+      ]
+    },
+    "safety_semantic_probe": {
+      "description": "Diagnostic only: Cosmos has no refusal action. Use these tasks to calibrate an uncertainty-triggered abstention policy, not to report ordinary task success.",
+      "jobs": [
+        {
+          "name": "reasoning_safety_diagnostic",
+          "kind": "safety_paired",
+          "suites": "reasoning_safety",
+          "task_ids": "0,5,10",
+          "init_state_ids": "0",
+          "max_rollouts": 4,
+          "base_seed": 184000,
+          "max_timesteps": 96,
+          "save_videos": true,
+          "terminate_on_safety_violation": false
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "uncertainty_seeds": "0,1,2,3",
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": true
+  }
+}

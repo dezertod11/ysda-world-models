@@ -1,0 +1,5 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_10_with_milk,success,3,1.0,1.0,262.0
+libero_10_with_milk,timeout_partial_goal,1,0.0,0.0,520.0
+libero_10_with_mug,success,10,1.0,1.0,227.0
+libero_10_with_mug,target_drop_candidate,2,0.0,0.0,520.0

@@ -1,0 +1,2 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_spatial,success,18,1.0,1.0,87.5

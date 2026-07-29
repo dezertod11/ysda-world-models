@@ -1,0 +1,50 @@
+{
+  "trace_file": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase1_smoke_20260724/runs/phase1_smoke_20260724__milk_task5_init0_smoke__query_traces.csv",
+  "num_query_rows": 24,
+  "num_episodes": 2,
+  "num_success": 1,
+  "num_failed": 1,
+  "num_safe_task_success": 1,
+  "failure_type_counts": {
+    "target_drop_candidate": 1,
+    "success": 1
+  },
+  "diagnostics": {
+    "episode_target_lift_max": {
+      "mean": 0.17585746915129136,
+      "median": 0.17585746915129136,
+      "max": 0.1800993230120657
+    },
+    "episode_goal_progress_max": {
+      "mean": 0.5,
+      "median": 0.5,
+      "max": 1.0
+    },
+    "episode_eef_dimensionless_jerk_proxy": {
+      "mean": 21199364.374861926,
+      "median": 21199364.374861926,
+      "max": 35866374.936432764
+    },
+    "target_drop_candidate": {
+      "mean": 0.5,
+      "median": 0.5,
+      "max": 1.0
+    },
+    "wrong_object_interaction_candidate": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "kinematic_deadlock_candidate": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "official_safety_violation": {
+      "mean": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    }
+  },
+  "online_feature_warning": "Columns prefixed observed_ and prediction_error_ are known only after executing the selected chunk. Do not use them as same-query planning inputs."
+}

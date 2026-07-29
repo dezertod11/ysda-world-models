@@ -1,0 +1,10 @@
+split,campaign,run_name,episodes,success,median_final_t,fail,success_rate
+ID,phase1_id_20260724,phase1_id_20260724__id_goal,18,18,175.0,0,1.0
+ID,phase1_id_20260724,phase1_id_20260724__id_long_horizon,18,18,239.0,0,1.0
+ID,phase1_id_20260724,phase1_id_20260724__id_object,18,18,121.0,0,1.0
+ID,phase1_id_20260724,phase1_id_20260724__id_spatial,18,18,87.5,0,1.0
+OOD,phase1_boundary_20260724,phase1_boundary_20260724__easy_control_mug,12,8,144.5,4,0.6666666666666666
+OOD,phase1_boundary_20260724,phase1_boundary_20260724__known_boundary_milk,24,12,217.5,12,0.5
+OOD,phase1_boundary_valid_20260724,phase1_boundary_valid_20260724__goal_distractor_screen,36,35,129.5,1,0.9722222222222222
+OOD,phase1_boundary_valid_20260724,phase1_boundary_valid_20260724__long_distractor_screen,16,13,263.5,3,0.8125
+OOD,phase1_boundary_valid_20260724,phase1_boundary_valid_20260724__spatial_distractor_screen,18,14,100.0,4,0.7777777777777778

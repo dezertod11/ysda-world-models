@@ -1,0 +1,4 @@
+suite,failure_type,episodes,success_rate,safe_task_success_rate,median_final_t
+libero_spatial_with_yellow_book,success,14,1.0,1.0,99.0
+libero_spatial_with_yellow_book,target_drop_candidate,1,0.0,0.0,220.0
+libero_spatial_with_yellow_book,timeout_no_goal,3,0.0,0.0,220.0
