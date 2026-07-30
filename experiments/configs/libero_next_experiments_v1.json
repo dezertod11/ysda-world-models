@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "denoise10_smoke": {
+      "description": "One-rollout preflight for the frozen action-denoise=10 replication on three LIBERO-PRO boundary cases.",
+      "jobs": [
+        {
+          "name": "milk_denoise10_smoke",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 0,
+          "case_id": "milk_task5_init0_denoise10_smoke",
+          "experiment_split": "screen",
+          "suites": "libero_spatial_with_milk",
+          "task_ids": "5",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 530000,
+          "max_timesteps": 220,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        },
+        {
+          "name": "yellow_denoise10_smoke",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 1,
+          "case_id": "yellow_task8_init0_denoise10_smoke",
+          "experiment_split": "screen",
+          "suites": "libero_spatial_with_yellow_book",
+          "task_ids": "8",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 630000,
+          "max_timesteps": 220,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        },
+        {
+          "name": "long_mug_denoise10_smoke",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 2,
+          "case_id": "long_mug_task4_init0_denoise10_smoke",
+          "experiment_split": "screen",
+          "suites": "libero_10_with_mug",
+          "task_ids": "4",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 640000,
+          "max_timesteps": 520,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        }
+      ]
+    },
+    "denoise10_replication": {
+      "description": "Frozen paired replication of max(value) versus action uncertainty penalty at 10 action denoising steps on new seed blocks.",
+      "jobs": [
+        {
+          "name": "milk_denoise10_replication",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 0,
+          "case_id": "milk_task5_init0_denoise10_replication",
+          "experiment_split": "holdout",
+          "suites": "libero_spatial_with_milk",
+          "task_ids": "5",
+          "init_state_ids": "0",
+          "max_rollouts": 40,
+          "base_seed": 530000,
+          "max_timesteps": 220,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        },
+        {
+          "name": "yellow_denoise10_replication",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 1,
+          "case_id": "yellow_task8_init0_denoise10_replication",
+          "experiment_split": "generalization",
+          "suites": "libero_spatial_with_yellow_book",
+          "task_ids": "8",
+          "init_state_ids": "0",
+          "max_rollouts": 30,
+          "base_seed": 630000,
+          "max_timesteps": 220,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        },
+        {
+          "name": "long_mug_denoise10_replication",
+          "kind": "pro_planning_grid",
+          "gpu_slot": 2,
+          "case_id": "long_mug_task4_init0_denoise10_replication",
+          "experiment_split": "generalization",
+          "suites": "libero_10_with_mug",
+          "task_ids": "4",
+          "init_state_ids": "0",
+          "max_rollouts": 30,
+          "base_seed": 640000,
+          "max_timesteps": 520,
+          "num_denoising_steps_action": 10,
+          "strategy_lambdas": "max_value:0 uncertainty_penalty_action:1.0"
+        }
+      ]
+    },
+    "safety_physical_smoke": {
+      "description": "Single-rollout model/environment/official-cost smoke test for every physical LIBERO-Safety suite.",
+      "jobs": [
+        {
+          "name": "safety_affordance_smoke",
+          "kind": "safety_paired",
+          "gpu_slot": 0,
+          "suites": "affordance",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 680000,
+          "max_timesteps": 96,
+          "save_videos": true,
+          "terminate_on_safety_violation": false
+        },
+        {
+          "name": "safety_obstacle_tabletop_smoke",
+          "kind": "safety_paired",
+          "gpu_slot": 1,
+          "suites": "obstacle_avoidance",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 681000,
+          "max_timesteps": 96,
+          "save_videos": true,
+          "terminate_on_safety_violation": false
+        },
+        {
+          "name": "safety_obstacle_human_smoke",
+          "kind": "safety_paired",
+          "gpu_slot": 2,
+          "suites": "obstacle_avoidance_human",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 682000,
+          "max_timesteps": 96,
+          "save_videos": true,
+          "terminate_on_safety_violation": false
+        },
+        {
+          "name": "safety_human_interaction_smoke",
+          "kind": "safety_paired",
+          "gpu_slot": 0,
+          "suites": "human_safety",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 683000,
+          "max_timesteps": 96,
+          "save_videos": true,
+          "terminate_on_safety_violation": false
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "uncertainty_seeds": "0,1,2,3",
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "num_open_loop_steps": 16,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "planning_action_weight": 0.5
+  }
+}

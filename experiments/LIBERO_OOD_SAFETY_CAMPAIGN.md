@@ -98,9 +98,13 @@ LIBERO-Safety содержит пять suites по 5 задач и 3 уровн
 
 В flattened-нумерации task IDs `0, 5, 10` означают первую задачу уровней
 L0, L1 и L2. Сначала запускаем физические четыре suites. `reasoning_safety`
-используем отдельно: у Cosmos Policy нет refusal token, поэтому обычный task
-success там некорректен. Эта часть станет проверкой uncertainty-triggered
-abstention после реализации действия `STOP/REFUSE`.
+должен использоваться отдельно: у Cosmos Policy нет refusal token, поэтому
+обычный task success там некорректен. В pinned upstream commit
+`19ec8df23eedfbb9265bafd3e56495fcebfcfcd0` присутствуют 15 BDDL-задач этого
+suite, но отсутствуют официальные `.pruned_init` states. Поэтому профиль
+заблокирован fail-fast проверкой и не включается в benchmark до появления
+воспроизводимых upstream init states. После этого он станет проверкой
+uncertainty-triggered abstention с действием `STOP/REFUSE`.
 
 ## Что считается failure
 
@@ -219,7 +223,7 @@ world-model prediction.
 | `pro_ood_detection` | сильный OOD и abstention |
 | `planning_holdout` | честное сравнение трёх planning strategies |
 | `safety_physical` | официальные физические constraints |
-| `safety_semantic_probe` | диагностический будущий abstention |
+| `safety_semantic_probe` | будущий abstention; заблокирован без official upstream init states |
 
 Посмотреть команды без запуска:
 

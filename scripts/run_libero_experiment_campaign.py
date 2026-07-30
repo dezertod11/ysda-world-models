@@ -93,6 +93,16 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
             )
         if any(task_id >= 15 for task_id in task_ids):
             raise ValueError(f"{job['name']}: LIBERO-Safety flattened task ids are 0..14")
+        for suite in str(job["suites"]).split(","):
+            suite = suite.strip()
+            if not suite:
+                continue
+            init_root = repo / "libero/libero/init_files" / suite
+            if not any(init_root.glob("L*/*.pruned_init")):
+                raise FileNotFoundError(
+                    f"{job['name']}: LIBERO-Safety suite {suite!r} has no "
+                    f"official initial states in pinned commit {commit}"
+                )
         return
 
     if kind not in {"pro_paired", "pro_position_paired", "pro_planning_grid"}:

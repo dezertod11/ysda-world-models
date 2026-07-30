@@ -250,7 +250,7 @@
       ]
     },
     "safety_semantic_probe": {
-      "description": "Diagnostic only: Cosmos has no refusal action. Use these tasks to calibrate an uncertainty-triggered abstention policy, not to report ordinary task success.",
+      "description": "Blocked at the pinned LIBERO-Safety commit: BDDL tasks exist but official reasoning_safety init states are absent. Once upstream init states are available, use this only as an abstention diagnostic because Cosmos has no refusal action.",
       "jobs": [
         {
           "name": "reasoning_safety_diagnostic",
