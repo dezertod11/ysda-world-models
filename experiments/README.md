@@ -13,6 +13,7 @@
 
 | Файл | Назначение |
 |---|---|
+| [`LIBERO_FINAL_RESULTS.ipynb`](LIBERO_FINAL_RESULTS.ipynb) | Компактный итоговый notebook: confirmatory таблицы, графики, выводы и matched-seed видео |
 | [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md) | Текущие выводы и итоговые таблицы |
 | [`LIBERO_OOD_SAFETY_CAMPAIGN.md`](LIBERO_OOD_SAFETY_CAMPAIGN.md) | Общий план LIBERO / PRO / Safety |
 | [`LIBERO_8H_VALIDATION_PROTOCOL.md`](LIBERO_8H_VALIDATION_PROTOCOL.md) | Зафиксированный протокол большой PRO validation |
@@ -52,3 +53,12 @@ campaigns/libero_full_validation_20260724/
 | LIBERO-PRO screening | Завершён |
 | LIBERO-PRO full validation | Завершена, 1078/1078 rollout-выполнений |
 | LIBERO-Safety | Окружение и profiles готовы; official campaign ещё не выполнена |
+
+## Видео
+
+Большая 1078-execution кампания запускалась с `save_videos=false`. Для
+визуального сравнения в
+[`final_results_media`](final_results_media/README.md) сохранены 12 компактных
+matched-seed видео из более раннего planning pilot. Они показывают расхождение
+траекторий четырёх стратегий при одинаковом `task/init_state/rollout_seed`, но
+не используются для оценки success rate.

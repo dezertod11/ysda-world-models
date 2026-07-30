@@ -1,0 +1,13 @@
+rollout_seed,strategy_label,planning_strategy,risk_lambda,action_weight,success,final_t,filename
+100194,max(value),max_value,0.0,0.5,false,220,seed_100194__max_value__fail.mp4
+100194,action penalty,uncertainty_penalty_action,1.0,0.5,true,170,seed_100194__action_l1__success.mp4
+100194,value penalty,uncertainty_penalty_value,2.0,0.5,false,220,seed_100194__value_l2__fail.mp4
+100194,combined penalty,uncertainty_penalty_combined,2.0,0.5,false,220,seed_100194__combined_l2__fail.mp4
+100388,max(value),max_value,0.0,0.5,false,220,seed_100388__max_value__fail.mp4
+100388,action penalty,uncertainty_penalty_action,1.0,0.5,true,110,seed_100388__action_l1__success.mp4
+100388,value penalty,uncertainty_penalty_value,2.0,0.5,true,109,seed_100388__value_l2__success.mp4
+100388,combined penalty,uncertainty_penalty_combined,2.0,0.5,false,220,seed_100388__combined_l2__fail.mp4
+100679,max(value),max_value,0.0,0.5,false,220,seed_100679__max_value__fail.mp4
+100679,action penalty,uncertainty_penalty_action,1.0,0.5,false,220,seed_100679__action_l1__fail.mp4
+100679,value penalty,uncertainty_penalty_value,2.0,0.5,true,109,seed_100679__value_l2__success.mp4
+100679,combined penalty,uncertainty_penalty_combined,2.0,0.5,true,144,seed_100679__combined_l2__success.mp4

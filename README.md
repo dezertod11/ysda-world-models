@@ -77,6 +77,8 @@ bash scripts/setup_mlspace_libero_safety.sh
 
 ## Main entry points
 
+- Final results notebook:
+  [`experiments/LIBERO_FINAL_RESULTS.ipynb`](experiments/LIBERO_FINAL_RESULTS.ipynb)
 - Experiment index: [`experiments/README.md`](experiments/README.md)
 - Full validation protocol:
   [`experiments/LIBERO_8H_VALIDATION_PROTOCOL.md`](experiments/LIBERO_8H_VALIDATION_PROTOCOL.md)
