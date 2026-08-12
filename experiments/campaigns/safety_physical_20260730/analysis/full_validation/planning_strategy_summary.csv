@@ -1,0 +1,2 @@
+case_id,experiment_split,planning_strategy,planning_risk_lambda,planning_action_weight,prediction_mode,num_samples,num_open_loop_steps,num_denoising_steps_action,num_denoising_steps_future_state,num_denoising_steps_value,num_future_state_samples,num_value_samples,episodes,successes,success_rate,wilson_low,wilson_high,mean_final_t
+,unspecified,first,1.0,0.5,parallel,4.0,16,5,1,1,1,1,144,0,0.0,0.0,0.025984567266588023,509.3125

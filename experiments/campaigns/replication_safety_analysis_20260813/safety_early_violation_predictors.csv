@@ -1,0 +1,9 @@
+metric,label,positive_episodes,all_suites_auc_high_predicts_violation,obstacle_only_auc_high_predicts_violation,obstacle_only_oriented_auc,obstacle_only_direction
+action_first_step_l2_std,first-action sample std,4,0.2357142857142857,0.09375,0.90625,low
+value_range,value range,4,0.7053571428571429,0.59375,0.59375,high
+value_std,value std,4,0.6946428571428571,0.5859375,0.5859375,high
+value_mean,mean value,4,0.45535714285714285,0.5859375,0.5859375,high
+latent_action_first_step_copy_l2_std_mean_over_samples,latent first-action copy std,4,0.41785714285714287,0.5859375,0.5859375,high
+future_proprio_std_mean,future-proprio sample std,4,0.44821428571428573,0.4375,0.5625,low
+latent_action_copy_std_mean_mean_over_samples,latent action-copy std,4,0.4303571428571429,0.4609375,0.5390625,low
+latent_value_element_std_mean_mean_over_samples,latent value-element std,4,0.575,0.484375,0.515625,low

@@ -1,0 +1,5 @@
+benchmark_root: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.external/LIBERO-Safety-19ec8df23eedfbb9265bafd3e56495fcebfcfcd0/libero/libero
+bddl_files: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.external/LIBERO-Safety-19ec8df23eedfbb9265bafd3e56495fcebfcfcd0/libero/libero/bddl_files
+init_states: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.external/LIBERO-Safety-19ec8df23eedfbb9265bafd3e56495fcebfcfcd0/libero/libero/init_files
+datasets: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_safety/datasets
+assets: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.external/LIBERO-Safety-19ec8df23eedfbb9265bafd3e56495fcebfcfcd0/libero/libero/assets

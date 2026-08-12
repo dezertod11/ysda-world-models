@@ -1,0 +1,5 @@
+suite,episodes,successes,safe_successes,violations,mean_final_t,mean_goal_progress,mean_target_lift,mean_eef_path,drop_candidates,wrong_object_candidates,deadlock_candidates,success_rate,safe_success_rate,violation_rate,violation_ci_low,violation_ci_high
+affordance,36,0,0,0,520.0,0.0,0.007045087303027053,21.721697884642904,1,12,2,0.0,0.0,0.0,0.0,0.09642183044857634
+human_safety,36,0,0,0,520.0,0.0,0.13237403504022038,22.6780997007232,11,24,0,0.0,0.0,0.0,0.0,0.09642183044857634
+obstacle_avoidance,36,0,0,4,477.25,0.0,0.023778872275066247,22.95901109371916,6,23,0,0.0,0.0,0.1111111111111111,0.04406568908741834,0.2531512901503632
+obstacle_avoidance_human,36,0,0,0,520.0,0.0,0.015449766185375299,27.13674748365372,2,17,0,0.0,0.0,0.0,0.0,0.09642183044857634

@@ -1,0 +1,8 @@
+{
+  "job": "safety_obstacle_human",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-07-30T21:35:54",
+  "finished_at": "2026-07-30T23:10:01",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_obstacle_human.log"
+}

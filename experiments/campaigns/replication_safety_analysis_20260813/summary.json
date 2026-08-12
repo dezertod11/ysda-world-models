@@ -1,0 +1,31 @@
+{
+  "planning": {
+    "paired_rollouts": 100,
+    "baseline_successes": 52,
+    "risk_successes": 56,
+    "baseline_success_rate": 0.52,
+    "risk_success_rate": 0.56,
+    "delta_success_rate": 0.04,
+    "delta_ci_low": -0.05,
+    "delta_ci_high": 0.13,
+    "wins": 14,
+    "losses": 10,
+    "ties": 76,
+    "mcnemar_exact_p": 0.5412561893463135
+  },
+  "safety": {
+    "episodes": 144,
+    "successes": 0,
+    "safe_successes": 0,
+    "success_rate_ci_low": 0.0,
+    "success_rate_ci_high": 0.025984567266588023,
+    "official_violations": 4,
+    "official_violation_rate": 0.027777777777777776,
+    "official_violation_rate_ci_low": 0.010853942365456264,
+    "official_violation_rate_ci_high": 0.0692425933863213,
+    "unique_videos": 144,
+    "videos_with_expected_frame_count": 144,
+    "min_video_frames": 33,
+    "max_video_frames": 520
+  }
+}

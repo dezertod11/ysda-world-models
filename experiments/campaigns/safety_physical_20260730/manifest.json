@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "profile": "safety_physical",
+  "description": "Zero-shot Cosmos Policy transfer to official LIBERO-Safety physical suites at levels L0/L1/L2.",
+  "run_prefix": "safety_physical_20260730",
+  "created_at": "2026-07-30T21:35:54",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_v1.json",
+  "jobs": [
+    {
+      "name": "safety_affordance",
+      "kind": "safety_paired",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_safety_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs/safety_physical_20260730__safety_affordance__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/analysis/safety_physical_20260730__safety_affordance/failure_modes"
+        ]
+      ],
+      "environment": {
+        "COSMOS_VENV": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety",
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/configs/safety_affordance",
+        "LIBERO_SAFETY_RUN_NAME": "safety_physical_20260730__safety_affordance",
+        "LIBERO_SAFETY_SUITES": "affordance",
+        "LIBERO_SAFETY_TASK_IDS": "0,5,10",
+        "LIBERO_SAFETY_INIT_STATE_IDS": "0",
+        "LIBERO_SAFETY_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_SAFETY_MIN_SUCCESS": "999",
+        "LIBERO_SAFETY_MIN_FAILED": "999",
+        "LIBERO_SAFETY_BASE_SEED": "180000",
+        "LIBERO_SAFETY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_SAFETY_MAX_TIMESTEPS": "520",
+        "LIBERO_SAFETY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs",
+        "LIBERO_SAFETY_SAVE_VIDEOS": "1",
+        "LIBERO_SAFETY_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/videos/safety_physical_20260730__safety_affordance",
+        "LIBERO_SAFETY_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_SAFETY_TERMINATE_ON_VIOLATION": "1"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/completed/safety_affordance.json"
+    },
+    {
+      "name": "safety_obstacle_tabletop",
+      "kind": "safety_paired",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_safety_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs/safety_physical_20260730__safety_obstacle_tabletop__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/analysis/safety_physical_20260730__safety_obstacle_tabletop/failure_modes"
+        ]
+      ],
+      "environment": {
+        "COSMOS_VENV": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety",
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/configs/safety_obstacle_tabletop",
+        "LIBERO_SAFETY_RUN_NAME": "safety_physical_20260730__safety_obstacle_tabletop",
+        "LIBERO_SAFETY_SUITES": "obstacle_avoidance",
+        "LIBERO_SAFETY_TASK_IDS": "0,5,10",
+        "LIBERO_SAFETY_INIT_STATE_IDS": "0",
+        "LIBERO_SAFETY_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_SAFETY_MIN_SUCCESS": "999",
+        "LIBERO_SAFETY_MIN_FAILED": "999",
+        "LIBERO_SAFETY_BASE_SEED": "181000",
+        "LIBERO_SAFETY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_SAFETY_MAX_TIMESTEPS": "520",
+        "LIBERO_SAFETY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs",
+        "LIBERO_SAFETY_SAVE_VIDEOS": "1",
+        "LIBERO_SAFETY_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/videos/safety_physical_20260730__safety_obstacle_tabletop",
+        "LIBERO_SAFETY_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_SAFETY_TERMINATE_ON_VIOLATION": "1"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/completed/safety_obstacle_tabletop.json"
+    },
+    {
+      "name": "safety_obstacle_human",
+      "kind": "safety_paired",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_safety_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs/safety_physical_20260730__safety_obstacle_human__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/analysis/safety_physical_20260730__safety_obstacle_human/failure_modes"
+        ]
+      ],
+      "environment": {
+        "COSMOS_VENV": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety",
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/configs/safety_obstacle_human",
+        "LIBERO_SAFETY_RUN_NAME": "safety_physical_20260730__safety_obstacle_human",
+        "LIBERO_SAFETY_SUITES": "obstacle_avoidance_human",
+        "LIBERO_SAFETY_TASK_IDS": "0,5,10",
+        "LIBERO_SAFETY_INIT_STATE_IDS": "0",
+        "LIBERO_SAFETY_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_SAFETY_MIN_SUCCESS": "999",
+        "LIBERO_SAFETY_MIN_FAILED": "999",
+        "LIBERO_SAFETY_BASE_SEED": "182000",
+        "LIBERO_SAFETY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_SAFETY_MAX_TIMESTEPS": "520",
+        "LIBERO_SAFETY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs",
+        "LIBERO_SAFETY_SAVE_VIDEOS": "1",
+        "LIBERO_SAFETY_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/videos/safety_physical_20260730__safety_obstacle_human",
+        "LIBERO_SAFETY_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_SAFETY_TERMINATE_ON_VIOLATION": "1"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/completed/safety_obstacle_human.json"
+    },
+    {
+      "name": "safety_human_interaction",
+      "kind": "safety_paired",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_safety_paired_prediction_collect.sh"
+        ],
+        [
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety/bin/python",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_libero_failure_modes.py",
+          "--trace-file",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs/safety_physical_20260730__safety_human_interaction__query_traces.csv",
+          "--output-dir",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/analysis/safety_physical_20260730__safety_human_interaction/failure_modes"
+        ]
+      ],
+      "environment": {
+        "COSMOS_VENV": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos-safety",
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/configs/safety_human_interaction",
+        "LIBERO_SAFETY_RUN_NAME": "safety_physical_20260730__safety_human_interaction",
+        "LIBERO_SAFETY_SUITES": "human_safety",
+        "LIBERO_SAFETY_TASK_IDS": "0,5,10",
+        "LIBERO_SAFETY_INIT_STATE_IDS": "0",
+        "LIBERO_SAFETY_MAX_ROLLOUTS_PER_INIT": "12",
+        "LIBERO_SAFETY_MIN_SUCCESS": "999",
+        "LIBERO_SAFETY_MIN_FAILED": "999",
+        "LIBERO_SAFETY_BASE_SEED": "183000",
+        "LIBERO_SAFETY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_SAFETY_MAX_TIMESTEPS": "520",
+        "LIBERO_SAFETY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/runs",
+        "LIBERO_SAFETY_SAVE_VIDEOS": "1",
+        "LIBERO_SAFETY_VIDEO_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/videos/safety_physical_20260730__safety_human_interaction",
+        "LIBERO_SAFETY_RECORD_DENOISING_TRACE": "0",
+        "LIBERO_SAFETY_TERMINATE_ON_VIOLATION": "1"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/completed/safety_human_interaction.json"
+    }
+  ],
+  "status": "completed",
+  "finished_at": "2026-07-31T00:14:06",
+  "results": [
+    {
+      "job": "safety_affordance",
+      "gpu": "5",
+      "status": "completed",
+      "started_at": "2026-07-30T21:35:54",
+      "finished_at": "2026-07-30T22:47:27",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_affordance.log"
+    },
+    {
+      "job": "safety_human_interaction",
+      "gpu": "5",
+      "status": "completed",
+      "started_at": "2026-07-30T22:47:27",
+      "finished_at": "2026-07-31T00:14:06",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_human_interaction.log"
+    },
+    {
+      "job": "safety_obstacle_human",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-07-30T21:35:54",
+      "finished_at": "2026-07-30T23:10:01",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_obstacle_human.log"
+    },
+    {
+      "job": "safety_obstacle_tabletop",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-07-30T21:35:54",
+      "finished_at": "2026-07-30T23:11:09",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_obstacle_tabletop.log"
+    }
+  ]
+}

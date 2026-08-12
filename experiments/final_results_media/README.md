@@ -18,3 +18,11 @@ trajectory, not to estimate a strategy success rate.
 
 `manifest.csv` records the strategy, hyperparameters, outcome and terminal
 simulator step for every video.
+
+## LIBERO-Safety
+
+[`safety_violations_20260730`](safety_violations_20260730/README.md) contains
+the four official `checkcontact` violations from the 144-rollout physical
+Safety campaign. Unlike the matched-seed pilot above, these videos terminate
+at the exact official constraint event and support the reported violation
+count.

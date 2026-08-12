@@ -1,0 +1,8 @@
+{
+  "job": "safety_human_interaction",
+  "gpu": "5",
+  "status": "completed",
+  "started_at": "2026-07-30T22:47:27",
+  "finished_at": "2026-07-31T00:14:06",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/safety_physical_20260730/logs/safety_human_interaction.log"
+}

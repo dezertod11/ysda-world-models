@@ -1,0 +1,7 @@
+case_id,experiment_split,planning_strategy,planning_risk_lambda,planning_action_weight,prediction_mode,num_samples,num_open_loop_steps,num_denoising_steps_action,num_denoising_steps_future_state,num_denoising_steps_value,num_future_state_samples,num_value_samples,episodes,successes,success_rate,wilson_low,wilson_high,mean_final_t
+long_mug_task4_init0_denoise10_replication,generalization,max_value,0.0,0.5,parallel,4.0,16,10,1,1,1,1,30,25,0.8333333333333334,0.6643529481431982,0.9266356575964831,276.1333333333333
+long_mug_task4_init0_denoise10_replication,generalization,uncertainty_penalty_action,1.0,0.5,parallel,4.0,16,10,1,1,1,1,30,21,0.7,0.5212387898833981,0.8333543735604105,315.43333333333334
+milk_task5_init0_denoise10_replication,holdout,max_value,0.0,0.5,parallel,4.0,16,10,1,1,1,1,40,19,0.475,0.32935229550181694,0.6250289314607027,185.625
+milk_task5_init0_denoise10_replication,holdout,uncertainty_penalty_action,1.0,0.5,parallel,4.0,16,10,1,1,1,1,40,22,0.55,0.39828829888440775,0.6929492471905531,174.475
+yellow_task8_init0_denoise10_replication,generalization,max_value,0.0,0.5,parallel,4.0,16,10,1,1,1,1,30,8,0.26666666666666666,0.14182495553910618,0.4444830204431169,198.0
+yellow_task8_init0_denoise10_replication,generalization,uncertainty_penalty_action,1.0,0.5,parallel,4.0,16,10,1,1,1,1,30,13,0.43333333333333335,0.2737723743061511,0.6080299045459127,187.46666666666667

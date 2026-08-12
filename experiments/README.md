@@ -1,18 +1,21 @@
 # Эксперименты
 
-Начинать следует с
+Начинать следует с августовского отчёта
+[`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md),
+а затем при необходимости переходить к полной июльской истории
 [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md).
-Это единый отчёт, в котором разделены:
+Вместе они разделяют:
 
 - фактически завершённые standard LIBERO и LIBERO-PRO runs;
 - формулы uncertainty и planning;
 - calibration, holdout и generalization результаты;
-- подготовленный, но ещё не запущенный LIBERO-Safety protocol.
+- завершённую denoise-10 replication и официальный LIBERO-Safety rollout.
 
 ## Основные файлы
 
 | Файл | Назначение |
 |---|---|
+| [`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md) | Новые paired planning и LIBERO-Safety результаты, статистика и графики |
 | [`LIBERO_FINAL_RESULTS.ipynb`](LIBERO_FINAL_RESULTS.ipynb) | Компактный итоговый notebook: confirmatory таблицы, графики, выводы и matched-seed видео |
 | [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md) | Текущие выводы и итоговые таблицы |
 | [`LIBERO_OOD_SAFETY_CAMPAIGN.md`](LIBERO_OOD_SAFETY_CAMPAIGN.md) | Общий план LIBERO / PRO / Safety |
@@ -39,6 +42,15 @@ campaigns/libero_full_validation_20260724/
     prespecified_detector_exact_query.csv
     prediction_error_correlations_q0_5.csv
     case_outcome_summary.csv
+
+campaigns/replication_safety_analysis_20260813/
+  README.md                 # выводы новой replication и Safety
+  pro_case_results.csv
+  pro_pooled_result.csv
+  pro_early_fail_predictors.csv
+  safety_suite_level_results.csv
+  safety_violation_episodes.csv
+  plots/
 ```
 
 `uncertainty/` содержит более ранние exploratory и video runs. Они полезны для
@@ -52,7 +64,8 @@ campaigns/libero_full_validation_20260724/
 | Standard LIBERO ID | Завершён |
 | LIBERO-PRO screening | Завершён |
 | LIBERO-PRO full validation | Завершена, 1078/1078 rollout-выполнений |
-| LIBERO-Safety | Окружение и profiles готовы; official campaign ещё не выполнена |
+| LIBERO-PRO denoise-10 replication | Завершена, 200/200 strategy executions на 100 paired seeds |
+| LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео
 
@@ -62,3 +75,7 @@ campaigns/libero_full_validation_20260724/
 matched-seed видео из более раннего planning pilot. Они показывают расхождение
 траекторий четырёх стратегий при одинаковом `task/init_state/rollout_seed`, но
 не используются для оценки success rate.
+
+Все 144 Safety-видео проверены по frame count и остаются на сервере. Четыре
+ролика с официальным `checkcontact` сохранены локально в
+[`final_results_media/safety_violations_20260730`](final_results_media/safety_violations_20260730/README.md).

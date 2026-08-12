@@ -1,9 +1,11 @@
 # План экспериментов: LIBERO, LIBERO-PRO и LIBERO-Safety
 
-> **Статус на 24 июля 2026 года.** Standard LIBERO ID control, LIBERO-PRO
-> screening и большая LIBERO-PRO validation завершены. LIBERO-Safety
-> установлена и настроена, но official rollout campaign ещё не запускалась.
-> Фактические результаты, формулы и выводы находятся в
+> **Статус на 13 августа 2026 года.** Standard LIBERO ID control, LIBERO-PRO
+> screening, большая LIBERO-PRO validation, denoise-10 replication и
+> физическая LIBERO-Safety campaign завершены. Фактические новые результаты
+> находятся в
+> [`replication_safety_analysis_20260813`](campaigns/replication_safety_analysis_20260813/README.md),
+> полная предыстория — в
 > [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md).
 
 ## Короткое решение

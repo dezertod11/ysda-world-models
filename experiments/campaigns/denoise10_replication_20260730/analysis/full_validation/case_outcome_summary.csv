@@ -1,0 +1,4 @@
+case_id,experiment_split,rollout_executions,successes,failures,success_rate,failure_types,drop_candidates_all,wrong_object_candidates_all,official_safety_violations
+long_mug_task4_init0_denoise10_replication,generalization,60,46,14,0.7666666666666667,target_drop_candidate:14,60,0,0
+milk_task5_init0_denoise10_replication,holdout,80,41,39,0.5125,target_drop_candidate:25; timeout_no_goal:14,25,0,0
+yellow_task8_init0_denoise10_replication,generalization,60,21,39,0.35,timeout_no_goal:37; wrong_object_interaction_candidate:2,0,2,0

@@ -1,0 +1,2 @@
+prediction_mode,num_samples,num_open_loop_steps,num_denoising_steps_action,planning_strategy,planning_risk_lambda,planning_action_weight,cases,paired_rollouts,baseline_successes,strategy_successes,baseline_success_rate,strategy_success_rate,delta_success_rate,wins,losses,ties,mcnemar_exact_p
+parallel,4.0,16,10,uncertainty_penalty_action,1.0,0.5,3,100,52,56,0.52,0.56,0.04,14,10,76,0.5412561893463135

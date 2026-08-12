@@ -167,19 +167,29 @@ def direct_detector_table(traces: pd.DataFrame, alpha: float) -> pd.DataFrame:
 
 
 def pooled_planning_table(paired: pd.DataFrame) -> pd.DataFrame:
-    frame = paired.loc[
+    common = paired.loc[
         paired["experiment_split"].isin(["holdout", "generalization"])
-        & paired["case_id"].isin(
-            ["milk_task5_init0", "yellow_task8_init0", "long_mug_task4_init0"]
-        )
         & paired["prediction_mode"].eq("parallel")
         & paired["num_samples"].eq(4)
         & paired["num_open_loop_steps"].eq(16)
-        & paired["num_denoising_steps_action"].eq(5)
         & paired["planning_action_weight"].eq(0.5)
     ].copy()
+    preferred_case_ids = {
+        "milk_task5_init0",
+        "yellow_task8_init0",
+        "long_mug_task4_init0",
+    }
+    preferred = common.loc[
+        common["case_id"].isin(preferred_case_ids)
+        & common["num_denoising_steps_action"].eq(5)
+    ]
+    frame = preferred if not preferred.empty else common
     rows = []
     group_columns = [
+        "prediction_mode",
+        "num_samples",
+        "num_open_loop_steps",
+        "num_denoising_steps_action",
         "planning_strategy",
         "planning_risk_lambda",
         "planning_action_weight",
@@ -212,7 +222,24 @@ def pooled_planning_table(paired: pd.DataFrame) -> pd.DataFrame:
                 "mcnemar_exact_p": exact_mcnemar_p(wins, losses),
             }
         )
-    return pd.DataFrame(rows).sort_values("delta_success_rate", ascending=False)
+    result_columns = group_columns + [
+        "cases",
+        "paired_rollouts",
+        "baseline_successes",
+        "strategy_successes",
+        "baseline_success_rate",
+        "strategy_success_rate",
+        "delta_success_rate",
+        "wins",
+        "losses",
+        "ties",
+        "mcnemar_exact_p",
+    ]
+    if not rows:
+        return pd.DataFrame(columns=result_columns)
+    return pd.DataFrame(rows, columns=result_columns).sort_values(
+        "delta_success_rate", ascending=False
+    )
 
 
 def controlled_prediction_error_correlations(
@@ -249,7 +276,16 @@ def controlled_prediction_error_correlations(
                     ),
                 }
             )
-    return pd.DataFrame(rows).sort_values(
+    columns = [
+        "max_query",
+        "metric",
+        "prediction_error",
+        "rows",
+        "query_controlled_rank_correlation",
+    ]
+    if not rows:
+        return pd.DataFrame(columns=columns)
+    return pd.DataFrame(rows, columns=columns).sort_values(
         "query_controlled_rank_correlation",
         key=lambda values: values.abs(),
         ascending=False,

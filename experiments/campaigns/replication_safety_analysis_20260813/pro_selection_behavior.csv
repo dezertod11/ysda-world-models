@@ -1,0 +1,5 @@
+case_id,case,queries,reranked_queries,rerank_rate,selected_value_gap_mean,selected_risk_z_mean
+long_mug_task4_init0_denoise10_replication,Long mug,612,259,0.42320261437908496,-0.00045288456421272425,-0.8572696939695115
+milk_task5_init0_denoise10_replication,Milk,451,198,0.43902439024390244,-0.0006532774796242724,-0.8060238588778942
+yellow_task8_init0_denoise10_replication,Yellow book,360,153,0.425,-0.002392786492904027,-0.8753089763101242
+pooled,Pooled,1423,610,0.42867182009838367,-0.001007165589637515,-0.8455917389563711

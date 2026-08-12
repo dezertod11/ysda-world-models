@@ -1,10 +1,13 @@
 # LIBERO: постановка, формулы и результаты экспериментов
 
-Дата фиксации: 24 июля 2026 года.
+Дата первоначальной фиксации: 24 июля 2026 года. Обновлено 13 августа 2026
+года после denoise-10 replication и LIBERO-Safety campaign. Новые подробные
+таблицы и графики находятся в
+[`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md).
 
-Этот файл является основным отчётом по фактически выполненным экспериментам.
-Он отделяет завершённые запуски от подготовленных, но ещё не выполненных
-профилей.
+Этот файл сохраняет полную постановку и историю фактически выполненных
+экспериментов. Актуальные августовские результаты вынесены в отдельный
+компактный отчёт, чтобы не смешивать исходный validation и replication.
 
 ## 1. Где находится описание
 
@@ -15,6 +18,7 @@
 | [`LIBERO_8H_VALIDATION_PROTOCOL.md`](LIBERO_8H_VALIDATION_PROTOCOL.md) | Зафиксированный до запуска протокол большой LIBERO-PRO кампании, grid гиперпараметров и правила calibration/holdout |
 | [`campaigns/phase1_analysis_20260724/README.md`](campaigns/phase1_analysis_20260724/README.md) | Результаты standard LIBERO ID control и первого LIBERO-PRO screening |
 | [`campaigns/libero_full_validation_20260724/analysis/full_validation/`](campaigns/libero_full_validation_20260724/analysis/full_validation/) | Полные таблицы 1078 rollout-выполнений большой кампании |
+| [`campaigns/replication_safety_analysis_20260813/`](campaigns/replication_safety_analysis_20260813/) | Denoise-10 paired replication, LIBERO-Safety, exact tests и новые графики |
 | [`../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md`](../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md) | Протоколы и результаты релевантных статей |
 
 ## 2. Что реально запущено
@@ -24,7 +28,9 @@
 | Standard LIBERO | ID control | Завершено | 72/72 success |
 | LIBERO-PRO | OOD screening | Завершено | 106 rollout: 82 success, 24 fail |
 | LIBERO-PRO | Detector и planning validation | Завершено | 23/23 jobs, 1078 rollout-выполнений: 603 success, 475 fail |
-| LIBERO-Safety | Official physical/semantic safety | Окружение и profiles готовы, rollout campaign не запускалась | Официальных Safety-результатов пока нет |
+| LIBERO-PRO | Denoise-10 action-penalty replication | Завершено | 100 paired seeds: maxV 52 success, risk-aware 56 success |
+| LIBERO-Safety | Official physical safety | Завершено | 144 rollout: 0 task success, 4 official `checkcontact` violations |
+| LIBERO-Safety | Semantic safety | Заблокировано upstream | BDDL есть, official `reasoning_safety` init states отсутствуют |
 
 Число 1078 является числом **выполнений стратегий**, а не числом независимых
 сцен. Одни и те же `task/init_state/rollout_seed` повторялись для разных
@@ -52,8 +58,8 @@ value может быть завышен, а несколько допустим
 | H2 | Uncertainty до действия выше у будущих fail | Не универсально; найден сильный поздний сигнал на одном fixed case |
 | H3 | Uncertainty предсказывает расхождение world-model prediction с реальностью | Не поддержана как сильная общая зависимость |
 | H4 | Статический score `value - lambda * uncertainty` улучшает `max(value)` | Не поддержана на holdout и pooled generalization |
-| H5 | Число candidates, query interval, denoising и parallel/AR меняют качество ranking | Есть сильные взаимодействия, но ablations пока маломощны |
-| H6 | Те же сигналы предсказывают official safety violation | Ещё не проверена |
+| H5 | Число candidates, query interval, denoising и parallel/AR меняют качество ranking | Denoise-10 replication дала +4 п.п. pooled, но CI пересекает ноль и знак зависит от task |
+| H6 | Те же сигналы предсказывают official safety violation | 4/144 violations недостаточно; простой high-uncertainty detector не подтверждён |
 
 ## 4. Что получает и генерирует модель
 
@@ -545,9 +551,16 @@ LIBERO-Safety установлен отдельно:
 .external/LIBERO-Safety-19ec8df23eedfbb9265bafd3e56495fcebfcfcd0
 ```
 
-Профили `safety_physical` и `safety_semantic_probe` подготовлены, но manifest
-`campaigns/validate_v1/manifest.json` имеет статус `planned`. До их запуска
-нельзя делать вывод о collision rate, safe success или safety-aware planning.
+Физическая кампания `safety_physical_20260730` завершена: 144/144 rollout,
+по 12 seeds для L0/L1/L2 в четырёх suites. Получено 0 task success,
+0 safe success и 4 official `checkcontact` violations. Все нарушения относятся
+к `obstacle_avoidance`: два на L1 и два на L2. При этом `affordance` имеет
+средний predicted value 0.911 и 79% query с value выше 0.9, несмотря на 0/36
+success. Это прямой пример согласованной value overconfidence.
+
+`reasoning_safety` не запускался: в pinned upstream commit есть BDDL, но нет
+официальных init states. Полные результаты и четыре violation-видео:
+[`replication_safety_analysis_20260813`](campaigns/replication_safety_analysis_20260813/README.md).
 
 ## 16. Главные выводы
 
@@ -576,6 +589,14 @@ LIBERO-Safety установлен отдельно:
    по query и task. Один глобальный \(\lambda\) недостаточен.
 9. **LIBERO-Safety остаётся обязательной отдельной проверкой.** PRO heuristics
    полезны для диагностики, но не заменяют official constraints.
+10. **Denoise-10 effect остаётся неопределённым.** В новой replication на 100
+    paired seeds action penalty дал 56% против 52% у maxV, но 95% CI delta
+    равен [-5; +13] п.п., McNemar (p=0.541), а на long-mug знак отрицательный.
+11. **Pooled AUROC надо контролировать по задаче.** Raw AUROC раннего latent
+    first-action signal равен 0.771, но после нормализации внутри case только
+    0.589. Большая часть apparent separation объяснялась составом задач.
+12. **Низкая violation rate не означает безопасную policy.** В Safety только
+    4/144 rollout нарушили official constraint, но safe success равен 0/144.
 
 ## 17. Следующий проверяемый метод
 
@@ -625,6 +646,11 @@ H_{\mathrm{execute}}:16\rightarrow 4\text{ или }8,
 - [`prespecified_detector_exact_query.csv`](campaigns/libero_full_validation_20260724/analysis/full_validation/prespecified_detector_exact_query.csv);
 - [`prediction_error_correlations_q0_5.csv`](campaigns/libero_full_validation_20260724/analysis/full_validation/prediction_error_correlations_q0_5.csv);
 - [`case_outcome_summary.csv`](campaigns/libero_full_validation_20260724/analysis/full_validation/case_outcome_summary.csv).
+
+Августовские replication/Safety таблицы находятся в
+[`campaigns/replication_safety_analysis_20260813`](campaigns/replication_safety_analysis_20260813/README.md),
+включая `pro_pooled_result.csv`, `pro_early_fail_predictors.csv`,
+`safety_suite_level_results.csv` и `safety_violation_episodes.csv`.
 
 Компактные таблицы пересчитываются командой:
 

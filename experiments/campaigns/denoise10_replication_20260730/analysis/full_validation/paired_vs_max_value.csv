@@ -1,0 +1,4 @@
+case_id,experiment_split,prediction_mode,num_samples,num_open_loop_steps,num_denoising_steps_action,planning_strategy,planning_risk_lambda,planning_action_weight,paired_rollouts,baseline_success_rate,strategy_success_rate,delta_success_rate,wins,losses,ties
+long_mug_task4_init0_denoise10_replication,generalization,parallel,4.0,16,10,uncertainty_penalty_action,1.0,0.5,30,0.8333333333333334,0.7,-0.13333333333333341,2,6,22
+milk_task5_init0_denoise10_replication,holdout,parallel,4.0,16,10,uncertainty_penalty_action,1.0,0.5,40,0.475,0.55,0.07500000000000007,5,2,33
+yellow_task8_init0_denoise10_replication,generalization,parallel,4.0,16,10,uncertainty_penalty_action,1.0,0.5,30,0.26666666666666666,0.43333333333333335,0.16666666666666669,7,2,21
