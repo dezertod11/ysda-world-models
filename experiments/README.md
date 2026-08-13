@@ -1,8 +1,12 @@
 # Эксперименты
 
-Начинать следует с августовского отчёта
+Для текущей линии uncertainty-aware planning начинать следует с
+[`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb)
+и frozen-отчёта
+[`campaigns/adaptive_confirmatory_20260813/analysis/adaptive_summary/README.md`](campaigns/adaptive_confirmatory_20260813/analysis/adaptive_summary/README.md).
+Предшествующие LIBERO-PRO и LIBERO-Safety результаты собраны в
 [`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md),
-а затем при необходимости переходить к полной июльской истории
+а полная июльская история находится в
 [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md).
 Вместе они разделяют:
 
@@ -15,6 +19,8 @@
 
 | Файл | Назначение |
 |---|---|
+| [`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb) | Frozen adaptive-planning результат, формулы, статистика и matched-seed видео |
+| [`ADAPTIVE_PLANNING_HYPOTHESES_20260813.md`](ADAPTIVE_PLANNING_HYPOTHESES_20260813.md) | Гипотезы H1-H14, protocol и интерпретация confirmatory проверки |
 | [`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md) | Новые paired planning и LIBERO-Safety результаты, статистика и графики |
 | [`LIBERO_FINAL_RESULTS.ipynb`](LIBERO_FINAL_RESULTS.ipynb) | Компактный итоговый notebook: confirmatory таблицы, графики, выводы и matched-seed видео |
 | [`LIBERO_COMPLETE_RESULTS_20260724.md`](LIBERO_COMPLETE_RESULTS_20260724.md) | Текущие выводы и итоговые таблицы |
@@ -51,6 +57,16 @@ campaigns/replication_safety_analysis_20260813/
   safety_suite_level_results.csv
   safety_violation_episodes.csv
   plots/
+
+campaigns/adaptive_confirmatory_20260813/
+  manifest.json             # status=completed, 1080/1080 strategy executions
+  analysis/adaptive_summary/
+    README.md
+    frozen_confirmatory_results.csv
+    paired_by_case.csv
+    replay_control_summary.csv
+    prediction_error_correlations.csv
+    plots/
 ```
 
 `uncertainty/` содержит более ранние exploratory и video runs. Они полезны для
@@ -65,6 +81,8 @@ campaigns/replication_safety_analysis_20260813/
 | LIBERO-PRO screening | Завершён |
 | LIBERO-PRO full validation | Завершена, 1078/1078 rollout-выполнений |
 | LIBERO-PRO denoise-10 replication | Завершена, 200/200 strategy executions на 100 paired seeds |
+| Adaptive planning calibration | Завершена, 900/900 strategy executions на 3 boundary cases |
+| Adaptive planning frozen confirmatory | Завершена, 1080/1080 strategy executions на 180 paired seeds и 6 cases |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео
@@ -79,3 +97,8 @@ matched-seed видео из более раннего planning pilot. Они п
 Все 144 Safety-видео проверены по frame count и остаются на сервере. Четыре
 ролика с официальным `checkcontact` сохранены локально в
 [`final_results_media/safety_violations_20260730`](final_results_media/safety_violations_20260730/README.md).
+
+Для adaptive planning сохранены post-hoc deterministic replays выбранных
+discordant seed. Их индекс, фактические replay outcomes и переносимые MP4
+находятся в
+[`final_results_media/adaptive_confirmatory_20260813`](final_results_media/adaptive_confirmatory_20260813/README.md).

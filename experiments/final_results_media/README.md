@@ -19,6 +19,15 @@ trajectory, not to estimate a strategy success rate.
 `manifest.csv` records the strategy, hyperparameters, outcome and terminal
 simulator step for every video.
 
+## Adaptive planning confirmatory
+
+[`adaptive_confirmatory_20260813`](adaptive_confirmatory_20260813/README.md)
+contains 32 full-length H.264 videos: four planning strategies on eight
+matched `suite/task/init_state/rollout_seed` configurations selected from the
+frozen 1080-execution campaign. The per-video manifest distinguishes original
+confirmatory outcomes from exact-replay outcomes; the selected binary pair
+fully reproduced in 5/8 replays.
+
 ## LIBERO-Safety
 
 [`safety_violations_20260730`](safety_violations_20260730/README.md) contains

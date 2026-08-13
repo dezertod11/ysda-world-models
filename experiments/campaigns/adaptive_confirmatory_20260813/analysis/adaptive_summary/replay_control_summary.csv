@@ -1,0 +1,3 @@
+reference_id,replay_id,paired_rollouts,reference_success_rate,replay_success_rate,outcome_disagreements,outcome_disagreement_rate,q0_candidate_value_max_abs_diff_mean,q0_candidate_value_max_abs_diff_max
+max_value,max_value_replay,180,0.6388888888888888,0.65,8,0.044444444444444446,0.0002063983016543918,0.0017789900302886963
+action_l1,action_l1_replay,180,0.7277777777777777,0.7111111111111111,17,0.09444444444444444,0.00019025653600692748,0.00202864408493042

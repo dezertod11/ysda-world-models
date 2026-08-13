@@ -9,8 +9,9 @@ of vendoring complete upstream Git histories.
 | LIBERO-PRO | `eafdb809426b13153aa1e4c42d6601844217dfec` | `libero-pro-ysda.patch` |
 
 `cosmos-policy-ysda.patch` contains the policy sampling, uncertainty metrics,
-planning selection, VFD/safety instrumentation and focused tests used in the
-experiments. `libero-pro-ysda.patch` contains the OOD benchmark definitions,
+fixed and adaptive planning selection, candidate-level diagnostics, replay
+controls, VFD/safety instrumentation and focused tests used in the experiments.
+`libero-pro-ysda.patch` contains the OOD benchmark definitions,
 BDDL tasks and initialization states used by the project.
 
 Restore both checkouts from the repository root:

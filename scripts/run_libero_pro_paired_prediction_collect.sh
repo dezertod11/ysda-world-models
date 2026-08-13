@@ -57,6 +57,21 @@ fi
 if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT:-}" ]]; then
   EXTRA_ARGS+=(--planning-action-weight "${LIBERO_PRO_PAIRED_PLANNING_ACTION_WEIGHT}")
 fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_DIFFICULTY_THRESHOLD:-}" ]]; then
+  EXTRA_ARGS+=(--planning-difficulty-threshold "${LIBERO_PRO_PAIRED_PLANNING_DIFFICULTY_THRESHOLD}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_VALUE_MARGIN:-}" ]]; then
+  EXTRA_ARGS+=(--planning-value-margin "${LIBERO_PRO_PAIRED_PLANNING_VALUE_MARGIN}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_UNCERTAINTY_MARGIN:-}" ]]; then
+  EXTRA_ARGS+=(--planning-uncertainty-margin "${LIBERO_PRO_PAIRED_PLANNING_UNCERTAINTY_MARGIN}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_PHASE_FRACTION:-}" ]]; then
+  EXTRA_ARGS+=(--planning-phase-fraction "${LIBERO_PRO_PAIRED_PLANNING_PHASE_FRACTION}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS:-}" ]]; then
+  EXTRA_ARGS+=(--planning-short-open-loop-steps "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS}")
+fi
 if [[ "${LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE:-0}" == "1" ]]; then
   EXTRA_ARGS+=(--record-denoising-trace)
 fi

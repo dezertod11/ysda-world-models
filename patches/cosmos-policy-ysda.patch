@@ -1,7 +1,5 @@
 diff --git a/cosmos_policy/_src/imaginaire/modules/res_sampler.py b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
-old mode 100644
-new mode 100755
-index 6b0e7bd..926639b
+index 6b0e7bd..926639b 100644
 --- a/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 +++ b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 @@ -126,6 +126,7 @@ class Sampler(torch.nn.Module):
@@ -111,9 +109,7 @@ index 6b0e7bd..926639b
  
              if callback_fns:
 diff --git a/cosmos_policy/experiments/robot/cosmos_utils.py b/cosmos_policy/experiments/robot/cosmos_utils.py
-old mode 100644
-new mode 100755
-index 00c2845..7e06e12
+index 00c2845..7e06e12 100644
 --- a/cosmos_policy/experiments/robot/cosmos_utils.py
 +++ b/cosmos_policy/experiments/robot/cosmos_utils.py
 @@ -40,6 +40,7 @@ from cosmos_policy._src.predict2.inference.get_t5_emb import get_text_embedding
@@ -300,9 +296,7 @@ index 00c2845..7e06e12
  
      return return_dict
 diff --git a/cosmos_policy/experiments/robot/libero/libero_utils.py b/cosmos_policy/experiments/robot/libero/libero_utils.py
-old mode 100644
-new mode 100755
-index 9d7dd6a..b3107f7
+index 9d7dd6a..b3107f7 100644
 --- a/cosmos_policy/experiments/robot/libero/libero_utils.py
 +++ b/cosmos_policy/experiments/robot/libero/libero_utils.py
 @@ -30,7 +30,11 @@ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
@@ -319,9 +313,7 @@ index 9d7dd6a..b3107f7
      env = OffScreenRenderEnv(**env_args)
      env.seed(0)  # IMPORTANT: seed seems to affect object positions even when using fixed initial state
 diff --git a/cosmos_policy/experiments/robot/libero/run_libero_eval.py b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
-old mode 100644
-new mode 100755
-index 8ced47f..13ba41e
+index 8ced47f..13ba41e 100644
 --- a/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 +++ b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 @@ -178,6 +178,25 @@ TASK_MAX_STEPS = {
@@ -430,6 +422,2805 @@ index 8ced47f..13ba41e
  
      log_message(f"Task suite: {cfg.task_suite_name}", log_file)
      log_message(f"Number of tasks: {num_tasks}", log_file)
+diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
+new file mode 100644
+index 0000000..020f12b
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
+@@ -0,0 +1,2330 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
++
++This module is intentionally lightweight: it avoids sklearn so it can run inside
++the same robotics environment used for Cosmos Policy evaluation.
++"""
++
++from __future__ import annotations
++
++import argparse
++import json
++import math
++import os
++from dataclasses import asdict, dataclass
++from datetime import datetime
++from pathlib import Path
++from typing import Any, Dict, List, Optional, Sequence, Tuple
++
++import imageio.v2 as imageio
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++from libero.libero import benchmark
++from PIL import Image
++from scipy import stats
++
++from cosmos_policy.experiments.robot.cosmos_utils import (
++    get_model,
++    init_t5_text_embeddings_cache,
++    load_dataset_stats,
++    rescale_proprio,
++)
++from cosmos_policy.experiments.robot.libero.libero_utils import (
++    get_libero_dummy_action,
++    get_libero_env,
++    get_libero_image,
++    get_libero_wrist_image,
++)
++from cosmos_policy.experiments.robot.libero.run_libero_eval import (
++    PolicyEvalConfig,
++    get_task_max_steps,
++    prepare_observation,
++    prewarm_libero_renderer,
++    validate_config,
++)
++from cosmos_policy.experiments.robot.libero.safety_signals import (
++    SafetySignalTracker,
++    has_official_safety_violation,
++)
++from cosmos_policy.experiments.robot.libero.uncertainty_metrics import (
++    extract_future_proprio_from_sample,
++    latent_internal_consistency,
++    sample_action_ensemble,
++)
++from cosmos_policy.experiments.robot.robot_utils import get_image_resize_size
++from cosmos_policy.utils.utils import set_seed_everywhere
++
++METADATA_COLUMNS = {
++    "suite",
++    "task_id",
++    "episode_id",
++    "pair_id",
++    "rollout_id",
++    "rollout_seed",
++    "init_state_id",
++    "base_seed",
++    "query_idx",
++    "t",
++    "t_after",
++    "executed_steps",
++    "success",
++    "final_t",
++    "num_queries",
++    "num_samples",
++    "task_description",
++    "task_level",
++    "task_level_id",
++    "intervention_mode",
++    "intervention_start_t",
++    "intervention_end_t",
++    "intervention_start_query",
++    "intervention_end_query",
++    "intervention_steps",
++    "intervention_applied",
++    "failure_type",
++    "official_safety_cost_types",
++    "target_objects",
++    "prediction_mode",
++    "num_open_loop_steps",
++    "num_denoising_steps_action",
++    "num_denoising_steps_future_state",
++    "num_denoising_steps_value",
++    "num_future_state_samples",
++    "num_value_samples",
++    "experiment_split",
++    "case_id",
++    "planning_strategy",
++    "planning_effective_strategy",
++    "planning_risk_lambda",
++    "planning_action_weight",
++    "planning_difficulty_threshold",
++    "planning_value_margin",
++    "planning_uncertainty_margin",
++    "planning_phase_fraction",
++    "planning_short_open_loop_steps",
++    "planning_episode_risk_enabled",
++    "planning_query_risk_enabled",
++    "planning_requery_triggered",
++    "planning_selected_open_loop_steps",
++}
++
++
++DEFAULT_UNCERTAINTY_SEEDS = (195, 196, 197, 198)
++
++
++@dataclass(frozen=True)
++class ActionIntervention:
++    """Deterministic action edit used to create controlled failure rollouts."""
++
++    mode: str = "none"
++    start_t: int = 0
++    end_t: Optional[int] = None
++    start_query: Optional[int] = None
++    end_query: Optional[int] = None
++    gripper: float = 1.0
++    scale: float = 0.0
++    bias: Tuple[float, ...] = ()
++
++    @property
++    def enabled(self) -> bool:
++        return self.mode != "none"
++
++    def applies(self, t: int, query_idx: int) -> bool:
++        if not self.enabled:
++            return False
++        if t < self.start_t:
++            return False
++        if self.end_t is not None and t >= self.end_t:
++            return False
++        if self.start_query is not None and query_idx < self.start_query:
++            return False
++        if self.end_query is not None and query_idx > self.end_query:
++            return False
++        return True
++
++    def apply(self, action: Any) -> np.ndarray:
++        edited = np.asarray(action, dtype=np.float32).copy()
++        if self.mode == "zero_all":
++            edited[:] = 0.0
++        elif self.mode == "zero_motion":
++            edited[:-1] = 0.0
++        elif self.mode == "gripper":
++            edited[-1] = float(self.gripper)
++        elif self.mode == "scale":
++            edited *= float(self.scale)
++        elif self.mode == "bias":
++            if not self.bias:
++                raise ValueError("bias intervention requires a non-empty bias vector")
++            bias = np.asarray(self.bias, dtype=np.float32)
++            if bias.shape != edited.shape:
++                raise ValueError(f"bias shape {bias.shape} does not match action shape {edited.shape}")
++            edited += bias
++        else:
++            raise ValueError(f"Unknown action intervention mode: {self.mode}")
++        return edited
++
++
++def _sanitize_filename_part(value: Any, max_len: int = 80) -> str:
++    text = str(value).lower().replace("\n", " ").strip()
++    result = []
++    for char in text:
++        if char.isalnum():
++            result.append(char)
++        elif char in {" ", "-", "_", ".", "="}:
++            result.append("_")
++    sanitized = "".join(result).strip("_")
++    while "__" in sanitized:
++        sanitized = sanitized.replace("__", "_")
++    return sanitized[:max_len] or "unknown"
++
++
++def save_trace_video(
++    frames: Sequence[np.ndarray],
++    video_dir: Path,
++    trace: pd.DataFrame,
++    fps: int = 30,
++) -> Optional[Path]:
++    """Save an episode replay video captured during the exact trace rollout."""
++    if len(frames) == 0 or len(trace) == 0:
++        return None
++
++    first = trace.iloc[0]
++    success = bool(first["success"]) if "success" in trace else False
++    final_t = int(first["final_t"]) if "final_t" in trace else int(len(frames))
++    expected_frames = int(trace["executed_steps"].sum()) if "executed_steps" in trace else int(len(frames))
++    task_name = _sanitize_filename_part(first.get("task_description", "task"), max_len=50)
++    filename = (
++        f"{_sanitize_filename_part(first.get('suite', 'suite'), max_len=40)}"
++        f"__task{int(first.get('task_id', -1))}"
++        f"__init{int(first.get('init_state_id', -1))}"
++        f"__pair{int(first.get('pair_id', -1))}"
++        f"__rollout{int(first.get('rollout_id', first.get('episode_id', -1)))}"
++        f"__seed{int(first.get('rollout_seed', first.get('base_seed', -1)))}"
++        f"__success{success}"
++        f"__t{final_t}"
++        f"__frames{len(frames)}of{expected_frames}"
++        f"__{task_name}.mp4"
++    )
++
++    video_dir.mkdir(parents=True, exist_ok=True)
++    video_path = video_dir / filename
++    with imageio.get_writer(video_path, fps=fps, macro_block_size=1) as writer:
++        for frame in frames:
++            writer.append_data(np.asarray(frame, dtype=np.uint8))
++    return video_path
++
++
++def default_policy_config(
++    task_suite_name: str,
++    seed: int = 195,
++    *,
++    num_open_loop_steps: int = 16,
++    num_denoising_steps_action: int = 5,
++    prediction_mode: str = "parallel",
++    num_denoising_steps_future_state: int = 1,
++    num_denoising_steps_value: int = 1,
++    num_future_state_samples: int = 1,
++    num_value_samples: int = 1,
++    value_ensemble_aggregation_scheme: str = "average",
++) -> PolicyEvalConfig:
++    """Return the same Cosmos Policy config used by the local smoke scripts."""
++    if prediction_mode not in {"parallel", "autoregressive"}:
++        raise ValueError(f"Unknown prediction_mode={prediction_mode}")
++    if not 1 <= num_open_loop_steps <= 16:
++        raise ValueError("num_open_loop_steps must be in [1, 16]")
++    return PolicyEvalConfig(
++        config="cosmos_predict2_2b_480p_libero__inference_only",
++        ckpt_path=os.environ.get(
++            "COSMOS_POLICY_CKPT_PATH",
++            "nvidia/Cosmos-Policy-LIBERO-Predict2-2B",
++        ),
++        config_file="cosmos_policy/config/config.py",
++        use_wrist_image=True,
++        use_proprio=True,
++        normalize_proprio=True,
++        unnormalize_actions=True,
++        dataset_stats_path=os.environ.get(
++            "COSMOS_POLICY_DATASET_STATS_PATH",
++            "nvidia/Cosmos-Policy-LIBERO-Predict2-2B/libero_dataset_statistics.json",
++        ),
++        t5_text_embeddings_path=os.environ.get(
++            "COSMOS_POLICY_T5_EMBEDDINGS_PATH",
++            "nvidia/Cosmos-Policy-LIBERO-Predict2-2B/libero_t5_embeddings.pkl",
++        ),
++        trained_with_image_aug=True,
++        chunk_size=16,
++        num_open_loop_steps=num_open_loop_steps,
++        task_suite_name=task_suite_name,
++        env_img_res=256,
++        local_log_dir="cosmos_policy/experiments/robot/libero/logs/",
++        randomize_seed=False,
++        data_collection=False,
++        available_gpus="0",
++        seed=seed,
++        use_variance_scale=False,
++        deterministic=True,
++        ar_future_prediction=prediction_mode == "autoregressive",
++        ar_value_prediction=prediction_mode == "autoregressive",
++        use_jpeg_compression=True,
++        flip_images=True,
++        num_denoising_steps_action=num_denoising_steps_action,
++        num_denoising_steps_future_state=num_denoising_steps_future_state,
++        num_denoising_steps_value=num_denoising_steps_value,
++        use_ensemble_future_state_predictions=num_future_state_samples > 1,
++        num_future_state_predictions_in_ensemble=num_future_state_samples,
++        use_ensemble_value_predictions=num_value_samples > 1,
++        num_value_predictions_in_ensemble=num_value_samples,
++        value_ensemble_aggregation_scheme=value_ensemble_aggregation_scheme,
++    )
++
++
++def get_task_init_states_compat(task_suite: Any, task_id: int, task: Any) -> Any:
++    """Load init states from either standard LIBERO or LIBERO-Safety."""
++    try:
++        return task_suite.get_task_init_states(task_id)
++    except TypeError:
++        level = getattr(task, "level", None)
++        level_id = getattr(task, "level_id", None)
++        if level is None or level_id is None:
++            raise
++        return task_suite.get_task_init_states(level, level_id)
++
++
++def parse_int_list(value: str) -> List[int]:
++    if value.strip().lower() in {"", "all"}:
++        return []
++    result: List[int] = []
++    for part in value.split(","):
++        part = part.strip()
++        if not part:
++            continue
++        if "-" in part:
++            lo, hi = part.split("-", 1)
++            result.extend(range(int(lo), int(hi) + 1))
++        else:
++            result.append(int(part))
++    return result
++
++
++def parse_seed_list(value: str) -> Tuple[int, ...]:
++    return tuple(int(x.strip()) for x in value.split(",") if x.strip())
++
++
++def _parse_optional_int(value: int) -> Optional[int]:
++    return None if value < 0 else int(value)
++
++
++def parse_float_tuple(value: str) -> Tuple[float, ...]:
++    return tuple(float(x.strip()) for x in value.split(",") if x.strip())
++
++
++def build_action_intervention(args: argparse.Namespace) -> Optional[ActionIntervention]:
++    mode = getattr(args, "intervention_mode", "none")
++    if mode == "none":
++        return None
++    return ActionIntervention(
++        mode=mode,
++        start_t=int(getattr(args, "intervention_start_t", 0)),
++        end_t=_parse_optional_int(int(getattr(args, "intervention_end_t", -1))),
++        start_query=_parse_optional_int(int(getattr(args, "intervention_start_query", -1))),
++        end_query=_parse_optional_int(int(getattr(args, "intervention_end_query", -1))),
++        gripper=float(getattr(args, "intervention_gripper", 1.0)),
++        scale=float(getattr(args, "intervention_scale", 0.0)),
++        bias=parse_float_tuple(getattr(args, "intervention_bias", "")),
++    )
++
++
++def rollout_uses_intervention(spec: str, rollout_id: int) -> bool:
++    spec = (spec or "").strip().lower()
++    if spec in {"", "none"}:
++        return False
++    if spec == "all":
++        return True
++    if spec == "odd":
++        return rollout_id % 2 == 1
++    if spec == "even":
++        return rollout_id % 2 == 0
++    return rollout_id in set(parse_int_list(spec))
++
++
++def _numeric_metric_columns(df: pd.DataFrame) -> List[str]:
++    return [
++        col
++        for col in df.columns
++        if col not in METADATA_COLUMNS and pd.api.types.is_numeric_dtype(df[col]) and not df[col].isna().all()
++    ]
++
++
++def proprio_from_libero_obs(obs: Dict[str, Any]) -> np.ndarray:
++    """Return the proprio vector used by Cosmos Policy for LIBERO observations."""
++    return np.concatenate((obs["robot0_gripper_qpos"], obs["robot0_eef_pos"], obs["robot0_eef_quat"]))
++
++
++def _to_numpy_array(value: Any) -> np.ndarray:
++    if hasattr(value, "detach"):
++        value = value.detach().float().cpu().numpy()
++    return np.asarray(value)
++
++
++def _resize_like(image: np.ndarray, reference: np.ndarray) -> np.ndarray:
++    image = np.asarray(image)
++    reference = np.asarray(reference)
++    if image.shape[:2] == reference.shape[:2]:
++        return image
++    resample = Image.Resampling.BILINEAR if hasattr(Image, "Resampling") else Image.BILINEAR
++    return np.asarray(Image.fromarray(image.astype(np.uint8)).resize((reference.shape[1], reference.shape[0]), resample))
++
++
++def _global_ssim(pred: np.ndarray, actual: np.ndarray) -> float:
++    """Small dependency-free global SSIM approximation for quick ranking."""
++    pred = pred.astype(np.float64)
++    actual = actual.astype(np.float64)
++    c1 = (0.01 * 255.0) ** 2
++    c2 = (0.03 * 255.0) ** 2
++    mux = pred.mean()
++    muy = actual.mean()
++    varx = pred.var()
++    vary = actual.var()
++    cov = ((pred - mux) * (actual - muy)).mean()
++    denom = (mux**2 + muy**2 + c1) * (varx + vary + c2)
++    if denom == 0:
++        return float("nan")
++    return float(((2 * mux * muy + c1) * (2 * cov + c2)) / denom)
++
++
++def image_prediction_error_metrics(predicted: Any, actual: np.ndarray, prefix: str) -> Dict[str, float]:
++    """Compare predicted future RGB image with actual future observation image."""
++    if predicted is None or actual is None:
++        return {}
++    pred = _to_numpy_array(predicted)
++    if pred.ndim == 4:
++        pred = pred[0]
++    if pred.dtype != np.uint8:
++        pred = np.clip(pred, 0, 255).astype(np.uint8)
++    actual_resized = _resize_like(actual, pred).astype(np.float32)
++    pred = pred.astype(np.float32)
++    diff = pred - actual_resized
++    mse = float(np.mean(diff**2))
++    mae = float(np.mean(np.abs(diff)))
++    psnr = float(20.0 * np.log10(255.0 / np.sqrt(mse))) if mse > 0 else float("inf")
++    return {
++        f"{prefix}_mse": mse,
++        f"{prefix}_mae": mae,
++        f"{prefix}_psnr": psnr,
++        f"{prefix}_ssim_global": _global_ssim(pred, actual_resized),
++    }
++
++
++def proprio_prediction_error_metrics(
++    predicted_normalized: Optional[np.ndarray],
++    actual_raw: np.ndarray,
++    dataset_stats: Dict[str, Any],
++    prefix: str = "prediction_error_future_proprio",
++) -> Dict[str, float]:
++    """Compare normalized future proprio prediction against actual normalized proprio."""
++    if predicted_normalized is None:
++        return {}
++    pred = _to_numpy_array(predicted_normalized).astype(np.float32)
++    pred = pred.reshape(-1, pred.shape[-1]).mean(axis=0)
++    actual = rescale_proprio(actual_raw, dataset_stats, non_negative_only=False, scale_multiplier=1.0).astype(np.float32)
++    diff = pred - actual
++    metrics = {
++        f"{prefix}_l2": float(np.linalg.norm(diff)),
++        f"{prefix}_mae": float(np.mean(np.abs(diff))),
++        f"{prefix}_max_abs": float(np.max(np.abs(diff))),
++    }
++    if len(diff) >= 5:
++        metrics[f"{prefix}_eef_pos_l2"] = float(np.linalg.norm(diff[2:5]))
++    if len(diff) >= 9:
++        metrics[f"{prefix}_eef_quat_l2"] = float(np.linalg.norm(diff[5:9]))
++    return metrics
++
++
++def object_state_delta_metrics(obs_before: Dict[str, Any], obs_after: Dict[str, Any]) -> Dict[str, float]:
++    """Track real object-state movement when LIBERO exposes object vectors."""
++    deltas = []
++    per_key = {}
++    skip_fragments = ("image", "robot0", "camera", "proprio")
++    for key, before in obs_before.items():
++        if key not in obs_after or any(fragment in key for fragment in skip_fragments):
++            continue
++        before_arr = np.asarray(before)
++        after_arr = np.asarray(obs_after[key])
++        if before_arr.shape != after_arr.shape or not np.issubdtype(before_arr.dtype, np.number):
++            continue
++        if before_arr.size == 0 or before_arr.size > 64:
++            continue
++        delta = float(np.linalg.norm(after_arr.astype(np.float64).ravel() - before_arr.astype(np.float64).ravel()))
++        deltas.append(delta)
++        per_key[f"actual_object_state_delta_l2__{key}"] = delta
++    if not deltas:
++        return {}
++    return {
++        "actual_object_state_delta_l2_mean": float(np.mean(deltas)),
++        "actual_object_state_delta_l2_max": float(np.max(deltas)),
++        "actual_object_state_num_keys": float(len(deltas)),
++        **per_key,
++    }
++
++
++def prediction_error_metrics_for_query(
++    sample: Dict[str, Any],
++    obs_before: Dict[str, Any],
++    obs_after: Dict[str, Any],
++    dataset_stats: Dict[str, Any],
++    flip_images: bool,
++    chunk_success: bool,
++) -> Dict[str, float]:
++    """Compare one query's future predictions against the observation after executing its chunk."""
++    future = sample.get("future_image_predictions", {})
++    metrics: Dict[str, float] = {}
++    metrics.update(
++        image_prediction_error_metrics(
++            future.get("future_image"),
++            get_libero_image(obs_after, flip_images=flip_images),
++            "prediction_error_future_image",
++        )
++    )
++    metrics.update(
++        image_prediction_error_metrics(
++            future.get("future_wrist_image"),
++            get_libero_wrist_image(obs_after, flip_images=flip_images),
++            "prediction_error_future_wrist",
++        )
++    )
++    metrics.update(
++        proprio_prediction_error_metrics(
++            extract_future_proprio_from_sample(sample),
++            proprio_from_libero_obs(obs_after),
++            dataset_stats,
++        )
++    )
++    if "value_prediction" in sample:
++        value = float(sample["value_prediction"])
++        metrics["prediction_error_value_abs_chunk_success"] = abs(value - float(chunk_success))
++        metrics["prediction_value_executed_sample"] = value
++    metrics.update(object_state_delta_metrics(obs_before, obs_after))
++    return metrics
++
++
++def _zscore_array(values: np.ndarray) -> np.ndarray:
++    values = np.asarray(values, dtype=np.float32)
++    mean = float(np.nanmean(values))
++    std = float(np.nanstd(values))
++    if not np.isfinite(std) or std < 1e-8:
++        std = 1.0
++    z = (values - mean) / std
++    z[~np.isfinite(z)] = 0.0
++    return z
++
++
++def _fill_nan_with_mean(values: np.ndarray) -> np.ndarray:
++    if np.isfinite(values).any():
++        fill = float(np.nanmean(values))
++    else:
++        fill = 0.0
++    return np.nan_to_num(values, nan=fill, posinf=fill, neginf=fill)
++
++
++def _candidate_action_consensus(samples: Sequence[Dict[str, Any]]) -> Tuple[np.ndarray, np.ndarray]:
++    """Return first-action and whole-chunk distance from the sampled consensus."""
++    actions = [np.asarray(sample["actions"], dtype=np.float32) for sample in samples]
++    if len(actions) == 1:
++        zeros = np.zeros(1, dtype=np.float32)
++        return zeros, zeros
++
++    first_actions = np.stack([action[0].reshape(-1) for action in actions])
++    chunk_actions = np.stack([action.reshape(-1) for action in actions])
++
++    def mean_pairwise_distance(values: np.ndarray) -> np.ndarray:
++        differences = values[:, None, :] - values[None, :, :]
++        distances = np.linalg.norm(differences, axis=-1)
++        return distances.sum(axis=1) / float(len(values) - 1)
++
++    return mean_pairwise_distance(first_actions), mean_pairwise_distance(chunk_actions)
++
++
++def _argmax_with_value_tiebreak(scores: np.ndarray, values: np.ndarray) -> int:
++    """Select the highest score and prefer value when scores are numerically tied."""
++    best_score = float(np.nanmax(scores))
++    tied = np.flatnonzero(np.isclose(scores, best_score, rtol=1e-6, atol=1e-7))
++    if len(tied) == 1:
++        return int(tied[0])
++    return int(tied[int(np.nanargmax(values[tied]))])
++
++
++def select_planning_sample(
++    samples: Sequence[Dict[str, Any]],
++    strategy: str = "first",
++    risk_lambda: float = 1.0,
++    action_weight: float = 0.5,
++    *,
++    query_idx: int = 0,
++    episode_progress: float = 0.0,
++    episode_risk_enabled: Optional[bool] = None,
++    difficulty_threshold: float = 0.088588,
++    value_margin: float = 0.002,
++    uncertainty_margin: float = 0.0,
++    phase_fraction: float = 0.5,
++    open_loop_steps: int = 16,
++    short_open_loop_steps: int = 8,
++) -> Tuple[int, Dict[str, Any]]:
++    """Select which sampled candidate chunk to execute.
++
++    `max_value` matches standard best-of-N planning.  Risk-aware strategies
++    normalize value and risk inside the current candidate set, which is the
++    planning use case we care about: choose the least risky candidate among
++    alternatives rather than apply a global fail threshold.
++    """
++    if len(samples) == 0:
++        raise ValueError("samples must be non-empty")
++    if not 0.0 <= action_weight <= 1.0:
++        raise ValueError("action_weight must be in [0, 1]")
++    if value_margin < 0.0:
++        raise ValueError("value_margin must be non-negative")
++    if uncertainty_margin < 0.0:
++        raise ValueError("uncertainty_margin must be non-negative")
++    if not 0.0 <= phase_fraction <= 1.0:
++        raise ValueError("phase_fraction must be in [0, 1]")
++    if not 1 <= short_open_loop_steps <= open_loop_steps:
++        raise ValueError("short_open_loop_steps must be in [1, open_loop_steps]")
++
++    strategy = strategy.lower()
++    values = np.asarray([float(sample.get("value_prediction", np.nan)) for sample in samples], dtype=np.float32)
++    if not np.isfinite(values).any():
++        values = np.zeros(len(samples), dtype=np.float32)
++    values = _fill_nan_with_mean(values)
++    value_z = _zscore_array(values)
++
++    latent_metrics = [latent_internal_consistency(sample) for sample in samples]
++    action_first_consistency = np.asarray(
++        [
++            metrics.get("latent_action_first_step_copy_l2_std", metrics.get("latent_action_copy_std_mean", np.nan))
++            for metrics in latent_metrics
++        ],
++        dtype=np.float32,
++    )
++    action_chunk_consistency = np.asarray(
++        [metrics.get("latent_action_copy_std_mean", np.nan) for metrics in latent_metrics],
++        dtype=np.float32,
++    )
++    action_max_consistency = np.asarray(
++        [metrics.get("latent_action_copy_std_max", np.nan) for metrics in latent_metrics],
++        dtype=np.float32,
++    )
++    value_consistency = np.asarray(
++        [metrics.get("latent_value_element_std_mean", np.nan) for metrics in latent_metrics],
++        dtype=np.float32,
++    )
++    action_first_consistency = _fill_nan_with_mean(action_first_consistency)
++    action_chunk_consistency = _fill_nan_with_mean(action_chunk_consistency)
++    action_max_consistency = _fill_nan_with_mean(action_max_consistency)
++    value_consistency = _fill_nan_with_mean(value_consistency)
++
++    risk_action = -_zscore_array(action_first_consistency)
++    risk_value = -_zscore_array(value_consistency) - 0.5 * value_z
++    risk_combined = action_weight * risk_action + (1.0 - action_weight) * risk_value
++    uncertainty_action = _zscore_array(action_first_consistency)
++    uncertainty_action_chunk = _zscore_array(action_chunk_consistency)
++    uncertainty_action_max = _zscore_array(action_max_consistency)
++    uncertainty_value = _zscore_array(value_consistency)
++    uncertainty_combined = (
++        action_weight * uncertainty_action + (1.0 - action_weight) * uncertainty_value
++    )
++    consensus_first, consensus_chunk = _candidate_action_consensus(samples)
++    uncertainty_consensus = _zscore_array(consensus_first)
++
++    max_value_idx = int(np.nanargmax(values))
++    action_scores = value_z - float(risk_lambda) * uncertainty_action
++    action_idx = _argmax_with_value_tiebreak(action_scores, values)
++    query_risk_enabled = False
++    requery_triggered = False
++    selected_open_loop_steps = int(open_loop_steps)
++    effective_strategy = strategy
++
++    if strategy == "first":
++        scores = values.copy()
++        selected = 0
++        risk = np.zeros(len(samples), dtype=np.float32)
++    elif strategy in {"max_value", "max_value_replay"}:
++        scores = values.copy()
++        selected = int(np.nanargmax(scores))
++        risk = np.zeros(len(samples), dtype=np.float32)
++    elif strategy in {"risk_aware_action", "risk_action"}:
++        risk = risk_action
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"risk_aware_value", "risk_value"}:
++        risk = risk_value
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"risk_aware_combined", "risk_combined"}:
++        risk = risk_combined
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {
++        "uncertainty_penalty_action",
++        "uncertainty_penalty_action_replay",
++        "uncertainty_action",
++    }:
++        risk = uncertainty_action
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"uncertainty_penalty_action_chunk", "uncertainty_action_chunk"}:
++        risk = uncertainty_action_chunk
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"uncertainty_penalty_action_max", "uncertainty_action_max"}:
++        risk = uncertainty_action_max
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"uncertainty_penalty_value", "uncertainty_value"}:
++        risk = uncertainty_value
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"uncertainty_penalty_combined", "uncertainty_combined"}:
++        risk = uncertainty_combined
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"difficulty_gated_action", "episode_value_gated_action"}:
++        if episode_risk_enabled is None:
++            episode_risk_enabled = bool(float(np.mean(values)) >= float(difficulty_threshold))
++        query_risk_enabled = bool(episode_risk_enabled)
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++    elif strategy in {"margin_gated_action", "conservative_action_gate"}:
++        risk = uncertainty_action
++        risk_value_gap = float(values[max_value_idx] - values[action_idx])
++        risk_uncertainty_gain = float(uncertainty_action[max_value_idx] - uncertainty_action[action_idx])
++        query_risk_enabled = bool(
++            action_idx != max_value_idx
++            and risk_value_gap <= float(value_margin)
++            and risk_uncertainty_gain >= float(uncertainty_margin)
++        )
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++    elif strategy in {"consensus_action", "uncertainty_penalty_consensus"}:
++        risk = uncertainty_consensus
++        scores = value_z - float(risk_lambda) * risk
++        selected = _argmax_with_value_tiebreak(scores, values)
++    elif strategy in {"phase_gated_action", "early_phase_action"}:
++        query_risk_enabled = bool(float(episode_progress) <= float(phase_fraction))
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++    elif strategy in {"disagreement_requery_action", "adaptive_horizon_action"}:
++        risk = uncertainty_action
++        scores = action_scores
++        selected = action_idx
++        requery_triggered = bool(action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy in {"difficulty_gated_requery_action", "adaptive_difficulty_action"}:
++        if episode_risk_enabled is None:
++            episode_risk_enabled = bool(float(np.mean(values)) >= float(difficulty_threshold))
++        query_risk_enabled = bool(episode_risk_enabled)
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++        requery_triggered = bool(query_risk_enabled and action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    else:
++        raise ValueError(
++            f"Unknown planning selection strategy: {strategy}. "
++            "Use first, max_value, risk_aware_*, uncertainty_penalty_*, or an adaptive strategy."
++        )
++
++    risk_value_gap = float(values[max_value_idx] - values[action_idx])
++    risk_uncertainty_gain = float(uncertainty_action[max_value_idx] - uncertainty_action[action_idx])
++
++    diagnostics = {
++        "planning_strategy": strategy,
++        "planning_effective_strategy": effective_strategy,
++        "planning_risk_lambda": float(risk_lambda),
++        "planning_action_weight": float(action_weight),
++        "planning_difficulty_threshold": float(difficulty_threshold),
++        "planning_value_margin": float(value_margin),
++        "planning_uncertainty_margin": float(uncertainty_margin),
++        "planning_phase_fraction": float(phase_fraction),
++        "planning_short_open_loop_steps": float(short_open_loop_steps),
++        "planning_episode_risk_enabled": bool(episode_risk_enabled) if episode_risk_enabled is not None else False,
++        "planning_query_risk_enabled": bool(query_risk_enabled),
++        "planning_requery_triggered": bool(requery_triggered),
++        "planning_selected_open_loop_steps": float(selected_open_loop_steps),
++        "planning_query_idx": float(query_idx),
++        "planning_episode_progress": float(episode_progress),
++        "selected_sample_idx": float(selected),
++        "selected_value": float(values[selected]),
++        "selected_value_z": float(value_z[selected]),
++        "selected_risk": float(risk[selected]),
++        "selected_planning_score": float(scores[selected]),
++        "max_value_sample_idx": float(max_value_idx),
++        "max_value": float(np.nanmax(values)),
++        "max_value_selected": bool(selected == int(np.nanargmax(values))),
++        "candidate_value_mean": float(np.nanmean(values)),
++        "candidate_value_std": float(np.nanstd(values)),
++        "candidate_value_range": float(np.nanmax(values) - np.nanmin(values)),
++        "candidate_action_internal_consistency_mean": float(np.nanmean(action_first_consistency)),
++        "candidate_action_internal_consistency_std": float(np.nanstd(action_first_consistency)),
++        "candidate_action_chunk_consistency_mean": float(np.nanmean(action_chunk_consistency)),
++        "candidate_action_chunk_consistency_std": float(np.nanstd(action_chunk_consistency)),
++        "candidate_action_max_consistency_mean": float(np.nanmean(action_max_consistency)),
++        "candidate_action_max_consistency_std": float(np.nanstd(action_max_consistency)),
++        "candidate_value_internal_consistency_mean": float(np.nanmean(value_consistency)),
++        "candidate_value_internal_consistency_std": float(np.nanstd(value_consistency)),
++        "candidate_action_consensus_first_mean": float(np.mean(consensus_first)),
++        "candidate_action_consensus_first_std": float(np.std(consensus_first)),
++        "candidate_action_consensus_chunk_mean": float(np.mean(consensus_chunk)),
++        "candidate_action_consensus_chunk_std": float(np.std(consensus_chunk)),
++        "risk_candidate_sample_idx": float(action_idx),
++        "risk_candidate_value_gap": risk_value_gap,
++        "risk_candidate_uncertainty_gain_z": risk_uncertainty_gain,
++        "candidate_values_json": json.dumps(values.tolist()),
++        "candidate_action_uncertainty_json": json.dumps(action_first_consistency.tolist()),
++        "candidate_action_consensus_first_json": json.dumps(consensus_first.tolist()),
++        "candidate_action_scores_json": json.dumps(action_scores.tolist()),
++        "candidate_first_actions_json": json.dumps(
++            [np.asarray(sample["actions"], dtype=np.float32)[0].tolist() for sample in samples]
++        ),
++    }
++    return selected, diagnostics
++
++
++def run_uncertainty_episode(
++    cfg: PolicyEvalConfig,
++    model: Any,
++    dataset_stats: Dict[str, Any],
++    suite_name: str,
++    task_id: int,
++    episode_id: int,
++    init_state_id: int,
++    base_seed: int,
++    uncertainty_seed_offsets: Sequence[int],
++    max_timesteps: Optional[int] = None,
++    save_video_frames: bool = False,
++    collect_prediction_errors: bool = False,
++    pair_id: Optional[int] = None,
++    rollout_id: Optional[int] = None,
++    action_intervention: Optional[ActionIntervention] = None,
++    planning_strategy: str = "first",
++    planning_risk_lambda: float = 1.0,
++    planning_action_weight: float = 0.5,
++    planning_difficulty_threshold: float = 0.088588,
++    planning_value_margin: float = 0.002,
++    planning_uncertainty_margin: float = 0.0,
++    planning_phase_fraction: float = 0.5,
++    planning_short_open_loop_steps: int = 8,
++    record_denoising_trace: bool = False,
++    collect_safety_signals: bool = False,
++    terminate_on_safety_violation: bool = False,
++    experiment_split: str = "unspecified",
++    case_id: str = "",
++) -> Tuple[pd.DataFrame, List[np.ndarray]]:
++    """Run one episode and return per-query uncertainty rows."""
++    task_suite = benchmark.get_benchmark_dict()[suite_name]()
++    task = task_suite.get_task(task_id)
++    task_description = task.language
++    init_states = get_task_init_states_compat(task_suite, task_id, task)
++    if init_state_id >= len(init_states):
++        raise ValueError(f"init_state_id={init_state_id} but only {len(init_states)} states are available")
++
++    resize_size = get_image_resize_size(cfg.model_family)
++    env, _ = get_libero_env(task, cfg.model_family, resolution=cfg.env_img_res)
++    env.reset()
++    obs = env.set_init_state(init_states[init_state_id])
++
++    for _ in range(10):
++        obs, _reward, done, _info = env.step(get_libero_dummy_action(cfg.model_family))
++        if done:
++            break
++
++    if max_timesteps is not None:
++        max_steps = max_timesteps
++    else:
++        try:
++            max_steps = get_task_max_steps(suite_name)
++        except KeyError:
++            max_steps = 520
++    rows: List[Dict[str, Any]] = []
++    frames: List[np.ndarray] = []
++    success = False
++    safety_terminated = False
++    t = 0
++    query_idx = 0
++    episode_risk_enabled: Optional[bool] = None
++    safety_tracker = (
++        SafetySignalTracker(env, obs)
++        if collect_safety_signals or terminate_on_safety_violation
++        else None
++    )
++
++    try:
++        while t < max_steps:
++            obs_before_query = obs
++            observation = prepare_observation(obs, resize_size, cfg.flip_images)
++            seeds = tuple(int(base_seed + offset + query_idx * 1000) for offset in uncertainty_seed_offsets)
++            samples, metrics = sample_action_ensemble(
++                cfg,
++                model,
++                dataset_stats,
++                observation,
++                task_description,
++                seeds=seeds,
++                num_denoising_steps_action=cfg.num_denoising_steps_action,
++                prediction_mode=(
++                    "autoregressive"
++                    if cfg.ar_future_prediction or cfg.ar_value_prediction
++                    else "parallel"
++                ),
++                num_denoising_steps_future_state=cfg.num_denoising_steps_future_state,
++                num_denoising_steps_value=cfg.num_denoising_steps_value,
++                num_future_state_samples=cfg.num_future_state_predictions_in_ensemble,
++                num_value_samples=cfg.num_value_predictions_in_ensemble,
++                record_denoising_trace=record_denoising_trace,
++            )
++            row = {
++                "suite": suite_name,
++                "task_id": task_id,
++                "episode_id": episode_id,
++                "pair_id": pair_id if pair_id is not None else -1,
++                "rollout_id": rollout_id if rollout_id is not None else episode_id,
++                "rollout_seed": base_seed,
++                "init_state_id": init_state_id,
++                "base_seed": base_seed,
++                "query_idx": query_idx,
++                "t": t,
++                "task_description": task_description,
++                "prediction_mode": (
++                    "autoregressive"
++                    if cfg.ar_future_prediction or cfg.ar_value_prediction
++                    else "parallel"
++                ),
++                "num_open_loop_steps": cfg.num_open_loop_steps,
++                "num_denoising_steps_action": cfg.num_denoising_steps_action,
++                "num_denoising_steps_future_state": cfg.num_denoising_steps_future_state,
++                "num_denoising_steps_value": cfg.num_denoising_steps_value,
++                "num_future_state_samples": cfg.num_future_state_predictions_in_ensemble,
++                "num_value_samples": cfg.num_value_predictions_in_ensemble,
++                "experiment_split": experiment_split,
++                "case_id": case_id,
++                "task_level": int(getattr(task, "level", -1)),
++                "task_level_id": int(getattr(task, "level_id", -1)),
++                "intervention_mode": action_intervention.mode if action_intervention else "none",
++                "intervention_start_t": action_intervention.start_t if action_intervention else -1,
++                "intervention_end_t": action_intervention.end_t if action_intervention and action_intervention.end_t is not None else -1,
++                "intervention_start_query": (
++                    action_intervention.start_query
++                    if action_intervention and action_intervention.start_query is not None
++                    else -1
++                ),
++                "intervention_end_query": (
++                    action_intervention.end_query
++                    if action_intervention and action_intervention.end_query is not None
++                    else -1
++                ),
++            }
++            row.update(metrics)
++
++            selected_sample_idx, planning_diagnostics = select_planning_sample(
++                samples,
++                strategy=planning_strategy,
++                risk_lambda=planning_risk_lambda,
++                action_weight=planning_action_weight,
++                query_idx=query_idx,
++                episode_progress=float(t) / float(max_steps),
++                episode_risk_enabled=episode_risk_enabled,
++                difficulty_threshold=planning_difficulty_threshold,
++                value_margin=planning_value_margin,
++                uncertainty_margin=planning_uncertainty_margin,
++                phase_fraction=planning_phase_fraction,
++                open_loop_steps=cfg.num_open_loop_steps,
++                short_open_loop_steps=planning_short_open_loop_steps,
++            )
++            if planning_strategy in {
++                "difficulty_gated_action",
++                "episode_value_gated_action",
++                "difficulty_gated_requery_action",
++                "adaptive_difficulty_action",
++            }:
++                episode_risk_enabled = bool(
++                    planning_diagnostics["planning_episode_risk_enabled"]
++                )
++            selected_sample = samples[selected_sample_idx]
++            row.update(planning_diagnostics)
++            row["selected_seed"] = seeds[selected_sample_idx] if selected_sample_idx < len(seeds) else -1
++            max_value_sample_idx = int(planning_diagnostics["max_value_sample_idx"])
++            row["max_value_seed"] = seeds[max_value_sample_idx] if max_value_sample_idx < len(seeds) else -1
++
++            # Execute the selected candidate chunk.
++            chunk_success = False
++            executed_steps = 0
++            intervention_steps = 0
++            diagnostic_marker = safety_tracker.mark_query_start() if safety_tracker is not None else -1
++            selected_open_loop_steps = int(
++                planning_diagnostics["planning_selected_open_loop_steps"]
++            )
++            for action in selected_sample["actions"][:selected_open_loop_steps]:
++                action_to_execute = action
++                if action_intervention is not None and action_intervention.applies(t, query_idx):
++                    action_to_execute = action_intervention.apply(action)
++                    intervention_steps += 1
++                obs, _reward, done, _info = env.step(
++                    action_to_execute.tolist() if hasattr(action_to_execute, "tolist") else action_to_execute
++                )
++                t += 1
++                executed_steps += 1
++                if safety_tracker is not None:
++                    safety_tracker.observe(
++                        obs,
++                        action_to_execute,
++                        t=t,
++                        info=_info,
++                        task_success=bool(done),
++                    )
++                if save_video_frames:
++                    frames.append(get_libero_image(obs, flip_images=cfg.flip_images))
++                if terminate_on_safety_violation and has_official_safety_violation(_info):
++                    safety_terminated = True
++                if done or safety_terminated or t >= max_steps:
++                    chunk_success = bool(done)
++                    break
++
++            row["t_after"] = t
++            row["executed_steps"] = executed_steps
++            row["intervention_steps"] = intervention_steps
++            row["intervention_applied"] = bool(intervention_steps > 0)
++            row["chunk_success"] = bool(chunk_success)
++            if safety_tracker is not None:
++                row.update(safety_tracker.query_summary(diagnostic_marker))
++            if collect_prediction_errors:
++                row.update(
++                    prediction_error_metrics_for_query(
++                        selected_sample,
++                        obs_before_query,
++                        obs,
++                        dataset_stats,
++                        cfg.flip_images,
++                        chunk_success=chunk_success,
++                    )
++                )
++            rows.append(row)
++
++            if done:
++                success = True
++                break
++            if safety_terminated:
++                break
++            query_idx += 1
++    finally:
++        env.close()
++
++    trace = pd.DataFrame(rows)
++    if len(trace) > 0:
++        trace["success"] = bool(success)
++        trace["final_t"] = int(t)
++        trace["num_queries"] = int(len(trace))
++        if safety_tracker is not None:
++            episode_safety = safety_tracker.episode_summary(
++                success=success,
++                final_t=t,
++                max_steps=max_steps,
++                safety_terminated=safety_terminated,
++            )
++            for key, value in episode_safety.items():
++                trace[key] = value
++        if "prediction_value_executed_sample" in trace:
++            trace["prediction_error_value_abs_final_success"] = (
++                trace["prediction_value_executed_sample"] - float(success)
++            ).abs()
++    return trace, frames
++
++
++def collect_uncertainty_traces(
++    suites: Sequence[str],
++    task_ids: Sequence[int],
++    episodes_per_task: int,
++    init_state_offset: int,
++    base_seed: int,
++    uncertainty_seeds: Sequence[int],
++    max_timesteps: Optional[int],
++    output_dir: Path,
++    run_name: str,
++    collect_prediction_errors: bool = False,
++    save_videos: bool = False,
++    video_dir: Optional[Path] = None,
++    video_fps: int = 30,
++    action_intervention: Optional[ActionIntervention] = None,
++    planning_strategy: str = "first",
++    planning_risk_lambda: float = 1.0,
++    planning_action_weight: float = 0.5,
++    planning_difficulty_threshold: float = 0.088588,
++    planning_value_margin: float = 0.002,
++    planning_uncertainty_margin: float = 0.0,
++    planning_phase_fraction: float = 0.5,
++    planning_short_open_loop_steps: int = 8,
++    record_denoising_trace: bool = False,
++    collect_safety_signals: bool = False,
++    terminate_on_safety_violation: bool = False,
++    num_open_loop_steps: int = 16,
++    num_denoising_steps_action: int = 5,
++    prediction_mode: str = "parallel",
++    num_denoising_steps_future_state: int = 1,
++    num_denoising_steps_value: int = 1,
++    num_future_state_samples: int = 1,
++    num_value_samples: int = 1,
++    value_ensemble_aggregation_scheme: str = "average",
++    experiment_split: str = "unspecified",
++    case_id: str = "",
++) -> Tuple[pd.DataFrame, Path]:
++    """Collect traces for multiple suites/tasks/episodes."""
++    output_dir.mkdir(parents=True, exist_ok=True)
++    all_traces: List[pd.DataFrame] = []
++
++    # Load once.  We validate/prewarm using the first suite, then reuse the model for the rest.
++    cfg = default_policy_config(
++        suites[0],
++        seed=base_seed,
++        num_open_loop_steps=num_open_loop_steps,
++        num_denoising_steps_action=num_denoising_steps_action,
++        prediction_mode=prediction_mode,
++        num_denoising_steps_future_state=num_denoising_steps_future_state,
++        num_denoising_steps_value=num_denoising_steps_value,
++        num_future_state_samples=num_future_state_samples,
++        num_value_samples=num_value_samples,
++        value_ensemble_aggregation_scheme=value_ensemble_aggregation_scheme,
++    )
++    validate_config(cfg)
++    set_seed_everywhere(cfg.seed)
++    init_t5_text_embeddings_cache(cfg.t5_text_embeddings_path)
++    dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
++    prewarm_libero_renderer(cfg)
++    model, cosmos_config = get_model(cfg)
++    if cfg.chunk_size != cosmos_config.dataloader_train.dataset.chunk_size:
++        raise ValueError(
++            f"chunk size mismatch: eval={cfg.chunk_size}, train={cosmos_config.dataloader_train.dataset.chunk_size}"
++        )
++
++    episode_counter = 0
++    for suite_name in suites:
++        cfg.task_suite_name = suite_name
++        suite_cls = benchmark.get_benchmark_dict()[suite_name]
++        task_suite = suite_cls()
++        selected_task_ids = list(task_ids) if task_ids else list(range(task_suite.get_num_tasks()))
++        for task_id in selected_task_ids:
++            for ep in range(episodes_per_task):
++                init_state_id = init_state_offset + ep
++                episode_seed = base_seed + episode_counter * 17
++                print(
++                    f"[collect] suite={suite_name} task={task_id} ep={ep} "
++                    f"init={init_state_id} seed={episode_seed}"
++                )
++                trace, frames = run_uncertainty_episode(
++                    cfg=cfg,
++                    model=model,
++                    dataset_stats=dataset_stats,
++                    suite_name=suite_name,
++                    task_id=task_id,
++                    episode_id=episode_counter,
++                    init_state_id=init_state_id,
++                    base_seed=episode_seed,
++                    uncertainty_seed_offsets=uncertainty_seeds,
++                    max_timesteps=max_timesteps,
++                    save_video_frames=save_videos,
++                    collect_prediction_errors=collect_prediction_errors,
++                    action_intervention=action_intervention,
++                    planning_strategy=planning_strategy,
++                    planning_risk_lambda=planning_risk_lambda,
++                    planning_action_weight=planning_action_weight,
++                    planning_difficulty_threshold=planning_difficulty_threshold,
++                    planning_value_margin=planning_value_margin,
++                    planning_uncertainty_margin=planning_uncertainty_margin,
++                    planning_phase_fraction=planning_phase_fraction,
++                    planning_short_open_loop_steps=planning_short_open_loop_steps,
++                    record_denoising_trace=record_denoising_trace,
++                    collect_safety_signals=collect_safety_signals,
++                    terminate_on_safety_violation=terminate_on_safety_violation,
++                    experiment_split=experiment_split,
++                    case_id=case_id,
++                )
++                if len(trace) == 0:
++                    print("[collect] empty trace")
++                else:
++                    if save_videos:
++                        resolved_video_dir = video_dir or (output_dir / f"{run_name}__videos")
++                        video_path = save_trace_video(frames, resolved_video_dir, trace, fps=video_fps)
++                        if video_path is not None:
++                            trace["video_path"] = str(video_path)
++                            trace["video_num_frames"] = int(len(frames))
++                            trace["video_expected_frames"] = int(trace["executed_steps"].sum())
++                            print(
++                                f"[collect] saved video={video_path} "
++                                f"frames={len(frames)}/{int(trace['executed_steps'].sum())}"
++                            )
++                    print(
++                        f"[collect] success={bool(trace['success'].iloc[0])} "
++                        f"queries={len(trace)} final_t={int(trace['final_t'].iloc[0])}"
++                    )
++                    all_traces.append(trace)
++                    partial = pd.concat(all_traces, ignore_index=True)
++                    partial.to_csv(output_dir / f"{run_name}__query_traces.csv", index=False)
++                    partial.to_parquet(output_dir / f"{run_name}__query_traces.parquet", index=False)
++                episode_counter += 1
++
++    traces = pd.concat(all_traces, ignore_index=True) if all_traces else pd.DataFrame()
++    out_path = output_dir / f"{run_name}__query_traces.parquet"
++    traces.to_parquet(out_path, index=False)
++    traces.to_csv(output_dir / f"{run_name}__query_traces.csv", index=False)
++    metadata = {
++        "run_name": run_name,
++        "suites": list(suites),
++        "task_ids": list(task_ids),
++        "episodes_per_task": episodes_per_task,
++        "init_state_offset": init_state_offset,
++        "base_seed": base_seed,
++        "uncertainty_seeds": list(uncertainty_seeds),
++        "max_timesteps": max_timesteps,
++        "collect_prediction_errors": collect_prediction_errors,
++        "save_videos": save_videos,
++        "video_dir": str(video_dir or (output_dir / f"{run_name}__videos")),
++        "video_fps": video_fps,
++        "action_intervention": asdict(action_intervention) if action_intervention else None,
++        "planning_strategy": planning_strategy,
++        "planning_risk_lambda": planning_risk_lambda,
++        "planning_action_weight": planning_action_weight,
++        "planning_difficulty_threshold": planning_difficulty_threshold,
++        "planning_value_margin": planning_value_margin,
++        "planning_uncertainty_margin": planning_uncertainty_margin,
++        "planning_phase_fraction": planning_phase_fraction,
++        "planning_short_open_loop_steps": planning_short_open_loop_steps,
++        "record_denoising_trace": record_denoising_trace,
++        "collect_safety_signals": collect_safety_signals,
++        "terminate_on_safety_violation": terminate_on_safety_violation,
++        "prediction_mode": prediction_mode,
++        "experiment_split": experiment_split,
++        "case_id": case_id,
++        "cfg": asdict(cfg),
++    }
++    (output_dir / f"{run_name}__metadata.json").write_text(json.dumps(metadata, indent=2))
++    (output_dir / f"{run_name}__completed.json").write_text(
++        json.dumps({"run_name": run_name, "num_query_rows": int(len(traces)), "completed": True}, indent=2)
++    )
++    return traces, out_path
++
++
++def collect_paired_uncertainty_traces(
++    suites: Sequence[str],
++    task_ids: Sequence[int],
++    init_state_ids: Sequence[int],
++    max_rollouts_per_init: int,
++    min_success: int,
++    min_failed: int,
++    base_seed: int,
++    uncertainty_seeds: Sequence[int],
++    max_timesteps: Optional[int],
++    output_dir: Path,
++    run_name: str,
++    collect_prediction_errors: bool = True,
++    save_videos: bool = False,
++    video_dir: Optional[Path] = None,
++    video_fps: int = 30,
++    pair_id_start: int = 0,
++    action_intervention: Optional[ActionIntervention] = None,
++    intervention_rollouts: str = "",
++    rollout_seed_step: int = 97,
++    planning_strategy: str = "first",
++    planning_risk_lambda: float = 1.0,
++    planning_action_weight: float = 0.5,
++    planning_difficulty_threshold: float = 0.088588,
++    planning_value_margin: float = 0.002,
++    planning_uncertainty_margin: float = 0.0,
++    planning_phase_fraction: float = 0.5,
++    planning_short_open_loop_steps: int = 8,
++    record_denoising_trace: bool = False,
++    collect_safety_signals: bool = False,
++    terminate_on_safety_violation: bool = False,
++    num_open_loop_steps: int = 16,
++    num_denoising_steps_action: int = 5,
++    prediction_mode: str = "parallel",
++    num_denoising_steps_future_state: int = 1,
++    num_denoising_steps_value: int = 1,
++    num_future_state_samples: int = 1,
++    num_value_samples: int = 1,
++    value_ensemble_aggregation_scheme: str = "average",
++    experiment_split: str = "unspecified",
++    case_id: str = "",
++    resume: bool = False,
++) -> Tuple[pd.DataFrame, Path]:
++    """Collect repeated rollouts for identical suite/task/init until both outcomes appear."""
++    output_dir.mkdir(parents=True, exist_ok=True)
++    existing_trace_path = output_dir / f"{run_name}__query_traces.parquet"
++    existing_traces = (
++        pd.read_parquet(existing_trace_path)
++        if resume and existing_trace_path.is_file()
++        else pd.DataFrame()
++    )
++    all_traces: List[pd.DataFrame] = [existing_traces] if len(existing_traces) else []
++    pair_summaries: List[Dict[str, Any]] = []
++
++    cfg = default_policy_config(
++        suites[0],
++        seed=base_seed,
++        num_open_loop_steps=num_open_loop_steps,
++        num_denoising_steps_action=num_denoising_steps_action,
++        prediction_mode=prediction_mode,
++        num_denoising_steps_future_state=num_denoising_steps_future_state,
++        num_denoising_steps_value=num_denoising_steps_value,
++        num_future_state_samples=num_future_state_samples,
++        num_value_samples=num_value_samples,
++        value_ensemble_aggregation_scheme=value_ensemble_aggregation_scheme,
++    )
++    validate_config(cfg)
++    set_seed_everywhere(cfg.seed)
++    init_t5_text_embeddings_cache(cfg.t5_text_embeddings_path)
++    dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
++    prewarm_libero_renderer(cfg)
++    model, cosmos_config = get_model(cfg)
++    if cfg.chunk_size != cosmos_config.dataloader_train.dataset.chunk_size:
++        raise ValueError(
++            f"chunk size mismatch: eval={cfg.chunk_size}, train={cosmos_config.dataloader_train.dataset.chunk_size}"
++        )
++
++    episode_counter = (
++        int(existing_traces["episode_id"].max()) + 1
++        if len(existing_traces) and "episode_id" in existing_traces
++        else 0
++    )
++    pair_counter = pair_id_start
++    for suite_name in suites:
++        cfg.task_suite_name = suite_name
++        suite_cls = benchmark.get_benchmark_dict()[suite_name]
++        task_suite = suite_cls()
++        selected_task_ids = list(task_ids) if task_ids else list(range(task_suite.get_num_tasks()))
++        for task_id in selected_task_ids:
++            task = task_suite.get_task(task_id)
++            available_init_states = get_task_init_states_compat(task_suite, task_id, task)
++            selected_init_state_ids = list(init_state_ids) if init_state_ids else list(range(len(available_init_states)))
++            for init_state_id in selected_init_state_ids:
++                if init_state_id >= len(available_init_states):
++                    print(
++                        f"[paired] skip suite={suite_name} task={task_id} init={init_state_id}: "
++                        f"only {len(available_init_states)} init states"
++                    )
++                    continue
++                pair_id = pair_counter
++                pair_counter += 1
++                existing_pair = (
++                    existing_traces.loc[existing_traces["pair_id"] == pair_id]
++                    if len(existing_traces) and "pair_id" in existing_traces
++                    else pd.DataFrame()
++                )
++                existing_episodes = (
++                    existing_pair.sort_values("query_idx")
++                    .groupby("rollout_id", dropna=False)
++                    .first()
++                    if len(existing_pair)
++                    else pd.DataFrame()
++                )
++                completed_rollouts = (
++                    {int(value) for value in existing_episodes.index.tolist()}
++                    if len(existing_episodes)
++                    else set()
++                )
++                n_success = int(existing_episodes["success"].astype(bool).sum()) if len(existing_episodes) else 0
++                n_failed = int(len(existing_episodes) - n_success)
++                print(f"[paired] pair={pair_id} suite={suite_name} task={task_id} init={init_state_id}")
++                for rollout_id in range(max_rollouts_per_init):
++                    if rollout_id in completed_rollouts:
++                        print(f"[paired]   rollout={rollout_id} already complete; resume skip")
++                        continue
++                    if n_success >= min_success and n_failed >= min_failed:
++                        print(f"[paired]   pair={pair_id} complete from resumed data")
++                        break
++                    rollout_seed = base_seed + pair_id * 10000 + rollout_id * rollout_seed_step
++                    rollout_intervention = (
++                        action_intervention
++                        if action_intervention is not None and rollout_uses_intervention(intervention_rollouts, rollout_id)
++                        else None
++                    )
++                    intervention_label = f" intervention={rollout_intervention.mode}" if rollout_intervention else ""
++                    print(f"[paired]   rollout={rollout_id} seed={rollout_seed}{intervention_label}")
++                    trace, frames = run_uncertainty_episode(
++                        cfg=cfg,
++                        model=model,
++                        dataset_stats=dataset_stats,
++                        suite_name=suite_name,
++                        task_id=task_id,
++                        episode_id=episode_counter,
++                        init_state_id=init_state_id,
++                        base_seed=rollout_seed,
++                        uncertainty_seed_offsets=uncertainty_seeds,
++                        max_timesteps=max_timesteps,
++                        save_video_frames=save_videos,
++                        collect_prediction_errors=collect_prediction_errors,
++                        pair_id=pair_id,
++                        rollout_id=rollout_id,
++                        action_intervention=rollout_intervention,
++                        planning_strategy=planning_strategy,
++                        planning_risk_lambda=planning_risk_lambda,
++                        planning_action_weight=planning_action_weight,
++                        planning_difficulty_threshold=planning_difficulty_threshold,
++                        planning_value_margin=planning_value_margin,
++                        planning_uncertainty_margin=planning_uncertainty_margin,
++                        planning_phase_fraction=planning_phase_fraction,
++                        planning_short_open_loop_steps=planning_short_open_loop_steps,
++                        record_denoising_trace=record_denoising_trace,
++                        collect_safety_signals=collect_safety_signals,
++                        terminate_on_safety_violation=terminate_on_safety_violation,
++                        experiment_split=experiment_split,
++                        case_id=case_id,
++                    )
++                    episode_counter += 1
++                    if len(trace) == 0:
++                        print("[paired]   empty trace")
++                        continue
++                    success = bool(trace["success"].iloc[0])
++                    n_success += int(success)
++                    n_failed += int(not success)
++                    if save_videos:
++                        resolved_video_dir = video_dir or (output_dir / f"{run_name}__videos")
++                        video_path = save_trace_video(frames, resolved_video_dir, trace, fps=video_fps)
++                        if video_path is not None:
++                            trace["video_path"] = str(video_path)
++                            trace["video_num_frames"] = int(len(frames))
++                            trace["video_expected_frames"] = int(trace["executed_steps"].sum())
++                            print(
++                                f"[paired]   saved video={video_path} "
++                                f"frames={len(frames)}/{int(trace['executed_steps'].sum())}"
++                            )
++                    all_traces.append(trace)
++                    partial = pd.concat(all_traces, ignore_index=True)
++                    partial.to_csv(output_dir / f"{run_name}__query_traces.csv", index=False)
++                    partial.to_parquet(output_dir / f"{run_name}__query_traces.parquet", index=False)
++                    print(
++                        f"[paired]   success={success} queries={len(trace)} "
++                        f"final_t={int(trace['final_t'].iloc[0])} pair_counts=({n_success} success, {n_failed} failed)"
++                    )
++                    if n_success >= min_success and n_failed >= min_failed:
++                        print(f"[paired]   pair={pair_id} complete")
++                        break
++                pair_summaries.append(
++                    {
++                        "pair_id": pair_id,
++                        "suite": suite_name,
++                        "task_id": task_id,
++                        "init_state_id": init_state_id,
++                        "num_success": n_success,
++                        "num_failed": n_failed,
++                        "num_rollouts": n_success + n_failed,
++                        "paired_complete": bool(n_success >= min_success and n_failed >= min_failed),
++                        "action_intervention": asdict(action_intervention) if action_intervention else None,
++                        "intervention_rollouts": intervention_rollouts,
++                        "rollout_seed_step": rollout_seed_step,
++                    }
++                )
++
++    traces = pd.concat(all_traces, ignore_index=True) if all_traces else pd.DataFrame()
++    out_path = output_dir / f"{run_name}__query_traces.parquet"
++    traces.to_parquet(out_path, index=False)
++    traces.to_csv(output_dir / f"{run_name}__query_traces.csv", index=False)
++    pd.DataFrame(pair_summaries).to_csv(output_dir / f"{run_name}__pair_summary.csv", index=False)
++    metadata = {
++        "run_name": run_name,
++        "mode": "paired",
++        "suites": list(suites),
++        "task_ids": list(task_ids),
++        "init_state_ids": list(init_state_ids),
++        "max_rollouts_per_init": max_rollouts_per_init,
++        "min_success": min_success,
++        "min_failed": min_failed,
++        "base_seed": base_seed,
++        "uncertainty_seeds": list(uncertainty_seeds),
++        "max_timesteps": max_timesteps,
++        "collect_prediction_errors": collect_prediction_errors,
++        "save_videos": save_videos,
++        "video_dir": str(video_dir or (output_dir / f"{run_name}__videos")),
++        "video_fps": video_fps,
++        "pair_id_start": pair_id_start,
++        "action_intervention": asdict(action_intervention) if action_intervention else None,
++        "intervention_rollouts": intervention_rollouts,
++        "rollout_seed_step": rollout_seed_step,
++        "planning_strategy": planning_strategy,
++        "planning_risk_lambda": planning_risk_lambda,
++        "planning_action_weight": planning_action_weight,
++        "planning_difficulty_threshold": planning_difficulty_threshold,
++        "planning_value_margin": planning_value_margin,
++        "planning_uncertainty_margin": planning_uncertainty_margin,
++        "planning_phase_fraction": planning_phase_fraction,
++        "planning_short_open_loop_steps": planning_short_open_loop_steps,
++        "record_denoising_trace": record_denoising_trace,
++        "collect_safety_signals": collect_safety_signals,
++        "terminate_on_safety_violation": terminate_on_safety_violation,
++        "prediction_mode": prediction_mode,
++        "experiment_split": experiment_split,
++        "case_id": case_id,
++        "resume": resume,
++        "cfg": asdict(cfg),
++    }
++    (output_dir / f"{run_name}__metadata.json").write_text(json.dumps(metadata, indent=2))
++    (output_dir / f"{run_name}__completed.json").write_text(
++        json.dumps(
++            {
++                "run_name": run_name,
++                "num_query_rows": int(len(traces)),
++                "num_rollouts": int(
++                    traces[["pair_id", "rollout_id"]].drop_duplicates().shape[0]
++                    if len(traces)
++                    else 0
++                ),
++                "completed": True,
++            },
++            indent=2,
++        )
++    )
++    return traces, out_path
++
++
++def load_trace_file(path: Path) -> pd.DataFrame:
++    if path.suffix == ".parquet":
++        return pd.read_parquet(path)
++    return pd.read_csv(path)
++
++
++def _episode_group_columns(df: pd.DataFrame) -> List[str]:
++    candidates = ["suite", "task_id", "episode_id", "pair_id", "rollout_id", "init_state_id", "base_seed", "rollout_seed"]
++    return [col for col in candidates if col in df.columns]
++
++
++def _tail_fraction(values: pd.Series, fraction: float) -> float:
++    clean = values.dropna()
++    if len(clean) == 0:
++        return float("nan")
++    n = max(1, int(math.ceil(len(clean) * fraction)))
++    return float(clean.tail(n).mean())
++
++
++def _slope(values: pd.Series, x: pd.Series) -> float:
++    mask = values.notna() & x.notna()
++    if mask.sum() < 2:
++        return float("nan")
++    coeff = np.polyfit(x[mask].to_numpy(dtype=float), values[mask].to_numpy(dtype=float), deg=1)
++    return float(coeff[0])
++
++
++def make_episode_features(trace_df: pd.DataFrame) -> pd.DataFrame:
++    """Create episode-level features from query-level traces."""
++    group_cols = _episode_group_columns(trace_df)
++    metric_cols = _numeric_metric_columns(trace_df)
++    rows: List[Dict[str, Any]] = []
++    for keys, group in trace_df.groupby(group_cols, dropna=False):
++        if not isinstance(keys, tuple):
++            keys = (keys,)
++        row = dict(zip(group_cols, keys))
++        row["success"] = bool(group["success"].iloc[-1])
++        row["failed"] = int(not row["success"])
++        row["final_t"] = int(group["final_t"].iloc[-1]) if "final_t" in group else int(group["t"].max())
++        row["num_queries"] = int(len(group))
++        row["task_description"] = group["task_description"].iloc[-1] if "task_description" in group else ""
++        for col in metric_cols:
++            values = group[col]
++            row[f"{col}__mean"] = float(values.mean())
++            row[f"{col}__std"] = float(values.std(ddof=0))
++            row[f"{col}__max"] = float(values.max())
++            row[f"{col}__min"] = float(values.min())
++            row[f"{col}__last"] = float(values.iloc[-1])
++            row[f"{col}__last3_mean"] = float(values.tail(3).mean())
++            row[f"{col}__last25_mean"] = _tail_fraction(values, 0.25)
++            row[f"{col}__first3_mean"] = float(values.head(3).mean())
++            row[f"{col}__late_minus_early"] = row[f"{col}__last3_mean"] - row[f"{col}__first3_mean"]
++            row[f"{col}__slope"] = _slope(values, group["t"])
++        rows.append(row)
++    return pd.DataFrame(rows)
++
++
++def roc_auc_for_failure(labels_failed: np.ndarray, scores: np.ndarray) -> float:
++    """AUC where positive label means failed episode."""
++    mask = ~np.isnan(scores)
++    labels = labels_failed[mask].astype(int)
++    scores = scores[mask].astype(float)
++    n_pos = int(labels.sum())
++    n_neg = int(len(labels) - n_pos)
++    if n_pos == 0 or n_neg == 0:
++        return float("nan")
++    ranks = stats.rankdata(scores)
++    sum_pos = ranks[labels == 1].sum()
++    return float((sum_pos - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
++
++
++def best_threshold_balanced_accuracy(labels_failed: np.ndarray, scores: np.ndarray, high_means_failed: bool) -> Tuple[float, float]:
++    mask = ~np.isnan(scores)
++    labels = labels_failed[mask].astype(bool)
++    scores = scores[mask].astype(float)
++    if labels.sum() == 0 or (~labels).sum() == 0:
++        return float("nan"), float("nan")
++    thresholds = np.unique(scores)
++    best_thr = float(thresholds[0])
++    best_bal_acc = -1.0
++    for thr in thresholds:
++        pred_failed = scores >= thr if high_means_failed else scores <= thr
++        tpr = (pred_failed & labels).sum() / labels.sum()
++        tnr = ((~pred_failed) & (~labels)).sum() / (~labels).sum()
++        bal_acc = 0.5 * (tpr + tnr)
++        if bal_acc > best_bal_acc:
++            best_bal_acc = float(bal_acc)
++            best_thr = float(thr)
++    return best_thr, best_bal_acc
++
++
++def rank_episode_features(episode_df: pd.DataFrame) -> pd.DataFrame:
++    """Rank episode-level features by success/failure separation."""
++    labels = episode_df["failed"].to_numpy(dtype=int)
++    rows: List[Dict[str, Any]] = []
++    skip = set(METADATA_COLUMNS) | {"failed"}
++    for col in episode_df.columns:
++        if col in skip or not pd.api.types.is_numeric_dtype(episode_df[col]):
++            continue
++        scores = episode_df[col].to_numpy(dtype=float)
++        if np.isnan(scores).all() or np.nanstd(scores) == 0:
++            continue
++        auc_high = roc_auc_for_failure(labels, scores)
++        if np.isnan(auc_high):
++            continue
++        high_means_failed = auc_high >= 0.5
++        oriented_auc = auc_high if high_means_failed else 1.0 - auc_high
++        failed_scores = scores[labels == 1]
++        success_scores = scores[labels == 0]
++        failed_scores = failed_scores[~np.isnan(failed_scores)]
++        success_scores = success_scores[~np.isnan(success_scores)]
++        p_value = float("nan")
++        if len(failed_scores) > 0 and len(success_scores) > 0:
++            try:
++                p_value = float(stats.mannwhitneyu(failed_scores, success_scores, alternative="two-sided").pvalue)
++            except ValueError:
++                p_value = float("nan")
++        threshold, bal_acc = best_threshold_balanced_accuracy(labels, scores, high_means_failed)
++        pooled_std = float(np.nanstd(scores))
++        effect = float((np.nanmean(failed_scores) - np.nanmean(success_scores)) / pooled_std) if pooled_std > 0 else float("nan")
++        rows.append(
++            {
++                "feature": col,
++                "oriented_auc": float(oriented_auc),
++                "auc_high_means_failed": float(auc_high),
++                "direction": "high=failure" if high_means_failed else "low=failure",
++                "best_threshold": threshold,
++                "best_balanced_accuracy": bal_acc,
++                "failed_mean": float(np.nanmean(failed_scores)) if len(failed_scores) else float("nan"),
++                "success_mean": float(np.nanmean(success_scores)) if len(success_scores) else float("nan"),
++                "effect_failed_minus_success": effect,
++                "mannwhitney_p": p_value,
++                "n_failed": int(labels.sum()),
++                "n_success": int((1 - labels).sum()),
++            }
++        )
++    return pd.DataFrame(rows).sort_values(["oriented_auc", "best_balanced_accuracy"], ascending=False)
++
++
++def split_episode_feature_name(feature: str) -> Tuple[str, str]:
++    """Split ``metric__aggregation`` names used by episode features."""
++    if "__" not in feature:
++        return feature, "raw"
++    metric, aggregation = feature.rsplit("__", 1)
++    return metric, aggregation
++
++
++def summarize_ranked_feature_groups(ranked_df: pd.DataFrame, group_col: str) -> pd.DataFrame:
++    """Summarize ranked features by metric family or aggregation."""
++    if len(ranked_df) == 0:
++        return pd.DataFrame()
++
++    rows: List[Dict[str, Any]] = []
++    for group_value, group in ranked_df.groupby(group_col, dropna=False):
++        ordered = group.sort_values(["oriented_auc", "best_balanced_accuracy"], ascending=False)
++        top = ordered.iloc[0]
++        rows.append(
++            {
++                group_col: group_value,
++                "best_feature": top["feature"],
++                "best_oriented_auc": float(top["oriented_auc"]),
++                "best_balanced_accuracy": float(top["best_balanced_accuracy"]),
++                "best_direction": top["direction"],
++                "best_failed_mean": float(top["failed_mean"]),
++                "best_success_mean": float(top["success_mean"]),
++                "mean_oriented_auc": float(group["oriented_auc"].mean()),
++                "median_oriented_auc": float(group["oriented_auc"].median()),
++                "num_features": int(len(group)),
++            }
++        )
++    return pd.DataFrame(rows).sort_values(["best_oriented_auc", "mean_oriented_auc"], ascending=False)
++
++
++def summarize_ranked_features(ranked_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
++    """Return metric-family and aggregation summaries for ranked episode features."""
++    if len(ranked_df) == 0:
++        return pd.DataFrame(), pd.DataFrame()
++    enriched = ranked_df.copy()
++    split_names = enriched["feature"].map(split_episode_feature_name)
++    enriched["metric_family"] = [metric for metric, _ in split_names]
++    enriched["aggregation"] = [aggregation for _, aggregation in split_names]
++    return (
++        summarize_ranked_feature_groups(enriched, "metric_family"),
++        summarize_ranked_feature_groups(enriched, "aggregation"),
++    )
++
++
++def rank_episode_features_within_groups(episode_df: pd.DataFrame, group_cols: Sequence[str]) -> pd.DataFrame:
++    """Rank features after requiring success/failure variation within groups."""
++    columns = [
++        "feature",
++        "group_cols",
++        "num_valid_groups",
++        "num_valid_episodes",
++        "mean_oriented_auc",
++        "weighted_mean_oriented_auc",
++        "min_oriented_auc",
++        "max_oriented_auc",
++    ]
++    skip = set(METADATA_COLUMNS) | {"failed"}
++    rows: List[Dict[str, Any]] = []
++    valid_groups = [
++        group
++        for _, group in episode_df.groupby(list(group_cols), dropna=False)
++        if group["failed"].nunique(dropna=True) == 2
++    ]
++    if not valid_groups:
++        return pd.DataFrame(columns=columns)
++
++    for col in episode_df.columns:
++        if col in skip or not pd.api.types.is_numeric_dtype(episode_df[col]):
++            continue
++        aucs = []
++        weights = []
++        for group in valid_groups:
++            scores = group[col].to_numpy(dtype=float)
++            if np.isnan(scores).all() or np.nanstd(scores) == 0:
++                continue
++            labels = group["failed"].to_numpy(dtype=int)
++            auc_high = roc_auc_for_failure(labels, scores)
++            if np.isnan(auc_high):
++                continue
++            aucs.append(max(auc_high, 1.0 - auc_high))
++            weights.append(len(group))
++        if not aucs:
++            continue
++        auc_array = np.array(aucs, dtype=float)
++        weight_array = np.array(weights, dtype=float)
++        rows.append(
++            {
++                "feature": col,
++                "group_cols": ",".join(group_cols),
++                "num_valid_groups": int(len(auc_array)),
++                "num_valid_episodes": int(weight_array.sum()),
++                "mean_oriented_auc": float(auc_array.mean()),
++                "weighted_mean_oriented_auc": float(np.average(auc_array, weights=weight_array)),
++                "min_oriented_auc": float(auc_array.min()),
++                "max_oriented_auc": float(auc_array.max()),
++            }
++        )
++    if not rows:
++        return pd.DataFrame(columns=columns)
++    return pd.DataFrame(rows).sort_values(["weighted_mean_oriented_auc", "mean_oriented_auc"], ascending=False)
++
++
++def _zscore_series(series: pd.Series) -> pd.Series:
++    std = series.std(ddof=0)
++    if std == 0 or np.isnan(std):
++        return pd.Series(np.zeros(len(series)), index=series.index)
++    return (series - series.mean()) / std
++
++
++def add_composite_scores(episode_df: pd.DataFrame, ranked_df: Optional[pd.DataFrame] = None, top_k: int = 5) -> pd.DataFrame:
++    """Add predefined and top-k oriented composite risk scores."""
++    result = episode_df.copy()
++    predefined = [
++        ("action_std_mean__last3_mean", 1.0),
++        ("action_first_step_l2_std__last3_mean", 1.0),
++        ("value_std__last3_mean", 1.0),
++        ("future_image_pixel_std_mean__last3_mean", 1.0),
++        ("latent_action_copy_std_mean_mean_over_samples__last3_mean", 1.0),
++        ("value_mean__last3_mean", -1.0),
++    ]
++    parts = []
++    used = []
++    for col, sign in predefined:
++        if col in result.columns:
++            parts.append(sign * _zscore_series(result[col]))
++            used.append(col)
++    if parts:
++        result["risk_predefined_last3"] = sum(parts) / len(parts)
++        result.attrs["risk_predefined_last3_features"] = used
++
++    if ranked_df is not None and len(ranked_df) > 0:
++        top = ranked_df.head(top_k)
++        parts = []
++        used = []
++        for row in top.itertuples(index=False):
++            sign = 1.0 if row.direction == "high=failure" else -1.0
++            parts.append(sign * _zscore_series(result[row.feature]))
++            used.append(row.feature)
++        if parts:
++            result[f"risk_top{top_k}_oriented"] = sum(parts) / len(parts)
++            result.attrs[f"risk_top{top_k}_oriented_features"] = used
++    return result
++
++
++def make_time_aligned_features(trace_df: pd.DataFrame, grid_size: int = 21) -> pd.DataFrame:
++    """Interpolate each query metric to normalized progress grid per episode."""
++    group_cols = _episode_group_columns(trace_df)
++    metric_cols = _numeric_metric_columns(trace_df)
++    grid = np.linspace(0.0, 1.0, grid_size)
++    rows: List[Dict[str, Any]] = []
++    for keys, group in trace_df.groupby(group_cols, dropna=False):
++        if not isinstance(keys, tuple):
++            keys = (keys,)
++        group = group.sort_values("t")
++        progress = group["query_idx"].to_numpy(dtype=float)
++        if len(progress) == 1 or progress.max() == progress.min():
++            progress = np.zeros_like(progress)
++        else:
++            progress = (progress - progress.min()) / (progress.max() - progress.min())
++        for metric in metric_cols:
++            values = group[metric].to_numpy(dtype=float)
++            if np.isnan(values).all():
++                continue
++            valid = ~np.isnan(values)
++            interp = np.interp(grid, progress[valid], values[valid]) if valid.sum() > 1 else np.full_like(grid, values[valid][0])
++            for p, value in zip(grid, interp):
++                row = dict(zip(group_cols, keys))
++                row.update(
++                    {
++                        "success": bool(group["success"].iloc[-1]),
++                        "failed": int(not bool(group["success"].iloc[-1])),
++                        "metric": metric,
++                        "progress": float(p),
++                        "value": float(value),
++                    }
++                )
++                rows.append(row)
++    return pd.DataFrame(rows)
++
++
++def rank_time_aligned_metrics(aligned_df: pd.DataFrame) -> pd.DataFrame:
++    """Rank base metrics by best separation at any normalized progress point."""
++    rows = []
++    for (metric, progress), group in aligned_df.groupby(["metric", "progress"], dropna=False):
++        labels = group["failed"].to_numpy(dtype=int)
++        values = group["value"].to_numpy(dtype=float)
++        auc_high = roc_auc_for_failure(labels, values)
++        if np.isnan(auc_high):
++            continue
++        oriented_auc = max(auc_high, 1.0 - auc_high)
++        rows.append(
++            {
++                "metric": metric,
++                "progress": float(progress),
++                "oriented_auc": float(oriented_auc),
++                "direction": "high=failure" if auc_high >= 0.5 else "low=failure",
++                "failed_mean": float(np.nanmean(values[labels == 1])),
++                "success_mean": float(np.nanmean(values[labels == 0])),
++            }
++        )
++    ranked = pd.DataFrame(rows)
++    if len(ranked) == 0:
++        return ranked
++    return ranked.sort_values(["oriented_auc"], ascending=False)
++
++
++def rank_uncertainty_error_correlations(trace_df: pd.DataFrame, min_samples: int = 8) -> pd.DataFrame:
++    """Rank query-level correlations between uncertainty signals and prediction errors."""
++    numeric_cols = _numeric_metric_columns(trace_df)
++    error_cols = [
++        col
++        for col in numeric_cols
++        if col.startswith("prediction_error_")
++        and not col.startswith("prediction_error_value_abs_final_success")
++        and not col.startswith("prediction_error_value_abs_chunk_success")
++    ]
++    uncertainty_cols = [
++        col
++        for col in numeric_cols
++        if not col.startswith("prediction_error_")
++        and not col.startswith("prediction_value_")
++        and not col.startswith("actual_object_state_")
++        and col not in {"chunk_success"}
++    ]
++    rows: List[Dict[str, Any]] = []
++    for uncertainty_col in uncertainty_cols:
++        for error_col in error_cols:
++            values = trace_df[[uncertainty_col, error_col]].replace([np.inf, -np.inf], np.nan).dropna()
++            if len(values) < min_samples:
++                continue
++            if values[uncertainty_col].nunique() < 2 or values[error_col].nunique() < 2:
++                continue
++            rho, p_value = stats.spearmanr(values[uncertainty_col], values[error_col])
++            if np.isnan(rho):
++                continue
++            rows.append(
++                {
++                    "uncertainty_metric": uncertainty_col,
++                    "prediction_error_metric": error_col,
++                    "spearman_r": float(rho),
++                    "abs_spearman_r": float(abs(rho)),
++                    "p_value": float(p_value),
++                    "n": int(len(values)),
++                }
++            )
++    if not rows:
++        return pd.DataFrame(
++            columns=["uncertainty_metric", "prediction_error_metric", "spearman_r", "abs_spearman_r", "p_value", "n"]
++        )
++    return pd.DataFrame(rows).sort_values(["abs_spearman_r", "n"], ascending=False)
++
++
++def save_top_feature_plots(episode_df: pd.DataFrame, ranked_df: pd.DataFrame, output_dir: Path, top_n: int = 8) -> None:
++    if len(ranked_df) == 0:
++        return
++    plot_dir = output_dir / "plots"
++    plot_dir.mkdir(parents=True, exist_ok=True)
++    for stale_plot in plot_dir.glob("box__*.png"):
++        stale_plot.unlink()
++    top = ranked_df.head(top_n)
++    for row in top.itertuples(index=False):
++        values_success = episode_df.loc[episode_df["failed"] == 0, row.feature].dropna().to_numpy()
++        values_failed = episode_df.loc[episode_df["failed"] == 1, row.feature].dropna().to_numpy()
++        if len(values_success) == 0 or len(values_failed) == 0:
++            continue
++        plt.figure(figsize=(5, 4))
++        plt.boxplot([values_success, values_failed], tick_labels=["success", "failed"], showmeans=True)
++        plt.title(f"{row.feature}\nAUC={row.oriented_auc:.3f}, {row.direction}")
++        plt.ylabel(row.feature)
++        plt.tight_layout()
++        safe_name = row.feature.replace("/", "_").replace(" ", "_")
++        plt.savefig(plot_dir / f"box__{safe_name}.png", dpi=160)
++        plt.close()
++
++
++def analyze_trace_file(trace_path: Path, output_dir: Path, grid_size: int = 21, top_k: int = 5) -> Dict[str, Path]:
++    output_dir.mkdir(parents=True, exist_ok=True)
++    trace_df = load_trace_file(trace_path)
++    if len(trace_df) == 0:
++        raise ValueError(f"trace file is empty: {trace_path}")
++
++    episode_df = make_episode_features(trace_df)
++    ranked_df = rank_episode_features(episode_df)
++    episode_df = add_composite_scores(episode_df, ranked_df, top_k=top_k)
++    ranked_with_composites = rank_episode_features(episode_df)
++    metric_family_ranked_df, aggregation_ranked_df = summarize_ranked_features(ranked_with_composites)
++    ranked_within_suite_df = rank_episode_features_within_groups(episode_df, ["suite"])
++    ranked_within_suite_task_df = rank_episode_features_within_groups(episode_df, ["suite", "task_id"])
++    ranked_within_pair_df = (
++        rank_episode_features_within_groups(episode_df, ["pair_id"])
++        if "pair_id" in episode_df.columns
++        else pd.DataFrame()
++    )
++    aligned_df = make_time_aligned_features(trace_df, grid_size=grid_size)
++    aligned_ranked_df = rank_time_aligned_metrics(aligned_df)
++    uncertainty_error_corr_df = rank_uncertainty_error_correlations(trace_df)
++
++    episode_path = output_dir / "episode_features.csv"
++    ranked_path = output_dir / "ranked_episode_features.csv"
++    metric_family_path = output_dir / "ranked_metric_families.csv"
++    aggregation_path = output_dir / "ranked_aggregations.csv"
++    ranked_within_suite_path = output_dir / "ranked_within_suite_features.csv"
++    ranked_within_suite_task_path = output_dir / "ranked_within_suite_task_features.csv"
++    ranked_within_pair_path = output_dir / "ranked_within_pair_features.csv"
++    aligned_path = output_dir / "time_aligned_features.csv"
++    aligned_ranked_path = output_dir / "ranked_time_aligned_metrics.csv"
++    uncertainty_error_corr_path = output_dir / "ranked_uncertainty_error_correlations.csv"
++    summary_path = output_dir / "summary.json"
++
++    episode_df.to_csv(episode_path, index=False)
++    ranked_with_composites.to_csv(ranked_path, index=False)
++    metric_family_ranked_df.to_csv(metric_family_path, index=False)
++    aggregation_ranked_df.to_csv(aggregation_path, index=False)
++    ranked_within_suite_df.to_csv(ranked_within_suite_path, index=False)
++    ranked_within_suite_task_df.to_csv(ranked_within_suite_task_path, index=False)
++    ranked_within_pair_df.to_csv(ranked_within_pair_path, index=False)
++    aligned_df.to_csv(aligned_path, index=False)
++    aligned_ranked_df.to_csv(aligned_ranked_path, index=False)
++    uncertainty_error_corr_df.to_csv(uncertainty_error_corr_path, index=False)
++    save_top_feature_plots(episode_df, ranked_with_composites, output_dir)
++
++    summary = {
++        "trace_path": str(trace_path),
++        "num_query_rows": int(len(trace_df)),
++        "num_episodes": int(len(episode_df)),
++        "num_success": int((episode_df["failed"] == 0).sum()),
++        "num_failed": int((episode_df["failed"] == 1).sum()),
++        "top_episode_features": ranked_with_composites.head(15).to_dict(orient="records"),
++        "top_metric_families": metric_family_ranked_df.head(15).to_dict(orient="records") if len(metric_family_ranked_df) else [],
++        "top_aggregations": aggregation_ranked_df.head(15).to_dict(orient="records") if len(aggregation_ranked_df) else [],
++        "top_within_suite_features": ranked_within_suite_df.head(15).to_dict(orient="records") if len(ranked_within_suite_df) else [],
++        "top_within_suite_task_features": ranked_within_suite_task_df.head(15).to_dict(orient="records")
++        if len(ranked_within_suite_task_df)
++        else [],
++        "top_within_pair_features": ranked_within_pair_df.head(15).to_dict(orient="records") if len(ranked_within_pair_df) else [],
++        "top_time_aligned": aligned_ranked_df.head(15).to_dict(orient="records") if len(aligned_ranked_df) else [],
++        "top_uncertainty_error_correlations": uncertainty_error_corr_df.head(15).to_dict(orient="records")
++        if len(uncertainty_error_corr_df)
++        else [],
++        "composite_features": {
++            key: value for key, value in episode_df.attrs.items() if key.startswith("risk_")
++        },
++    }
++    summary_path.write_text(json.dumps(summary, indent=2))
++    return {
++        "episode_features": episode_path,
++        "ranked_episode_features": ranked_path,
++        "ranked_metric_families": metric_family_path,
++        "ranked_aggregations": aggregation_path,
++        "ranked_within_suite_features": ranked_within_suite_path,
++        "ranked_within_suite_task_features": ranked_within_suite_task_path,
++        "ranked_within_pair_features": ranked_within_pair_path,
++        "time_aligned_features": aligned_path,
++        "ranked_time_aligned_metrics": aligned_ranked_path,
++        "ranked_uncertainty_error_correlations": uncertainty_error_corr_path,
++        "summary": summary_path,
++    }
++
++
++def build_parser() -> argparse.ArgumentParser:
++    parser = argparse.ArgumentParser(description=__doc__)
++    subparsers = parser.add_subparsers(dest="command", required=True)
++
++    def add_intervention_args(subparser: argparse.ArgumentParser) -> None:
++        subparser.add_argument(
++            "--intervention-mode",
++            choices=["none", "zero_all", "zero_motion", "gripper", "scale", "bias"],
++            default="none",
++            help="Deterministic action edit for controlled-failure experiments",
++        )
++        subparser.add_argument("--intervention-start-t", type=int, default=0)
++        subparser.add_argument("--intervention-end-t", type=int, default=-1, help="-1 means no end time")
++        subparser.add_argument("--intervention-start-query", type=int, default=-1, help="-1 means no query bound")
++        subparser.add_argument("--intervention-end-query", type=int, default=-1, help="-1 means no query bound")
++        subparser.add_argument("--intervention-gripper", type=float, default=1.0)
++        subparser.add_argument("--intervention-scale", type=float, default=0.0)
++        subparser.add_argument("--intervention-bias", default="", help="Comma-separated 7D action bias for mode=bias")
++
++    def add_planning_args(subparser: argparse.ArgumentParser) -> None:
++        subparser.add_argument(
++            "--planning-strategy",
++            choices=[
++                "first",
++                "max_value",
++                "max_value_replay",
++                "risk_aware_action",
++                "risk_aware_value",
++                "risk_aware_combined",
++                "uncertainty_penalty_action",
++                "uncertainty_penalty_action_replay",
++                "uncertainty_penalty_action_chunk",
++                "uncertainty_penalty_action_max",
++                "uncertainty_penalty_value",
++                "uncertainty_penalty_combined",
++                "difficulty_gated_action",
++                "margin_gated_action",
++                "consensus_action",
++                "phase_gated_action",
++                "disagreement_requery_action",
++                "difficulty_gated_requery_action",
++            ],
++            default="first",
++            help="Which sampled candidate action chunk to execute at every query",
++        )
++        subparser.add_argument(
++            "--planning-risk-lambda",
++            type=float,
++            default=1.0,
++            help="Risk penalty for risk-aware planning strategies",
++        )
++        subparser.add_argument(
++            "--planning-action-weight",
++            type=float,
++            default=0.5,
++            help="Action uncertainty weight in the combined risk score",
++        )
++        subparser.add_argument(
++            "--planning-difficulty-threshold",
++            type=float,
++            default=0.088588,
++            help="q=0 candidate mean-value threshold for episode-level adaptive strategies",
++        )
++        subparser.add_argument(
++            "--planning-value-margin",
++            type=float,
++            default=0.002,
++            help="Maximum raw value sacrificed by the conservative action gate",
++        )
++        subparser.add_argument(
++            "--planning-uncertainty-margin",
++            type=float,
++            default=0.0,
++            help="Minimum candidate uncertainty reduction, in within-query z units",
++        )
++        subparser.add_argument(
++            "--planning-phase-fraction",
++            type=float,
++            default=0.5,
++            help="Episode fraction through which phase-gated uncertainty is active",
++        )
++        subparser.add_argument(
++            "--planning-short-open-loop-steps",
++            type=int,
++            default=8,
++            help="Actions executed when value and uncertainty rankings disagree",
++        )
++
++    def add_safety_args(subparser: argparse.ArgumentParser) -> None:
++        subparser.add_argument(
++            "--collect-safety-signals",
++            action="store_true",
++            help=(
++                "Record goal progress, object-motion, contact, deadlock, and jerk diagnostics; "
++                "also records official LIBERO-Safety info['cost']"
++            ),
++        )
++        subparser.add_argument(
++            "--terminate-on-safety-violation",
++            action="store_true",
++            help="Stop the episode immediately when LIBERO-Safety reports a non-zero info['cost']",
++        )
++
++    def add_inference_args(subparser: argparse.ArgumentParser) -> None:
++        subparser.add_argument(
++            "--num-open-loop-steps",
++            type=int,
++            default=16,
++            help="Actions executed from each 16-step chunk before querying again",
++        )
++        subparser.add_argument("--num-denoising-steps-action", type=int, default=5)
++        subparser.add_argument(
++            "--prediction-mode",
++            choices=["parallel", "autoregressive"],
++            default="parallel",
++            help="Generate action/state/value jointly or as action -> future state -> value",
++        )
++        subparser.add_argument("--num-denoising-steps-future-state", type=int, default=1)
++        subparser.add_argument("--num-denoising-steps-value", type=int, default=1)
++        subparser.add_argument("--num-future-state-samples", type=int, default=1)
++        subparser.add_argument("--num-value-samples", type=int, default=1)
++        subparser.add_argument(
++            "--value-ensemble-aggregation",
++            choices=["average", "lcb", "success_vote", "majority_mean"],
++            default="average",
++        )
++        subparser.add_argument(
++            "--experiment-split",
++            choices=["unspecified", "screen", "calibration", "holdout", "generalization"],
++            default="unspecified",
++        )
++        subparser.add_argument("--case-id", default="")
++
++    collect = subparsers.add_parser("collect", help="Collect uncertainty traces")
++    collect.add_argument("--suites", default="libero_spatial_object", help="Comma-separated LIBERO/LIBERO-PRO suites")
++    collect.add_argument("--task-ids", default="0", help="Comma list/range, e.g. 0,1 or 0-3; use all for all tasks")
++    collect.add_argument("--episodes-per-task", type=int, default=2)
++    collect.add_argument("--init-state-offset", type=int, default=0)
++    collect.add_argument("--base-seed", type=int, default=195)
++    collect.add_argument("--uncertainty-seeds", default="0,1,2,3", help="Offsets added to each episode base seed")
++    collect.add_argument("--max-timesteps", type=int, default=0, help="0 means suite default max steps")
++    collect.add_argument("--output-dir", default="experiments/uncertainty")
++    collect.add_argument("--run-name", default="")
++    collect.add_argument("--collect-prediction-errors", action="store_true")
++    collect.add_argument("--save-videos", action="store_true", help="Save exact rollout MP4s captured during collection")
++    collect.add_argument("--video-dir", default="", help="Optional output directory for MP4s; defaults to <run>__videos")
++    collect.add_argument("--video-fps", type=int, default=30)
++    collect.add_argument(
++        "--record-denoising-trace",
++        action="store_true",
++        help="Record compact block-wise solver velocities and add flow-path dispersion metrics",
++    )
++    add_intervention_args(collect)
++    add_planning_args(collect)
++    add_safety_args(collect)
++    add_inference_args(collect)
++
++    paired = subparsers.add_parser("collect-paired", help="Collect repeated rollouts for identical task/init states")
++    paired.add_argument("--suites", default="libero_spatial_object", help="Comma-separated LIBERO/LIBERO-PRO suites")
++    paired.add_argument("--task-ids", default="0", help="Comma list/range, e.g. 0,1 or 0-3; use all for all tasks")
++    paired.add_argument("--init-state-ids", default="0", help="Comma list/range; use all for all init states")
++    paired.add_argument("--max-rollouts-per-init", type=int, default=8)
++    paired.add_argument("--min-success", type=int, default=1)
++    paired.add_argument("--min-failed", type=int, default=1)
++    paired.add_argument("--base-seed", type=int, default=195)
++    paired.add_argument("--uncertainty-seeds", default="0,1", help="Offsets added to each rollout base seed")
++    paired.add_argument("--max-timesteps", type=int, default=0, help="0 means suite default max steps")
++    paired.add_argument("--output-dir", default="experiments/uncertainty")
++    paired.add_argument("--run-name", default="")
++    paired.add_argument("--no-prediction-errors", action="store_true")
++    paired.add_argument("--save-videos", action="store_true", help="Save exact rollout MP4s captured during collection")
++    paired.add_argument("--video-dir", default="", help="Optional output directory for MP4s; defaults to <run>__videos")
++    paired.add_argument("--video-fps", type=int, default=30)
++    paired.add_argument(
++        "--record-denoising-trace",
++        action="store_true",
++        help="Record compact block-wise solver velocities and add flow-path dispersion metrics",
++    )
++    paired.add_argument(
++        "--intervention-rollouts",
++        default="",
++        help="Which paired rollouts receive the intervention: odd/even/all or comma/range ids, e.g. 1 or 1,3",
++    )
++    paired.add_argument(
++        "--rollout-seed-step",
++        type=int,
++        default=97,
++        help="Seed increment between rollouts; set 0 for clean/intervention twins with identical model seeds",
++    )
++    add_intervention_args(paired)
++    paired.add_argument(
++        "--pair-id-start",
++        type=int,
++        default=0,
++        help="Initial pair_id, useful for targeted reruns that should reuse seeds from a previous full batch",
++    )
++    add_planning_args(paired)
++    add_safety_args(paired)
++    add_inference_args(paired)
++    paired.add_argument(
++        "--resume",
++        action="store_true",
++        help="Keep completed rollout ids from an existing trace and continue missing ones",
++    )
++
++    analyze = subparsers.add_parser("analyze", help="Analyze an existing query trace file")
++    analyze.add_argument("--trace-file", required=True)
++    analyze.add_argument("--output-dir", default="")
++    analyze.add_argument("--grid-size", type=int, default=21)
++    analyze.add_argument("--top-k", type=int, default=5)
++    return parser
++
++
++def main(argv: Optional[Sequence[str]] = None) -> None:
++    args = build_parser().parse_args(argv)
++    if args.command == "collect":
++        suites = [x.strip() for x in args.suites.split(",") if x.strip()]
++        task_ids = parse_int_list(args.task_ids)
++        uncertainty_seeds = parse_seed_list(args.uncertainty_seeds)
++        run_name = args.run_name or datetime.now().strftime("uncertainty_%Y%m%d_%H%M%S")
++        output_dir = Path(args.output_dir)
++        traces, trace_path = collect_uncertainty_traces(
++            suites=suites,
++            task_ids=task_ids,
++            episodes_per_task=args.episodes_per_task,
++            init_state_offset=args.init_state_offset,
++            base_seed=args.base_seed,
++            uncertainty_seeds=uncertainty_seeds,
++            max_timesteps=args.max_timesteps or None,
++            output_dir=output_dir,
++            run_name=run_name,
++            collect_prediction_errors=args.collect_prediction_errors,
++            save_videos=args.save_videos,
++            video_dir=Path(args.video_dir) if args.video_dir else None,
++            video_fps=args.video_fps,
++            action_intervention=build_action_intervention(args),
++            planning_strategy=args.planning_strategy,
++            planning_risk_lambda=args.planning_risk_lambda,
++            planning_action_weight=args.planning_action_weight,
++            planning_difficulty_threshold=args.planning_difficulty_threshold,
++            planning_value_margin=args.planning_value_margin,
++            planning_uncertainty_margin=args.planning_uncertainty_margin,
++            planning_phase_fraction=args.planning_phase_fraction,
++            planning_short_open_loop_steps=args.planning_short_open_loop_steps,
++            record_denoising_trace=args.record_denoising_trace,
++            collect_safety_signals=args.collect_safety_signals,
++            terminate_on_safety_violation=args.terminate_on_safety_violation,
++            num_open_loop_steps=args.num_open_loop_steps,
++            num_denoising_steps_action=args.num_denoising_steps_action,
++            prediction_mode=args.prediction_mode,
++            num_denoising_steps_future_state=args.num_denoising_steps_future_state,
++            num_denoising_steps_value=args.num_denoising_steps_value,
++            num_future_state_samples=args.num_future_state_samples,
++            num_value_samples=args.num_value_samples,
++            value_ensemble_aggregation_scheme=args.value_ensemble_aggregation,
++            experiment_split=args.experiment_split,
++            case_id=args.case_id,
++        )
++        print(f"Saved traces: {trace_path}")
++        if "success" in traces and traces["success"].nunique() >= 2:
++            analysis_dir = output_dir / f"{run_name}__analysis"
++            paths = analyze_trace_file(trace_path, analysis_dir)
++            print("Analysis outputs:")
++            for name, path in paths.items():
++                print(f"  {name}: {path}")
++        else:
++            print("Collected only one class so far; run more episodes/tasks before ranking metrics.")
++    elif args.command == "collect-paired":
++        suites = [x.strip() for x in args.suites.split(",") if x.strip()]
++        task_ids = parse_int_list(args.task_ids)
++        init_state_ids = parse_int_list(args.init_state_ids)
++        uncertainty_seeds = parse_seed_list(args.uncertainty_seeds)
++        run_name = args.run_name or datetime.now().strftime("paired_uncertainty_%Y%m%d_%H%M%S")
++        output_dir = Path(args.output_dir)
++        traces, trace_path = collect_paired_uncertainty_traces(
++            suites=suites,
++            task_ids=task_ids,
++            init_state_ids=init_state_ids,
++            max_rollouts_per_init=args.max_rollouts_per_init,
++            min_success=args.min_success,
++            min_failed=args.min_failed,
++            base_seed=args.base_seed,
++            uncertainty_seeds=uncertainty_seeds,
++            max_timesteps=args.max_timesteps or None,
++            output_dir=output_dir,
++            run_name=run_name,
++            collect_prediction_errors=not args.no_prediction_errors,
++            save_videos=args.save_videos,
++            video_dir=Path(args.video_dir) if args.video_dir else None,
++            video_fps=args.video_fps,
++            pair_id_start=args.pair_id_start,
++            action_intervention=build_action_intervention(args),
++            intervention_rollouts=args.intervention_rollouts,
++            rollout_seed_step=args.rollout_seed_step,
++            planning_strategy=args.planning_strategy,
++            planning_risk_lambda=args.planning_risk_lambda,
++            planning_action_weight=args.planning_action_weight,
++            planning_difficulty_threshold=args.planning_difficulty_threshold,
++            planning_value_margin=args.planning_value_margin,
++            planning_uncertainty_margin=args.planning_uncertainty_margin,
++            planning_phase_fraction=args.planning_phase_fraction,
++            planning_short_open_loop_steps=args.planning_short_open_loop_steps,
++            record_denoising_trace=args.record_denoising_trace,
++            collect_safety_signals=args.collect_safety_signals,
++            terminate_on_safety_violation=args.terminate_on_safety_violation,
++            num_open_loop_steps=args.num_open_loop_steps,
++            num_denoising_steps_action=args.num_denoising_steps_action,
++            prediction_mode=args.prediction_mode,
++            num_denoising_steps_future_state=args.num_denoising_steps_future_state,
++            num_denoising_steps_value=args.num_denoising_steps_value,
++            num_future_state_samples=args.num_future_state_samples,
++            num_value_samples=args.num_value_samples,
++            value_ensemble_aggregation_scheme=args.value_ensemble_aggregation,
++            experiment_split=args.experiment_split,
++            case_id=args.case_id,
++            resume=args.resume,
++        )
++        print(f"Saved traces: {trace_path}")
++        if "success" in traces and traces["success"].nunique() >= 2:
++            analysis_dir = output_dir / f"{run_name}__analysis"
++            paths = analyze_trace_file(trace_path, analysis_dir)
++            print("Analysis outputs:")
++            for name, path in paths.items():
++                print(f"  {name}: {path}")
++        else:
++            print("Collected only one class so far; increase --max-rollouts-per-init or try another init/task.")
++    elif args.command == "analyze":
++        trace_file = Path(args.trace_file)
++        output_dir = Path(args.output_dir) if args.output_dir else trace_file.with_name(trace_file.stem + "__analysis")
++        paths = analyze_trace_file(trace_file, output_dir, grid_size=args.grid_size, top_k=args.top_k)
++        for name, path in paths.items():
++            print(f"{name}: {path}")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
+new file mode 100644
+index 0000000..55d10af
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
+@@ -0,0 +1,334 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Uncertainty probes for Cosmos Policy LIBERO rollouts.
++
++The functions here operate on the dictionaries returned by
++``cosmos_policy.experiments.robot.cosmos_utils.get_action``.  They are kept
++separate from the notebook so the same metrics can be reused in eval scripts.
++"""
++
++from __future__ import annotations
++
++from itertools import combinations
++from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
++
++import numpy as np
++
++from cosmos_policy.constants import ACTION_DIM, NUM_ACTIONS_CHUNK, PROPRIO_DIM
++from cosmos_policy.experiments.robot.cosmos_utils import (
++    get_action,
++    get_future_state_prediction,
++    get_value_prediction,
++)
++from cosmos_policy.experiments.robot.libero.vfd_metrics import summarize_flow_path_dispersion
++
++
++def _to_numpy(x: Any) -> np.ndarray:
++    """Convert torch / list / scalar-like objects to numpy."""
++    if hasattr(x, "detach"):
++        x = x.detach().float().cpu().numpy()
++    return np.asarray(x)
++
++
++def _safe_float(x: Any) -> float:
++    if x is None:
++        return float("nan")
++    if hasattr(x, "detach"):
++        x = x.detach().float().cpu().item()
++    return float(x)
++
++
++def _latent_frame(generated_latent: Any, latent_idx: int) -> np.ndarray:
++    """Return latent frame as ``(B, C, H, W)`` numpy array."""
++    latent = _to_numpy(generated_latent)
++    if latent_idx < 0:
++        latent_idx = latent.shape[2] + latent_idx
++    return latent[:, :, latent_idx, :, :]
++
++
++def repeated_vectors_from_latent(
++    generated_latent: Any,
++    latent_idx: int,
++    vector_dim: int,
++) -> np.ndarray:
++    """Read repeated vectors from a non-image latent frame.
++
++    During latent injection, low-dimensional vectors are flattened, repeated,
++    and reshaped into a full latent volume.  This function reverses only the
++    repetition/reshape part and returns every complete copy found in the latent.
++
++    Returns:
++        Array with shape ``(B, num_copies, vector_dim)``.
++    """
++    frame = _latent_frame(generated_latent, latent_idx)
++    flat = frame.reshape(frame.shape[0], -1)
++    num_copies = flat.shape[1] // vector_dim
++    if num_copies < 1:
++        raise ValueError(f"latent frame has {flat.shape[1]} elements, fewer than vector_dim={vector_dim}")
++    return flat[:, : num_copies * vector_dim].reshape(frame.shape[0], num_copies, vector_dim)
++
++
++def extract_future_proprio_from_sample(sample: Dict[str, Any], proprio_dim: int = PROPRIO_DIM) -> Optional[np.ndarray]:
++    """Extract normalized future proprio from a generated sample, if present."""
++    idx = sample.get("latent_indices", {}).get("future_proprio_latent_idx", -1)
++    generated_latent = sample.get("future_state_generated_latent", sample.get("generated_latent"))
++    if idx is None or idx < 0 or generated_latent is None:
++        return None
++    copies = repeated_vectors_from_latent(generated_latent, idx, proprio_dim)
++    return copies.mean(axis=1)
++
++
++def latent_internal_consistency(
++    sample: Dict[str, Any],
++    action_shape: Tuple[int, int] = (NUM_ACTIONS_CHUNK, ACTION_DIM),
++    proprio_dim: int = PROPRIO_DIM,
++) -> Dict[str, float]:
++    """Measure disagreement among repeated copies inside one generated latent.
++
++    Smaller values mean the model produced a latent frame that is more
++    self-consistent with the latent-injection representation.
++    """
++    metrics: Dict[str, float] = {}
++    latent_indices = sample.get("latent_indices", {})
++    action_latent = sample.get("action_generated_latent", sample.get("generated_latent"))
++    future_state_latent = sample.get("future_state_generated_latent", sample.get("generated_latent"))
++    value_latent = sample.get("value_generated_latent", sample.get("generated_latent"))
++    if action_latent is None:
++        return metrics
++
++    action_idx = latent_indices.get("action_latent_idx", -1)
++    if action_idx is not None and action_idx >= 0:
++        action_dim = action_shape[0] * action_shape[1]
++        action_copies = repeated_vectors_from_latent(action_latent, action_idx, action_dim)
++        action_copies = action_copies.reshape(
++            action_copies.shape[0],
++            action_copies.shape[1],
++            action_shape[0],
++            action_shape[1],
++        )
++        action_copy_std = action_copies.std(axis=1)
++        metrics["latent_action_copy_std_mean"] = float(action_copy_std.mean())
++        metrics["latent_action_copy_std_max"] = float(action_copy_std.max())
++        metrics["latent_action_first_step_copy_l2_std"] = float(
++            np.linalg.norm(action_copy_std[:, 0, :], axis=-1).mean()
++        )
++
++    future_proprio_idx = latent_indices.get("future_proprio_latent_idx", -1)
++    if future_state_latent is not None and future_proprio_idx is not None and future_proprio_idx >= 0:
++        proprio_copies = repeated_vectors_from_latent(future_state_latent, future_proprio_idx, proprio_dim)
++        proprio_copy_std = proprio_copies.std(axis=1)
++        metrics["latent_future_proprio_copy_std_mean"] = float(proprio_copy_std.mean())
++        metrics["latent_future_proprio_copy_std_max"] = float(proprio_copy_std.max())
++
++    value_idx = latent_indices.get("value_latent_idx", -1)
++    if value_latent is not None and value_idx is not None and value_idx != -1:
++        value_frame = _latent_frame(value_latent, value_idx)
++        flat_value = value_frame.reshape(value_frame.shape[0], -1)
++        metrics["latent_value_element_std_mean"] = float(flat_value.std(axis=1).mean())
++        metrics["latent_value_element_std_max"] = float(flat_value.std(axis=1).max())
++
++    return metrics
++
++
++def _pairwise_action_l2(actions: np.ndarray) -> float:
++    if actions.shape[0] < 2:
++        return float("nan")
++    distances = []
++    for i, j in combinations(range(actions.shape[0]), 2):
++        distances.append(np.linalg.norm(actions[i] - actions[j], axis=-1).mean())
++    return float(np.mean(distances))
++
++
++def _image_std_metrics(samples: Sequence[Dict[str, Any]], image_key: str, prefix: str) -> Dict[str, float]:
++    images = []
++    for sample in samples:
++        future = sample.get("future_image_predictions", {})
++        image = future.get(image_key)
++        if image is not None:
++            images.append(_to_numpy(image).astype(np.float32))
++    if len(images) < 2:
++        return {}
++    stack = np.stack(images)
++    pixel_std = stack.std(axis=0)
++    return {
++        f"{prefix}_pixel_std_mean": float(pixel_std.mean()),
++        f"{prefix}_pixel_std_p95": float(np.percentile(pixel_std, 95)),
++        f"{prefix}_pixel_std_max": float(pixel_std.max()),
++    }
++
++
++def _latent_across_seed_std(
++    samples: Sequence[Dict[str, Any]],
++    latent_index_name: str,
++    metric_name: str,
++) -> Dict[str, float]:
++    frames = []
++    latent_key = {
++        "action_latent_idx": "action_generated_latent",
++        "future_proprio_latent_idx": "future_state_generated_latent",
++        "value_latent_idx": "value_generated_latent",
++    }.get(latent_index_name, "generated_latent")
++    for sample in samples:
++        generated_latent = sample.get(latent_key, sample.get("generated_latent"))
++        idx = sample.get("latent_indices", {}).get(latent_index_name, -1)
++        if generated_latent is not None and idx is not None and idx >= 0:
++            frames.append(_latent_frame(generated_latent, idx).astype(np.float32))
++    if len(frames) < 2:
++        return {}
++    std = np.stack(frames).std(axis=0)
++    return {
++        f"{metric_name}_across_seed_std_mean": float(std.mean()),
++        f"{metric_name}_across_seed_std_p95": float(np.percentile(std, 95)),
++        f"{metric_name}_across_seed_std_max": float(std.max()),
++    }
++
++
++def summarize_action_ensemble(
++    samples: Sequence[Dict[str, Any]],
++    action_dim: int = ACTION_DIM,
++    proprio_dim: int = PROPRIO_DIM,
++) -> Dict[str, float]:
++    """Summarize uncertainty from multiple ``get_action`` samples."""
++    if len(samples) == 0:
++        raise ValueError("samples must contain at least one get_action output")
++
++    actions = np.stack([_to_numpy(sample["actions"]).astype(np.float32) for sample in samples])
++    values = np.array([_safe_float(sample.get("value_prediction")) for sample in samples], dtype=np.float32)
++
++    action_std = actions.std(axis=0)
++    metrics: Dict[str, float] = {
++        "num_samples": float(len(samples)),
++        "action_std_mean": float(action_std.mean()),
++        "action_std_max": float(action_std.max()),
++        "action_first_step_l2_std": float(np.linalg.norm(action_std[0, : action_dim - 1])),
++        "action_xyz_std_mean": float(action_std[:, :3].mean()),
++        "action_rot_std_mean": float(action_std[:, 3:6].mean()) if action_dim >= 6 else float("nan"),
++        "action_gripper_std_mean": float(action_std[:, -1].mean()),
++        "action_pairwise_l2_mean": _pairwise_action_l2(actions),
++        "value_mean": float(np.nanmean(values)),
++        "value_std": float(np.nanstd(values)),
++        "value_range": float(np.nanmax(values) - np.nanmin(values)),
++    }
++
++    future_proprios = [
++        future_proprio
++        for future_proprio in (extract_future_proprio_from_sample(sample, proprio_dim) for sample in samples)
++        if future_proprio is not None
++    ]
++    if len(future_proprios) >= 2:
++        future_proprio_std = np.stack(future_proprios).std(axis=0)
++        metrics["future_proprio_std_mean"] = float(future_proprio_std.mean())
++        metrics["future_proprio_std_max"] = float(future_proprio_std.max())
++
++    metrics.update(_image_std_metrics(samples, "future_image", "future_image"))
++    metrics.update(_image_std_metrics(samples, "future_wrist_image", "future_wrist"))
++    metrics.update(_latent_across_seed_std(samples, "action_latent_idx", "latent_action"))
++    metrics.update(_latent_across_seed_std(samples, "future_proprio_latent_idx", "latent_future_proprio"))
++    metrics.update(_latent_across_seed_std(samples, "value_latent_idx", "latent_value"))
++
++    internal_metrics: Dict[str, List[float]] = {}
++    for sample in samples:
++        for key, value in latent_internal_consistency(sample, proprio_dim=proprio_dim).items():
++            internal_metrics.setdefault(key, []).append(value)
++    for key, values_for_key in internal_metrics.items():
++        metrics[f"{key}_mean_over_samples"] = float(np.mean(values_for_key))
++        metrics[f"{key}_max_over_samples"] = float(np.max(values_for_key))
++
++    denoising_traces = [
++        sample["denoising_trace"]
++        for sample in samples
++        if sample.get("denoising_trace") is not None
++    ]
++    if len(denoising_traces) >= 2:
++        metrics.update(summarize_flow_path_dispersion(denoising_traces))
++
++    return metrics
++
++
++def sample_action_ensemble(
++    cfg: Any,
++    model: Any,
++    dataset_stats: Dict[str, Any],
++    observation: Dict[str, Any],
++    task_description: Any,
++    seeds: Iterable[int] = (195, 196, 197, 198),
++    num_denoising_steps_action: Optional[int] = None,
++    generate_future_state_and_value_in_parallel: bool = True,
++    record_denoising_trace: bool = False,
++    prediction_mode: Optional[str] = None,
++    num_denoising_steps_future_state: Optional[int] = None,
++    num_denoising_steps_value: Optional[int] = None,
++    num_future_state_samples: Optional[int] = None,
++    num_value_samples: Optional[int] = None,
++) -> Tuple[List[Dict[str, Any]], Dict[str, float]]:
++    """Run ``get_action`` multiple times and return raw samples plus metrics."""
++    samples = []
++    steps = num_denoising_steps_action or cfg.num_denoising_steps_action
++    if prediction_mode is None:
++        prediction_mode = (
++            "parallel"
++            if generate_future_state_and_value_in_parallel
++            else "autoregressive"
++        )
++    prediction_mode = prediction_mode.lower()
++    if prediction_mode not in {"parallel", "autoregressive"}:
++        raise ValueError(f"Unknown prediction_mode={prediction_mode}")
++
++    future_steps = num_denoising_steps_future_state or cfg.num_denoising_steps_future_state
++    value_steps = num_denoising_steps_value or cfg.num_denoising_steps_value
++    future_samples = num_future_state_samples or cfg.num_future_state_predictions_in_ensemble
++    value_samples = num_value_samples or cfg.num_value_predictions_in_ensemble
++    for seed in seeds:
++        sample = get_action(
++            cfg,
++            model,
++            dataset_stats,
++            observation,
++            task_description,
++            seed=int(seed),
++            randomize_seed=False,
++            num_denoising_steps_action=steps,
++            generate_future_state_and_value_in_parallel=prediction_mode == "parallel",
++            record_denoising_trace=record_denoising_trace,
++        )
++        sample["action_generated_latent"] = sample["generated_latent"]
++
++        if prediction_mode == "autoregressive":
++            indices = sample["latent_indices"]
++            future = get_future_state_prediction(
++                cfg,
++                model=model,
++                data_batch=sample["data_batch"],
++                generated_latent_with_action=sample["generated_latent"],
++                orig_clean_latent_frames=sample["orig_clean_latent_frames"],
++                future_proprio_latent_idx=indices["future_proprio_latent_idx"],
++                future_wrist_image_latent_idx=indices["future_wrist_image_latent_idx"],
++                future_wrist_image2_latent_idx=indices["future_wrist_image2_latent_idx"],
++                future_image_latent_idx=indices["future_image_latent_idx"],
++                future_image2_latent_idx=indices["future_image2_latent_idx"],
++                seed=int(seed),
++                randomize_seed=False,
++                num_denoising_steps_future_state=future_steps,
++                use_ensemble_future_state_predictions=future_samples > 1,
++                num_future_state_predictions_in_ensemble=future_samples,
++                future_state_ensemble_aggregation_scheme=cfg.future_state_ensemble_aggregation_scheme,
++            )
++            value = get_value_prediction(
++                cfg,
++                model=model,
++                data_batch=sample["data_batch"],
++                future_state_samples_list=future["future_state_samples_list"],
++                seed=int(seed),
++                randomize_seed=False,
++                num_denoising_steps_value=value_steps,
++                use_ensemble_value_predictions=value_samples > 1,
++                num_value_predictions_in_ensemble=value_samples,
++            )
++            sample["future_image_predictions"] = future["future_image_predictions"]
++            sample["value_prediction"] = value["value_prediction"]
++            sample["future_state_generated_latent"] = future["future_state_samples_list"][-1]
++            if value.get("generated_value_samples"):
++                sample["value_generated_latent"] = value["generated_value_samples"][-1]
++
++        sample["prediction_mode"] = prediction_mode
++        samples.append(sample)
++    return samples, summarize_action_ensemble(samples)
+diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
+index efbafee..115e6ed 100644
+--- a/cosmos_policy/models/policy_text2world_model.py
++++ b/cosmos_policy/models/policy_text2world_model.py
+@@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
+ 
+ from __future__ import annotations
+ 
+-from typing import Dict, Optional, Tuple
++from typing import Callable, Dict, List, Optional, Tuple
+ 
+ import attrs
+ import torch
+@@ -716,6 +716,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+         skip_vae_encoding: bool = False,
+         previous_generated_latent: torch.Tensor = None,
+         return_orig_clean_latent_frames: bool = False,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         **kwargs,
+     ) -> torch.Tensor:
+         """
+@@ -740,6 +741,8 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             skip_vae_encoding (bool): Skip VAE encoding if True
+             previous_generated_latent (torch.Tensor): Previous generated sample
+             return_orig_clean_latent_frames (bool): Whether to return the clean latent frames
++            denoiser_callback_fns (list): Optional callbacks for intermediate
++                denoiser evaluations. Disabled by default.
+         """
+         self._normalize_video_databatch_inplace(data_batch)
+         self._augment_image_dim_inplace(data_batch)
+@@ -785,6 +788,10 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+ 
+         # NOTE: FlowUniPC scheduler support (inherited from base, keeping for compatibility)
+         if self.config.use_flowunipc_scheduler:
++            if denoiser_callback_fns:
++                raise NotImplementedError(
++                    "Denoising trace callbacks are currently supported by the EDM/RES sampler only"
++                )
+             # Use parent implementation for FlowUniPC
+             return super().generate_samples_from_batch(
+                 data_batch,
+@@ -826,6 +833,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             sigma_max=sigma_max * sigma_max_variance_scale,
+             sigma_min=self.sde.sigma_min * sigma_min_variance_scale,
+             solver_option=solver_option,
++            denoiser_callback_fns=denoiser_callback_fns,
+         )
+         if self.net.is_context_parallel_enabled:
+             samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
+diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
+index ef9e42c..df979ea 100644
+--- a/cosmos_policy/modules/cosmos_sampler.py
++++ b/cosmos_policy/modules/cosmos_sampler.py
+@@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
+         S_max: float = float("inf"),
+         S_noise: float = 1,
+         solver_option: str = "2ab",
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+     ) -> torch.Tensor:
+         in_dtype = x_sigma_max.dtype
+ 
+@@ -90,7 +91,13 @@ class CosmosPolicySampler(Sampler):
+         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
+         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=sample_clean)
+ 
+-        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg, num_steps=num_steps).to(in_dtype)
++        return self._forward_impl(
++            float64_x0_fn,
++            x_sigma_max,
++            sampler_cfg,
++            denoiser_callback_fns=denoiser_callback_fns,
++            num_steps=num_steps,
++        ).to(in_dtype)
+ 
+     @torch.no_grad()
+     def _forward_impl(
+@@ -99,6 +106,7 @@ class CosmosPolicySampler(Sampler):
+         noisy_input_B_StateShape: torch.Tensor,
+         sampler_cfg: Optional[SamplerConfig] = None,
+         callback_fns: Optional[List[Callable]] = None,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         num_steps: int = 35,
+     ) -> torch.Tensor:
+         """
+@@ -109,6 +117,8 @@ class CosmosPolicySampler(Sampler):
+             noisy_input_B_StateShape: Input tensor with noise.
+             sampler_cfg: Configuration for the sampler.
+             callback_fns: List of callback functions to be called during sampling.
++            denoiser_callback_fns: Callbacks invoked after individual solver
++                denoiser evaluations.
+             num_steps: Number of denoising steps.
+ 
+         Returns:
+@@ -125,7 +135,11 @@ class CosmosPolicySampler(Sampler):
+         if num_steps > 1:
+             # Normal sampling
+             denoised_output = differential_equation_solver(
+-                denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
++                denoiser_fn,
++                sigmas_L,
++                sampler_cfg.solver,
++                callback_fns=callback_fns,
++                denoiser_callback_fns=denoiser_callback_fns,
+             )(noisy_input_B_StateShape)
+ 
+             if sampler_cfg.sample_clean:
+@@ -136,6 +150,15 @@ class CosmosPolicySampler(Sampler):
+             # Special case: num_steps==1
+             denoised_output = noisy_input_B_StateShape
+             ones = torch.ones(denoised_output.size(0), device=denoised_output.device, dtype=denoised_output.dtype)
+-            denoised_output = denoiser_fn(denoised_output, sigmas_L[0] * ones)
++            sigma_B = sigmas_L[0] * ones
++            x0_pred_B_StateShape = denoiser_fn(denoised_output, sigma_B)
++            if denoiser_callback_fns:
++                for denoiser_callback_fn in denoiser_callback_fns:
++                    denoiser_callback_fn(
++                        noisy_state_B_StateShape=denoised_output,
++                        sigma_B=sigma_B,
++                        x0_pred_B_StateShape=x0_pred_B_StateShape,
++                    )
++            denoised_output = x0_pred_B_StateShape
+ 
+         return denoised_output
 diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
 new file mode 100755
 index 0000000..735db26
@@ -1290,139 +4081,12 @@ index 0000000..eb2e4c5
 +            results[str(block_name)] = float(np.mean(weighted_disagreements))
 +
 +    return results
-diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
-old mode 100644
-new mode 100755
-index efbafee..115e6ed
---- a/cosmos_policy/models/policy_text2world_model.py
-+++ b/cosmos_policy/models/policy_text2world_model.py
-@@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
- 
- from __future__ import annotations
- 
--from typing import Dict, Optional, Tuple
-+from typing import Callable, Dict, List, Optional, Tuple
- 
- import attrs
- import torch
-@@ -716,6 +716,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-         skip_vae_encoding: bool = False,
-         previous_generated_latent: torch.Tensor = None,
-         return_orig_clean_latent_frames: bool = False,
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-         **kwargs,
-     ) -> torch.Tensor:
-         """
-@@ -740,6 +741,8 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-             skip_vae_encoding (bool): Skip VAE encoding if True
-             previous_generated_latent (torch.Tensor): Previous generated sample
-             return_orig_clean_latent_frames (bool): Whether to return the clean latent frames
-+            denoiser_callback_fns (list): Optional callbacks for intermediate
-+                denoiser evaluations. Disabled by default.
-         """
-         self._normalize_video_databatch_inplace(data_batch)
-         self._augment_image_dim_inplace(data_batch)
-@@ -785,6 +788,10 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
- 
-         # NOTE: FlowUniPC scheduler support (inherited from base, keeping for compatibility)
-         if self.config.use_flowunipc_scheduler:
-+            if denoiser_callback_fns:
-+                raise NotImplementedError(
-+                    "Denoising trace callbacks are currently supported by the EDM/RES sampler only"
-+                )
-             # Use parent implementation for FlowUniPC
-             return super().generate_samples_from_batch(
-                 data_batch,
-@@ -826,6 +833,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-             sigma_max=sigma_max * sigma_max_variance_scale,
-             sigma_min=self.sde.sigma_min * sigma_min_variance_scale,
-             solver_option=solver_option,
-+            denoiser_callback_fns=denoiser_callback_fns,
-         )
-         if self.net.is_context_parallel_enabled:
-             samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
-diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
-old mode 100644
-new mode 100755
-index ef9e42c..df979ea
---- a/cosmos_policy/modules/cosmos_sampler.py
-+++ b/cosmos_policy/modules/cosmos_sampler.py
-@@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
-         S_max: float = float("inf"),
-         S_noise: float = 1,
-         solver_option: str = "2ab",
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-     ) -> torch.Tensor:
-         in_dtype = x_sigma_max.dtype
- 
-@@ -90,7 +91,13 @@ class CosmosPolicySampler(Sampler):
-         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
-         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=sample_clean)
- 
--        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg, num_steps=num_steps).to(in_dtype)
-+        return self._forward_impl(
-+            float64_x0_fn,
-+            x_sigma_max,
-+            sampler_cfg,
-+            denoiser_callback_fns=denoiser_callback_fns,
-+            num_steps=num_steps,
-+        ).to(in_dtype)
- 
-     @torch.no_grad()
-     def _forward_impl(
-@@ -99,6 +106,7 @@ class CosmosPolicySampler(Sampler):
-         noisy_input_B_StateShape: torch.Tensor,
-         sampler_cfg: Optional[SamplerConfig] = None,
-         callback_fns: Optional[List[Callable]] = None,
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-         num_steps: int = 35,
-     ) -> torch.Tensor:
-         """
-@@ -109,6 +117,8 @@ class CosmosPolicySampler(Sampler):
-             noisy_input_B_StateShape: Input tensor with noise.
-             sampler_cfg: Configuration for the sampler.
-             callback_fns: List of callback functions to be called during sampling.
-+            denoiser_callback_fns: Callbacks invoked after individual solver
-+                denoiser evaluations.
-             num_steps: Number of denoising steps.
- 
-         Returns:
-@@ -125,7 +135,11 @@ class CosmosPolicySampler(Sampler):
-         if num_steps > 1:
-             # Normal sampling
-             denoised_output = differential_equation_solver(
--                denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
-+                denoiser_fn,
-+                sigmas_L,
-+                sampler_cfg.solver,
-+                callback_fns=callback_fns,
-+                denoiser_callback_fns=denoiser_callback_fns,
-             )(noisy_input_B_StateShape)
- 
-             if sampler_cfg.sample_clean:
-@@ -136,6 +150,15 @@ class CosmosPolicySampler(Sampler):
-             # Special case: num_steps==1
-             denoised_output = noisy_input_B_StateShape
-             ones = torch.ones(denoised_output.size(0), device=denoised_output.device, dtype=denoised_output.dtype)
--            denoised_output = denoiser_fn(denoised_output, sigmas_L[0] * ones)
-+            sigma_B = sigmas_L[0] * ones
-+            x0_pred_B_StateShape = denoiser_fn(denoised_output, sigma_B)
-+            if denoiser_callback_fns:
-+                for denoiser_callback_fn in denoiser_callback_fns:
-+                    denoiser_callback_fn(
-+                        noisy_state_B_StateShape=denoised_output,
-+                        sigma_B=sigma_B,
-+                        x0_pred_B_StateShape=x0_pred_B_StateShape,
-+                    )
-+            denoised_output = x0_pred_B_StateShape
- 
-         return denoised_output
 diff --git a/tests/test_planning_selection.py b/tests/test_planning_selection.py
 new file mode 100755
-index 0000000..420bd08
+index 0000000..a834caf
 --- /dev/null
 +++ b/tests/test_planning_selection.py
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,215 @@
 +from __future__ import annotations
 +
 +import numpy as np
@@ -1435,6 +4099,14 @@ index 0000000..420bd08
 +def sample(value: float) -> dict[str, object]:
 +    return {
 +        "actions": np.zeros((16, 7), dtype=np.float32),
++        "value_prediction": value,
++    }
++
++
++def sample_with_action(value: float, action: float) -> dict[str, object]:
++    actions = np.full((16, 7), action, dtype=np.float32)
++    return {
++        "actions": actions,
 +        "value_prediction": value,
 +    }
 +
@@ -1480,6 +4152,24 @@ index 0000000..420bd08
 +    assert np.isclose(diagnostics["candidate_value_range"], 0.7)
 +
 +
++def test_replay_aliases_repeat_the_reference_selection_rules() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    baseline, _ = select_planning_sample(candidates, strategy="max_value")
++    baseline_replay, _ = select_planning_sample(candidates, strategy="max_value_replay")
++    risk, _ = select_planning_sample(
++        candidates, strategy="uncertainty_penalty_action", risk_lambda=2.0
++    )
++    risk_replay, _ = select_planning_sample(
++        candidates, strategy="uncertainty_penalty_action_replay", risk_lambda=2.0
++    )
++
++    assert baseline_replay == baseline
++    assert risk_replay == risk
++
++
 +def test_action_uncertainty_penalty_can_override_max_value() -> None:
 +    selected, diagnostics = select_planning_sample(
 +        [
@@ -1513,6 +4203,105 @@ index 0000000..420bd08
 +
 +    assert first_selected == 0
 +    assert chunk_selected == 1
++
++
++def test_difficulty_gate_is_decided_at_first_query_and_can_be_reused() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="difficulty_gated_action",
++        difficulty_threshold=0.5,
++        risk_lambda=2.0,
++    )
++    assert selected == 1
++    assert diagnostics["planning_episode_risk_enabled"] is True
++
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="difficulty_gated_action",
++        episode_risk_enabled=False,
++        difficulty_threshold=0.5,
++    )
++    assert selected == 0
++    assert diagnostics["planning_effective_strategy"] == "max_value"
++
++
++def test_margin_gate_blocks_large_value_sacrifice() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="margin_gated_action",
++        risk_lambda=2.0,
++        value_margin=0.01,
++    )
++    assert selected == 0
++    assert diagnostics["planning_query_risk_enabled"] is False
++
++
++def test_consensus_strategy_rejects_action_outlier() -> None:
++    candidates = [
++        sample_with_action(0.8, 10.0),
++        sample_with_action(0.7, 0.0),
++        sample_with_action(0.69, 0.1),
++    ]
++
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="consensus_action",
++        risk_lambda=2.0,
++    )
++    assert selected != 0
++    assert diagnostics["candidate_action_consensus_first_mean"] > 0.0
++
++
++def test_phase_gate_uses_uncertainty_only_in_configured_phase() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++
++    early, _ = select_planning_sample(
++        candidates,
++        strategy="phase_gated_action",
++        episode_progress=0.25,
++        phase_fraction=0.5,
++        risk_lambda=2.0,
++    )
++    late, _ = select_planning_sample(
++        candidates,
++        strategy="phase_gated_action",
++        episode_progress=0.75,
++        phase_fraction=0.5,
++        risk_lambda=2.0,
++    )
++    assert early == 1
++    assert late == 0
++
++
++def test_disagreement_requery_shortens_only_ambiguous_chunk() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="disagreement_requery_action",
++        risk_lambda=2.0,
++        open_loop_steps=16,
++        short_open_loop_steps=8,
++    )
++
++    assert selected == 1
++    assert diagnostics["planning_requery_triggered"] is True
++    assert diagnostics["planning_selected_open_loop_steps"] == 8.0
 diff --git a/tests/test_safety_signals.py b/tests/test_safety_signals.py
 new file mode 100755
 index 0000000..6153d3f

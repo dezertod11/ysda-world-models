@@ -1,0 +1,9 @@
+selection_category,selection_reason,case_stratum,strategy_id,case_id,suite,task_id,init_state_id,rollout_seed,baseline_success,success,delta
+no_extra_inference,win,known_boundary,phase_l1_r0.3,long_mug_task4_init0_adaptive_confirm,libero_10_with_mug,4,0,730000,False,True,1
+no_extra_inference,loss,known_boundary,phase_l1_r0.3,long_mug_task4_init0_adaptive_confirm,libero_10_with_mug,4,0,731067,True,False,-1
+no_extra_inference,win,new_ood_holdout,phase_l1_r0.3,goal_mug_task9_init0_adaptive_confirm,libero_goal_with_mug,9,0,761552,False,True,1
+no_extra_inference,loss,new_ood_holdout,phase_l1_r0.3,long_milk_task9_init0_adaptive_confirm,libero_10_with_milk,9,0,750582,True,False,-1
+adaptive_horizon,win,known_boundary,requery_l1_h8,long_mug_task4_init0_adaptive_confirm,libero_10_with_mug,4,0,730776,False,True,1
+adaptive_horizon,loss,known_boundary,requery_l1_h8,milk_task5_init0_adaptive_confirm,libero_spatial_with_milk,5,0,710194,True,False,-1
+adaptive_horizon,win,new_ood_holdout,requery_l1_h8,goal_mug_task9_init0_adaptive_confirm,libero_goal_with_mug,9,0,760388,False,True,1
+adaptive_horizon,loss,new_ood_holdout,requery_l1_h8,goal_mug_task9_init0_adaptive_confirm,libero_goal_with_mug,9,0,760485,True,False,-1

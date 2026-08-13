@@ -180,6 +180,17 @@ def _common_pro_paired_env(
         f"{prefix}EXPERIMENT_SPLIT": str(job.get("experiment_split", "unspecified")),
         f"{prefix}CASE_ID": str(job.get("case_id", job["name"])),
         f"{prefix}PLANNING_ACTION_WEIGHT": str(job.get("planning_action_weight", 0.5)),
+        f"{prefix}PLANNING_DIFFICULTY_THRESHOLD": str(
+            job.get("planning_difficulty_threshold", 0.088588)
+        ),
+        f"{prefix}PLANNING_VALUE_MARGIN": str(job.get("planning_value_margin", 0.002)),
+        f"{prefix}PLANNING_UNCERTAINTY_MARGIN": str(
+            job.get("planning_uncertainty_margin", 0.0)
+        ),
+        f"{prefix}PLANNING_PHASE_FRACTION": str(job.get("planning_phase_fraction", 0.5)),
+        f"{prefix}PLANNING_SHORT_OPEN_LOOP_STEPS": str(
+            job.get("planning_short_open_loop_steps", 8)
+        ),
     }
 
 
@@ -271,6 +282,21 @@ def build_job(
             "LIBERO_PRO_PLANNING_GRID_CASE_ID": str(job.get("case_id", job["name"])),
             "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": str(
                 job.get("planning_action_weight", 0.5)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_DIFFICULTY_THRESHOLD": str(
+                job.get("planning_difficulty_threshold", 0.088588)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_VALUE_MARGIN": str(
+                job.get("planning_value_margin", 0.002)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_UNCERTAINTY_MARGIN": str(
+                job.get("planning_uncertainty_margin", 0.0)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_PHASE_FRACTION": str(
+                job.get("planning_phase_fraction", 0.5)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_SHORT_OPEN_LOOP_STEPS": str(
+                job.get("planning_short_open_loop_steps", 8)
             ),
             "LIBERO_PRO_PAIRED_SAVE_VIDEOS": _as_bool_env(job["save_videos"]),
             "LIBERO_PRO_PAIRED_VIDEO_DIR": str(run_dir / "videos" / run_name),

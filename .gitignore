@@ -44,6 +44,11 @@ experiments/campaigns/**/all_query_traces.parquet
 experiments/campaigns/**/temporal_conformal_detector_sweep.csv
 experiments/campaigns/**/time_aligned_features.csv
 
+# Per-job adaptive reports are reproducible from traces; track adaptive_summary only.
+experiments/campaigns/adaptive_screening_20260813/analysis/adaptive_screening_*/
+experiments/campaigns/adaptive_regime_threshold_20260813/analysis/adaptive_regime_*/
+experiments/campaigns/adaptive_confirmatory_20260813/analysis/adaptive_confirmatory_*/
+
 # Generated media and logs
 rollouts/
 videos/
