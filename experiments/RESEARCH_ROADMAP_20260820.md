@@ -86,6 +86,33 @@ $$
 Не следует сразу обучать одну непрозрачную формулу. Система строится слоями и
 каждый слой проходит отдельную ablation.
 
+### 0. Cross-query temporal overlap consistency
+
+При prediction horizon $H$ и execution length $K<H$ старый tail и новый
+prefix относятся к одинаковым absolute control times:
+
+$$
+X_q=A_q[K:H],
+\qquad
+Y_{q+1}=A_{q+1}[0:H-K].
+$$
+
+Для каждого нового candidate можно считать
+
+$$
+D_{\mathrm{overlap},q}^{(i)}=
+d\left(X_q^{(i_q)},Y_{q+1}^{(i)}\right),
+$$
+
+Для selected plan простейший published baseline - TIDE-style MSE, а между
+полными candidate sets - STAC MMD/energy/Chamfer distance. Это
+измеряет revision нового plan после свежего observation. Оно не гарантирует
+physical correctness: большой score может быть полезной коррекцией, а малый -
+последовательно ошибочным plan.
+
+Полный protocol:
+[`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md).
+
 ### 1. Candidate support
 
 Для candidate \(a_i\) считаем re-denoising consistency из tau0-WM:
@@ -180,6 +207,7 @@ i^*=\arg\max_{i\in\mathcal F(s,c)}
 Q_{\mathrm{real}}(s,a_i)
 +\eta\,\widehat V_{\mathrm{WM},i}
 +\rho\,S_{\mathrm{RCS},i}
+-\lambda_o D_{\mathrm{overlap},i}
 -\lambda_e U_{\mathrm{epi},i}
 -\lambda_t R_{\mathrm{tail},i}
 \right],
@@ -196,7 +224,7 @@ Horizon выбирается отдельно:
 $$
 H_q=
 \begin{cases}
-h, & \text{ranking disagreement, OOD или tail-risk alarm},\\
+h, & \text{overlap/ranking disagreement, OOD или tail-risk alarm},\\
 16, & \text{иначе}.
 \end{cases}
 $$
@@ -206,7 +234,34 @@ $$
 
 ## Очередь экспериментов
 
-### P1. Re-denoising consistency без обучения новой модели
+### P1a. Temporal overlap consistency
+
+**Гипотеза.** Old-tail/new-prefix disagreement даёт локальный warning до
+erratic failure и является более прямым feedback signal, чем uncertainty
+внутри одного query.
+
+1. После завершения P0 добавить сохранение полных candidate chunks и, на
+   подвыборке, action latent embeddings.
+2. Проверить exact alignment $A_q[8:16]$ против $A_{q+1}[0:8]$ и same-seed
+   reproducibility.
+3. Passive run: TIDE-style selected MSE, support, Chamfer, STAC MMD и
+   coupled-noise distance.
+4. Сравнить global split-conformal threshold с query/phase-conditioned
+   functional conformal threshold.
+5. Заморозить detector на whole-case validation и проверить event AUPRC,
+   TPR@5%FPR и lead time на held-out PRO families и LIBERO-Safety.
+6. Как supervised upper baseline обучить последовательный detector в стиле
+   Hide-and-Seek только по trajectory-level success/fail labels.
+7. Closed-loop сравнить weak overlap reranking и alarm-triggered short horizon.
+
+Plain overlap metric уже существует в Sentinel/STAC и Rewind-IL/TIDE; сильный
+результат должен дать sample-efficient перенос на Cosmos, warning до event и
+causal planning gain. Hide-and-Seek на LIBERO-10 показывает, что learned
+temporal action embeddings являются обязательным baseline при наличии failed
+trajectories. Нельзя сравнивать соседние future image/value без fixed absolute
+time.
+
+### P1b. Re-denoising consistency без обучения новой модели
 
 **Гипотеза.** RCS дополняет internal-copy uncertainty и лучше отличает
 off-manifold action candidates.
@@ -349,11 +404,16 @@ thresholds замораживаются и переносятся на целы�
 ## Приоритет после завершения P0
 
 1. Зафиксировать вывод 2x2 и выбрать selection/horizon baseline.
-2. Реализовать P1 RCS: это самый дешёвый новый метод и не требует обучения.
-3. Провести P2 causal future validation.
-4. Параллельно подготовить datasets для P3 grounded Q и P4 JRD ensemble.
-5. После P2 запустить P3 QWM-lite и только затем P6 StressDream-lite.
-6. P5/P7 вести отдельной safety веткой, не смешивая с task-success planner.
+2. Реализовать P1a overlap logging: это почти бесплатный signal поверх уже
+   генерируемых chunks и прямой тест роли feedback.
+3. После passive P1a сравнить TIDE, STAC и learned Hide-and-Seek-style detector
+   при одинаковом split и локальных event labels.
+4. Параллельно реализовать P1b RCS; затем сравнить cross-query consistency с
+   within-query action support.
+5. Провести P2 causal future validation.
+6. Параллельно подготовить datasets для P3 grounded Q и P4 JRD ensemble.
+7. После P2 запустить P3 QWM-lite и только затем P6 StressDream-lite.
+8. P5/P7 вести отдельной safety веткой, не смешивая с task-success planner.
 
 Ближайший сильный результат должен отвечать не «uncertainty коррелирует с
 ошибкой», а одному из двух утверждений:

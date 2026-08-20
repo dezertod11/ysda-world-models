@@ -990,10 +990,172 @@ $$
 | Constrained safety + abstain | Было в H8/H14 | UNISafe усиливает план: hard filter, trajectory CP, fallback |
 | Независимый transition ensemble | Частично предполагался только как общий ensemble | Новое: lightweight Gaussian heads + JRD вместо второго полного Cosmos |
 | Re-denoising consistency | Не было в плане | Новый дешёвый candidate-support baseline из tau0-WM |
+| Temporal overlap consistency | Не было в наших traces: сохранялись только первые actions | Published baselines STAC и TIDE; для Cosmos надо сохранять old tail/new prefix целиком и сравнить с learned Hide-and-Seek detector |
 | Targeted steering initial noise | Не было в плане | Новый StressDream-style rare-failure search |
 | Future-conditioned action rectification | Не было в плане | Новый proposal-evaluation-revision baseline из tau0-WM |
 | Grounded real-transition Q + WM tree | Не было в явном плане | Новый QWM depth-1/2 baseline; critic не обучается на imagined transitions |
 | Runtime image-conditioned constraints | Не было в плане | AnySafe-style stage после базового LIBERO-Safety classifier |
+
+### 4.8. Temporal overlap consistency: old tail против new prefix
+
+Новая предложенная гипотеза состоит в том, чтобы предсказывать action chunk
+дальше, чем он исполняется. При horizon $H=16$ и execution length $K=8$
+сохраняется хвост старого chunk $A_q[8:16]$. После восьми реальных шагов новый
+query возвращает $A_{q+1}[0:16]$, и его prefix $A_{q+1}[0:8]$ относится к тем
+же абсолютным моментам времени, что и сохранённый хвост:
+
+$$
+A_q[8:16]\quad\longleftrightarrow\quad A_{q+1}[0:8].
+$$
+
+Идея имеет очень близкие, а в одном случае практически точные аналоги.
+
+#### Sentinel / STAC: идея уже формализована как failure detector
+
+[Sentinel: Unpacking Failure Modes of Generative Policies](https://proceedings.mlr.press/v270/agia25a.html)
+разделяет failures на erratic и task-progression. Для erratic failures авторы
+предлагают Statistical Temporal Action Consistency (STAC): сравнивают
+**распределения** старых overlapping tails и новых prefixes через MMD либо
+forward/reverse KL. Для PushT используется ровно $H=16$, $K=8$; для других
+задач $H=16$, $K=4$. Per-query distances суммируются:
+
+$$
+\eta_t=\sum_{i=0}^{j-1}
+\widehat D\left(\bar\pi_{ik},\widetilde\pi_{(i+1)k}\right),
+$$
+
+а threshold берётся как 95-й percentile cumulative score на successful
+calibration rollouts. Авторы показывают, что distributional temporal distance
+лучше обычной output variance в multimodal PushT. STAC, однако, плохо ловит
+уверенные no-progress failures, поэтому Sentinel добавляет отдельный video
+progress monitor. В статье нет LIBERO, Cosmos Policy и causal изменения
+planning; более того, авторы формулируют цель как detection failures as they
+occur, а не гарантированное предсказание заранее.
+
+Для нас это означает, что plain overlap distance не следует представлять как
+новый алгоритм. Исследовательская новизна возможна в sample-efficient переносе
+STAC на flow-based world-model policy, положительном lead time до локального
+event, OOD/Safety transfer и причинном использовании alarm в planner-е.
+
+В Cosmos best-of-N есть дополнительная тонкость: реальный переход создаёт
+prefix только selected candidate, тогда как полный old candidate set содержит
+контрфактические prefixes. Поэтому наряду с full STAC нужен selection-aware
+вариант: selected old tail против нового candidate support либо
+prefix-weighted old distribution.
+
+#### BID: overlap distance как candidate-selection score
+
+[Bidirectional Decoding](https://arxiv.org/abs/2408.17355) сохраняет старое
+решение и выбирает новый candidate с малым weighted overlap distance:
+
+$$
+\mathcal L_B=
+\sum_{\ell=0}^{L-1}\rho^\ell
+\left\|A_{q+1}[\ell]-A_q[K+\ell]\right\|_2.
+$$
+
+Это прямой planning-аналог нашей идеи, но не calibrated uncertainty metric.
+Важное ограничение из BID: после неожиданного изменения среды старый plan может
+быть ошибочным, поэтому высокая consistency не всегда желательна. Жёсткое
+следование old tail способно подавить полезную closed-loop correction.
+
+#### ACT и SEAM: overlap как средство smooth execution
+
+[ACT](https://roboticsproceedings.org/rss19/p016.html) ввёл temporal ensembling:
+несколько прогнозов одного и того же physical action усредняются с временными
+весами. Это использует ту же структуру перекрывающихся предсказаний, но выдаёт
+сглаженное действие, а не uncertainty score.
+
+[SEAM](https://arxiv.org/abs/2607.04609) ещё ближе к нашей архитектуре: для
+flow-based VLA старый unexecuted tail используется как analytic prior при
+генерации нового chunk. На LIBERO-10 с pi0.5 авторы сообщают снижение boundary
+jerk на 28% и chunk discontinuity на 27% при сохранении baseline success.
+Слишком сильное guidance снижает success, а temporal ensembling может
+усреднить несовместимые modes. Поэтому overlap alarm, weak penalty и hard
+continuation должны быть тремя разными ablations.
+
+#### VLA-Corrector: расширение на predicted/actual image dynamics
+
+[VLA-Corrector](https://arxiv.org/abs/2607.01804) обучает lightweight latent
+dynamics corrector и сравнивает ожидаемое с реальным изменением visual latent:
+
+$$
+E_t=1-\operatorname{CosSim}
+\left(\Delta Z_{t+k}^{\mathrm{expected}},
+\Delta Z_{t+k}^{\mathrm{real}}\right).
+$$
+
+Persistent mismatch сокращает текущий action horizon и вызывает corrective
+replanning. Работа использует standard LIBERO, MetaWorld и real robot, но не
+LIBERO-PRO. Это хороший baseline для предлагаемого расширения на image/state.
+
+Для Cosmos есть важная временная ловушка: текущие `future_image`, future
+proprio и value соседних query относятся к разным endpoint times. Их нельзя
+просто вычесть. Нужен либо old prediction versus later reality, либо два
+прогноза одного fixed absolute endpoint, либо временная latent sequence.
+
+#### Rewind-IL / TIDE: та же гипотеза как training-free detector
+
+[Rewind-IL](https://arxiv.org/html/2604.16683) формализует Temporal
+Inter-chunk Discrepancy Estimate как средний squared error между выровненным
+остатком прошлого plan и новым prefix:
+
+$$
+\operatorname{TIDE}_t=
+\frac{1}{BDT}\sum_{b,d,\tau}
+\left(
+\widehat A^{(b)}_{t-1,\tau,d}-
+\widetilde A^{(b)}_{t,\tau,d}
+\right)^2.
+$$
+
+Threshold задаётся split conformal prediction по successful calibration
+rollouts, после чего alarm запускает возврат к семантически подтверждённому
+checkpoint. Работа проверяет шесть real ACT tasks, три RoboCasa tasks и три
+flow-matching tasks. Авторы сообщают average detection bACC 0.95 для ACT и
+0.99 для flow matching, а в RoboCasa success вырастает с 55-60% до 70-80%.
+
+Следовательно, наш selected old-tail/new-prefix MSE - это TIDE-style baseline.
+Отдельный вклад возможен не в самой формуле, а в distributional best-of-$N$
+варианте Cosmos, OOD/Safety transfer, раннем warning до локального event и
+причинном улучшении planner-а.
+
+#### Hide-and-Seek: learned detector именно на LIBERO
+
+[Hide-and-Seek in Trajectories](https://arxiv.org/html/2605.30834) обучает
+небольшой sequential detector по frozen action embeddings, используя только
+trajectory-level success/fail. Inter-trajectory contrastive loss ищет наиболее
+failure-indicative timestep, а intra-trajectory loss усиливает разрыв до и
+после автоматически найденного onset. Для online alarm используется
+time-varying functional conformal threshold
+
+$$
+\zeta_t=\mu_t+h\,\sigma(t).
+$$
+
+Эксперименты включают standard LIBERO-10 с OpenVLA и $\pi_0$: 500 episodes на
+policy, seen/unseen task split и три random seeds. Среди 12 baselines есть
+STAC с десятью stochastic samples на step. Для OpenVLA авторы сообщают bACC
+0.852/0.834 на seen/unseen tasks против 0.665/0.624 у STAC. Это сильный сигнал,
+что multi-sample disagreement может быть недостаточен без временного контекста
+и supervision о failed episodes.
+
+У нас уже есть natural success/fail trajectories, поэтому Hide-and-Seek-style
+LSTM является реалистичным supervised upper baseline. Его нельзя смешивать с
+zero-shot TIDE/STAC: первый требует failed train data, вторые калибруются только
+на successes.
+
+#### AutoIntervene: phase-aware support и действие после alarm
+
+[AutoIntervene](https://arxiv.org/html/2608.07065) оценивает visual embedding и
+proposed action prefix совместно относительно phase-local memory успешных
+trajectories. Calibrated thresholds и persistence управляют передачей контроля
+оператору и возвратом policy. Для нас важны phase-aware action support и
+устойчивый alarm в нескольких query; вместо оператора simulator может
+сократить execution horizon, пересемплировать candidates или вызвать recovery.
+
+Полная постановка, метрики, ablations, collector schema и causal test:
+[`../experiments/TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](../experiments/TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md).
 
 ## 5. Сводные выводы из статей
 
@@ -1015,6 +1177,12 @@ $$
 16. **Длинное дерево не обязательно лучше.** QWM находит лучший trade-off на умеренной глубине; большие depth и candidate count усиливают model/extreme-value error. Для нас первый честный шаг - depth 1 против 2, не большой search.
 17. **Prediction-error surrogate должен быть task-critical.** Наш future-proprio estimator перенёсся, но не улучшил success; следующий target - drop, contact loss, object-pose divergence и no-progress.
 18. **Safety semantics должны быть условными.** AnySafe показывает, что запрет зависит от текущего constraint. Для LIBERO-Safety нужен `constraint-conditioned risk`, а не один глобальный failure score.
+19. **Соседние chunks надо сравнивать по одинаковому physical time.** Для $H=16,K=8$ корректная пара - old `[8:16]` и new `[0:8]`; первые половины соседних chunks несопоставимы.
+20. **Temporal consistency уже является сильным published baseline.** Sentinel/STAC использует distributional overlap distance для erratic-failure detection, BID - для candidate selection, SEAM - для flow guidance. Наш тест должен сравниваться со всеми тремя интерпретациями.
+21. **Consistency и correctness различны.** Высокий disagreement может быть полезной коррекцией, а низкий - уверенно неправильным планом. Поэтому overlap detector должен дополняться progress/outcome signal и проверяться causal intervention-ом.
+22. **Selected overlap MSE уже имеет имя TIDE.** Rewind-IL показывает, что такой training-free signal можно conformal-калибровать и связать с recovery; в нашей работе это обязательный baseline, а не claim новизны.
+23. **Threshold должен учитывать фазу.** Hide-and-Seek использует functional conformal band, потому что нормальный разброс меняется по времени. Один глобальный threshold может переобучиться на grasp/release boundaries.
+24. **Failed trajectories позволяют сильный supervised baseline.** Hide-and-Seek на LIBERO-10 превосходит multi-sampling methods; наши episode labels стоит использовать для LSTM baseline, сохраняя отдельную zero-shot оценку TIDE/STAC.
 
 ## 6. Предлагаемый протокол наших экспериментов
 
@@ -1036,13 +1204,19 @@ $$
 
 **RQ6.** Выигрыш adaptive requery вызван reranking, более ранним реальным observation или их interaction?
 
-**RQ7.** Дополняет ли re-denoising consistency наши internal-copy metrics при candidate selection?
+**RQ7.** Предсказывает ли STAC-style disagreement между old action-tail и new
+overlap-prefix локальный event до его наступления, и улучшает ли такой alarm
+candidate selection или feedback horizon? Как соотносятся TIDE-style selected
+MSE, distributional STAC и learned Hide-and-Seek-style detector при одинаковых
+case splits и false-alarm budget?
 
-**RQ8.** Находит ли targeted pessimistic imagination реальные failures чаще random future sampling при одинаковом compute budget?
+**RQ8.** Дополняет ли re-denoising consistency наши internal-copy metrics при candidate selection?
 
-**RQ9.** Даёт ли grounded Q-head и depth-2 search переносимый прирост относительно self-generated Cosmos value?
+**RQ9.** Находит ли targeted pessimistic imagination реальные failures чаще random future sampling при одинаковом compute budget?
 
-**RQ10.** Может ли trajectory-calibrated transition uncertainty обеспечить снижение official LIBERO-Safety violations без неприемлемого роста timeout/abstention?
+**RQ10.** Даёт ли grounded Q-head и depth-2 search переносимый прирост относительно self-generated Cosmos value?
+
+**RQ11.** Может ли trajectory-calibrated transition uncertainty обеспечить снижение official LIBERO-Safety violations без неприемлемого роста timeout/abstention?
 
 ### 6.2. Этап 0: integrity check
 
@@ -1656,3 +1830,16 @@ Grid автоматически:
 19. [Q-Learning With World Models, arXiv:2608.17163](https://arxiv.org/html/2608.17163)
 20. [Bridging Active Exploration and Uncertainty-Aware Deployment, arXiv:2305.12240](https://arxiv.org/abs/2305.12240)
 21. [E2-BKI, arXiv:2509.11964](https://arxiv.org/abs/2509.11964)
+22. [Sentinel / STAC, CoRL 2024](https://proceedings.mlr.press/v270/agia25a.html)
+23. [Bidirectional Decoding, ICLR 2025](https://arxiv.org/abs/2408.17355)
+24. [ACT, RSS 2023](https://roboticsproceedings.org/rss19/p016.html)
+25. [SEAM, arXiv:2607.04609](https://arxiv.org/abs/2607.04609)
+26. [VLA-Corrector, arXiv:2607.01804](https://arxiv.org/abs/2607.01804)
+27. [Diffusion Policy, RSS 2023 / IJRR 2024](https://diffusion-policy.cs.columbia.edu/)
+28. [Real-Time Chunking, NeurIPS 2025](https://arxiv.org/abs/2506.07339)
+29. [REMAC, arXiv:2601.20130](https://arxiv.org/abs/2601.20130)
+30. [Legato, arXiv:2602.12978](https://arxiv.org/abs/2602.12978)
+31. [FutureRTC, arXiv:2607.24008](https://arxiv.org/abs/2607.24008)
+32. [Rewind-IL / TIDE, arXiv:2604.16683](https://arxiv.org/html/2604.16683)
+33. [Hide-and-Seek in Trajectories, arXiv:2605.30834](https://arxiv.org/html/2605.30834)
+34. [AutoIntervene, arXiv:2608.07065](https://arxiv.org/html/2608.07065)
