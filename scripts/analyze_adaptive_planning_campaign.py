@@ -121,6 +121,11 @@ def strategy_id(row: pd.Series) -> str:
             f"phase_requery_l{risk_lambda:g}_r{float(row['planning_phase_fraction']):g}"
             f"_h{int(row['planning_short_open_loop_steps'])}"
         )
+    if strategy == "max_value_disagreement_requery":
+        return (
+            f"horizon_only_l{risk_lambda:g}"
+            f"_h{int(row['planning_short_open_loop_steps'])}"
+        )
     if strategy == "disagreement_requery_action":
         return f"requery_l{risk_lambda:g}_h{int(row['planning_short_open_loop_steps'])}"
     if strategy == "difficulty_gated_requery_action":
@@ -434,6 +439,7 @@ def selection_tables(pooled: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
                 "consensus_l",
                 "phase_l",
                 "requery_l",
+                "horizon_only_l",
                 "difficulty_requery_l",
                 "phase_requery_l",
             )
@@ -956,7 +962,7 @@ def save_plots(
         plt.close(fig)
 
         fig, ax = plt.subplots(figsize=(11, 7))
-        adaptive = ordered["strategy_id"].str.contains("requery")
+        adaptive = ordered["strategy_id"].str.contains("requery|horizon_only")
         ax.scatter(
             ordered.loc[~adaptive, "query_overhead_ratio"],
             ordered.loc[~adaptive, "delta_success_rate"],

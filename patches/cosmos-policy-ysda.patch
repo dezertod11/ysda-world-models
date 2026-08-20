@@ -1,5 +1,5 @@
 diff --git a/cosmos_policy/_src/imaginaire/modules/res_sampler.py b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
-index 6b0e7bdda7a3e58681bb21c09758828ac3bbe572..926639b7f10eb5e3f190466e5b10bb1a8f82d27b 100644
+index 6b0e7bd..926639b 100644
 --- a/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 +++ b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 @@ -126,6 +126,7 @@ class Sampler(torch.nn.Module):
@@ -109,7 +109,7 @@ index 6b0e7bdda7a3e58681bb21c09758828ac3bbe572..926639b7f10eb5e3f190466e5b10bb1a
  
              if callback_fns:
 diff --git a/cosmos_policy/experiments/robot/cosmos_utils.py b/cosmos_policy/experiments/robot/cosmos_utils.py
-index 00c2845bc9f45e4ef4b333e5e88897b59df142db..7e06e122d7b3f33b9e86a6357b703f47c59cdb11 100644
+index 00c2845..7e06e12 100644
 --- a/cosmos_policy/experiments/robot/cosmos_utils.py
 +++ b/cosmos_policy/experiments/robot/cosmos_utils.py
 @@ -40,6 +40,7 @@ from cosmos_policy._src.predict2.inference.get_t5_emb import get_text_embedding
@@ -296,7 +296,7 @@ index 00c2845bc9f45e4ef4b333e5e88897b59df142db..7e06e122d7b3f33b9e86a6357b703f47
  
      return return_dict
 diff --git a/cosmos_policy/experiments/robot/libero/libero_utils.py b/cosmos_policy/experiments/robot/libero/libero_utils.py
-index 9d7dd6a6a4b2d66e77f5e546f5541441a28d30ba..b3107f73feea55304c847dd4d3b849deddc02c80 100644
+index 9d7dd6a..b3107f7 100644
 --- a/cosmos_policy/experiments/robot/libero/libero_utils.py
 +++ b/cosmos_policy/experiments/robot/libero/libero_utils.py
 @@ -30,7 +30,11 @@ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
@@ -313,7 +313,7 @@ index 9d7dd6a6a4b2d66e77f5e546f5541441a28d30ba..b3107f73feea55304c847dd4d3b849de
      env = OffScreenRenderEnv(**env_args)
      env.seed(0)  # IMPORTANT: seed seems to affect object positions even when using fixed initial state
 diff --git a/cosmos_policy/experiments/robot/libero/run_libero_eval.py b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
-index 8ced47fd42f3c1be0707dca874e18c2707a4a3a8..13ba41ec1fe9bb6b0a9a6826a3017f11d02d2dfa 100644
+index 8ced47f..13ba41e 100644
 --- a/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 +++ b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 @@ -178,6 +178,25 @@ TASK_MAX_STEPS = {
@@ -424,7 +424,7 @@ index 8ced47fd42f3c1be0707dca874e18c2707a4a3a8..13ba41ec1fe9bb6b0a9a6826a3017f11
      log_message(f"Number of tasks: {num_tasks}", log_file)
 diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..735db269af28ef10482eea6f127103f88d69c444
+index 0000000..735db26
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/safety_signals.py
 @@ -0,0 +1,558 @@
@@ -988,10 +988,10 @@ index 0000000000000000000000000000000000000000..735db269af28ef10482eea6f127103f8
 +        }
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..b3bd577c36622f7a356380bcc7c38c158b4e5f29
+index 0000000..92fd230
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
-@@ -0,0 +1,2494 @@
+@@ -0,0 +1,2505 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
 +
@@ -1805,6 +1805,16 @@ index 0000000000000000000000000000000000000000..b3bd577c36622f7a356380bcc7c38c15
 +        selected = action_idx if query_risk_enabled else max_value_idx
 +        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
 +        requery_triggered = bool(query_risk_enabled and action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy in {"max_value_disagreement_requery", "horizon_only_max_value"}:
++        # Preserve the baseline candidate and use risk disagreement only to
++        # decide when the environment should be observed again.
++        risk = uncertainty_action
++        scores = values.copy()
++        selected = max_value_idx
++        effective_strategy = "max_value"
++        requery_triggered = bool(action_idx != max_value_idx)
 +        if requery_triggered:
 +            selected_open_loop_steps = int(short_open_loop_steps)
 +    elif strategy in {"disagreement_requery_action", "adaptive_horizon_action"}:
@@ -3177,6 +3187,7 @@ index 0000000000000000000000000000000000000000..b3bd577c36622f7a356380bcc7c38c15
 +                "consensus_action",
 +                "phase_gated_action",
 +                "phase_requery_action",
++                "max_value_disagreement_requery",
 +                "disagreement_requery_action",
 +                "difficulty_gated_requery_action",
 +                "surrogate_gated_requery_action",
@@ -3488,7 +3499,7 @@ index 0000000000000000000000000000000000000000..b3bd577c36622f7a356380bcc7c38c15
 +    main()
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..55d10afd9cd8179a74e4501b911c937bc4896422
+index 0000000..55d10af
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
 @@ -0,0 +1,334 @@
@@ -3828,7 +3839,7 @@ index 0000000000000000000000000000000000000000..55d10afd9cd8179a74e4501b911c937b
 +    return samples, summarize_action_ensemble(samples)
 diff --git a/cosmos_policy/experiments/robot/libero/vfd_metrics.py b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..eb2e4c566aad4a49eee4ab7e045b19445eb15276
+index 0000000..eb2e4c5
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
 @@ -0,0 +1,290 @@
@@ -4123,7 +4134,7 @@ index 0000000000000000000000000000000000000000..eb2e4c566aad4a49eee4ab7e045b1944
 +
 +    return results
 diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
-index efbafee498b91e3865b135599179949e159f8c75..115e6ed6474e777f011a001f440e52eac78fa834 100644
+index efbafee..115e6ed 100644
 --- a/cosmos_policy/models/policy_text2world_model.py
 +++ b/cosmos_policy/models/policy_text2world_model.py
 @@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
@@ -4172,7 +4183,7 @@ index efbafee498b91e3865b135599179949e159f8c75..115e6ed6474e777f011a001f440e52ea
          if self.net.is_context_parallel_enabled:
              samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
 diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
-index ef9e42cc321942a7bfbff008dbe44cb700f15617..df979ea70057fca94687d2f79dc2d97b71352840 100644
+index ef9e42c..df979ea 100644
 --- a/cosmos_policy/modules/cosmos_sampler.py
 +++ b/cosmos_policy/modules/cosmos_sampler.py
 @@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
@@ -4247,10 +4258,10 @@ index ef9e42cc321942a7bfbff008dbe44cb700f15617..df979ea70057fca94687d2f79dc2d97b
          return denoised_output
 diff --git a/tests/test_planning_selection.py b/tests/test_planning_selection.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..8f0989f9f3f474f8c4a7f49b49634ddc5801a769
+index 0000000..381bd86
 --- /dev/null
 +++ b/tests/test_planning_selection.py
-@@ -0,0 +1,360 @@
+@@ -0,0 +1,399 @@
 +from __future__ import annotations
 +
 +import numpy as np
@@ -4471,6 +4482,45 @@ index 0000000000000000000000000000000000000000..8f0989f9f3f474f8c4a7f49b49634ddc
 +    assert diagnostics["planning_selected_open_loop_steps"] == 8.0
 +
 +
++def test_horizon_only_requery_preserves_max_value_candidate() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="max_value_disagreement_requery",
++        risk_lambda=2.0,
++        open_loop_steps=16,
++        short_open_loop_steps=8,
++    )
++
++    assert selected == 0
++    assert diagnostics["max_value_selected"] is True
++    assert diagnostics["risk_candidate_sample_idx"] == 1.0
++    assert diagnostics["planning_effective_strategy"] == "max_value"
++    assert diagnostics["planning_requery_triggered"] is True
++    assert diagnostics["planning_selected_open_loop_steps"] == 8.0
++
++
++def test_horizon_only_requery_keeps_full_chunk_without_disagreement() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=0.0, later_std=0.0),
++        sample_with_action_copies(0.7, first_std=1.0, later_std=1.0),
++    ]
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="max_value_disagreement_requery",
++        risk_lambda=2.0,
++        open_loop_steps=16,
++        short_open_loop_steps=8,
++    )
++
++    assert selected == 0
++    assert diagnostics["planning_requery_triggered"] is False
++    assert diagnostics["planning_selected_open_loop_steps"] == 16.0
++
++
 +def test_frozen_proprio_error_surrogate_matches_its_center_point() -> None:
 +    predicted = predict_future_proprio_error(
 +        *np.exp(PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS)
@@ -4613,7 +4663,7 @@ index 0000000000000000000000000000000000000000..8f0989f9f3f474f8c4a7f49b49634ddc
 +    assert alarm_without_disagreement["planning_selected_open_loop_steps"] == 16.0
 diff --git a/tests/test_safety_signals.py b/tests/test_safety_signals.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..6153d3f33b6b8e1bbc87a93677624f28c7179d7f
+index 0000000..6153d3f
 --- /dev/null
 +++ b/tests/test_safety_signals.py
 @@ -0,0 +1,140 @@
@@ -4759,7 +4809,7 @@ index 0000000000000000000000000000000000000000..6153d3f33b6b8e1bbc87a93677624f28
 +    assert episode["failure_type"] == "kinematic_deadlock_candidate"
 diff --git a/tests/test_vfd_metrics.py b/tests/test_vfd_metrics.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..20bd33faf94c2e01a5fb1cd97b0f554ed573438c
+index 0000000..20bd33f
 --- /dev/null
 +++ b/tests/test_vfd_metrics.py
 @@ -0,0 +1,131 @@
