@@ -418,44 +418,220 @@ def build_notebook() -> nbformat.NotebookNode:
 confirmatory split не смешиваются."""
         ),
         new_markdown_cell(
-            r"""## 1. Гипотеза
+            r"""## 1. Гипотеза и использованные формулы
 
-Стандартный planner выбирает один из четырёх stochastic candidates:
+### 1.1. Что модель выдаёт на одном query
 
-\[
-i_V=\arg\max_i V_i.
-\]
+Query $q$ начинается с **реального** наблюдения среды: agent-view RGB,
+wrist RGB, language instruction и proprio-вектора
+$p_q\in\mathbb{R}^{9}$, состоящего из двух gripper coordinates, трёх
+координат end-effector position и четырёх координат quaternion.
 
-Ранее adaptive `requery_l1_h8` улучшил pooled success, но вредил отдельным
-задачам. Новая гипотеза: сокращать open-loop chunk и включать risk-aware
-ranking только тогда, когда **до исполнения** ожидается большая ошибка
-предсказанного future proprio.
+Из одного и того же наблюдения Cosmos Policy с разными diffusion seeds
+генерирует $N=4$ stochastic candidates. Candidate $i$ содержит согласованные
+предсказания
 
-Frozen causal surrogate использует четыре online-признака:
+$$
+\mathcal C_{q,i}=
+\left(A_{q,i},\widehat I_{q+1,i},\widehat p_{q+1,i},V_{q,i}\right),
+\qquad
+A_{q,i}\in\mathbb{R}^{16\times7}.
+$$
 
-\[
+Здесь $A_{q,i}$ - chunk из 16 семимерных действий, $\widehat I_{q+1,i}$ и
+$\widehat p_{q+1,i}$ - предсказанные future image и future proprio, а
+$V_{q,i}$ - value той же stochastic ветки. Это четыре отдельных candidates,
+а не четыре элемента одной value-матрицы, которые затем обязательно
+усредняются. В использованном `prediction_mode=parallel` эти величины
+возвращаются как один candidate, но эксперимент ещё не доказывает, что
+$\widehat p_{q+1,i}$ является строгим causal counterfactual именно для
+фиксированного $A_{q,i}$; это отдельная проверка в следующем roadmap.
+
+Стандартный best-of-$N$ planner выбирает candidate с максимальным value:
+
+$$
+i_V(q)=\arg\max_{i\in\{1,\ldots,N\}}V_{q,i}.
+$$
+
+### 1.2. Откуда берётся latent action uncertainty
+
+Низкоразмерный action chunk разворачивается в вектор длины $16\cdot7=112$ и
+несколько раз копируется внутри соответствующего latent frame. Обозначим
+восстановленную копию через $\widetilde A_{q,i,c,t,d}$, где $c$ - номер
+latent copy, $t$ - позиция действия в chunk, $d$ - одна из семи action
+coordinates. Сначала считается стандартное отклонение по copies:
+
+$$
+s^A_{q,i,t,d}=\operatorname{Std}_{c}
+\left(\widetilde A_{q,i,c,t,d}\right).
+$$
+
+Из него используются две агрегации:
+
+$$
+u^{A,\mathrm{chunk}}_{q,i}
+=\frac{1}{16\cdot7}\sum_{t=0}^{15}\sum_{d=1}^{7}s^A_{q,i,t,d},
+\qquad
+u^{A,\mathrm{first}}_{q,i}
+=\sqrt{\sum_{d=1}^{7}\left(s^A_{q,i,0,d}\right)^2}.
+$$
+
+Первая метрика усредняет inconsistency всего action chunk; вторая измеряет
+её только для ближайшего действия и используется непосредственно при
+candidate ranking. Чем больше значение, тем хуже согласуются повторные
+записи одного и того же предсказания внутри latent. Это **internal latent
+inconsistency одного candidate**, а не разброс между четырьмя stochastic
+candidates. Copies появились из способа записи низкоразмерного вектора в
+latent и не являются независимыми posterior samples, поэтому их standard
+deviation нельзя интерпретировать как калиброванную вероятность ошибки.
+
+Аналогично для девятимерного future proprio:
+
+$$
+u^p_{q,i}=\frac{1}{9}\sum_{r=1}^{9}
+\operatorname{Std}_{c}\left(\widetilde p_{q,i,c,r}\right),
+\qquad
+\widehat p_{q+1,i,r}=\operatorname{Mean}_{c}
+\left(\widetilde p_{q,i,c,r}\right).
+$$
+
+### 1.3. Risk-aware candidate score
+
+Value и first-action uncertainty имеют разные масштабы, поэтому они
+стандартизируются **внутри четырёх candidates текущего query**:
+
+$$
+z_q(x_{q,i})=
+\frac{x_{q,i}-\operatorname{Mean}_{j}x_{q,j}}
+{\operatorname{Std}_{j}x_{q,j}+\varepsilon}.
+$$
+
+Если все четыре значения практически одинаковы, реализация заменяет
+знаменатель на 1, поэтому соответствующий $z_q$ становится нулевым. В
+эксперименте $\lambda=1$, и risk-aware candidate определяется как
+
+$$
+S_{q,i}=z_q(V_{q,i})-\lambda z_q
+\left(u^{A,\mathrm{first}}_{q,i}\right),
+\qquad
+i_R(q)=\arg\max_i S_{q,i}.
+$$
+
+Таким образом, uncertainty не является отдельной вероятностью fail. Она
+используется как относительный штраф: среди candidates с близким value
+предпочитается candidate с более согласованным первым действием.
+
+### 1.4. Формула prediction-error surrogate
+
+Surrogate обучался предсказывать ошибку future proprio после исполнения
+полного chunk baseline-стратегии. Для фактически выбранного candidate эта
+ошибка становится известна только после получения следующего реального
+наблюдения:
+
+$$
+e_q=\left\|
+\widehat p^{\,\mathrm{norm}}_{q+1,i_V}
+-p^{\,\mathrm{norm}}_{q+1,\mathrm{real}}
+\right\|_2.
+$$
+
+До исполнения chunk используются четыре доступных online-признака:
+
+$$
+U^a_q=\frac1N\sum_i u^{A,\mathrm{chunk}}_{q,i},
+\qquad
+U^p_q=\frac1N\sum_i u^p_{q,i},
+\qquad
+\bar V_q=\frac1N\sum_i V_{q,i},
+$$
+
+$$
+D^p_q=\frac1{9}\sum_{r=1}^{9}
+\operatorname{Std}_{i}\left(\widehat p_{q+1,i,r}\right).
+$$
+
+$U^a_q$ и $U^p_q$ агрегируют internal copy inconsistency, тогда как $D^p_q$
+измеряет уже disagreement **между четырьмя candidates** по predicted future
+proprio.
+
+Каждый положительный признак сначала логарифмируется, пропуски заменяются
+train median, после чего используется стандартизация по train split:
+
+$$
+\ell_{q,k}=\log\!\left(\max(x_{q,k},10^{-10})\right),
+\qquad
+z_{\mathrm{train}}(\ell_{q,k})=
+\frac{\ell_{q,k}-\mu^{\mathrm{train}}_k}
+{\sigma^{\mathrm{train}}_k}.
+$$
+
+Это другая нормализация, чем $z_q$ в planning score: $z_q$ сравнивает
+candidates текущего query, а $z_{\mathrm{train}}$ использует навсегда
+замороженные статистики обучающей выборки.
+
+Коэффициенты получены ridge regression с регуляризацией $\alpha=100$:
+
+$$
+(\widehat\beta_0,\widehat\beta)=\arg\min_{\beta_0,\beta}
+\sum_q\left[
+\log e_q-\beta_0-\beta^Tz_{\mathrm{train}}(\ell_q)
+\right]^2+100\|\beta\|_2^2.
+$$
+
+Замороженная модель имеет вид
+
+$$
 \log \widehat e_q=-2.89194
-+0.12337z(\log U^a_q)
-+0.13764z(\log U^p_q)
-+0.40796z(\log \bar V_q)
-+0.30282z(\log D^p_q).
-\]
++0.12337z_{\mathrm{train}}(\log U^a_q)
++0.13764z_{\mathrm{train}}(\log U^p_q)
++0.40796z_{\mathrm{train}}(\log \bar V_q)
++0.30282z_{\mathrm{train}}(\log D^p_q),
+\qquad
+\widehat e_q=\exp(\log\widehat e_q).
+$$
 
-- $U^a_q$: disagreement повторных latent action copies;
-- $U^p_q$: disagreement latent future-proprio copies;
-- $\bar V_q$: среднее value четырёх candidates;
-- $D^p_q$: across-candidate spread predicted future proprio.
+Порог $\tau_e=0.08841767562905925$ равен 75-му percentile предсказаний на
+train split. Alarm определяется до выполнения действия:
 
-Порог $G_q=\mathbb{1}[\widehat e_q\ge\tau_e]$ фиксируется по train quantile.
-При alarm исполняется 8 действий вместо 16. Risk-aware candidate вычисляется
-как
+$$
+G_q=\mathbb{1}\!\left[\widehat e_q\ge\tau_e\right].
+$$
 
-\[
-i_R=\arg\max_i\left[z(V_i)-\lambda z(U^{a,first}_i)\right].
-\]
+Положительные коэффициенты означают ассоциацию признаков с большей
+proprio-error в обучающей выборке, но не доказывают причинность и не означают,
+что обязательно произойдёт task failure.
 
-Фактическая next-chunk prediction error используется только для последующего
-анализа и не входит в выбор того же chunk."""
+### 1.5. Две проверенные adaptive-стратегии
+
+`requery_l1_h8` всегда исполняет risk-aware candidate, но сокращает horizon,
+только когда его выбор расходится с обычным `max(value)`:
+
+$$
+i_q=i_R(q),
+\qquad
+H_q=
+\begin{cases}
+8, & i_R(q)\ne i_V(q),\\
+16, & i_R(q)=i_V(q).
+\end{cases}
+$$
+
+Выбранный в screening surrogate-вариант использует risk-aware ranking в
+первой половине эпизода или при alarm, а сокращает horizon только при alarm:
+
+$$
+R_q=\mathbb{1}\!\left[t_q/T_{\max}\le0.5\ \lor\ G_q=1\right],
+\qquad
+i_q=\begin{cases}i_R(q),&R_q=1,\\i_V(q),&R_q=0,\end{cases}
+$$
+
+$$
+H_q=\begin{cases}8,&G_q=1,\\16,&G_q=0.\end{cases}
+$$
+
+После $H_q$ действий обе стратегии снова получают **реальные** RGB и proprio
+из LIBERO и заново вызывают модель. Predicted image/proprio не подаются в
+следующий query как будто они являются реальностью."""
         ),
         new_markdown_cell(
             r"""## 2. Протокол
@@ -469,17 +645,39 @@ i_R=\arg\max_i\left[z(V_i)-\lambda z(U^{a,first}_i)\right].
 3. Выбирается ровно один `surrogate_adaptive` и один
    `non_surrogate_adaptive` метод по
 
-\[
+$$
 J=\Delta_{pool}+0.5\min_c\Delta_c
 -0.02\max(0,Q_{ratio}-1).
-\]
+$$
+
+Здесь $\Delta_{pool}$ - paired success-rate improvement относительно
+`max(value)` по всем screening episodes, $\min_c\Delta_c$ - худший эффект по
+отдельному case, а $Q_{ratio}$ - нормированная стоимость model queries.
+Коэффициенты считаются в долях, а не в percentage points. Такой utility
+поощряет средний выигрыш, штрафует провал хотя бы на одном case и слегка
+штрафует compute overhead выше baseline.
 
 4. Confirmatory: замороженные методы, 20 новых paired seeds на 12 cases.
    Шесть cases повторяют boundary-задачи, ещё шесть заранее фиксируют новые
    LIBERO-PRO object/language/swap/task shifts.
 5. Primary endpoint: paired success delta к `max(value)`, stratified bootstrap
    CI, exact McNemar и Holm correction. Compute overhead и safety signals
-   считаются secondary outcomes."""
+   считаются secondary outcomes.
+
+Для $M$ matched seeds primary effect вычисляется по парным outcomes:
+
+$$
+\widehat\Delta=
+\frac1M\sum_{m=1}^{M}
+\left(y^{\mathrm{strategy}}_m-y^{\mathrm{baseline}}_m\right),
+\qquad y_m\in\{0,1\}.
+$$
+
+`W/L/T` в таблицах означает число seeds, где стратегия соответственно
+исправила baseline fail, потеряла baseline success или дала тот же outcome.
+Exact McNemar проверяет дисбаланс между $W$ и $L$; bootstrap CI строится с
+сохранением case strata, а Holm correction учитывает две заранее выбранные
+confirmatory гипотезы."""
         ),
         new_code_cell(
             """from pathlib import Path
