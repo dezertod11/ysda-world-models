@@ -1,0 +1,363 @@
+# Research roadmap: robust world-model planning
+
+Дата обновления: 20 августа 2026 года.
+
+Этот документ является текущим планом. Frozen-протоколы
+`ADAPTIVE_PLANNING_HYPOTHESES_20260813.md` и
+`SURROGATE_REQUERY_HYPOTHESES_20260819.md` сохраняются как исторические
+pre-registration и не переписываются после просмотра результатов.
+
+Обзор литературы, формулы и подробное сравнение работ находятся в
+[`../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md`](../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md).
+
+## Цель
+
+Построить planner для Cosmos Policy, который выбирает action не только по
+self-predicted value, но учитывает:
+
+1. support action под policy distribution;
+2. uncertainty action-conditioned dynamics;
+3. task progress, заземлённый реальными transitions;
+4. риск редкого правдоподобного failure outcome;
+5. явные safety constraints;
+6. стоимость дополнительного inference и более частого feedback.
+
+Task failure и safety violation считаются разными endpoints. Рост success не
+может компенсировать official safety violation.
+
+## Зафиксированные факты из наших экспериментов
+
+| Наблюдение | Результат | Следствие |
+|---|---:|---|
+| Fixed action uncertainty penalty | 151/240 против 146/240, +2.1 п.п., CI через ноль | Одного reranking недостаточно |
+| Disagreement-triggered `h=8` + reranking | 161/240, +6.25 п.п., CI [+1.7; +11.3], Holm `p=0.0474` | Самый сильный текущий метод |
+| Нормированная цена adaptive requery | 1.27x policy-query cost | Нужен явный success/compute trade-off |
+| Future-proprio surrogate | case-controlled `rho=0.579`, AUROC 0.731 | Prediction error предсказуем online |
+| Surrogate-gated planner | +0.4 п.п., CI через ноль | Proprio error не равен task-critical risk |
+| Early episode-fail predictor | AUROC 0.547 | Один абсолютный threshold между tasks не работает |
+| Failure-mode shift | drops уменьшились, timeout вырос | Нужны отдельные progress и safety objectives |
+
+Нельзя утверждать, что adaptive requery выигрывает именно из-за reranking:
+текущий результат смешивает новый candidate и более раннее observation.
+
+## Текущий эксперимент P0
+
+### Matched 2x2: selection x feedback horizon
+
+Кампания `factorial_selection_horizon_20260820` запущена и не анализируется до
+полного завершения. Дизайн: 7 LIBERO-PRO cases, 24 новых paired seeds, четыре
+условия, всего 672 rollout.
+
+| Условие | Candidate | Horizon при disagreement |
+|---|---|---:|
+| `max_value` | max value | 16 |
+| `action_l1` | risk-aware | 16 |
+| `horizon_only_l1_h8` | max value | 8 |
+| `requery_l1_h8` | risk-aware | 8 |
+
+Primary contrasts:
+
+$$
+\Delta_A=A-B,
+\qquad
+\Delta_H=H-B,
+\qquad
+\Delta_{AH}=AH-B,
+$$
+
+$$
+I=AH-A-H+B.
+$$
+
+Решение после P0:
+
+- если \(H-B>0\), а \(A-B\approx0\), uncertainty используется прежде всего
+  как сигнал момента feedback;
+- если \(A-B>0\), развиваем candidate score;
+- если interaction велик, сохраняем combined rule и не интерпретируем эффекты
+  аддитивно;
+- regression на `goal_mug` считается blocking result для безусловного метода.
+
+Полный frozen protocol:
+[`FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md`](FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md).
+
+## Целевая архитектура
+
+Не следует сразу обучать одну непрозрачную формулу. Система строится слоями и
+каждый слой проходит отдельную ablation.
+
+### 1. Candidate support
+
+Для candidate \(a_i\) считаем re-denoising consistency из tau0-WM:
+
+$$
+S_{\mathrm{RCS},i}=-
+\frac1K\sum_{k=1}^{K}
+E_{\mathrm{redenoise}}(a_i,t_k).
+$$
+
+Это проверяет, лежит ли action на conditional action manifold. Оно не является
+ни physical uncertainty, ни probability of success.
+
+### 2. Transition epistemic uncertainty
+
+На реальных latent transitions обучается небольшой Gaussian ensemble:
+
+$$
+p_k(z'\mid z,a)=\mathcal N(\mu_k(z,a),\Sigma_k(z,a)),
+$$
+
+$$
+U_{\mathrm{epi}}(z,a)=
+H_2\left(\frac1K\sum_kp_k\right)
+-\frac1K\sum_kH_2(p_k).
+$$
+
+Порог \(\epsilon_{\mathrm{ID}}\) калибруется conformal prediction по целым ID
+episodes. Internal-copy std остаётся отдельным generative signal и не
+переименовывается в epistemic uncertainty.
+
+### 3. Grounded task value
+
+Critic \(Q_{\mathrm{real}}(s,a)\) обучается только на фактически исполненных
+LIBERO transitions. Imagined states используются при search, но не как
+ground-truth TD targets. На depth \(d\):
+
+$$
+V(d\mid s)=\alpha V_Q(d\mid s)+(1-\alpha)V_{\mathrm{WM}}(d\mid s).
+$$
+
+Первый sweep ограничен \(D\in\{1,2\}\), \(N\in\{4,8\}\) и небольшим future
+discount \(\lambda\in\{0.1,0.2\}\).
+
+### 4. Tail outcome risk
+
+Для фиксированного candidate world model генерирует \(K\) action-conditioned
+futures. Базовая robust estimate:
+
+$$
+R_{\mathrm{tail},i}
+=\operatorname{CVaR}_{\alpha}
+\left[L_{\mathrm{failure}}(\hat o_i^{(1:K)})\right].
+$$
+
+StressDream-вариант не ждёт случайный bad sample, а оптимизирует initial noise
+в Gaussian typical set:
+
+$$
+R_{\mathrm{stress},i}=
+\max_{\epsilon\in\mathcal T}
+C_{\mathrm{failure}}
+\left(f_\theta(\epsilon\mid s,a_i)
+\right).
+$$
+
+Random sampling и steering всегда сравниваются при одинаковом числе world-model
+forwards и с held-out verifier.
+
+### 5. Constraint risk
+
+Для constraint \(c\) из LIBERO-Safety строится отдельный risk
+\(C_i=C(s,a_i;c)\). Candidate допустим, если
+
+$$
+C_i\le\epsilon_c
+\quad\land\quad
+U_{\mathrm{epi},i}\le\epsilon_{\mathrm{ID}}.
+$$
+
+Если допустимых candidates нет, система выполняет fallback, а не выбирает
+наименьшее из плохих значений. Первый fallback: сократить horizon и requery;
+следующие варианты: recovery action и abstention.
+
+### 6. Итоговая score после отдельных ablations
+
+Только после подтверждения компонентов проверяется общая формула:
+
+$$
+i^*=\arg\max_{i\in\mathcal F(s,c)}
+\left[
+Q_{\mathrm{real}}(s,a_i)
++\eta\,\widehat V_{\mathrm{WM},i}
++\rho\,S_{\mathrm{RCS},i}
+-\lambda_e U_{\mathrm{epi},i}
+-\lambda_t R_{\mathrm{tail},i}
+\right],
+$$
+
+$$
+\mathcal F(s,c)=
+\{i:C_i\le\epsilon_c,
+U_{\mathrm{epi},i}\le\epsilon_{\mathrm{ID}}\}.
+$$
+
+Horizon выбирается отдельно:
+
+$$
+H_q=
+\begin{cases}
+h, & \text{ranking disagreement, OOD или tail-risk alarm},\\
+16, & \text{иначе}.
+\end{cases}
+$$
+
+Это принципиально: score отвечает «что выполнить», horizon - «сколько времени
+не смотреть на реальный мир», constraint filter - «что выполнять нельзя».
+
+## Очередь экспериментов
+
+### P1. Re-denoising consistency без обучения новой модели
+
+**Гипотеза.** RCS дополняет internal-copy uncertainty и лучше отличает
+off-manifold action candidates.
+
+1. Реализовать re-noise/re-denoise action chunks на 3-5 flow times.
+2. Проверить, что score воспроизводим при fixed candidate/noise.
+3. На сохранённых candidate pools посчитать top-1 retrospective oracle hit,
+   pairwise candidate preference и correlation с actual next-chunk outcomes.
+4. Closed-loop сравнить `maxV`, `action_l1`, `RCS`, `maxV+RCS` на новых paired
+   seeds тех же mixed cases.
+
+**Go:** положительный pooled delta без regression хуже -10 п.п. на sentinel case
+или явное улучшение oracle hit/AUPRC на held-out cases.
+
+### P2. Проверка causal action-conditioned future
+
+**Гипотеза.** Последовательность `fixed action -> future -> value` различает
+candidate consequences лучше текущего parallel self-generated value.
+
+1. Зафиксировать observation и один action candidate.
+2. Семплировать несколько future image/proprio, меняя только future noise.
+3. Повторить для других actions при общих noise seeds.
+4. Проверить action sensitivity, calibration prediction error и совпадение
+   ordering с фактически выполненными chunks.
+5. Сравнить `parallel`, autoregressive/sequential и action-conditioned modes.
+
+Без этого теста CVaR и StressDream не запускаются: нельзя оптимизировать future,
+который причинно не привязан к оцениваемому action.
+
+### P3. Grounded critic и QWM-lite
+
+**Гипотеза.** Реальный success/progress critic уменьшает self-value
+overconfidence, а depth 2 даёт дополнительный сигнал без сильного compounding
+error.
+
+Data:
+
+- train: completed calibration campaigns, split по целым cases;
+- validation: held-out init states/tasks;
+- test: новые seeds и минимум одна новая PRO family;
+- labels: terminal success, dense BDDL progress, drop/contact/no-progress.
+
+Ablations:
+
+| Вариант | Search |
+|---|---|
+| `max_cosmos_value` | depth 0 |
+| `max_grounded_Q` | depth 0 |
+| `QWM_D1` | one action-conditioned future |
+| `QWM_D2_mean` | depth 2, mean aggregation |
+| `QWM_D2_CVaR` | depth 2, lower-tail aggregation |
+
+Primary endpoint - paired closed-loop success; secondary - calibration/Brier,
+drop, timeout, query latency и search regret.
+
+### P4. JRD ensemble и conformal OOD
+
+**Гипотеза.** Transition-conditioned JRD переносится между OOD families лучше
+internal-copy std и даёт контролируемый ID false-positive rate.
+
+1. Из Cosmos latent traces собрать \((z_t,a_t,z_{t+1})\).
+2. Обучить 5 small Gaussian heads bootstrap/resampled trajectories.
+3. Сравнить empirical mean variance, total uncertainty, max aleatoric и JRD.
+4. Калибровать threshold trajectory-level CP на standard LIBERO ID.
+5. Проверить OOD detection на PRO `Obj/Env/Pos/Sem/Task` отдельно.
+
+Primary metrics: ID recall at fixed \(\alpha\), OOD AUPRC, lead time, overhead.
+Closed-loop endpoint появляется только после успешной calibration.
+
+### P5. Task-critical outcome heads
+
+**Гипотеза.** Separate heads `drop`, `contact loss`, `wrong object`,
+`no progress`, `constraint violation` полезнее общего future-proprio L2.
+
+Сначала labels строятся из simulator state/contact и official LIBERO-Safety
+checks; video/VLM labels используются только как дополнительная слабая разметка.
+Сравниваются:
+
+- per-event binary heads;
+- shared encoder + multi-head outputs;
+- one scalar failure head;
+- existing proprio-error surrogate.
+
+Нужны event AUPRC, calibration и lead time; episode accuracy недостаточна.
+
+### P6. StressDream-lite
+
+**Гипотеза.** Gradient-steered future noise находит task-critical bad outcomes
+чаще best-of-N при равном compute.
+
+Первый этап offline:
+
+- 100 success и 100 fail/near-fail query contexts;
+- target prompts/heads для drop, missed grasp, wrong placement, collision;
+- best-of-4/10/40 random futures;
+- 5/10/20 steering steps;
+- ablation norm/isotropy/spectral constraints;
+- held-out simulator-event verifier, а не тот же VLM objective.
+
+Только если steering повышает recall без деградации physical plausibility,
+добавить его online после high-risk alarm.
+
+### P7. Constraint-conditioned safety filter
+
+Два уровня сложности:
+
+1. **Практический:** constraint-conditioned risk head + conformal threshold +
+   `requery/recovery/abstain`.
+2. **Исследовательский:** AnySafe/UNISafe-style latent reachability с learned
+   fallback policy.
+
+Evaluation идёт на official LIBERO-Safety outcomes. Отдельно измеряются task
+success, official violations, intervention rate и incompletion. Эвристические
+drop labels не заменяют official constraint checks.
+
+## Benchmark matrix
+
+| Benchmark | Роль |
+|---|---|
+| Standard LIBERO | ID calibration, critic/transition training, false-positive control |
+| LIBERO-PRO | OOD transfer и mixed-boundary closed-loop planning |
+| LIBERO-Plus | Factorized ablation camera/background/pose/noise при необходимости |
+| LIBERO-Safety | Official constraint endpoint и fallback evaluation |
+
+Новые methods сначала проверяются на 3-7 известных mixed cases, затем веса и
+thresholds замораживаются и переносятся на целые held-out task/family. Queries
+одного episode никогда не делятся между train и test.
+
+## Общий statistical protocol
+
+1. Screening: 8-12 paired seeds на case, только prespecified grid.
+2. Заморозить не более двух variants на гипотезу.
+3. Confirmatory: минимум 20-30 новых paired seeds на case.
+4. Primary: stratified paired bootstrap CI и exact McNemar.
+5. Несколько frozen methods: Holm correction.
+6. Обязательно показывать min/max per-case delta и sentinel regressions.
+7. Success всегда публикуется вместе с query cost, timeout, drop и safety.
+8. Видео - mechanism evidence, не статистическая выборка.
+
+## Приоритет после завершения P0
+
+1. Зафиксировать вывод 2x2 и выбрать selection/horizon baseline.
+2. Реализовать P1 RCS: это самый дешёвый новый метод и не требует обучения.
+3. Провести P2 causal future validation.
+4. Параллельно подготовить datasets для P3 grounded Q и P4 JRD ensemble.
+5. После P2 запустить P3 QWM-lite и только затем P6 StressDream-lite.
+6. P5/P7 вести отдельной safety веткой, не смешивая с task-success planner.
+
+Ближайший сильный результат должен отвечать не «uncertainty коррелирует с
+ошибкой», а одному из двух утверждений:
+
+- более ранний feedback причинно повышает success при контролируемой цене; или
+- action-conditioned robust evaluator выбирает лучший candidate на held-out
+  OOD cases и уменьшает task-critical failures.

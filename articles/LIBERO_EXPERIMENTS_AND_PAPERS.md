@@ -1,12 +1,13 @@
 # LIBERO и LIBERO-PRO: эксперименты, статьи и протокол нашего исследования
 
-Актуальность обзора: 23 июля 2026 года.
+Актуальность обзора: 20 августа 2026 года.
 
-Этот файл отвечает на три практических вопроса:
+Этот файл отвечает на четыре практических вопроса:
 
 1. Как именно ставились эксперименты в работах по uncertainty, world models и VLA.
 2. Какие статьи действительно использовали стандартный LIBERO, LIBERO-PRO или LIBERO-Plus.
 3. Как на их основе поставить честное сравнение обычного `max(value)` и uncertainty-aware planning в Cosmos Policy.
+4. Какие новые направления следуют из работ Junwon Seo, StressDream, UNISafe, AnySafe, tau0-WM и QWM после наших собственных confirmatory результатов.
 
 Числа ниже являются результатами авторов соответствующих статей, если явно не указано, что это наша гипотеза или предлагаемый протокол. Результаты разных работ нельзя напрямую сравнивать только по success rate: модели, данные, число rollout, наборы задач и критерии успеха различаются.
 
@@ -215,8 +216,13 @@ $$
 | Act, Think or Abstain, 2603.05147 | Да | Да | Нет | OOD routing |
 | Shifting Uncertainty, 2603.18342 | Да, четыре suites | Нет | Нет | Rollout failure prediction |
 | SUREFlow, 2607.10504 | Да, четыре suites | Да | Нет | Uncertainty-aware flow refinement |
+| UNISafe, 2505.00779 | Нет | Нет | Нет | Calibrated OOD detection и latent safety filtering |
+| AnySafe, 2509.19555 | Нет | Нет | Нет | Runtime-parameterized safety constraints |
+| StressDream, 2606.00267 | Нет | Нет | Нет | Targeted pessimistic video-WM imaginations |
+| tau0-WM, 2606.01027 | Нет | Нет | Нет | Candidate consistency, simulated progress и action rectification |
+| QWM, 2608.17163 | Да, пять задач | Нет | Нет | Short-depth WM tree search поверх Q-learning |
 
-**Главный факт:** среди восьми PDF, лежащих локально в `articles/`, ни одна работа не проводит основной эксперимент именно на LIBERO-PRO. Для LIBERO-PRO нужны внешние работы 2510.03827, 2603.05147 и 2607.10504.
+**Главный факт:** среди локальных PDF только QWM из новых работ добавляет эксперименты на standard LIBERO; ни одна из пяти новых работ не использует LIBERO-PRO. Для прямого сравнения на LIBERO-PRO по-прежнему нужны работы 2510.03827, 2603.05147 и 2607.10504, а перенос StressDream/UNISafe/AnySafe на PRO является нашей новой экспериментальной постановкой.
 
 ## 3. Разбор локальных статей
 
@@ -468,6 +474,276 @@ $$
 
 Надо проверять, какая компонента действительно улучшает ranking actions, а не выбирать метрику по красоте reconstruction.
 
+### 3.8. UNISafe: uncertainty-aware latent safety filter
+
+**Статья:** J. Seo, K. Nakamura, A. Bajcsy, *Uncertainty-aware Latent Safety Filters for Avoiding Out-of-Distribution Failures*, CoRL 2025, arXiv:2505.00779.
+
+- [Локальный PDF](2505.00779v2.pdf)
+- [arXiv HTML](https://arxiv.org/html/2505.00779)
+- [Проект](https://cmu-intentlab.github.io/UNISafe/)
+
+LIBERO не используется. Эксперименты проведены на image-based Dubins car, block plucking в Isaac Lab с Franka и физическом Jenga с Franka.
+
+**Метод.** Базовый latent safety filter обучает safety value в imagination world model:
+
+$$
+V^{\mathrm{safe}}(z_t)=
+(1-\gamma)\ell_z(z_t)+
+\gamma\min\left\{
+\ell_z(z_t),
+\max_a V^{\mathrm{safe}}(\hat z_{t+1})
+\right\}.
+$$
+
+Здесь \(\ell_z(z)<0\) означает известный failure. UNISafe добавляет вторую причину запрета: world-model transition сам находится вне покрытия данных. Для этого состояние расширяется uncertainty:
+
+$$
+\tilde z=(z,u),
+\qquad
+\ell_{\tilde z}(\tilde z)=
+\min\{\ell_z(z),\kappa(\epsilon-u)\}.
+$$
+
+Важно, что uncertainty зависит от перехода \((z,a)\), а не только от сгенерированного \(z'\). OOD-input может быть спроецирован генеративной моделью обратно в правдоподобный latent, поэтому OOD detector только по output state способен остаться overconfident.
+
+Epistemic uncertainty оценивает отдельный лёгкий ансамбль Gaussian next-latent predictors:
+
+$$
+\hat f_k(z_{t+1}\mid z_t,a_t)
+=\mathcal N(\mu_k(z_t,a_t),\Sigma_k(z_t,a_t)).
+$$
+
+Диагональная \(\Sigma_k\) описывает aleatoric uncertainty внутри member, а расхождение между members выделяется Jensen-Renyi divergence:
+
+$$
+U_{\mathrm{JRD}}(z,a)=
+H_2\left(\frac{1}{K}\sum_k \hat f_k\right)
+-\frac{1}{K}\sum_k H_2(\hat f_k).
+$$
+
+Порог \(\hat\epsilon\) выбирается class-conditioned conformal prediction только по held-out ID trajectories. Авторы калибруют сначала high quantile uncertainty внутри каждой траектории, затем quantile по траекториям. Это сохраняет trajectory-level exchangeability и контролирует долю ID trajectories, ошибочно объявленных OOD.
+
+**Эксперименты и результаты.** В block plucking использованы 3000 train trajectories и 1000 evaluation initial states. Для обычной Dreamer policy:
+
+| Метод | Safe success | Failure | Incompletion | Filtered |
+|---|---:|---:|---:|---:|
+| без filter | 0.58 | 0.41 | 0.01 | 0.0% |
+| LatentSafe | 0.68 | 0.30 | 0.01 | 7.2% |
+| UNISafe, JRD | **0.72** | **0.20** | 0.08 | 37.7% |
+
+Total uncertainty и max aleatoric uncertainty уменьшали failures, но чаще блокировали допустимое поведение. JRD дал лучший компромисс между safety и conservativeness. В Jenga использованы 720 train trajectories, в том числе 90 failures; на replay 50 failure trajectories UNISafe вмешивался раньше и резко уменьшал open-loop failure rate. Отдельная ablation показала, что soft reward вида
+
+$$
+r(z,a)=\bar r(z,a)-\lambda U_{\mathrm{JRD}}(z,a)
+$$
+
+сам по себе не обеспечил safety: uncertainty-aware hard filter оказался существенно надёжнее.
+
+**Вывод для нашего проекта.** Это прямое предупреждение против попытки решить LIBERO-Safety только формулой `value - lambda * uncertainty`. Для task success soft ranking полезен; для constraint violation нужен отдельный calibrated feasible set и fallback. Практический перенос без обучения нового Cosmos:
+
+1. Заморозить Cosmos encoder и собрать реальные tuples \((z_t,a_t,z_{t+1})\) из наших traces.
+2. Обучить 5 небольших probabilistic transition heads и сравнить JRD с текущим internal-copy std.
+3. Калибровать OOD threshold по целым ID episodes, а не по перемешанным query rows.
+4. В LIBERO-Safety разрешать candidate только при \(U_{\mathrm{JRD}}\le\hat\epsilon\) и отсутствии предсказанного constraint event.
+
+Это расширяет наши H8/H14. Новыми для прежнего плана являются явное разделение aleatoric/epistemic uncertainty, lightweight transition ensemble и trajectory-level conformal calibration.
+
+### 3.9. AnySafe: safety constraint задаётся во время запуска
+
+**Статья:** S. Agrawal, J. Seo et al., *AnySafe: Adapting Latent Safety Filters at Runtime via Safety Constraint Parameterization in the Latent Space*, ICRA 2026, arXiv:2509.19555.
+
+- [Локальный PDF](2509.19555v1.pdf)
+- [arXiv HTML](https://arxiv.org/html/2509.19555)
+- [Проект](https://any-safe.github.io/)
+
+LIBERO не используется. Эксперименты: simulated image-based Dubins car и физическое sweeping objects с Franka.
+
+**Метод.** Обычный safety filter знает один фиксированный failure classifier. AnySafe получает во время deployment изображение нежелательного состояния \(o_c\), кодирует его в \(z_c\) и строит constraint-conditioned value \(V^{\mathrm{safe}}(z;z_c)\). Поскольку raw world-model latent не обязан отражать именно safety similarity, обучается failure-relevant projector:
+
+$$
+\tilde z=\tilde{\mathcal E}(z),
+\qquad
+\tilde\ell_z(z;z_c)=-\operatorname{cos}(\tilde z,\tilde z_c),
+$$
+
+$$
+\mathcal F_{z_c}^{\delta}
+=\{z:\tilde\ell_z(z;z_c)\le\delta\}.
+$$
+
+Порог \(\delta\) калибруется conformal prediction на похожих/непохожих парах. Один и тот же safety filter затем меняет conservativeness post hoc без retraining. Во время обучения constraint \(z_c\) случайно выбирается из world-model dataset, поэтому модель видит широкое семейство потенциальных запретов.
+
+**Результаты.** В Dubins setup AnySafe получил balanced accuracy 0.942 и safe rate 0.924, сопоставимо со специализированным fixed filter (0.965 и 0.908). Вариант без failure projector получил только 0.755 balanced accuracy: raw latent similarity недостаточна. На физическом sweeping world model обучался на 1300 trajectories, projector на 300 labeled trajectories, calibration использовала 4000 images. В 30 replayed action sequences AnySafe адаптировался к новым failure regions; авторы сообщают менее 2% состояний, нарушающих runtime constraint.
+
+**Вывод для нашего проекта.** AnySafe решает не вопрос «насколько Cosmos не уверен», а вопрос «что именно считать недопустимым сейчас». Для LIBERO-Safety это даёт сильную архитектурную идею:
+
+- отдельный constraint representation для `do not touch`, `do not knock over`, `keep object out of region`;
+- task value и constraint value не смешиваются в один scalar;
+- один safety head можно переиспользовать для разных BDDL constraints;
+- threshold определяет conservativeness и выбирается на calibration split.
+
+Это полезный второй этап после простого event classifier. Полный HJ filter потребует отдельного latent dynamics solver; ближайший реалистичный вариант для нас - constraint-conditioned binary/risk head плюс reject/requery/recovery.
+
+### 3.10. StressDream: целевой поиск редких правдоподобных failures
+
+**Статья:** J. Seo et al., *StressDream: Steering Video World Models for Robust Policy Evaluation and Improvement*, arXiv:2606.00267, 2026.
+
+- [Локальный PDF](2606.00267v1.pdf)
+- [arXiv HTML](https://arxiv.org/html/2606.00267)
+- [Проект](https://junwon.me/StressDream/)
+- [Код](https://github.com/CMU-IntentLab/StressDream)
+
+LIBERO не используется. Авторы применяют Vista к autonomous driving и Ctrl-World, обученный в DROID setup, к шести contact-rich real-robot manipulation tasks. Для manipulation собирается примерно 150 trajectories на задачу с successes и failures; evaluation содержит 100 failure trajectories.
+
+**Главная идея.** Наши stochastic samples являются zeroth-order Monte Carlo: редкий failure можно не увидеть даже при большом \(N\). StressDream фиксирует observation history и candidate action \(a\), но оптимизирует initial diffusion noise \(\epsilon\), чтобы найти правдоподобный high-impact future:
+
+$$
+a^*=\arg\min_a\max_{\epsilon\in\mathcal T}
+C_{\mathrm{fail}}\left(f_\theta(\epsilon,o_{\mathrm{hist}},a)\right),
+$$
+
+где \(\mathcal T\) - typical set Gaussian prior. Semantic objective берётся из differentiable yes/no logit VLM:
+
+$$
+C_{\mathrm{sem}}(o,l)=
+\log p_{\mathrm{VLM}}(\text{yes}\mid o,l)
+-\log p_{\mathrm{VLM}}(\text{no}\mid o,l).
+$$
+
+Чтобы gradient ascent не породил физически бессмысленный ролик, noise удерживается в Gaussian typical set:
+
+$$
+C_{\mathrm{pla}}(\epsilon)=
+\lambda_1 C_{\mathrm{norm}}
++\lambda_2 C_{\mathrm{iso}}
++\lambda_3 C_{\mathrm{spec}},
+$$
+
+$$
+C_{\mathrm{norm}}=-(\|\epsilon\|_2-\sqrt D)^2,
+\quad
+C_{\mathrm{iso}}=-\frac1k\|\hat\Sigma-I\|_F^2,
+\quad
+C_{\mathrm{spec}}=-\frac1B\sum_b(\hat p_b-\bar p)^2.
+$$
+
+Полный backprop через все denoising steps заменяется score-distillation approximation:
+
+$$
+\nabla_\epsilon C_{\mathrm{sem}}(o)
+\approx \beta\nabla_o C_{\mathrm{sem}}(o).
+$$
+
+**Результаты.** На driving и manipulation recall high-impact failures вырос с 54% до 94%. Robust fine-tuning pi0.5-droid, где steered-failure trajectories получали weight 0.1 вместо 1.0, повысил success с 39% до 71% по 20 rollout на задачу. На rare driving events 20 gradient steps превзошли best-of-40 random samples. Без typical-set regularization steering создавал implausible failures и ухудшал true-negative rate/video quality.
+
+**Вывод для нашего проекта.** Это наиболее новое направление относительно текущего плана. Наши четыре stochastic candidates и variance обнаруживают только легко семплируемую часть outcome distribution. Для каждого action candidate надо отдельно оценивать targeted pessimistic risk:
+
+$$
+R_i^{\mathrm{stress}}=
+\max_{\epsilon\in\mathcal T}
+C_{\mathrm{fail}}\left(f_\theta(\epsilon\mid s,a_i)\right),
+$$
+
+$$
+\operatorname{score}_i=
+\widehat V_i
+-\lambda U_i
+-\mu R_i^{\mathrm{stress}}.
+$$
+
+В Cosmos сначала требуется проверить action-conditioned causal path `fixed action -> future image/proprio -> value`: при `parallel` generation будущий rollout и action могут быть совместно сгенерированы, но это ещё не строгая оценка последствия фиксированного candidate. Первый эксперимент должен сравнить random future samples и optimized-noise futures при одинаковом action, compute budget и held-out verifier. StressDream дорог для online control, поэтому разумный режим - запускать его только после disagreement/OOD alarm или offline для hard-negative mining.
+
+### 3.11. tau0-WM: consistency, progress и action rectification
+
+**Статья:** P. Zhou et al., *tau0-WM: A Unified Video-Action World Model for Robotic Manipulation*, arXiv:2606.01027, 2026.
+
+- [Локальный PDF](2606.01027v1.pdf)
+- [arXiv HTML](https://arxiv.org/html/2606.01027)
+- [Проект](https://finch.agibot.com/research/tau0-wm)
+
+LIBERO не используется. Работа оценивается на четырёх long-horizon real-robot tasks (`Toolbox`, `School Bag`, `Faucet`, `Badminton`) и отдельных single-attempt ablations `Tissue -> Box`, `Pen -> Box`.
+
+**Архитектура.** Video Action Model совместно предсказывает future visual latents и action chunk:
+
+$$
+F_\theta(o_t,p,s_t)
+\rightarrow
+(\hat z_{t+1:t+H_v},\hat a_{t:t+H_a-1}).
+$$
+
+Отдельный Action-Conditioned Video Simulator получает уже фиксированный candidate action и выдаёт future rollout и dense task progress:
+
+$$
+G_\phi(o_{t-M:t},p,\bar a_i)
+\rightarrow(\hat z_i,\hat r_i).
+$$
+
+Модель обучена на 27.3k hours heterogeneous data: 17.8k robot teleoperation, 6.5k UMI и 3.0k egocentric video. Failure и recovery trajectories специально используются для progress head.
+
+**Test-time computation.** Сначала для каждого candidate вычисляется Re-denoising Consistency Score. Action повторно зашумляется на \(K\) случайных flow times и denoiser должен восстановить его; score является отрицательной средней re-denoising error:
+
+$$
+S_{\mathrm{RCS}}^{(i)}=-E_{\mathrm{redenoise}}^{(i)}.
+$$
+
+Если лучший \(S_{\mathrm{RCS}}\ge\gamma\), candidate исполняется сразу. Иначе ACVS оценивает candidates, выбирает rollout с максимальным progress
+
+$$
+J^{(i)}=\max_{0\le q<H_a}\hat r_{t+q}^{(i)},
+$$
+
+а затем не исполняет исходный action: выбранный future latent подаётся во второй VAM query, который генерирует исправленный chunk. Это proposal-evaluation-revision, а не только ranking.
+
+**Результаты.** В single-attempt ablation по 20 повторов: без test-time computation средний success 0.43; RCS дал 0.50; RCS+rectification - 0.60. CFG и Action Coherence Guidance дали 0.20 и 0.38. Heterogeneous pretraining повысил zero-shot `Pen-to-holder` с 0.14 до 0.55 и cluttered SFT с 0.70 до 0.83 в среднем.
+
+**Вывод для нашего проекта.** RCS - дешёвый новый candidate-level signal, которого не было в нашем плане. Он проверяет support action под conditional policy, а не disagreement между четырьмя samples. Его следует сравнить с `value`, internal action uncertainty и их комбинацией на уже сохранённых candidate pools. Второе новое направление - не просто abstain, а rectification: на alarm выбрать желаемый predicted future и перегенерировать action, conditioned на этот future. Наш подтверждённый `requery_l1_h8` уже показывает пользу дополнительного feedback; tau0-WM подсказывает следующий шаг, где дополнительный query получает не только реальное observation, но и явную target-future condition.
+
+### 3.12. QWM: grounded Q-function и короткий world-model tree search
+
+**Статья:** P. Dong et al., *Q-Learning With World Models*, arXiv:2608.17163, 2026.
+
+- [Локальный PDF](2608.17163v1.pdf)
+- [arXiv HTML](https://arxiv.org/html/2608.17163)
+
+Это единственная из пяти новых статей со standard LIBERO. Pixel-based evaluation использует пять задач LIBERO (`Task 60`, `79`, `29`, `28`, `2`) с agent-view и wrist RGB. Дополнительно state-based experiments идут на Robomimic `Lift`, `Can`, `Square`, `Tool Hang`. LIBERO-PRO не используется.
+
+**Главное отличие от обычного model-based RL.** Policy и Q-function обучаются только на реальных transitions. World model не создаёт synthetic training targets, а используется для short-depth search во время online data collection и evaluation. Это ограничивает compounding model bias.
+
+В каждом state семплируются \(N\) actions, для каждого action - \(K\) future states, дерево раскрывается на depth \(D\). Два value estimators объединяются:
+
+$$
+V_Q(d\mid s)=\operatorname{agg}_{n}Q_\phi(s,a_n),
+$$
+
+$$
+V_r(d\mid s)=\operatorname{agg}_{n}\operatorname{agg}_{k}
+\left[r_\psi(s,a_n)+\lambda V(d+1\mid s'_{n,k})\right],
+$$
+
+$$
+V(d\mid s)=\frac12(V_Q+V_r).
+$$
+
+Root candidate оценивается как
+
+$$
+Q_{\mathrm{ts}}(s_0,a_i)=\frac12\left[
+Q_\phi(s_0,a_i)+r_\psi(s_0,a_i)
++\lambda\operatorname{agg}_k V(1\mid s'_{i,k})
+\right].
+$$
+
+Чтобы дерево не росло экспоненциально, Q-function оставляет top-\(J\) partial paths. Для sparse reward практическая реализация может обходиться без learned reward model и опираться на Q intermediate/leaf nodes.
+
+**Эксперименты и выводы авторов.** QWM улучшил EXPO и RLPD на Robomimic, а на pixel LIBERO дал явный выигрыш на tasks 60 и 79 и быстрее обучился на task 28. Для pixel setting из-за compute world model использовался только при online data collection, не при evaluation. Ablations показывают лучший trade-off у умеренной глубины: depth 2 обычно лучше depth 1, но большая глубина усиливает model error; наиболее эффективным был небольшой future discount около \(\lambda=0.2\). Слишком большое \(N\) тоже может ухудшать результат, усиливая extreme-value bias ошибочного world model.
+
+**Вывод для нашего проекта.** Наш текущий planner - depth-1 best-of-four с self-generated Cosmos value. QWM предлагает два существенных улучшения:
+
+1. Grounded critic \(Q_\phi\), обученный только по реальным LIBERO transitions, чтобы не доверять полностью self-consistency world model.
+2. Неглубокий tree search с несколькими futures на action и robust aggregation.
+
+Для первого переноса не нужен online RL: можно обучить offline success/progress Q-head на наших реальных trajectories и использовать его только как verifier. Затем сравнить `max Cosmos value`, `max grounded Q`, `Q + depth-1 future`, `QWM depth-2`. В stochastic ветвях стандартный `mean` следует дополнить `LCB/CVaR`, потому что наша задача именно risk-aware planning.
+
 ## 4. Внешние работы с LIBERO-PRO и близкими постановками
 
 ### 4.1. LIBERO-PRO
@@ -660,6 +936,65 @@ Reported results:
 
 Если post-hoc metrics окажутся устойчивыми, следующий этап после risk-aware ranking - обучить легкий head, предсказывающий per-action-dimension error/variance, и уточнять только unreliable dimensions.
 
+### 4.6. Исследовательская линия Junwon Seo
+
+Источник: [junwon.me](https://junwon.me/). Ни одна из перечисленных на сайте работ не использует LIBERO или LIBERO-PRO. Три наиболее прямые для нашего проекта работы - UNISafe, AnySafe и StressDream - подробно разобраны в разделах 3.8-3.10.
+
+Это не набор разрозненных uncertainty metrics, а последовательная программа:
+
+1. **Probabilistic ensemble dynamics (RSS 2023):** сначала epistemic uncertainty используется противоположным образом при exploration и deployment. В exploration робот идёт туда, где модель мало знает; при выполнении задачи MPC избегает тех же uncertain state-action regions. Расхождение Gaussian ensemble измеряется JRD.
+2. **UNISafe (CoRL 2025):** uncertainty превращается из soft cost в calibrated OOD constraint, а reachability synthesizes fallback policy.
+3. **AnySafe (ICRA 2026):** fixed constraint заменяется runtime-conditioned constraint representation; conservativeness настраивается post hoc calibration.
+4. **StressDream (2026):** вместо пассивного измерения uncertainty world model активно направляется к редкому, но правдоподобному failure outcome.
+
+Остальные публикации развивают те же принципы в perception/navigation:
+
+| Работа | Основной метод | Переносимый принцип | Прямой приоритет для Cosmos |
+|---|---|---|---:|
+| Bridging Active Exploration..., 2305.12240 | Probabilistic ensemble dynamics, JRD, sampling MPC | Один UQ signal должен менять decision rule, а не только рисовать confidence | Высокий для будущего data collection |
+| E2-BKI, 2509.11964 | Evidential DL, Gaussian map primitives, geometry-aligned kernels | Не усреднять все observations одинаково: confidence и geometry должны влиять на fusion | Средний для multi-view/temporal aggregation |
+| Evidential Semantic Mapping, 2403.14138 и 2405.06265 | Evidential segmentation + uncertainty-aware BKI/Dempster-Shafer fusion | Отделять evidence, ignorance и конфликт сенсоров | Средний для external/wrist disagreement |
+| OW-Rep, 2409.16073 | Unknown-object refinement с SAM и semantic embedding distillation | OOD object detection и task-action uncertainty являются разными слоями | Средний для LIBERO-PRO object shifts |
+| METAVerse, 2307.13991 | Meta-learning + online adaptation по recent interactions | Global gate должен быстро адаптироваться к local task regime | Средний, после появления нескольких init states |
+| UFO, 2403.02642 | Multi-scale LiDAR-image fusion с uncertainty-aware pseudo-labels | Pseudo-labels должны быть взвешены confidence | Низкий для текущей camera-only среды |
+| DA-RAW, 2309.08152 | Раздельная adaptation style gap и weather gap | OOD надо раскладывать по причинам, а не объединять в один score | Средний для PRO factor families |
+| Self-supervised traversability, 2305.18896 и 2209.06522 | Positive-unlabeled/one-class learning из robot experience | Success-only data не покрывает forbidden states; нужны PU/OOD механизмы | Средний для редких safety labels |
+
+**Общий вывод из этой линии.** Хорошая uncertainty-aware система имеет четыре разных объекта:
+
+$$
+\underbrace{U_{\mathrm{transition}}(s,a)}_{\text{насколько знаем динамику}},
+\quad
+\underbrace{R_{\mathrm{outcome}}(s,a)}_{\text{может ли outcome быть плохим}},
+\quad
+\underbrace{C(s,a;c)}_{\text{нарушается ли constraint }c},
+\quad
+\underbrace{Q(s,a)}_{\text{полезно ли действие для задачи}}.
+$$
+
+Их нельзя без потери смысла заменить одним `uncertainty`. Для task planning нужен robust utility; для safety - constrained decision и fallback; для rare-event evaluation - targeted search; для learning - data acquisition.
+
+### 4.7. Что у нас уже сделано, что было в плане и что действительно новое
+
+| Идея | Статус до этого обзора | Фактический результат / следующий шаг |
+|---|---|---|
+| Несколько stochastic samples одной Cosmos | Сделано | Четыре candidates; это generative disagreement, не независимый epistemic ensemble |
+| Paired success/fail на одном init/seed schedule | Сделано | Используется во всех confirmatory campaigns |
+| Prediction error после chunk | Сделано | Future-proprio surrogate переносится (`rho=0.579`, AUROC 0.731), но не улучшил success |
+| Soft action/value uncertainty penalty | Сделано | Fixed `action_l1`: +2.1 п.п. на 240 paired seeds, CI пересекает ноль |
+| Disagreement-triggered short horizon | Сделано | `requery_l1_h8`: +6.25 п.п., 95% CI [+1.7; +11.3], Holm `p=0.0474`, cost 1.27x |
+| Универсальный early fail detector | Сделано, отрицательный результат | Лучший case-controlled AUROC 0.547; absolute threshold пока не работает |
+| Разделить reranking и feedback | Было в следующих проверках | Matched 2x2 campaign на 672 rollout запущена 20 августа 2026 |
+| Multi-future LCB/CVaR | Было в H7 | Реализовать после проверки causal action-conditioned path |
+| Learned task-aware gate/progress | Было в H11/H13 | Proprio-error target недостаточен; нужны drop/contact/no-progress labels |
+| Constrained safety + abstain | Было в H8/H14 | UNISafe усиливает план: hard filter, trajectory CP, fallback |
+| Независимый transition ensemble | Частично предполагался только как общий ensemble | Новое: lightweight Gaussian heads + JRD вместо второго полного Cosmos |
+| Re-denoising consistency | Не было в плане | Новый дешёвый candidate-support baseline из tau0-WM |
+| Targeted steering initial noise | Не было в плане | Новый StressDream-style rare-failure search |
+| Future-conditioned action rectification | Не было в плане | Новый proposal-evaluation-revision baseline из tau0-WM |
+| Grounded real-transition Q + WM tree | Не было в явном плане | Новый QWM depth-1/2 baseline; critic не обучается на imagined transitions |
+| Runtime image-conditioned constraints | Не было в плане | AnySafe-style stage после базового LIBERO-Safety classifier |
+
 ## 5. Сводные выводы из статей
 
 1. **Standard LIBERO насыщен.** Cosmos Policy получает около 98.5%, поэтому natural failures проще и честнее собирать на boundary configurations LIBERO-PRO или factorized LIBERO-Plus.
@@ -672,8 +1007,20 @@ Reported results:
 8. **OOD detection и candidate ranking различаются.** Observation-level OOD score определяет, когда надо plan/abstain, но не различает candidates из одного state.
 9. **Uncertainty полезна только через downstream решение.** Хороший AUROC еще не доказывает рост planning success rate.
 10. **Нужен paired evaluation.** Каждая стратегия должна видеть один и тот же initial state и, по возможности, один и тот же candidate pool.
+11. **Наш лучший подтверждённый метод - combined adaptive requery.** `requery_l1_h8` дал +6.25 п.п. на 240 paired seeds, тогда как fixed action penalty дал +2.1 п.п. с CI через ноль. Это указывает на важность более раннего feedback, но причинно отделить его от reranking должна текущая matched 2x2 кампания.
+12. **Rare failure не равен высокой variance.** StressDream показывает, что best-of-N может не найти low-probability catastrophic outcome. Нужен targeted pessimistic search при сохранении typicality noise.
+13. **Self-consistency не равна physical correctness.** RCS проверяет support action под policy, а grounded Q, transition uncertainty и actual outcome risk проверяют другие свойства. Эти сигналы надо ablate раздельно.
+14. **Soft risk и hard safety имеют разные цели.** UNISafe показывает, что uncertainty penalty может улучшать expected return, но не заменяет calibrated reject set и fallback.
+15. **World-model value надо заземлять реальными transitions.** QWM не обучает policy/Q на imagined data и использует WM только для короткого search. Это снижает риск самоусиления ошибки Cosmos value.
+16. **Длинное дерево не обязательно лучше.** QWM находит лучший trade-off на умеренной глубине; большие depth и candidate count усиливают model/extreme-value error. Для нас первый честный шаг - depth 1 против 2, не большой search.
+17. **Prediction-error surrogate должен быть task-critical.** Наш future-proprio estimator перенёсся, но не улучшил success; следующий target - drop, contact loss, object-pose divergence и no-progress.
+18. **Safety semantics должны быть условными.** AnySafe показывает, что запрет зависит от текущего constraint. Для LIBERO-Safety нужен `constraint-conditioned risk`, а не один глобальный failure score.
 
 ## 6. Предлагаемый протокол наших экспериментов
+
+Разделы 6-8 сохраняют базовый protocol сбора и честного сравнения. Актуальная
+очередь новых методов после confirmatory результатов вынесена в
+[`../experiments/RESEARCH_ROADMAP_20260820.md`](../experiments/RESEARCH_ROADMAP_20260820.md).
 
 ### 6.1. Исследовательские вопросы
 
@@ -686,6 +1033,16 @@ Reported results:
 **RQ4.** Дает ли observation-level OOD score дополнительную пользу для решения `direct policy / planning / abstain`?
 
 **RQ5.** Какие prediction errors после chunk объясняют механизм failure и могут служить target для будущего learned uncertainty head?
+
+**RQ6.** Выигрыш adaptive requery вызван reranking, более ранним реальным observation или их interaction?
+
+**RQ7.** Дополняет ли re-denoising consistency наши internal-copy metrics при candidate selection?
+
+**RQ8.** Находит ли targeted pessimistic imagination реальные failures чаще random future sampling при одинаковом compute budget?
+
+**RQ9.** Даёт ли grounded Q-head и depth-2 search переносимый прирост относительно self-generated Cosmos value?
+
+**RQ10.** Может ли trajectory-calibrated transition uncertainty обеспечить снижение official LIBERO-Safety violations без неприемлемого роста timeout/abstention?
 
 ### 6.2. Этап 0: integrity check
 
@@ -1291,3 +1648,11 @@ Grid автоматически:
 11. [Act, Think or Abstain, arXiv:2603.05147](https://arxiv.org/html/2603.05147)
 12. [Shifting Uncertainty to Critical Moments, arXiv:2603.18342](https://arxiv.org/html/2603.18342)
 13. [SUREFlow, arXiv:2607.10504](https://arxiv.org/html/2607.10504)
+14. [Junwon Seo: publications and projects](https://junwon.me/)
+15. [UNISafe, arXiv:2505.00779](https://arxiv.org/html/2505.00779)
+16. [AnySafe, arXiv:2509.19555](https://arxiv.org/html/2509.19555)
+17. [StressDream, arXiv:2606.00267](https://arxiv.org/html/2606.00267)
+18. [tau0-WM, arXiv:2606.01027](https://arxiv.org/html/2606.01027)
+19. [Q-Learning With World Models, arXiv:2608.17163](https://arxiv.org/html/2608.17163)
+20. [Bridging Active Exploration and Uncertainty-Aware Deployment, arXiv:2305.12240](https://arxiv.org/abs/2305.12240)
+21. [E2-BKI, arXiv:2509.11964](https://arxiv.org/abs/2509.11964)

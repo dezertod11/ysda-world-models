@@ -10,6 +10,12 @@
 Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся как
 оценка prediction error, но не дал прироста task success.
 
+Следующие гипотезы и порядок работ после разбора новых статей зафиксированы в
+[`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md). Общий разбор
+литературы, включая StressDream, UNISafe, AnySafe, tau0-WM, QWM и всю
+релевантную линию Junwon Seo, находится в
+[`../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md`](../articles/LIBERO_EXPERIMENTS_AND_PAPERS.md).
+
 Предыдущий этап находится в
 [`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb)
 и frozen-отчёте
@@ -29,6 +35,7 @@ Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся �
 
 | Файл | Назначение |
 |---|---|
+| [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md) | Текущий план: causal 2x2, RCS, grounded Q/QWM, JRD/CP, StressDream и safety filter |
 | [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md) | Итог 960 confirmatory rollout: формулы, статистика, failure modes и ограничения |
 | [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb) | Таблицы и графики screening, frozen confirmatory и surrogate transfer |
 | [`SURROGATE_REQUERY_HYPOTHESES_20260819.md`](SURROGATE_REQUERY_HYPOTHESES_20260819.md) | Протокол и гипотезы, замороженные до confirmatory outcomes |
@@ -108,6 +115,7 @@ campaigns/surrogate_confirmatory_20260819/
 | Adaptive planning frozen confirmatory | Завершена, 1080/1080 strategy executions на 180 paired seeds и 6 cases |
 | Surrogate/requery screening | Завершён, 816/816 strategy executions; используется только для выбора гиперпараметров |
 | Surrogate/requery frozen confirmatory | Завершён, 960/960 strategy executions на 240 paired seeds и 12 cases |
+| Selection x horizon causal 2x2 | Запущен 20 августа 2026: 672 rollout, результат не анализировать до полного завершения |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео

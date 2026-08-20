@@ -1,5 +1,10 @@
 # Adaptive uncertainty-aware planning: гипотезы и протокол
 
+> Это frozen-протокол от 13 августа 2026 года. Актуальный план после
+> confirmatory кампании, разбора StressDream/UNISafe/AnySafe/tau0-WM/QWM и
+> запуска causal 2x2 проверки находится в
+> [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md).
+
 Дата фиксации протокола: 13 августа 2026 года. Этот документ создан до новых
 online rollout и отделяет гипотезы от последующего анализа результатов.
 
