@@ -1,0 +1,4 @@
+planning_strategy,planning_risk_lambda,episodes,successes,success_rate,mean_final_t,mean_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+disagreement_requery_action,1.0,20,7,0.35,198.75,17.25,0.4986346333405157,0.7209877739504906,0.723257610260714,-0.8989767586010238
+uncertainty_penalty_action,1.0,20,2,0.1,218.8,13.95,0.41236263736263734,0.7142714229422611,0.715552269339889,-0.8452398868601969
+max_value,0.0,20,1,0.05,219.3,13.95,0.0,0.7164043654779811,0.7164043654779811,0.0

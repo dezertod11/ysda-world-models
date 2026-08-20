@@ -1,5 +1,5 @@
 diff --git a/cosmos_policy/_src/imaginaire/modules/res_sampler.py b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
-index 6b0e7bd..926639b 100644
+index 6b0e7bdda7a3e58681bb21c09758828ac3bbe572..926639b7f10eb5e3f190466e5b10bb1a8f82d27b 100644
 --- a/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 +++ b/cosmos_policy/_src/imaginaire/modules/res_sampler.py
 @@ -126,6 +126,7 @@ class Sampler(torch.nn.Module):
@@ -109,7 +109,7 @@ index 6b0e7bd..926639b 100644
  
              if callback_fns:
 diff --git a/cosmos_policy/experiments/robot/cosmos_utils.py b/cosmos_policy/experiments/robot/cosmos_utils.py
-index 00c2845..7e06e12 100644
+index 00c2845bc9f45e4ef4b333e5e88897b59df142db..7e06e122d7b3f33b9e86a6357b703f47c59cdb11 100644
 --- a/cosmos_policy/experiments/robot/cosmos_utils.py
 +++ b/cosmos_policy/experiments/robot/cosmos_utils.py
 @@ -40,6 +40,7 @@ from cosmos_policy._src.predict2.inference.get_t5_emb import get_text_embedding
@@ -296,7 +296,7 @@ index 00c2845..7e06e12 100644
  
      return return_dict
 diff --git a/cosmos_policy/experiments/robot/libero/libero_utils.py b/cosmos_policy/experiments/robot/libero/libero_utils.py
-index 9d7dd6a..b3107f7 100644
+index 9d7dd6a6a4b2d66e77f5e546f5541441a28d30ba..b3107f73feea55304c847dd4d3b849deddc02c80 100644
 --- a/cosmos_policy/experiments/robot/libero/libero_utils.py
 +++ b/cosmos_policy/experiments/robot/libero/libero_utils.py
 @@ -30,7 +30,11 @@ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
@@ -313,7 +313,7 @@ index 9d7dd6a..b3107f7 100644
      env = OffScreenRenderEnv(**env_args)
      env.seed(0)  # IMPORTANT: seed seems to affect object positions even when using fixed initial state
 diff --git a/cosmos_policy/experiments/robot/libero/run_libero_eval.py b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
-index 8ced47f..13ba41e 100644
+index 8ced47fd42f3c1be0707dca874e18c2707a4a3a8..13ba41ec1fe9bb6b0a9a6826a3017f11d02d2dfa 100644
 --- a/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 +++ b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 @@ -178,6 +178,25 @@ TASK_MAX_STEPS = {
@@ -422,12 +422,576 @@ index 8ced47f..13ba41e 100644
  
      log_message(f"Task suite: {cfg.task_suite_name}", log_file)
      log_message(f"Number of tasks: {num_tasks}", log_file)
+diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..735db269af28ef10482eea6f127103f88d69c444
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/safety_signals.py
+@@ -0,0 +1,558 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Post-action failure diagnostics for LIBERO and LIBERO-Safety rollouts.
++
++The official LIBERO-Safety signal is ``info["cost"]``.  The remaining signals
++in this module are explicitly named diagnostics or candidates: they are useful
++for separating natural failure modes in ordinary LIBERO / LIBERO-PRO, but they
++are not substitutes for task-specific safety constraints.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass
++from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
++
++import numpy as np
++
++
++@dataclass(frozen=True)
++class FailureDiagnosticThresholds:
++    """Thresholds for simulator-side failure candidates."""
++
++    target_lift_m: float = 0.035
++    target_drop_from_peak_m: float = 0.055
++    released_distance_m: float = 0.14
++    non_target_lift_m: float = 0.045
++    non_target_displacement_m: float = 0.12
++    deadlock_window_steps: int = 32
++    deadlock_stalled_path_m: float = 0.02
++    deadlock_oscillating_path_m: float = 0.12
++    deadlock_net_displacement_m: float = 0.025
++    deadlock_sign_flip_rate: float = 0.35
++
++
++def unwrap_libero_env(env: Any) -> Any:
++    """Return the innermost LIBERO task environment."""
++    current = env
++    visited = set()
++    while hasattr(current, "env") and id(current) not in visited:
++        visited.add(id(current))
++        candidate = getattr(current, "env")
++        if candidate is current:
++            break
++        current = candidate
++    return current
++
++
++def official_safety_costs(info: Any) -> Dict[str, float]:
++    """Extract non-zero official safety costs from an environment info dict."""
++    if not isinstance(info, Mapping):
++        return {}
++
++    raw_cost = info.get("cost", {})
++    if isinstance(raw_cost, Mapping):
++        costs: Dict[str, float] = {}
++        for key, value in raw_cost.items():
++            try:
++                numeric = float(value)
++            except (TypeError, ValueError):
++                continue
++            if np.isfinite(numeric) and numeric != 0.0:
++                costs[str(key)] = numeric
++        return costs
++
++    try:
++        numeric = float(raw_cost)
++    except (TypeError, ValueError):
++        numeric = 0.0
++    return {"cost": numeric} if np.isfinite(numeric) and numeric != 0.0 else {}
++
++
++def has_official_safety_violation(info: Any) -> bool:
++    """Whether LIBERO-Safety reported a constraint violation for this step."""
++    if official_safety_costs(info):
++        return True
++    if not isinstance(info, Mapping):
++        return False
++
++    for key in ("safety_violation", "unsafe", "constraint_violation"):
++        if bool(info.get(key, False)):
++            return True
++    return False
++
++
++def _safe_array(value: Any, expected_size: Optional[int] = None) -> Optional[np.ndarray]:
++    if value is None:
++        return None
++    try:
++        array = np.asarray(value, dtype=np.float64).reshape(-1)
++    except (TypeError, ValueError):
++        return None
++    if expected_size is not None and array.size < expected_size:
++        return None
++    if not np.all(np.isfinite(array)):
++        return None
++    return array
++
++
++def _sign_flip_rate(actions: Sequence[np.ndarray]) -> float:
++    if len(actions) < 2:
++        return 0.0
++    motion = np.stack(actions)[:, :-1]
++    previous = motion[:-1]
++    current = motion[1:]
++    active = (np.abs(previous) > 1e-5) & (np.abs(current) > 1e-5)
++    if not np.any(active):
++        return 0.0
++    flips = (np.sign(previous) != np.sign(current)) & active
++    return float(flips.sum() / active.sum())
++
++
++def _kinematic_metrics(positions: Sequence[np.ndarray], dt: float) -> Dict[str, float]:
++    result = {
++        "path_length": 0.0,
++        "net_displacement": 0.0,
++        "speed_mean": 0.0,
++        "speed_max": 0.0,
++        "acceleration_mean": 0.0,
++        "acceleration_max": 0.0,
++        "jerk_mean": 0.0,
++        "jerk_max": 0.0,
++        "dimensionless_jerk_proxy": 0.0,
++    }
++    if len(positions) < 2:
++        return result
++
++    xyz = np.stack(positions)
++    displacement = np.diff(xyz, axis=0)
++    distances = np.linalg.norm(displacement, axis=1)
++    path_length = float(distances.sum())
++    result["path_length"] = path_length
++    result["net_displacement"] = float(np.linalg.norm(xyz[-1] - xyz[0]))
++
++    velocity = displacement / dt
++    speed = np.linalg.norm(velocity, axis=1)
++    result["speed_mean"] = float(speed.mean())
++    result["speed_max"] = float(speed.max())
++    if len(velocity) < 2:
++        return result
++
++    acceleration = np.diff(velocity, axis=0) / dt
++    acceleration_norm = np.linalg.norm(acceleration, axis=1)
++    result["acceleration_mean"] = float(acceleration_norm.mean())
++    result["acceleration_max"] = float(acceleration_norm.max())
++    if len(acceleration) < 2:
++        return result
++
++    jerk = np.diff(acceleration, axis=0) / dt
++    jerk_norm = np.linalg.norm(jerk, axis=1)
++    result["jerk_mean"] = float(jerk_norm.mean())
++    result["jerk_max"] = float(jerk_norm.max())
++    duration = max(dt * (len(xyz) - 1), dt)
++    result["dimensionless_jerk_proxy"] = float(
++        duration**5 * np.sum(jerk_norm**2) * dt / max(path_length**2, 1e-8)
++    )
++    return result
++
++
++class SafetySignalTracker:
++    """Track official costs and simulator-side failure diagnostics."""
++
++    def __init__(
++        self,
++        env: Any,
++        initial_obs: Mapping[str, Any],
++        thresholds: FailureDiagnosticThresholds = FailureDiagnosticThresholds(),
++    ) -> None:
++        self.env = unwrap_libero_env(env)
++        self.thresholds = thresholds
++        control_freq = float(getattr(self.env, "control_freq", 20.0) or 20.0)
++        self.dt = 1.0 / control_freq
++
++        parsed_problem = getattr(self.env, "parsed_problem", {}) or {}
++        self.goal_states = list(parsed_problem.get("goal_state", []) or [])
++        self.object_states = getattr(self.env, "object_states_dict", {}) or {}
++        self.movable_objects = self._movable_object_names()
++        self.target_objects = self._target_object_names(parsed_problem)
++        self.non_target_objects = [
++            name for name in self.movable_objects if name not in set(self.target_objects)
++        ]
++
++        self.initial_object_positions = self._object_positions(initial_obs)
++        self.peak_target_z = {
++            name: float(position[2])
++            for name, position in self.initial_object_positions.items()
++            if name in self.target_objects
++        }
++        self.target_was_lifted = {name: False for name in self.target_objects}
++        self.drop_event_t: Optional[int] = None
++        self.wrong_object_event_t: Optional[int] = None
++        self.first_goal_progress_t: Optional[int] = None
++        self.first_target_lift_t: Optional[int] = None
++        self.official_violation_t: Optional[int] = None
++        self.official_cost_types: set[str] = set()
++
++        initial_eef = self._eef_position(initial_obs)
++        self.eef_positions: List[np.ndarray] = []
++        if initial_eef is not None:
++            self.eef_positions.append(initial_eef)
++        self.actions: List[np.ndarray] = []
++        self.records: List[Dict[str, float]] = []
++        self.initial_goal_progress = self._goal_progress()
++        self.max_goal_progress = self.initial_goal_progress
++
++    def _movable_object_names(self) -> List[str]:
++        names = []
++        for name, state in self.object_states.items():
++            if bool(getattr(state, "is_fixture", False)):
++                continue
++            if getattr(state, "object_state_type", "object") != "object":
++                continue
++            names.append(str(name))
++        return names
++
++    def _target_object_names(self, parsed_problem: Mapping[str, Any]) -> List[str]:
++        targets: List[str] = []
++        movable = set(self.movable_objects)
++        for state in self.goal_states:
++            if len(state) >= 2 and state[1] in movable and state[1] not in targets:
++                targets.append(state[1])
++        if targets:
++            return targets
++
++        for name in parsed_problem.get("obj_of_interest", []) or []:
++            if name in movable and name not in targets:
++                targets.append(name)
++        return targets
++
++    def _eef_position(self, obs: Mapping[str, Any]) -> Optional[np.ndarray]:
++        return _safe_array(obs.get("robot0_eef_pos"), expected_size=3)
++
++    def _object_positions(self, obs: Mapping[str, Any]) -> Dict[str, np.ndarray]:
++        positions: Dict[str, np.ndarray] = {}
++        for name in self.movable_objects:
++            state = self.object_states.get(name)
++            if state is not None and hasattr(state, "get_geom_state"):
++                try:
++                    position = _safe_array(state.get_geom_state().get("pos"), expected_size=3)
++                except (AttributeError, KeyError, TypeError, ValueError):
++                    position = None
++                if position is not None:
++                    positions[name] = position[:3].copy()
++                    continue
++
++            position = _safe_array(obs.get(f"{name}_pos"), expected_size=3)
++            if position is not None:
++                positions[name] = position[:3].copy()
++        return positions
++
++    def _goal_progress(self) -> float:
++        if not self.goal_states or not hasattr(self.env, "_eval_predicate"):
++            return float("nan")
++        satisfied = 0
++        for state in self.goal_states:
++            try:
++                satisfied += int(bool(self.env._eval_predicate(state)))
++            except (AttributeError, KeyError, TypeError, ValueError):
++                continue
++        return float(satisfied / len(self.goal_states))
++
++    def _robot_contact_counts(self) -> Tuple[int, int]:
++        sim = getattr(self.env, "sim", None)
++        if sim is None:
++            return 0, 0
++        try:
++            num_contacts = int(sim.data.ncon)
++        except (AttributeError, TypeError, ValueError):
++            return 0, 0
++
++        robot_patterns = ("robot0", "panda", "gripper", "finger", "hand")
++        target_tokens = tuple(name.lower() for name in self.target_objects)
++        robot_contacts = 0
++        target_contacts = 0
++        for index in range(num_contacts):
++            try:
++                contact = sim.data.contact[index]
++                name_1 = str(sim.model.geom_id2name(contact.geom1) or "").lower()
++                name_2 = str(sim.model.geom_id2name(contact.geom2) or "").lower()
++            except (AttributeError, IndexError, TypeError, ValueError):
++                continue
++            is_robot_1 = any(token in name_1 for token in robot_patterns)
++            is_robot_2 = any(token in name_2 for token in robot_patterns)
++            if is_robot_1 == is_robot_2:
++                continue
++            robot_contacts += 1
++            other_name = name_2 if is_robot_1 else name_1
++            if any(token in other_name for token in target_tokens):
++                target_contacts += 1
++        return robot_contacts, target_contacts
++
++    def mark_query_start(self) -> int:
++        """Return a marker used to summarize only the next executed chunk."""
++        return len(self.records)
++
++    def observe(
++        self,
++        obs: Mapping[str, Any],
++        action: Any,
++        t: int,
++        info: Optional[Mapping[str, Any]] = None,
++        task_success: bool = False,
++    ) -> None:
++        action_array = _safe_array(action)
++        if action_array is None:
++            action_array = np.zeros(7, dtype=np.float64)
++        self.actions.append(action_array)
++
++        eef = self._eef_position(obs)
++        if eef is not None:
++            self.eef_positions.append(eef[:3].copy())
++        object_positions = self._object_positions(obs)
++        progress = self._goal_progress()
++        if np.isfinite(progress):
++            if (
++                self.first_goal_progress_t is None
++                and np.isfinite(self.initial_goal_progress)
++                and progress > self.initial_goal_progress
++            ):
++                self.first_goal_progress_t = int(t)
++            self.max_goal_progress = float(np.nanmax([self.max_goal_progress, progress]))
++
++        max_target_lift = 0.0
++        min_target_eef_distance = float("nan")
++        for name in self.target_objects:
++            position = object_positions.get(name)
++            initial = self.initial_object_positions.get(name)
++            if position is None or initial is None:
++                continue
++            lift = float(position[2] - initial[2])
++            max_target_lift = max(max_target_lift, lift)
++            self.peak_target_z[name] = max(self.peak_target_z.get(name, float(position[2])), float(position[2]))
++            if lift >= self.thresholds.target_lift_m:
++                self.target_was_lifted[name] = True
++                if self.first_target_lift_t is None:
++                    self.first_target_lift_t = int(t)
++
++            distance = float(np.linalg.norm(position - eef[:3])) if eef is not None else float("nan")
++            if np.isfinite(distance):
++                min_target_eef_distance = float(
++                    np.nanmin([min_target_eef_distance, distance])
++                    if np.isfinite(min_target_eef_distance)
++                    else distance
++                )
++            dropped_from_peak = self.peak_target_z[name] - float(position[2])
++            released = not np.isfinite(distance) or distance >= self.thresholds.released_distance_m
++            if (
++                self.drop_event_t is None
++                and self.target_was_lifted.get(name, False)
++                and dropped_from_peak >= self.thresholds.target_drop_from_peak_m
++                and released
++                and not task_success
++            ):
++                self.drop_event_t = int(t)
++
++        max_non_target_displacement = 0.0
++        max_non_target_lift = 0.0
++        for name in self.non_target_objects:
++            position = object_positions.get(name)
++            initial = self.initial_object_positions.get(name)
++            if position is None or initial is None:
++                continue
++            displacement = float(np.linalg.norm(position - initial))
++            lift = float(position[2] - initial[2])
++            max_non_target_displacement = max(max_non_target_displacement, displacement)
++            max_non_target_lift = max(max_non_target_lift, lift)
++            if (
++                self.wrong_object_event_t is None
++                and (
++                    displacement >= self.thresholds.non_target_displacement_m
++                    or lift >= self.thresholds.non_target_lift_m
++                )
++            ):
++                self.wrong_object_event_t = int(t)
++
++        costs = official_safety_costs(info)
++        violation = bool(costs) or has_official_safety_violation(info)
++        if violation and self.official_violation_t is None:
++            self.official_violation_t = int(t)
++        self.official_cost_types.update(costs)
++        robot_contacts, target_contacts = self._robot_contact_counts()
++
++        self.records.append(
++            {
++                "t": float(t),
++                "goal_progress": progress,
++                "target_lift_max": float(max_target_lift),
++                "target_eef_distance_min": min_target_eef_distance,
++                "non_target_displacement_max": float(max_non_target_displacement),
++                "non_target_lift_max": float(max_non_target_lift),
++                "target_drop_candidate": float(self.drop_event_t is not None),
++                "wrong_object_interaction_candidate": float(self.wrong_object_event_t is not None),
++                "official_safety_violation": float(violation),
++                "official_safety_cost": float(sum(costs.values())),
++                "robot_contact_count": float(robot_contacts),
++                "robot_target_contact_count": float(target_contacts),
++                "action_motion_norm": float(np.linalg.norm(action_array[:-1])),
++            }
++        )
++
++    def _segment_positions(self, start: int, end: int) -> List[np.ndarray]:
++        if not self.eef_positions:
++            return []
++        first = max(0, min(start, len(self.eef_positions) - 1))
++        last = max(first + 1, min(end + 1, len(self.eef_positions)))
++        return self.eef_positions[first:last]
++
++    def query_summary(self, marker: int) -> Dict[str, float]:
++        """Summarize signals observed after executing one selected action chunk."""
++        segment = self.records[marker:]
++        if not segment:
++            return {}
++
++        def values(name: str) -> np.ndarray:
++            return np.asarray([record[name] for record in segment], dtype=np.float64)
++
++        positions = self._segment_positions(marker, len(self.records))
++        kinematics = _kinematic_metrics(positions, self.dt)
++        goal_progress = values("goal_progress")
++        finite_progress = goal_progress[np.isfinite(goal_progress)]
++        progress_start = self.initial_goal_progress
++        if marker > 0:
++            progress_start = float(self.records[marker - 1]["goal_progress"])
++        progress_end = float(finite_progress[-1]) if finite_progress.size else float("nan")
++        progress_delta = (
++            float(progress_end - progress_start)
++            if np.isfinite(progress_end) and np.isfinite(progress_start)
++            else float("nan")
++        )
++        actions = self.actions[marker:]
++
++        return {
++            "observed_goal_progress_end": progress_end,
++            "observed_goal_progress_delta": progress_delta,
++            "observed_target_lift_max": float(values("target_lift_max").max()),
++            "observed_target_eef_distance_min": float(
++                np.nanmin(values("target_eef_distance_min"))
++                if np.isfinite(values("target_eef_distance_min")).any()
++                else np.nan
++            ),
++            "observed_non_target_displacement_max": float(values("non_target_displacement_max").max()),
++            "observed_non_target_lift_max": float(values("non_target_lift_max").max()),
++            "observed_target_drop_candidate": float(values("target_drop_candidate").max()),
++            "observed_wrong_object_interaction_candidate": float(
++                values("wrong_object_interaction_candidate").max()
++            ),
++            "observed_official_safety_violation": float(values("official_safety_violation").max()),
++            "observed_official_safety_cost_sum": float(values("official_safety_cost").sum()),
++            "observed_robot_contact_count_sum": float(values("robot_contact_count").sum()),
++            "observed_robot_contact_count_max": float(values("robot_contact_count").max()),
++            "observed_robot_target_contact_count_sum": float(values("robot_target_contact_count").sum()),
++            "observed_action_motion_norm_mean": float(values("action_motion_norm").mean()),
++            "observed_action_motion_norm_max": float(values("action_motion_norm").max()),
++            "observed_action_sign_flip_rate": _sign_flip_rate(actions),
++            "observed_eef_path_length": kinematics["path_length"],
++            "observed_eef_net_displacement": kinematics["net_displacement"],
++            "observed_eef_speed_mean": kinematics["speed_mean"],
++            "observed_eef_acceleration_mean": kinematics["acceleration_mean"],
++            "observed_eef_jerk_mean": kinematics["jerk_mean"],
++            "observed_eef_jerk_max": kinematics["jerk_max"],
++            "observed_eef_dimensionless_jerk_proxy": kinematics["dimensionless_jerk_proxy"],
++        }
++
++    def _deadlock_candidate(self) -> bool:
++        window = min(self.thresholds.deadlock_window_steps, len(self.actions))
++        if window < 4:
++            return False
++        positions = self.eef_positions[-(window + 1) :]
++        kinematics = _kinematic_metrics(positions, self.dt)
++        sign_flip_rate = _sign_flip_rate(self.actions[-window:])
++        stalled = kinematics["path_length"] <= self.thresholds.deadlock_stalled_path_m
++        oscillating = (
++            kinematics["path_length"] >= self.thresholds.deadlock_oscillating_path_m
++            and kinematics["net_displacement"] <= self.thresholds.deadlock_net_displacement_m
++            and sign_flip_rate >= self.thresholds.deadlock_sign_flip_rate
++        )
++        return bool(stalled or oscillating)
++
++    def episode_summary(
++        self,
++        success: bool,
++        final_t: int,
++        max_steps: int,
++        safety_terminated: bool = False,
++    ) -> Dict[str, Any]:
++        """Return static labels and diagnostics to attach to every query row."""
++        deadlock = bool(not success and self._deadlock_candidate())
++        official_violation = self.official_violation_t is not None
++        drop = self.drop_event_t is not None
++        wrong_object = self.wrong_object_event_t is not None
++
++        if success:
++            failure_type = "success"
++        elif official_violation:
++            failure_type = "safety_constraint_violation"
++        elif drop:
++            failure_type = "target_drop_candidate"
++        elif wrong_object:
++            failure_type = "wrong_object_interaction_candidate"
++        elif deadlock:
++            failure_type = "kinematic_deadlock_candidate"
++        elif final_t >= max_steps and np.isfinite(self.max_goal_progress) and self.max_goal_progress > 0:
++            failure_type = "timeout_partial_goal"
++        elif final_t >= max_steps:
++            failure_type = "timeout_no_goal"
++        else:
++            failure_type = "environment_termination_without_success"
++
++        event_times = [
++            time
++            for time in (
++                self.official_violation_t,
++                self.drop_event_t,
++                self.wrong_object_event_t,
++            )
++            if time is not None
++        ]
++        failure_event_t = min(event_times) if event_times else (-1 if success else int(final_t))
++        full_kinematics = _kinematic_metrics(self.eef_positions, self.dt)
++        max_target_lift = max(
++            (
++                self.peak_target_z[name] - self.initial_object_positions[name][2]
++                for name in self.target_objects
++                if name in self.peak_target_z and name in self.initial_object_positions
++            ),
++            default=0.0,
++        )
++
++        return {
++            "failure_type": failure_type,
++            "failure_event_t": int(failure_event_t),
++            "safe_task_success": bool(success and not official_violation),
++            "safety_terminated": bool(safety_terminated),
++            "official_safety_violation": bool(official_violation),
++            "official_safety_violation_t": int(
++                self.official_violation_t if self.official_violation_t is not None else -1
++            ),
++            "official_safety_cost_types": ",".join(sorted(self.official_cost_types)),
++            "target_objects": ",".join(self.target_objects),
++            "target_drop_candidate": bool(drop),
++            "target_drop_candidate_t": int(self.drop_event_t if self.drop_event_t is not None else -1),
++            "wrong_object_interaction_candidate": bool(wrong_object),
++            "wrong_object_interaction_candidate_t": int(
++                self.wrong_object_event_t if self.wrong_object_event_t is not None else -1
++            ),
++            "kinematic_deadlock_candidate": bool(deadlock),
++            "episode_goal_progress_initial": float(self.initial_goal_progress),
++            "episode_goal_progress_max": float(self.max_goal_progress),
++            "episode_time_to_first_goal_progress": int(
++                self.first_goal_progress_t if self.first_goal_progress_t is not None else -1
++            ),
++            "episode_time_to_first_target_lift": int(
++                self.first_target_lift_t if self.first_target_lift_t is not None else -1
++            ),
++            "episode_target_lift_max": float(max_target_lift),
++            "episode_eef_path_length": full_kinematics["path_length"],
++            "episode_eef_net_displacement": full_kinematics["net_displacement"],
++            "episode_eef_jerk_mean": full_kinematics["jerk_mean"],
++            "episode_eef_dimensionless_jerk_proxy": full_kinematics["dimensionless_jerk_proxy"],
++        }
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
 new file mode 100644
-index 0000000..020f12b
+index 0000000000000000000000000000000000000000..b3bd577c36622f7a356380bcc7c38c158b4e5f29
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
-@@ -0,0 +1,2330 @@
+@@ -0,0 +1,2494 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
 +
@@ -533,6 +1097,7 @@ index 0000000..020f12b
 +    "planning_uncertainty_margin",
 +    "planning_phase_fraction",
 +    "planning_short_open_loop_steps",
++    "planning_surrogate_error_threshold",
 +    "planning_episode_risk_enabled",
 +    "planning_query_risk_enabled",
 +    "planning_requery_triggered",
@@ -541,6 +1106,28 @@ index 0000000..020f12b
 +
 +
 +DEFAULT_UNCERTAINTY_SEEDS = (195, 196, 197, 198)
++
++# Four-feature ridge surrogate frozen on the 2026-07-24 max(value) traces.
++# It predicts log future-proprio L2 error from signals available before a chunk
++# is executed. A disjoint denoise-10 replication gave Spearman rho=0.745.
++PROPRIO_ERROR_SURROGATE_V1_LOG_MEDIANS = np.asarray(
++    [-4.811064551993471, -4.874337627703886, -0.4281007918200732, -7.180830310116362],
++    dtype=np.float64,
++)
++PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS = np.asarray(
++    [-4.7725086626555955, -4.842945627927654, -0.5404564840126671, -6.849102023932096],
++    dtype=np.float64,
++)
++PROPRIO_ERROR_SURROGATE_V1_LOG_STDS = np.asarray(
++    [0.11930380458295575, 0.08174828517608249, 0.4999593504897814, 1.1049171370884088],
++    dtype=np.float64,
++)
++PROPRIO_ERROR_SURROGATE_V1_INTERCEPT = -2.891938809745354
++PROPRIO_ERROR_SURROGATE_V1_COEFFICIENTS = np.asarray(
++    [0.12336737231953827, 0.13764358360225645, 0.40796111668499924, 0.30281850491187634],
++    dtype=np.float64,
++)
++PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD = 0.08841767562905925
 +
 +
 +@dataclass(frozen=True)
@@ -984,6 +1571,38 @@ index 0000000..020f12b
 +    return int(tied[int(np.nanargmax(values[tied]))])
 +
 +
++def predict_future_proprio_error(
++    action_chunk_consistency_mean: float,
++    future_proprio_consistency_mean: float,
++    candidate_value_mean: float,
++    future_proprio_across_sample_std_mean: float,
++) -> float:
++    """Estimate next-chunk future-proprio L2 error from causal online signals."""
++    features = np.asarray(
++        [
++            action_chunk_consistency_mean,
++            future_proprio_consistency_mean,
++            candidate_value_mean,
++            future_proprio_across_sample_std_mean,
++        ],
++        dtype=np.float64,
++    )
++    logs = np.full_like(features, np.nan, dtype=np.float64)
++    valid = np.isfinite(features) & (features > 0.0)
++    logs[valid] = np.log(np.clip(features[valid], 1e-10, None))
++    logs[~np.isfinite(logs)] = PROPRIO_ERROR_SURROGATE_V1_LOG_MEDIANS[
++        ~np.isfinite(logs)
++    ]
++    normalized = (
++        logs - PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS
++    ) / PROPRIO_ERROR_SURROGATE_V1_LOG_STDS
++    predicted_log_error = float(
++        PROPRIO_ERROR_SURROGATE_V1_INTERCEPT
++        + np.dot(PROPRIO_ERROR_SURROGATE_V1_COEFFICIENTS, normalized)
++    )
++    return float(np.exp(np.clip(predicted_log_error, -30.0, 30.0)))
++
++
 +def select_planning_sample(
 +    samples: Sequence[Dict[str, Any]],
 +    strategy: str = "first",
@@ -999,6 +1618,7 @@ index 0000000..020f12b
 +    phase_fraction: float = 0.5,
 +    open_loop_steps: int = 16,
 +    short_open_loop_steps: int = 8,
++    surrogate_error_threshold: float = PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
 +) -> Tuple[int, Dict[str, Any]]:
 +    """Select which sampled candidate chunk to execute.
 +
@@ -1019,6 +1639,8 @@ index 0000000..020f12b
 +        raise ValueError("phase_fraction must be in [0, 1]")
 +    if not 1 <= short_open_loop_steps <= open_loop_steps:
 +        raise ValueError("short_open_loop_steps must be in [1, open_loop_steps]")
++    if surrogate_error_threshold < 0.0:
++        raise ValueError("surrogate_error_threshold must be non-negative")
 +
 +    strategy = strategy.lower()
 +    values = np.asarray([float(sample.get("value_prediction", np.nan)) for sample in samples], dtype=np.float32)
@@ -1047,10 +1669,39 @@ index 0000000..020f12b
 +        [metrics.get("latent_value_element_std_mean", np.nan) for metrics in latent_metrics],
 +        dtype=np.float32,
 +    )
++    future_proprio_consistency = np.asarray(
++        [
++            metrics.get("latent_future_proprio_copy_std_mean", np.nan)
++            for metrics in latent_metrics
++        ],
++        dtype=np.float32,
++    )
 +    action_first_consistency = _fill_nan_with_mean(action_first_consistency)
 +    action_chunk_consistency = _fill_nan_with_mean(action_chunk_consistency)
 +    action_max_consistency = _fill_nan_with_mean(action_max_consistency)
 +    value_consistency = _fill_nan_with_mean(value_consistency)
++    future_proprio_consistency = _fill_nan_with_mean(future_proprio_consistency)
++
++    future_proprios = [
++        future_proprio
++        for future_proprio in (
++            extract_future_proprio_from_sample(sample) for sample in samples
++        )
++        if future_proprio is not None
++    ]
++    future_proprio_across_sample_std_mean = float("nan")
++    if len(future_proprios) >= 2:
++        future_proprio_across_sample_std_mean = float(
++            np.stack(future_proprios).std(axis=0).mean()
++        )
++
++    predicted_proprio_error = predict_future_proprio_error(
++        float(np.nanmean(action_chunk_consistency)),
++        float(np.nanmean(future_proprio_consistency)),
++        float(np.nanmean(values)),
++        future_proprio_across_sample_std_mean,
++    )
++    surrogate_alarm = bool(predicted_proprio_error >= float(surrogate_error_threshold))
 +
 +    risk_action = -_zscore_array(action_first_consistency)
 +    risk_value = -_zscore_array(value_consistency) - 0.5 * value_z
@@ -1147,11 +1798,55 @@ index 0000000..020f12b
 +        scores = action_scores if query_risk_enabled else values.copy()
 +        selected = action_idx if query_risk_enabled else max_value_idx
 +        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++    elif strategy in {"phase_requery_action", "phase_disagreement_requery_action"}:
++        query_risk_enabled = bool(float(episode_progress) <= float(phase_fraction))
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++        requery_triggered = bool(query_risk_enabled and action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
 +    elif strategy in {"disagreement_requery_action", "adaptive_horizon_action"}:
 +        risk = uncertainty_action
 +        scores = action_scores
 +        selected = action_idx
 +        requery_triggered = bool(action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy == "surrogate_gated_requery_action":
++        query_risk_enabled = surrogate_alarm
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++        requery_triggered = surrogate_alarm
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy == "surrogate_horizon_action":
++        query_risk_enabled = True
++        risk = uncertainty_action
++        scores = action_scores
++        selected = action_idx
++        requery_triggered = surrogate_alarm
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy == "surrogate_disagreement_requery_action":
++        query_risk_enabled = True
++        risk = uncertainty_action
++        scores = action_scores
++        selected = action_idx
++        requery_triggered = bool(surrogate_alarm and action_idx != max_value_idx)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy == "phase_surrogate_requery_action":
++        phase_enabled = bool(float(episode_progress) <= float(phase_fraction))
++        query_risk_enabled = bool(phase_enabled or surrogate_alarm)
++        risk = uncertainty_action
++        scores = action_scores if query_risk_enabled else values.copy()
++        selected = action_idx if query_risk_enabled else max_value_idx
++        effective_strategy = "uncertainty_penalty_action" if query_risk_enabled else "max_value"
++        requery_triggered = surrogate_alarm
 +        if requery_triggered:
 +            selected_open_loop_steps = int(short_open_loop_steps)
 +    elif strategy in {"difficulty_gated_requery_action", "adaptive_difficulty_action"}:
@@ -1184,6 +1879,9 @@ index 0000000..020f12b
 +        "planning_uncertainty_margin": float(uncertainty_margin),
 +        "planning_phase_fraction": float(phase_fraction),
 +        "planning_short_open_loop_steps": float(short_open_loop_steps),
++        "planning_surrogate_error_threshold": float(surrogate_error_threshold),
++        "planning_predicted_proprio_error": float(predicted_proprio_error),
++        "planning_surrogate_alarm": bool(surrogate_alarm),
 +        "planning_episode_risk_enabled": bool(episode_risk_enabled) if episode_risk_enabled is not None else False,
 +        "planning_query_risk_enabled": bool(query_risk_enabled),
 +        "planning_requery_triggered": bool(requery_triggered),
@@ -1209,6 +1907,15 @@ index 0000000..020f12b
 +        "candidate_action_max_consistency_std": float(np.nanstd(action_max_consistency)),
 +        "candidate_value_internal_consistency_mean": float(np.nanmean(value_consistency)),
 +        "candidate_value_internal_consistency_std": float(np.nanstd(value_consistency)),
++        "candidate_future_proprio_internal_consistency_mean": float(
++            np.nanmean(future_proprio_consistency)
++        ),
++        "candidate_future_proprio_internal_consistency_std": float(
++            np.nanstd(future_proprio_consistency)
++        ),
++        "candidate_future_proprio_across_sample_std_mean": float(
++            future_proprio_across_sample_std_mean
++        ),
 +        "candidate_action_consensus_first_mean": float(np.mean(consensus_first)),
 +        "candidate_action_consensus_first_std": float(np.std(consensus_first)),
 +        "candidate_action_consensus_chunk_mean": float(np.mean(consensus_chunk)),
@@ -1251,6 +1958,7 @@ index 0000000..020f12b
 +    planning_uncertainty_margin: float = 0.0,
 +    planning_phase_fraction: float = 0.5,
 +    planning_short_open_loop_steps: int = 8,
++    planning_surrogate_error_threshold: float = PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
 +    record_denoising_trace: bool = False,
 +    collect_safety_signals: bool = False,
 +    terminate_on_safety_violation: bool = False,
@@ -1376,6 +2084,7 @@ index 0000000..020f12b
 +                phase_fraction=planning_phase_fraction,
 +                open_loop_steps=cfg.num_open_loop_steps,
 +                short_open_loop_steps=planning_short_open_loop_steps,
++                surrogate_error_threshold=planning_surrogate_error_threshold,
 +            )
 +            if planning_strategy in {
 +                "difficulty_gated_action",
@@ -1499,6 +2208,7 @@ index 0000000..020f12b
 +    planning_uncertainty_margin: float = 0.0,
 +    planning_phase_fraction: float = 0.5,
 +    planning_short_open_loop_steps: int = 8,
++    planning_surrogate_error_threshold: float = PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
 +    record_denoising_trace: bool = False,
 +    collect_safety_signals: bool = False,
 +    terminate_on_safety_violation: bool = False,
@@ -1577,6 +2287,7 @@ index 0000000..020f12b
 +                    planning_uncertainty_margin=planning_uncertainty_margin,
 +                    planning_phase_fraction=planning_phase_fraction,
 +                    planning_short_open_loop_steps=planning_short_open_loop_steps,
++                    planning_surrogate_error_threshold=planning_surrogate_error_threshold,
 +                    record_denoising_trace=record_denoising_trace,
 +                    collect_safety_signals=collect_safety_signals,
 +                    terminate_on_safety_violation=terminate_on_safety_violation,
@@ -1633,6 +2344,7 @@ index 0000000..020f12b
 +        "planning_uncertainty_margin": planning_uncertainty_margin,
 +        "planning_phase_fraction": planning_phase_fraction,
 +        "planning_short_open_loop_steps": planning_short_open_loop_steps,
++        "planning_surrogate_error_threshold": planning_surrogate_error_threshold,
 +        "record_denoising_trace": record_denoising_trace,
 +        "collect_safety_signals": collect_safety_signals,
 +        "terminate_on_safety_violation": terminate_on_safety_violation,
@@ -1676,6 +2388,7 @@ index 0000000..020f12b
 +    planning_uncertainty_margin: float = 0.0,
 +    planning_phase_fraction: float = 0.5,
 +    planning_short_open_loop_steps: int = 8,
++    planning_surrogate_error_threshold: float = PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
 +    record_denoising_trace: bool = False,
 +    collect_safety_signals: bool = False,
 +    terminate_on_safety_violation: bool = False,
@@ -1808,6 +2521,7 @@ index 0000000..020f12b
 +                        planning_uncertainty_margin=planning_uncertainty_margin,
 +                        planning_phase_fraction=planning_phase_fraction,
 +                        planning_short_open_loop_steps=planning_short_open_loop_steps,
++                        planning_surrogate_error_threshold=planning_surrogate_error_threshold,
 +                        record_denoising_trace=record_denoising_trace,
 +                        collect_safety_signals=collect_safety_signals,
 +                        terminate_on_safety_violation=terminate_on_safety_violation,
@@ -1892,6 +2606,7 @@ index 0000000..020f12b
 +        "planning_uncertainty_margin": planning_uncertainty_margin,
 +        "planning_phase_fraction": planning_phase_fraction,
 +        "planning_short_open_loop_steps": planning_short_open_loop_steps,
++        "planning_surrogate_error_threshold": planning_surrogate_error_threshold,
 +        "record_denoising_trace": record_denoising_trace,
 +        "collect_safety_signals": collect_safety_signals,
 +        "terminate_on_safety_violation": terminate_on_safety_violation,
@@ -2461,8 +3176,13 @@ index 0000000..020f12b
 +                "margin_gated_action",
 +                "consensus_action",
 +                "phase_gated_action",
++                "phase_requery_action",
 +                "disagreement_requery_action",
 +                "difficulty_gated_requery_action",
++                "surrogate_gated_requery_action",
++                "surrogate_horizon_action",
++                "surrogate_disagreement_requery_action",
++                "phase_surrogate_requery_action",
 +            ],
 +            default="first",
 +            help="Which sampled candidate action chunk to execute at every query",
@@ -2508,6 +3228,12 @@ index 0000000..020f12b
 +            type=int,
 +            default=8,
 +            help="Actions executed when value and uncertainty rankings disagree",
++        )
++        subparser.add_argument(
++            "--planning-surrogate-error-threshold",
++            type=float,
++            default=PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
++            help="Predicted future-proprio L2 error that triggers surrogate replanning",
 +        )
 +
 +    def add_safety_args(subparser: argparse.ArgumentParser) -> None:
@@ -2666,6 +3392,7 @@ index 0000000..020f12b
 +            planning_uncertainty_margin=args.planning_uncertainty_margin,
 +            planning_phase_fraction=args.planning_phase_fraction,
 +            planning_short_open_loop_steps=args.planning_short_open_loop_steps,
++            planning_surrogate_error_threshold=args.planning_surrogate_error_threshold,
 +            record_denoising_trace=args.record_denoising_trace,
 +            collect_safety_signals=args.collect_safety_signals,
 +            terminate_on_safety_violation=args.terminate_on_safety_violation,
@@ -2724,6 +3451,7 @@ index 0000000..020f12b
 +            planning_uncertainty_margin=args.planning_uncertainty_margin,
 +            planning_phase_fraction=args.planning_phase_fraction,
 +            planning_short_open_loop_steps=args.planning_short_open_loop_steps,
++            planning_surrogate_error_threshold=args.planning_surrogate_error_threshold,
 +            record_denoising_trace=args.record_denoising_trace,
 +            collect_safety_signals=args.collect_safety_signals,
 +            terminate_on_safety_violation=args.terminate_on_safety_violation,
@@ -2760,7 +3488,7 @@ index 0000000..020f12b
 +    main()
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
 new file mode 100644
-index 0000000..55d10af
+index 0000000000000000000000000000000000000000..55d10afd9cd8179a74e4501b911c937bc4896422
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py
 @@ -0,0 +1,334 @@
@@ -3098,696 +3826,9 @@ index 0000000..55d10af
 +        sample["prediction_mode"] = prediction_mode
 +        samples.append(sample)
 +    return samples, summarize_action_ensemble(samples)
-diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
-index efbafee..115e6ed 100644
---- a/cosmos_policy/models/policy_text2world_model.py
-+++ b/cosmos_policy/models/policy_text2world_model.py
-@@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
- 
- from __future__ import annotations
- 
--from typing import Dict, Optional, Tuple
-+from typing import Callable, Dict, List, Optional, Tuple
- 
- import attrs
- import torch
-@@ -716,6 +716,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-         skip_vae_encoding: bool = False,
-         previous_generated_latent: torch.Tensor = None,
-         return_orig_clean_latent_frames: bool = False,
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-         **kwargs,
-     ) -> torch.Tensor:
-         """
-@@ -740,6 +741,8 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-             skip_vae_encoding (bool): Skip VAE encoding if True
-             previous_generated_latent (torch.Tensor): Previous generated sample
-             return_orig_clean_latent_frames (bool): Whether to return the clean latent frames
-+            denoiser_callback_fns (list): Optional callbacks for intermediate
-+                denoiser evaluations. Disabled by default.
-         """
-         self._normalize_video_databatch_inplace(data_batch)
-         self._augment_image_dim_inplace(data_batch)
-@@ -785,6 +788,10 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
- 
-         # NOTE: FlowUniPC scheduler support (inherited from base, keeping for compatibility)
-         if self.config.use_flowunipc_scheduler:
-+            if denoiser_callback_fns:
-+                raise NotImplementedError(
-+                    "Denoising trace callbacks are currently supported by the EDM/RES sampler only"
-+                )
-             # Use parent implementation for FlowUniPC
-             return super().generate_samples_from_batch(
-                 data_batch,
-@@ -826,6 +833,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
-             sigma_max=sigma_max * sigma_max_variance_scale,
-             sigma_min=self.sde.sigma_min * sigma_min_variance_scale,
-             solver_option=solver_option,
-+            denoiser_callback_fns=denoiser_callback_fns,
-         )
-         if self.net.is_context_parallel_enabled:
-             samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
-diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
-index ef9e42c..df979ea 100644
---- a/cosmos_policy/modules/cosmos_sampler.py
-+++ b/cosmos_policy/modules/cosmos_sampler.py
-@@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
-         S_max: float = float("inf"),
-         S_noise: float = 1,
-         solver_option: str = "2ab",
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-     ) -> torch.Tensor:
-         in_dtype = x_sigma_max.dtype
- 
-@@ -90,7 +91,13 @@ class CosmosPolicySampler(Sampler):
-         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
-         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=sample_clean)
- 
--        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg, num_steps=num_steps).to(in_dtype)
-+        return self._forward_impl(
-+            float64_x0_fn,
-+            x_sigma_max,
-+            sampler_cfg,
-+            denoiser_callback_fns=denoiser_callback_fns,
-+            num_steps=num_steps,
-+        ).to(in_dtype)
- 
-     @torch.no_grad()
-     def _forward_impl(
-@@ -99,6 +106,7 @@ class CosmosPolicySampler(Sampler):
-         noisy_input_B_StateShape: torch.Tensor,
-         sampler_cfg: Optional[SamplerConfig] = None,
-         callback_fns: Optional[List[Callable]] = None,
-+        denoiser_callback_fns: Optional[List[Callable]] = None,
-         num_steps: int = 35,
-     ) -> torch.Tensor:
-         """
-@@ -109,6 +117,8 @@ class CosmosPolicySampler(Sampler):
-             noisy_input_B_StateShape: Input tensor with noise.
-             sampler_cfg: Configuration for the sampler.
-             callback_fns: List of callback functions to be called during sampling.
-+            denoiser_callback_fns: Callbacks invoked after individual solver
-+                denoiser evaluations.
-             num_steps: Number of denoising steps.
- 
-         Returns:
-@@ -125,7 +135,11 @@ class CosmosPolicySampler(Sampler):
-         if num_steps > 1:
-             # Normal sampling
-             denoised_output = differential_equation_solver(
--                denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
-+                denoiser_fn,
-+                sigmas_L,
-+                sampler_cfg.solver,
-+                callback_fns=callback_fns,
-+                denoiser_callback_fns=denoiser_callback_fns,
-             )(noisy_input_B_StateShape)
- 
-             if sampler_cfg.sample_clean:
-@@ -136,6 +150,15 @@ class CosmosPolicySampler(Sampler):
-             # Special case: num_steps==1
-             denoised_output = noisy_input_B_StateShape
-             ones = torch.ones(denoised_output.size(0), device=denoised_output.device, dtype=denoised_output.dtype)
--            denoised_output = denoiser_fn(denoised_output, sigmas_L[0] * ones)
-+            sigma_B = sigmas_L[0] * ones
-+            x0_pred_B_StateShape = denoiser_fn(denoised_output, sigma_B)
-+            if denoiser_callback_fns:
-+                for denoiser_callback_fn in denoiser_callback_fns:
-+                    denoiser_callback_fn(
-+                        noisy_state_B_StateShape=denoised_output,
-+                        sigma_B=sigma_B,
-+                        x0_pred_B_StateShape=x0_pred_B_StateShape,
-+                    )
-+            denoised_output = x0_pred_B_StateShape
- 
-         return denoised_output
-diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
-new file mode 100755
-index 0000000..735db26
---- /dev/null
-+++ b/cosmos_policy/experiments/robot/libero/safety_signals.py
-@@ -0,0 +1,558 @@
-+# SPDX-License-Identifier: Apache-2.0
-+"""Post-action failure diagnostics for LIBERO and LIBERO-Safety rollouts.
-+
-+The official LIBERO-Safety signal is ``info["cost"]``.  The remaining signals
-+in this module are explicitly named diagnostics or candidates: they are useful
-+for separating natural failure modes in ordinary LIBERO / LIBERO-PRO, but they
-+are not substitutes for task-specific safety constraints.
-+"""
-+
-+from __future__ import annotations
-+
-+from dataclasses import dataclass
-+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
-+
-+import numpy as np
-+
-+
-+@dataclass(frozen=True)
-+class FailureDiagnosticThresholds:
-+    """Thresholds for simulator-side failure candidates."""
-+
-+    target_lift_m: float = 0.035
-+    target_drop_from_peak_m: float = 0.055
-+    released_distance_m: float = 0.14
-+    non_target_lift_m: float = 0.045
-+    non_target_displacement_m: float = 0.12
-+    deadlock_window_steps: int = 32
-+    deadlock_stalled_path_m: float = 0.02
-+    deadlock_oscillating_path_m: float = 0.12
-+    deadlock_net_displacement_m: float = 0.025
-+    deadlock_sign_flip_rate: float = 0.35
-+
-+
-+def unwrap_libero_env(env: Any) -> Any:
-+    """Return the innermost LIBERO task environment."""
-+    current = env
-+    visited = set()
-+    while hasattr(current, "env") and id(current) not in visited:
-+        visited.add(id(current))
-+        candidate = getattr(current, "env")
-+        if candidate is current:
-+            break
-+        current = candidate
-+    return current
-+
-+
-+def official_safety_costs(info: Any) -> Dict[str, float]:
-+    """Extract non-zero official safety costs from an environment info dict."""
-+    if not isinstance(info, Mapping):
-+        return {}
-+
-+    raw_cost = info.get("cost", {})
-+    if isinstance(raw_cost, Mapping):
-+        costs: Dict[str, float] = {}
-+        for key, value in raw_cost.items():
-+            try:
-+                numeric = float(value)
-+            except (TypeError, ValueError):
-+                continue
-+            if np.isfinite(numeric) and numeric != 0.0:
-+                costs[str(key)] = numeric
-+        return costs
-+
-+    try:
-+        numeric = float(raw_cost)
-+    except (TypeError, ValueError):
-+        numeric = 0.0
-+    return {"cost": numeric} if np.isfinite(numeric) and numeric != 0.0 else {}
-+
-+
-+def has_official_safety_violation(info: Any) -> bool:
-+    """Whether LIBERO-Safety reported a constraint violation for this step."""
-+    if official_safety_costs(info):
-+        return True
-+    if not isinstance(info, Mapping):
-+        return False
-+
-+    for key in ("safety_violation", "unsafe", "constraint_violation"):
-+        if bool(info.get(key, False)):
-+            return True
-+    return False
-+
-+
-+def _safe_array(value: Any, expected_size: Optional[int] = None) -> Optional[np.ndarray]:
-+    if value is None:
-+        return None
-+    try:
-+        array = np.asarray(value, dtype=np.float64).reshape(-1)
-+    except (TypeError, ValueError):
-+        return None
-+    if expected_size is not None and array.size < expected_size:
-+        return None
-+    if not np.all(np.isfinite(array)):
-+        return None
-+    return array
-+
-+
-+def _sign_flip_rate(actions: Sequence[np.ndarray]) -> float:
-+    if len(actions) < 2:
-+        return 0.0
-+    motion = np.stack(actions)[:, :-1]
-+    previous = motion[:-1]
-+    current = motion[1:]
-+    active = (np.abs(previous) > 1e-5) & (np.abs(current) > 1e-5)
-+    if not np.any(active):
-+        return 0.0
-+    flips = (np.sign(previous) != np.sign(current)) & active
-+    return float(flips.sum() / active.sum())
-+
-+
-+def _kinematic_metrics(positions: Sequence[np.ndarray], dt: float) -> Dict[str, float]:
-+    result = {
-+        "path_length": 0.0,
-+        "net_displacement": 0.0,
-+        "speed_mean": 0.0,
-+        "speed_max": 0.0,
-+        "acceleration_mean": 0.0,
-+        "acceleration_max": 0.0,
-+        "jerk_mean": 0.0,
-+        "jerk_max": 0.0,
-+        "dimensionless_jerk_proxy": 0.0,
-+    }
-+    if len(positions) < 2:
-+        return result
-+
-+    xyz = np.stack(positions)
-+    displacement = np.diff(xyz, axis=0)
-+    distances = np.linalg.norm(displacement, axis=1)
-+    path_length = float(distances.sum())
-+    result["path_length"] = path_length
-+    result["net_displacement"] = float(np.linalg.norm(xyz[-1] - xyz[0]))
-+
-+    velocity = displacement / dt
-+    speed = np.linalg.norm(velocity, axis=1)
-+    result["speed_mean"] = float(speed.mean())
-+    result["speed_max"] = float(speed.max())
-+    if len(velocity) < 2:
-+        return result
-+
-+    acceleration = np.diff(velocity, axis=0) / dt
-+    acceleration_norm = np.linalg.norm(acceleration, axis=1)
-+    result["acceleration_mean"] = float(acceleration_norm.mean())
-+    result["acceleration_max"] = float(acceleration_norm.max())
-+    if len(acceleration) < 2:
-+        return result
-+
-+    jerk = np.diff(acceleration, axis=0) / dt
-+    jerk_norm = np.linalg.norm(jerk, axis=1)
-+    result["jerk_mean"] = float(jerk_norm.mean())
-+    result["jerk_max"] = float(jerk_norm.max())
-+    duration = max(dt * (len(xyz) - 1), dt)
-+    result["dimensionless_jerk_proxy"] = float(
-+        duration**5 * np.sum(jerk_norm**2) * dt / max(path_length**2, 1e-8)
-+    )
-+    return result
-+
-+
-+class SafetySignalTracker:
-+    """Track official costs and simulator-side failure diagnostics."""
-+
-+    def __init__(
-+        self,
-+        env: Any,
-+        initial_obs: Mapping[str, Any],
-+        thresholds: FailureDiagnosticThresholds = FailureDiagnosticThresholds(),
-+    ) -> None:
-+        self.env = unwrap_libero_env(env)
-+        self.thresholds = thresholds
-+        control_freq = float(getattr(self.env, "control_freq", 20.0) or 20.0)
-+        self.dt = 1.0 / control_freq
-+
-+        parsed_problem = getattr(self.env, "parsed_problem", {}) or {}
-+        self.goal_states = list(parsed_problem.get("goal_state", []) or [])
-+        self.object_states = getattr(self.env, "object_states_dict", {}) or {}
-+        self.movable_objects = self._movable_object_names()
-+        self.target_objects = self._target_object_names(parsed_problem)
-+        self.non_target_objects = [
-+            name for name in self.movable_objects if name not in set(self.target_objects)
-+        ]
-+
-+        self.initial_object_positions = self._object_positions(initial_obs)
-+        self.peak_target_z = {
-+            name: float(position[2])
-+            for name, position in self.initial_object_positions.items()
-+            if name in self.target_objects
-+        }
-+        self.target_was_lifted = {name: False for name in self.target_objects}
-+        self.drop_event_t: Optional[int] = None
-+        self.wrong_object_event_t: Optional[int] = None
-+        self.first_goal_progress_t: Optional[int] = None
-+        self.first_target_lift_t: Optional[int] = None
-+        self.official_violation_t: Optional[int] = None
-+        self.official_cost_types: set[str] = set()
-+
-+        initial_eef = self._eef_position(initial_obs)
-+        self.eef_positions: List[np.ndarray] = []
-+        if initial_eef is not None:
-+            self.eef_positions.append(initial_eef)
-+        self.actions: List[np.ndarray] = []
-+        self.records: List[Dict[str, float]] = []
-+        self.initial_goal_progress = self._goal_progress()
-+        self.max_goal_progress = self.initial_goal_progress
-+
-+    def _movable_object_names(self) -> List[str]:
-+        names = []
-+        for name, state in self.object_states.items():
-+            if bool(getattr(state, "is_fixture", False)):
-+                continue
-+            if getattr(state, "object_state_type", "object") != "object":
-+                continue
-+            names.append(str(name))
-+        return names
-+
-+    def _target_object_names(self, parsed_problem: Mapping[str, Any]) -> List[str]:
-+        targets: List[str] = []
-+        movable = set(self.movable_objects)
-+        for state in self.goal_states:
-+            if len(state) >= 2 and state[1] in movable and state[1] not in targets:
-+                targets.append(state[1])
-+        if targets:
-+            return targets
-+
-+        for name in parsed_problem.get("obj_of_interest", []) or []:
-+            if name in movable and name not in targets:
-+                targets.append(name)
-+        return targets
-+
-+    def _eef_position(self, obs: Mapping[str, Any]) -> Optional[np.ndarray]:
-+        return _safe_array(obs.get("robot0_eef_pos"), expected_size=3)
-+
-+    def _object_positions(self, obs: Mapping[str, Any]) -> Dict[str, np.ndarray]:
-+        positions: Dict[str, np.ndarray] = {}
-+        for name in self.movable_objects:
-+            state = self.object_states.get(name)
-+            if state is not None and hasattr(state, "get_geom_state"):
-+                try:
-+                    position = _safe_array(state.get_geom_state().get("pos"), expected_size=3)
-+                except (AttributeError, KeyError, TypeError, ValueError):
-+                    position = None
-+                if position is not None:
-+                    positions[name] = position[:3].copy()
-+                    continue
-+
-+            position = _safe_array(obs.get(f"{name}_pos"), expected_size=3)
-+            if position is not None:
-+                positions[name] = position[:3].copy()
-+        return positions
-+
-+    def _goal_progress(self) -> float:
-+        if not self.goal_states or not hasattr(self.env, "_eval_predicate"):
-+            return float("nan")
-+        satisfied = 0
-+        for state in self.goal_states:
-+            try:
-+                satisfied += int(bool(self.env._eval_predicate(state)))
-+            except (AttributeError, KeyError, TypeError, ValueError):
-+                continue
-+        return float(satisfied / len(self.goal_states))
-+
-+    def _robot_contact_counts(self) -> Tuple[int, int]:
-+        sim = getattr(self.env, "sim", None)
-+        if sim is None:
-+            return 0, 0
-+        try:
-+            num_contacts = int(sim.data.ncon)
-+        except (AttributeError, TypeError, ValueError):
-+            return 0, 0
-+
-+        robot_patterns = ("robot0", "panda", "gripper", "finger", "hand")
-+        target_tokens = tuple(name.lower() for name in self.target_objects)
-+        robot_contacts = 0
-+        target_contacts = 0
-+        for index in range(num_contacts):
-+            try:
-+                contact = sim.data.contact[index]
-+                name_1 = str(sim.model.geom_id2name(contact.geom1) or "").lower()
-+                name_2 = str(sim.model.geom_id2name(contact.geom2) or "").lower()
-+            except (AttributeError, IndexError, TypeError, ValueError):
-+                continue
-+            is_robot_1 = any(token in name_1 for token in robot_patterns)
-+            is_robot_2 = any(token in name_2 for token in robot_patterns)
-+            if is_robot_1 == is_robot_2:
-+                continue
-+            robot_contacts += 1
-+            other_name = name_2 if is_robot_1 else name_1
-+            if any(token in other_name for token in target_tokens):
-+                target_contacts += 1
-+        return robot_contacts, target_contacts
-+
-+    def mark_query_start(self) -> int:
-+        """Return a marker used to summarize only the next executed chunk."""
-+        return len(self.records)
-+
-+    def observe(
-+        self,
-+        obs: Mapping[str, Any],
-+        action: Any,
-+        t: int,
-+        info: Optional[Mapping[str, Any]] = None,
-+        task_success: bool = False,
-+    ) -> None:
-+        action_array = _safe_array(action)
-+        if action_array is None:
-+            action_array = np.zeros(7, dtype=np.float64)
-+        self.actions.append(action_array)
-+
-+        eef = self._eef_position(obs)
-+        if eef is not None:
-+            self.eef_positions.append(eef[:3].copy())
-+        object_positions = self._object_positions(obs)
-+        progress = self._goal_progress()
-+        if np.isfinite(progress):
-+            if (
-+                self.first_goal_progress_t is None
-+                and np.isfinite(self.initial_goal_progress)
-+                and progress > self.initial_goal_progress
-+            ):
-+                self.first_goal_progress_t = int(t)
-+            self.max_goal_progress = float(np.nanmax([self.max_goal_progress, progress]))
-+
-+        max_target_lift = 0.0
-+        min_target_eef_distance = float("nan")
-+        for name in self.target_objects:
-+            position = object_positions.get(name)
-+            initial = self.initial_object_positions.get(name)
-+            if position is None or initial is None:
-+                continue
-+            lift = float(position[2] - initial[2])
-+            max_target_lift = max(max_target_lift, lift)
-+            self.peak_target_z[name] = max(self.peak_target_z.get(name, float(position[2])), float(position[2]))
-+            if lift >= self.thresholds.target_lift_m:
-+                self.target_was_lifted[name] = True
-+                if self.first_target_lift_t is None:
-+                    self.first_target_lift_t = int(t)
-+
-+            distance = float(np.linalg.norm(position - eef[:3])) if eef is not None else float("nan")
-+            if np.isfinite(distance):
-+                min_target_eef_distance = float(
-+                    np.nanmin([min_target_eef_distance, distance])
-+                    if np.isfinite(min_target_eef_distance)
-+                    else distance
-+                )
-+            dropped_from_peak = self.peak_target_z[name] - float(position[2])
-+            released = not np.isfinite(distance) or distance >= self.thresholds.released_distance_m
-+            if (
-+                self.drop_event_t is None
-+                and self.target_was_lifted.get(name, False)
-+                and dropped_from_peak >= self.thresholds.target_drop_from_peak_m
-+                and released
-+                and not task_success
-+            ):
-+                self.drop_event_t = int(t)
-+
-+        max_non_target_displacement = 0.0
-+        max_non_target_lift = 0.0
-+        for name in self.non_target_objects:
-+            position = object_positions.get(name)
-+            initial = self.initial_object_positions.get(name)
-+            if position is None or initial is None:
-+                continue
-+            displacement = float(np.linalg.norm(position - initial))
-+            lift = float(position[2] - initial[2])
-+            max_non_target_displacement = max(max_non_target_displacement, displacement)
-+            max_non_target_lift = max(max_non_target_lift, lift)
-+            if (
-+                self.wrong_object_event_t is None
-+                and (
-+                    displacement >= self.thresholds.non_target_displacement_m
-+                    or lift >= self.thresholds.non_target_lift_m
-+                )
-+            ):
-+                self.wrong_object_event_t = int(t)
-+
-+        costs = official_safety_costs(info)
-+        violation = bool(costs) or has_official_safety_violation(info)
-+        if violation and self.official_violation_t is None:
-+            self.official_violation_t = int(t)
-+        self.official_cost_types.update(costs)
-+        robot_contacts, target_contacts = self._robot_contact_counts()
-+
-+        self.records.append(
-+            {
-+                "t": float(t),
-+                "goal_progress": progress,
-+                "target_lift_max": float(max_target_lift),
-+                "target_eef_distance_min": min_target_eef_distance,
-+                "non_target_displacement_max": float(max_non_target_displacement),
-+                "non_target_lift_max": float(max_non_target_lift),
-+                "target_drop_candidate": float(self.drop_event_t is not None),
-+                "wrong_object_interaction_candidate": float(self.wrong_object_event_t is not None),
-+                "official_safety_violation": float(violation),
-+                "official_safety_cost": float(sum(costs.values())),
-+                "robot_contact_count": float(robot_contacts),
-+                "robot_target_contact_count": float(target_contacts),
-+                "action_motion_norm": float(np.linalg.norm(action_array[:-1])),
-+            }
-+        )
-+
-+    def _segment_positions(self, start: int, end: int) -> List[np.ndarray]:
-+        if not self.eef_positions:
-+            return []
-+        first = max(0, min(start, len(self.eef_positions) - 1))
-+        last = max(first + 1, min(end + 1, len(self.eef_positions)))
-+        return self.eef_positions[first:last]
-+
-+    def query_summary(self, marker: int) -> Dict[str, float]:
-+        """Summarize signals observed after executing one selected action chunk."""
-+        segment = self.records[marker:]
-+        if not segment:
-+            return {}
-+
-+        def values(name: str) -> np.ndarray:
-+            return np.asarray([record[name] for record in segment], dtype=np.float64)
-+
-+        positions = self._segment_positions(marker, len(self.records))
-+        kinematics = _kinematic_metrics(positions, self.dt)
-+        goal_progress = values("goal_progress")
-+        finite_progress = goal_progress[np.isfinite(goal_progress)]
-+        progress_start = self.initial_goal_progress
-+        if marker > 0:
-+            progress_start = float(self.records[marker - 1]["goal_progress"])
-+        progress_end = float(finite_progress[-1]) if finite_progress.size else float("nan")
-+        progress_delta = (
-+            float(progress_end - progress_start)
-+            if np.isfinite(progress_end) and np.isfinite(progress_start)
-+            else float("nan")
-+        )
-+        actions = self.actions[marker:]
-+
-+        return {
-+            "observed_goal_progress_end": progress_end,
-+            "observed_goal_progress_delta": progress_delta,
-+            "observed_target_lift_max": float(values("target_lift_max").max()),
-+            "observed_target_eef_distance_min": float(
-+                np.nanmin(values("target_eef_distance_min"))
-+                if np.isfinite(values("target_eef_distance_min")).any()
-+                else np.nan
-+            ),
-+            "observed_non_target_displacement_max": float(values("non_target_displacement_max").max()),
-+            "observed_non_target_lift_max": float(values("non_target_lift_max").max()),
-+            "observed_target_drop_candidate": float(values("target_drop_candidate").max()),
-+            "observed_wrong_object_interaction_candidate": float(
-+                values("wrong_object_interaction_candidate").max()
-+            ),
-+            "observed_official_safety_violation": float(values("official_safety_violation").max()),
-+            "observed_official_safety_cost_sum": float(values("official_safety_cost").sum()),
-+            "observed_robot_contact_count_sum": float(values("robot_contact_count").sum()),
-+            "observed_robot_contact_count_max": float(values("robot_contact_count").max()),
-+            "observed_robot_target_contact_count_sum": float(values("robot_target_contact_count").sum()),
-+            "observed_action_motion_norm_mean": float(values("action_motion_norm").mean()),
-+            "observed_action_motion_norm_max": float(values("action_motion_norm").max()),
-+            "observed_action_sign_flip_rate": _sign_flip_rate(actions),
-+            "observed_eef_path_length": kinematics["path_length"],
-+            "observed_eef_net_displacement": kinematics["net_displacement"],
-+            "observed_eef_speed_mean": kinematics["speed_mean"],
-+            "observed_eef_acceleration_mean": kinematics["acceleration_mean"],
-+            "observed_eef_jerk_mean": kinematics["jerk_mean"],
-+            "observed_eef_jerk_max": kinematics["jerk_max"],
-+            "observed_eef_dimensionless_jerk_proxy": kinematics["dimensionless_jerk_proxy"],
-+        }
-+
-+    def _deadlock_candidate(self) -> bool:
-+        window = min(self.thresholds.deadlock_window_steps, len(self.actions))
-+        if window < 4:
-+            return False
-+        positions = self.eef_positions[-(window + 1) :]
-+        kinematics = _kinematic_metrics(positions, self.dt)
-+        sign_flip_rate = _sign_flip_rate(self.actions[-window:])
-+        stalled = kinematics["path_length"] <= self.thresholds.deadlock_stalled_path_m
-+        oscillating = (
-+            kinematics["path_length"] >= self.thresholds.deadlock_oscillating_path_m
-+            and kinematics["net_displacement"] <= self.thresholds.deadlock_net_displacement_m
-+            and sign_flip_rate >= self.thresholds.deadlock_sign_flip_rate
-+        )
-+        return bool(stalled or oscillating)
-+
-+    def episode_summary(
-+        self,
-+        success: bool,
-+        final_t: int,
-+        max_steps: int,
-+        safety_terminated: bool = False,
-+    ) -> Dict[str, Any]:
-+        """Return static labels and diagnostics to attach to every query row."""
-+        deadlock = bool(not success and self._deadlock_candidate())
-+        official_violation = self.official_violation_t is not None
-+        drop = self.drop_event_t is not None
-+        wrong_object = self.wrong_object_event_t is not None
-+
-+        if success:
-+            failure_type = "success"
-+        elif official_violation:
-+            failure_type = "safety_constraint_violation"
-+        elif drop:
-+            failure_type = "target_drop_candidate"
-+        elif wrong_object:
-+            failure_type = "wrong_object_interaction_candidate"
-+        elif deadlock:
-+            failure_type = "kinematic_deadlock_candidate"
-+        elif final_t >= max_steps and np.isfinite(self.max_goal_progress) and self.max_goal_progress > 0:
-+            failure_type = "timeout_partial_goal"
-+        elif final_t >= max_steps:
-+            failure_type = "timeout_no_goal"
-+        else:
-+            failure_type = "environment_termination_without_success"
-+
-+        event_times = [
-+            time
-+            for time in (
-+                self.official_violation_t,
-+                self.drop_event_t,
-+                self.wrong_object_event_t,
-+            )
-+            if time is not None
-+        ]
-+        failure_event_t = min(event_times) if event_times else (-1 if success else int(final_t))
-+        full_kinematics = _kinematic_metrics(self.eef_positions, self.dt)
-+        max_target_lift = max(
-+            (
-+                self.peak_target_z[name] - self.initial_object_positions[name][2]
-+                for name in self.target_objects
-+                if name in self.peak_target_z and name in self.initial_object_positions
-+            ),
-+            default=0.0,
-+        )
-+
-+        return {
-+            "failure_type": failure_type,
-+            "failure_event_t": int(failure_event_t),
-+            "safe_task_success": bool(success and not official_violation),
-+            "safety_terminated": bool(safety_terminated),
-+            "official_safety_violation": bool(official_violation),
-+            "official_safety_violation_t": int(
-+                self.official_violation_t if self.official_violation_t is not None else -1
-+            ),
-+            "official_safety_cost_types": ",".join(sorted(self.official_cost_types)),
-+            "target_objects": ",".join(self.target_objects),
-+            "target_drop_candidate": bool(drop),
-+            "target_drop_candidate_t": int(self.drop_event_t if self.drop_event_t is not None else -1),
-+            "wrong_object_interaction_candidate": bool(wrong_object),
-+            "wrong_object_interaction_candidate_t": int(
-+                self.wrong_object_event_t if self.wrong_object_event_t is not None else -1
-+            ),
-+            "kinematic_deadlock_candidate": bool(deadlock),
-+            "episode_goal_progress_initial": float(self.initial_goal_progress),
-+            "episode_goal_progress_max": float(self.max_goal_progress),
-+            "episode_time_to_first_goal_progress": int(
-+                self.first_goal_progress_t if self.first_goal_progress_t is not None else -1
-+            ),
-+            "episode_time_to_first_target_lift": int(
-+                self.first_target_lift_t if self.first_target_lift_t is not None else -1
-+            ),
-+            "episode_target_lift_max": float(max_target_lift),
-+            "episode_eef_path_length": full_kinematics["path_length"],
-+            "episode_eef_net_displacement": full_kinematics["net_displacement"],
-+            "episode_eef_jerk_mean": full_kinematics["jerk_mean"],
-+            "episode_eef_dimensionless_jerk_proxy": full_kinematics["dimensionless_jerk_proxy"],
-+        }
 diff --git a/cosmos_policy/experiments/robot/libero/vfd_metrics.py b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
-new file mode 100755
-index 0000000..eb2e4c5
+new file mode 100644
+index 0000000000000000000000000000000000000000..eb2e4c566aad4a49eee4ab7e045b19445eb15276
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/vfd_metrics.py
 @@ -0,0 +1,290 @@
@@ -4081,17 +4122,143 @@ index 0000000..eb2e4c5
 +            results[str(block_name)] = float(np.mean(weighted_disagreements))
 +
 +    return results
+diff --git a/cosmos_policy/models/policy_text2world_model.py b/cosmos_policy/models/policy_text2world_model.py
+index efbafee498b91e3865b135599179949e159f8c75..115e6ed6474e777f011a001f440e52eac78fa834 100644
+--- a/cosmos_policy/models/policy_text2world_model.py
++++ b/cosmos_policy/models/policy_text2world_model.py
+@@ -19,7 +19,7 @@ Cosmos Policy Diffusion Model - extends Text2WorldModel with policy-specific fun
+ 
+ from __future__ import annotations
+ 
+-from typing import Dict, Optional, Tuple
++from typing import Callable, Dict, List, Optional, Tuple
+ 
+ import attrs
+ import torch
+@@ -716,6 +716,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+         skip_vae_encoding: bool = False,
+         previous_generated_latent: torch.Tensor = None,
+         return_orig_clean_latent_frames: bool = False,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         **kwargs,
+     ) -> torch.Tensor:
+         """
+@@ -740,6 +741,8 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             skip_vae_encoding (bool): Skip VAE encoding if True
+             previous_generated_latent (torch.Tensor): Previous generated sample
+             return_orig_clean_latent_frames (bool): Whether to return the clean latent frames
++            denoiser_callback_fns (list): Optional callbacks for intermediate
++                denoiser evaluations. Disabled by default.
+         """
+         self._normalize_video_databatch_inplace(data_batch)
+         self._augment_image_dim_inplace(data_batch)
+@@ -785,6 +788,10 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+ 
+         # NOTE: FlowUniPC scheduler support (inherited from base, keeping for compatibility)
+         if self.config.use_flowunipc_scheduler:
++            if denoiser_callback_fns:
++                raise NotImplementedError(
++                    "Denoising trace callbacks are currently supported by the EDM/RES sampler only"
++                )
+             # Use parent implementation for FlowUniPC
+             return super().generate_samples_from_batch(
+                 data_batch,
+@@ -826,6 +833,7 @@ class CosmosPolicyDiffusionModel(BaseDiffusionModel):
+             sigma_max=sigma_max * sigma_max_variance_scale,
+             sigma_min=self.sde.sigma_min * sigma_min_variance_scale,
+             solver_option=solver_option,
++            denoiser_callback_fns=denoiser_callback_fns,
+         )
+         if self.net.is_context_parallel_enabled:
+             samples = cat_outputs_cp(samples, seq_dim=2, cp_group=self.get_context_parallel_group())
+diff --git a/cosmos_policy/modules/cosmos_sampler.py b/cosmos_policy/modules/cosmos_sampler.py
+index ef9e42cc321942a7bfbff008dbe44cb700f15617..df979ea70057fca94687d2f79dc2d97b71352840 100644
+--- a/cosmos_policy/modules/cosmos_sampler.py
++++ b/cosmos_policy/modules/cosmos_sampler.py
+@@ -63,6 +63,7 @@ class CosmosPolicySampler(Sampler):
+         S_max: float = float("inf"),
+         S_noise: float = 1,
+         solver_option: str = "2ab",
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+     ) -> torch.Tensor:
+         in_dtype = x_sigma_max.dtype
+ 
+@@ -90,7 +91,13 @@ class CosmosPolicySampler(Sampler):
+         timestamps_cfg = SolverTimestampConfig(nfe=num_steps, t_min=sigma_min, t_max=sigma_max, order=rho)
+         sampler_cfg = SamplerConfig(solver=solver_cfg, timestamps=timestamps_cfg, sample_clean=sample_clean)
+ 
+-        return self._forward_impl(float64_x0_fn, x_sigma_max, sampler_cfg, num_steps=num_steps).to(in_dtype)
++        return self._forward_impl(
++            float64_x0_fn,
++            x_sigma_max,
++            sampler_cfg,
++            denoiser_callback_fns=denoiser_callback_fns,
++            num_steps=num_steps,
++        ).to(in_dtype)
+ 
+     @torch.no_grad()
+     def _forward_impl(
+@@ -99,6 +106,7 @@ class CosmosPolicySampler(Sampler):
+         noisy_input_B_StateShape: torch.Tensor,
+         sampler_cfg: Optional[SamplerConfig] = None,
+         callback_fns: Optional[List[Callable]] = None,
++        denoiser_callback_fns: Optional[List[Callable]] = None,
+         num_steps: int = 35,
+     ) -> torch.Tensor:
+         """
+@@ -109,6 +117,8 @@ class CosmosPolicySampler(Sampler):
+             noisy_input_B_StateShape: Input tensor with noise.
+             sampler_cfg: Configuration for the sampler.
+             callback_fns: List of callback functions to be called during sampling.
++            denoiser_callback_fns: Callbacks invoked after individual solver
++                denoiser evaluations.
+             num_steps: Number of denoising steps.
+ 
+         Returns:
+@@ -125,7 +135,11 @@ class CosmosPolicySampler(Sampler):
+         if num_steps > 1:
+             # Normal sampling
+             denoised_output = differential_equation_solver(
+-                denoiser_fn, sigmas_L, sampler_cfg.solver, callback_fns=callback_fns
++                denoiser_fn,
++                sigmas_L,
++                sampler_cfg.solver,
++                callback_fns=callback_fns,
++                denoiser_callback_fns=denoiser_callback_fns,
+             )(noisy_input_B_StateShape)
+ 
+             if sampler_cfg.sample_clean:
+@@ -136,6 +150,15 @@ class CosmosPolicySampler(Sampler):
+             # Special case: num_steps==1
+             denoised_output = noisy_input_B_StateShape
+             ones = torch.ones(denoised_output.size(0), device=denoised_output.device, dtype=denoised_output.dtype)
+-            denoised_output = denoiser_fn(denoised_output, sigmas_L[0] * ones)
++            sigma_B = sigmas_L[0] * ones
++            x0_pred_B_StateShape = denoiser_fn(denoised_output, sigma_B)
++            if denoiser_callback_fns:
++                for denoiser_callback_fn in denoiser_callback_fns:
++                    denoiser_callback_fn(
++                        noisy_state_B_StateShape=denoised_output,
++                        sigma_B=sigma_B,
++                        x0_pred_B_StateShape=x0_pred_B_StateShape,
++                    )
++            denoised_output = x0_pred_B_StateShape
+ 
+         return denoised_output
 diff --git a/tests/test_planning_selection.py b/tests/test_planning_selection.py
-new file mode 100755
-index 0000000..a834caf
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f0989f9f3f474f8c4a7f49b49634ddc5801a769
 --- /dev/null
 +++ b/tests/test_planning_selection.py
-@@ -0,0 +1,215 @@
+@@ -0,0 +1,360 @@
 +from __future__ import annotations
 +
 +import numpy as np
 +
 +from cosmos_policy.experiments.robot.libero.uncertainty_comparison import (
++    PROPRIO_ERROR_SURROGATE_V1_INTERCEPT,
++    PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS,
++    predict_future_proprio_error,
 +    select_planning_sample,
 +)
 +
@@ -4302,9 +4469,151 @@ index 0000000..a834caf
 +    assert selected == 1
 +    assert diagnostics["planning_requery_triggered"] is True
 +    assert diagnostics["planning_selected_open_loop_steps"] == 8.0
++
++
++def test_frozen_proprio_error_surrogate_matches_its_center_point() -> None:
++    predicted = predict_future_proprio_error(
++        *np.exp(PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS)
++    )
++
++    assert np.isclose(predicted, np.exp(PROPRIO_ERROR_SURROGATE_V1_INTERCEPT))
++
++
++def test_surrogate_gate_changes_selection_and_horizon_only_on_alarm() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="surrogate_gated_requery_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=0.0,
++        short_open_loop_steps=8,
++    )
++    assert selected == 1
++    assert diagnostics["planning_surrogate_alarm"] is True
++    assert diagnostics["planning_selected_open_loop_steps"] == 8.0
++
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="surrogate_gated_requery_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=1e9,
++        short_open_loop_steps=8,
++    )
++    assert selected == 0
++    assert diagnostics["planning_surrogate_alarm"] is False
++    assert diagnostics["planning_selected_open_loop_steps"] == 16.0
++
++
++def test_phase_surrogate_keeps_early_penalty_and_requeries_on_late_alarm() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    early, early_diagnostics = select_planning_sample(
++        candidates,
++        strategy="phase_surrogate_requery_action",
++        risk_lambda=2.0,
++        episode_progress=0.2,
++        phase_fraction=0.3,
++        surrogate_error_threshold=1e9,
++    )
++    late, late_diagnostics = select_planning_sample(
++        candidates,
++        strategy="phase_surrogate_requery_action",
++        risk_lambda=2.0,
++        episode_progress=0.8,
++        phase_fraction=0.3,
++        surrogate_error_threshold=0.0,
++    )
++
++    assert early == 1
++    assert early_diagnostics["planning_selected_open_loop_steps"] == 16.0
++    assert late == 1
++    assert late_diagnostics["planning_selected_open_loop_steps"] == 8.0
++
++
++def test_phase_requery_only_shortens_early_disagreement() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    early, early_diagnostics = select_planning_sample(
++        candidates,
++        strategy="phase_requery_action",
++        risk_lambda=2.0,
++        episode_progress=0.2,
++        phase_fraction=0.3,
++    )
++    late, late_diagnostics = select_planning_sample(
++        candidates,
++        strategy="phase_requery_action",
++        risk_lambda=2.0,
++        episode_progress=0.8,
++        phase_fraction=0.3,
++    )
++
++    assert early == 1
++    assert early_diagnostics["planning_requery_triggered"] is True
++    assert early_diagnostics["planning_selected_open_loop_steps"] == 8.0
++    assert late == 0
++    assert late_diagnostics["planning_requery_triggered"] is False
++    assert late_diagnostics["planning_selected_open_loop_steps"] == 16.0
++
++
++def test_surrogate_horizon_keeps_action_ranking_without_alarm() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    selected, diagnostics = select_planning_sample(
++        candidates,
++        strategy="surrogate_horizon_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=1e9,
++    )
++
++    assert selected == 1
++    assert diagnostics["planning_surrogate_alarm"] is False
++    assert diagnostics["planning_requery_triggered"] is False
++    assert diagnostics["planning_selected_open_loop_steps"] == 16.0
++
++
++def test_surrogate_disagreement_requires_both_conditions_to_requery() -> None:
++    disagreeing = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++    _, no_alarm = select_planning_sample(
++        disagreeing,
++        strategy="surrogate_disagreement_requery_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=1e9,
++    )
++    _, alarm_and_disagreement = select_planning_sample(
++        disagreeing,
++        strategy="surrogate_disagreement_requery_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=0.0,
++    )
++    _, alarm_without_disagreement = select_planning_sample(
++        [sample_with_action_copies(0.8, first_std=0.0, later_std=0.0)],
++        strategy="surrogate_disagreement_requery_action",
++        risk_lambda=2.0,
++        surrogate_error_threshold=0.0,
++    )
++
++    assert no_alarm["planning_requery_triggered"] is False
++    assert alarm_and_disagreement["planning_requery_triggered"] is True
++    assert alarm_and_disagreement["planning_selected_open_loop_steps"] == 8.0
++    assert alarm_without_disagreement["planning_surrogate_alarm"] is True
++    assert alarm_without_disagreement["planning_requery_triggered"] is False
++    assert alarm_without_disagreement["planning_selected_open_loop_steps"] == 16.0
 diff --git a/tests/test_safety_signals.py b/tests/test_safety_signals.py
-new file mode 100755
-index 0000000..6153d3f
+new file mode 100644
+index 0000000000000000000000000000000000000000..6153d3f33b6b8e1bbc87a93677624f28c7179d7f
 --- /dev/null
 +++ b/tests/test_safety_signals.py
 @@ -0,0 +1,140 @@
@@ -4449,8 +4758,8 @@ index 0000000..6153d3f
 +    assert episode["kinematic_deadlock_candidate"]
 +    assert episode["failure_type"] == "kinematic_deadlock_candidate"
 diff --git a/tests/test_vfd_metrics.py b/tests/test_vfd_metrics.py
-new file mode 100755
-index 0000000..20bd33f
+new file mode 100644
+index 0000000000000000000000000000000000000000..20bd33faf94c2e01a5fb1cd97b0f554ed573438c
 --- /dev/null
 +++ b/tests/test_vfd_metrics.py
 @@ -0,0 +1,131 @@

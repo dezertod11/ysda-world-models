@@ -1,0 +1,2 @@
+planning_strategy,planning_risk_lambda,episodes,successes,success_rate,mean_final_t,mean_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+phase_surrogate_requery_action,1.0,20,18,0.9,290.5,20.35,0.39714062454249993,0.38893689939766685,0.38933963117139514,-0.8230142258440312

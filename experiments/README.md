@@ -1,8 +1,18 @@
 # Эксперименты
 
-Для текущей линии uncertainty-aware planning начинать следует с
+Для текущей линии uncertainty-aware planning начинать следует с итогового
+отчёта
+[`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md)
+и компактного notebook
+[`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb).
+В frozen confirmatory проверке `requery_l1_h8` дал 161/240 success против
+146/240 у `max(value)`: +6.25 п.п., 95% CI `[+1.7; +11.3]` п.п.,
+Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся как
+оценка prediction error, но не дал прироста task success.
+
+Предыдущий этап находится в
 [`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb)
-и frozen-отчёта
+и frozen-отчёте
 [`campaigns/adaptive_confirmatory_20260813/analysis/adaptive_summary/README.md`](campaigns/adaptive_confirmatory_20260813/analysis/adaptive_summary/README.md).
 Предшествующие LIBERO-PRO и LIBERO-Safety результаты собраны в
 [`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md),
@@ -19,6 +29,9 @@
 
 | Файл | Назначение |
 |---|---|
+| [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md) | Итог 960 confirmatory rollout: формулы, статистика, failure modes и ограничения |
+| [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb) | Таблицы и графики screening, frozen confirmatory и surrogate transfer |
+| [`SURROGATE_REQUERY_HYPOTHESES_20260819.md`](SURROGATE_REQUERY_HYPOTHESES_20260819.md) | Протокол и гипотезы, замороженные до confirmatory outcomes |
 | [`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb) | Frozen adaptive-planning результат, формулы, статистика и matched-seed видео |
 | [`ADAPTIVE_PLANNING_HYPOTHESES_20260813.md`](ADAPTIVE_PLANNING_HYPOTHESES_20260813.md) | Гипотезы H1-H14, protocol и интерпретация confirmatory проверки |
 | [`campaigns/replication_safety_analysis_20260813/README.md`](campaigns/replication_safety_analysis_20260813/README.md) | Новые paired planning и LIBERO-Safety результаты, статистика и графики |
@@ -67,6 +80,16 @@ campaigns/adaptive_confirmatory_20260813/
     replay_control_summary.csv
     prediction_error_correlations.csv
     plots/
+
+campaigns/surrogate_confirmatory_20260819/
+  manifest.json             # status=completed, 960/960 strategy executions
+  analysis/adaptive_summary/
+    README.md
+    frozen_confirmatory_results.csv
+    paired_by_case.csv
+    paired_failure_modes.csv
+    surrogate_transfer_diagnostics.csv
+    plots/
 ```
 
 `uncertainty/` содержит более ранние exploratory и video runs. Они полезны для
@@ -83,6 +106,8 @@ campaigns/adaptive_confirmatory_20260813/
 | LIBERO-PRO denoise-10 replication | Завершена, 200/200 strategy executions на 100 paired seeds |
 | Adaptive planning calibration | Завершена, 900/900 strategy executions на 3 boundary cases |
 | Adaptive planning frozen confirmatory | Завершена, 1080/1080 strategy executions на 180 paired seeds и 6 cases |
+| Surrogate/requery screening | Завершён, 816/816 strategy executions; используется только для выбора гиперпараметров |
+| Surrogate/requery frozen confirmatory | Завершён, 960/960 strategy executions на 240 paired seeds и 12 cases |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео
@@ -102,3 +127,8 @@ matched-seed видео из более раннего planning pilot. Они п
 discordant seed. Их индекс, фактические replay outcomes и переносимые MP4
 находятся в
 [`final_results_media/adaptive_confirmatory_20260813`](final_results_media/adaptive_confirmatory_20260813/README.md).
+
+Новые matched-seed replays для `surrogate_confirmatory_20260819` сформированы
+как отдельная очередь. Статистический результат уже завершён; видео появятся в
+`final_results_media/surrogate_confirmatory_20260819`, когда GPU 2-7 освободятся
+после текущей shared-server training job.

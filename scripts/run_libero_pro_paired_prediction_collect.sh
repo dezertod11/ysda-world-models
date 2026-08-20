@@ -72,6 +72,9 @@ fi
 if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS:-}" ]]; then
   EXTRA_ARGS+=(--planning-short-open-loop-steps "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS}")
 fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SURROGATE_ERROR_THRESHOLD:-}" ]]; then
+  EXTRA_ARGS+=(--planning-surrogate-error-threshold "${LIBERO_PRO_PAIRED_PLANNING_SURROGATE_ERROR_THRESHOLD}")
+fi
 if [[ "${LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE:-0}" == "1" ]]; then
   EXTRA_ARGS+=(--record-denoising-trace)
 fi

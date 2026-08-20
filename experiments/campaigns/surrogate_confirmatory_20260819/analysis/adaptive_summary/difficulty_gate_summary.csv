@@ -1,0 +1,14 @@
+case_id,paired_rollouts,difficulty_gate_rate,baseline_success_rate,action_success_rate,counterfactual_gate_success_rate,counterfactual_delta_vs_baseline
+goal_mug_task9_init0_surrogate_confirm,20,1.0,1.0,0.95,0.95,-0.050000000000000044
+long_milk_task9_init0_surrogate_confirm,20,1.0,0.8,0.8,0.8,0.0
+long_mug_task4_init0_surrogate_confirm,20,0.45,0.85,0.95,0.85,0.0
+milk_task5_init0_surrogate_confirm,20,1.0,0.45,0.7,0.7,0.24999999999999994
+new_ood_goal_task_task6_init0_surrogate_confirm,20,1.0,0.0,0.0,0.0,0.0
+new_ood_long_swap_task4_init0_surrogate_confirm,20,0.0,0.0,0.0,0.0,0.0
+new_ood_object_object_task7_init0_surrogate_confirm,20,1.0,1.0,1.0,1.0,0.0
+new_ood_spatial_lan_task6_init0_surrogate_confirm,20,1.0,1.0,1.0,1.0,0.0
+new_ood_spatial_object_task0_init0_surrogate_confirm,20,1.0,1.0,1.0,1.0,0.0
+new_ood_spatial_swap_task8_init0_surrogate_confirm,20,1.0,0.05,0.1,0.1,0.05
+spatial_mug_task0_init0_surrogate_confirm,20,1.0,0.75,0.65,0.65,-0.09999999999999998
+yellow_task8_init0_surrogate_confirm,20,1.0,0.4,0.4,0.4,0.0
+POOLED,240,0.8708333333333333,0.6083333333333333,0.6291666666666667,0.6208333333333333,0.012500000000000067

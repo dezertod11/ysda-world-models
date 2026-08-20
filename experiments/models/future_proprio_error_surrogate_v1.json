@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "model_id": "future_proprio_error_surrogate_v1",
+  "target": "prediction_error_future_proprio_l2",
+  "training_strategy": "max_value",
+  "ridge_lambda": 100.0,
+  "features": [
+    "latent_action_copy_std_mean_mean_over_samples",
+    "latent_future_proprio_copy_std_mean_mean_over_samples",
+    "candidate_value_mean",
+    "future_proprio_std_mean"
+  ],
+  "feature_transform": "log(max(x, 1e-10)), median imputation, train z-score",
+  "feature_log_medians": [
+    -4.811064551993471,
+    -4.874337627703886,
+    -0.4281007918200732,
+    -7.180830310116362
+  ],
+  "feature_log_means": [
+    -4.7725086626555955,
+    -4.842945627927654,
+    -0.5404564840126671,
+    -6.849102023932096
+  ],
+  "feature_log_stds": [
+    0.11930380458295575,
+    0.08174828517608249,
+    0.4999593504897814,
+    1.1049171370884088
+  ],
+  "intercept": -2.891938809745354,
+  "coefficients": [
+    0.12336737231953827,
+    0.13764358360225645,
+    0.40796111668499924,
+    0.30281850491187634
+  ],
+  "thresholds_by_train_prediction_quantile": {
+    "0.6": 0.06300548431629303,
+    "0.75": 0.08841767562905925,
+    "0.9": 0.1468499806786273
+  },
+  "train": {
+    "path": "experiments/campaigns/libero_full_validation_20260724/analysis/full_validation/all_query_traces.parquet",
+    "queries": 1430,
+    "episodes": 86
+  },
+  "test": {
+    "path": "experiments/campaigns/denoise10_replication_20260730/analysis/full_validation/all_query_traces.parquet",
+    "queries": 1400,
+    "episodes": 100,
+    "episode_key_overlap_with_train": 0,
+    "spearman": 0.7449243677583411,
+    "case_controlled_spearman": 0.6487568666555732,
+    "case_relative_top_quartile_error_auc": 0.7707869929032941,
+    "alarm_rates": {
+      "0.6": 0.38285714285714284,
+      "0.75": 0.24071428571428571,
+      "0.9": 0.09928571428571428
+    }
+  }
+}

@@ -1,0 +1,4 @@
+planning_strategy,planning_risk_lambda,suite,task_id,init_state_id,episodes,successes,success_rate,mean_final_t,selected_not_max_value_rate
+disagreement_requery_action,1.0,libero_spatial_swap,8,0,20,7,0.35,198.75,0.4986346333405157
+uncertainty_penalty_action,1.0,libero_spatial_swap,8,0,20,2,0.1,218.8,0.41236263736263734
+max_value,0.0,libero_spatial_swap,8,0,20,1,0.05,219.3,0.0

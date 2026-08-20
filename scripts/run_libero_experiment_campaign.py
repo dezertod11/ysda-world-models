@@ -191,6 +191,9 @@ def _common_pro_paired_env(
         f"{prefix}PLANNING_SHORT_OPEN_LOOP_STEPS": str(
             job.get("planning_short_open_loop_steps", 8)
         ),
+        f"{prefix}PLANNING_SURROGATE_ERROR_THRESHOLD": str(
+            job.get("planning_surrogate_error_threshold", 0.08841767562905925)
+        ),
     }
 
 
@@ -297,6 +300,9 @@ def build_job(
             ),
             "LIBERO_PRO_PLANNING_GRID_SHORT_OPEN_LOOP_STEPS": str(
                 job.get("planning_short_open_loop_steps", 8)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_SURROGATE_ERROR_THRESHOLD": str(
+                job.get("planning_surrogate_error_threshold", 0.08841767562905925)
             ),
             "LIBERO_PRO_PAIRED_SAVE_VIDEOS": _as_bool_env(job["save_videos"]),
             "LIBERO_PRO_PAIRED_VIDEO_DIR": str(run_dir / "videos" / run_name),

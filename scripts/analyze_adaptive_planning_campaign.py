@@ -24,6 +24,7 @@ CONFIG_COLUMNS = [
     "planning_uncertainty_margin",
     "planning_phase_fraction",
     "planning_short_open_loop_steps",
+    "planning_surrogate_error_threshold",
 ]
 ONLINE_METRICS = [
     "action_first_step_l2_std",
@@ -35,6 +36,7 @@ ONLINE_METRICS = [
     "candidate_action_internal_consistency_mean",
     "candidate_action_consensus_first_mean",
     "candidate_value_mean",
+    "planning_predicted_proprio_error",
 ]
 PREDICTION_ERROR_METRICS = [
     "prediction_error_future_image_mse",
@@ -114,12 +116,39 @@ def strategy_id(row: pd.Series) -> str:
         return f"consensus_l{risk_lambda:g}"
     if strategy == "phase_gated_action":
         return f"phase_l{risk_lambda:g}_r{float(row['planning_phase_fraction']):g}"
+    if strategy == "phase_requery_action":
+        return (
+            f"phase_requery_l{risk_lambda:g}_r{float(row['planning_phase_fraction']):g}"
+            f"_h{int(row['planning_short_open_loop_steps'])}"
+        )
     if strategy == "disagreement_requery_action":
         return f"requery_l{risk_lambda:g}_h{int(row['planning_short_open_loop_steps'])}"
     if strategy == "difficulty_gated_requery_action":
         return (
             f"difficulty_requery_l{risk_lambda:g}"
             f"_t{float(row['planning_difficulty_threshold']):g}"
+            f"_h{int(row['planning_short_open_loop_steps'])}"
+        )
+    if strategy in {
+        "surrogate_gated_requery_action",
+        "surrogate_horizon_action",
+        "surrogate_disagreement_requery_action",
+        "phase_surrogate_requery_action",
+    }:
+        prefix = {
+            "surrogate_gated_requery_action": "surrogate_gate",
+            "surrogate_horizon_action": "surrogate_horizon",
+            "surrogate_disagreement_requery_action": "surrogate_disagreement",
+            "phase_surrogate_requery_action": "phase_surrogate",
+        }[strategy]
+        phase = (
+            f"_r{float(row['planning_phase_fraction']):g}"
+            if strategy == "phase_surrogate_requery_action"
+            else ""
+        )
+        return (
+            f"{prefix}_l{risk_lambda:g}{phase}"
+            f"_e{float(row['planning_surrogate_error_threshold']):.12g}"
             f"_h{int(row['planning_short_open_loop_steps'])}"
         )
     return f"{strategy}_l{risk_lambda:g}"
@@ -148,6 +177,7 @@ def load_traces(campaign_dirs: Sequence[Path]) -> pd.DataFrame:
         "planning_uncertainty_margin": 0.0,
         "planning_phase_fraction": 0.5,
         "planning_short_open_loop_steps": 8,
+        "planning_surrogate_error_threshold": 0.08841767562905925,
     }.items():
         if column not in traces:
             traces[column] = default
@@ -168,6 +198,7 @@ def episode_table(traces: pd.DataFrame) -> pd.DataFrame:
             rerank_rate=("max_value_selected", lambda values: 1.0 - parse_bool(values).mean()),
             gate_rate=("planning_query_risk_enabled", lambda values: parse_bool(values).mean()),
             requery_rate=("planning_requery_triggered", lambda values: parse_bool(values).mean()),
+            surrogate_alarm_rate=("planning_surrogate_alarm", lambda values: parse_bool(values).mean()),
             mean_selected_open_loop_steps=("planning_selected_open_loop_steps", "mean"),
         )
         .reset_index()
@@ -249,6 +280,9 @@ def paired_tables(
                 "mean_rerank_rate": float(group["rerank_rate"].mean()),
                 "mean_gate_rate": float(group["gate_rate"].mean()),
                 "mean_requery_rate": float(group["requery_rate"].mean()),
+                "mean_surrogate_alarm_rate": float(
+                    group["surrogate_alarm_rate"].mean()
+                ),
                 "mean_selected_open_loop_steps": float(
                     group["mean_selected_open_loop_steps"].mean()
                 ),
@@ -261,6 +295,68 @@ def paired_tables(
     per_case = pd.DataFrame(rows)
     paired_seeds = pd.concat(paired_rows, ignore_index=True) if paired_rows else pd.DataFrame()
     return per_case, paired_seeds
+
+
+def failure_mode_paired_table(
+    episodes: pd.DataFrame, *, baseline_id: str = "max_value"
+) -> pd.DataFrame:
+    """Compare secondary interaction/failure labels on the same rollout seeds."""
+    event_builders = {
+        "target_drop_candidate": lambda frame: parse_bool(
+            frame["target_drop_candidate"]
+        ),
+        "wrong_object_interaction_candidate": lambda frame: parse_bool(
+            frame["wrong_object_interaction_candidate"]
+        ),
+        "timeout_no_goal": lambda frame: frame["failure_type"].eq(
+            "timeout_no_goal"
+        ),
+        "kinematic_deadlock_candidate": lambda frame: frame["failure_type"].eq(
+            "kinematic_deadlock_candidate"
+        ),
+    }
+
+    def event_frame(frame: pd.DataFrame, suffix: str) -> pd.DataFrame:
+        result = frame[PAIR_KEYS].copy()
+        for name, builder in event_builders.items():
+            result[f"{name}_{suffix}"] = builder(frame).to_numpy(dtype=bool)
+        return result
+
+    baseline_rows = episodes.loc[episodes["strategy_id"].eq(baseline_id)].drop_duplicates(
+        PAIR_KEYS
+    )
+    baseline = event_frame(baseline_rows, "baseline")
+    rows: list[dict[str, object]] = []
+    for strategy_id, group in episodes.loc[
+        ~episodes["strategy_id"].eq(baseline_id)
+    ].groupby("strategy_id", sort=True):
+        strategy = event_frame(group.drop_duplicates(PAIR_KEYS), "strategy")
+        paired = baseline.merge(strategy, on=PAIR_KEYS, how="inner")
+        for event in event_builders:
+            baseline_event = parse_bool(paired[f"{event}_baseline"])
+            strategy_event = parse_bool(paired[f"{event}_strategy"])
+            reduced = int((baseline_event & ~strategy_event).sum())
+            increased = int((~baseline_event & strategy_event).sum())
+            rows.append(
+                {
+                    "baseline_strategy_id": baseline_id,
+                    "strategy_id": strategy_id,
+                    "event": event,
+                    "paired_rollouts": len(paired),
+                    "baseline_event_count": int(baseline_event.sum()),
+                    "strategy_event_count": int(strategy_event.sum()),
+                    "baseline_event_rate": float(baseline_event.mean()),
+                    "strategy_event_rate": float(strategy_event.mean()),
+                    "delta_event_rate": float(
+                        strategy_event.mean() - baseline_event.mean()
+                    ),
+                    "event_reduced": reduced,
+                    "event_increased": increased,
+                    "event_unchanged": int(len(paired) - reduced - increased),
+                    "mcnemar_exact_p": exact_mcnemar_p(reduced, increased),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def pooled_table(per_case: pd.DataFrame, paired_seeds: pd.DataFrame) -> pd.DataFrame:
@@ -307,6 +403,12 @@ def pooled_table(per_case: pd.DataFrame, paired_seeds: pd.DataFrame) -> pd.DataF
                 "mean_requery_rate": float(
                     np.average(group["mean_requery_rate"], weights=group["paired_rollouts"])
                 ),
+                "mean_surrogate_alarm_rate": float(
+                    np.average(
+                        group["mean_surrogate_alarm_rate"],
+                        weights=group["paired_rollouts"],
+                    )
+                ),
             }
         )
     return pd.DataFrame(rows).sort_values(
@@ -323,10 +425,20 @@ def selection_tables(pooled: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     candidates = pooled.loc[pooled["num_cases"].eq(max_cases)].copy()
 
     def category(strategy_id: str) -> str | None:
-        if strategy_id.startswith(("difficulty_l", "margin_l", "consensus_l", "phase_l")):
-            return "no_extra_inference"
-        if strategy_id.startswith(("requery_l", "difficulty_requery_l")):
-            return "adaptive_horizon"
+        if strategy_id.startswith(("surrogate_", "phase_surrogate_")):
+            return "surrogate_adaptive"
+        if strategy_id.startswith(
+            (
+                "difficulty_l",
+                "margin_l",
+                "consensus_l",
+                "phase_l",
+                "requery_l",
+                "difficulty_requery_l",
+                "phase_requery_l",
+            )
+        ):
+            return "non_surrogate_adaptive"
         return None
 
     candidates["selection_category"] = candidates["strategy_id"].map(category)
@@ -353,7 +465,14 @@ def selection_tables(pooled: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 def case_stratum(case_id: str) -> str:
     holdout_prefixes = ("spatial_mug_", "long_milk_", "goal_mug_")
-    return "new_ood_holdout" if str(case_id).startswith(holdout_prefixes) else "known_boundary"
+    value = str(case_id)
+    if value.endswith(("_surrogate_screen", "_surrogate_confirm")):
+        return "new_ood_holdout" if value.startswith("new_ood_") else "known_boundary"
+    return (
+        "new_ood_holdout"
+        if value.startswith(("new_ood_", *holdout_prefixes))
+        else "known_boundary"
+    )
 
 
 def pooled_strata_tables(
@@ -622,6 +741,107 @@ def prediction_error_correlations(traces: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def surrogate_transfer_diagnostics(traces: pd.DataFrame) -> pd.DataFrame:
+    required = {
+        "case_id",
+        "strategy_id",
+        "planning_predicted_proprio_error",
+        "prediction_error_future_proprio_l2",
+    }
+    if not required.issubset(traces.columns):
+        return pd.DataFrame()
+    baseline = traces.loc[traces["strategy_id"].eq("max_value")].copy()
+    baseline["predicted_error"] = pd.to_numeric(
+        baseline["planning_predicted_proprio_error"], errors="coerce"
+    )
+    baseline["actual_error"] = pd.to_numeric(
+        baseline["prediction_error_future_proprio_l2"], errors="coerce"
+    )
+    baseline = baseline.replace([np.inf, -np.inf], np.nan).dropna(
+        subset=["predicted_error", "actual_error"]
+    )
+    if baseline.empty:
+        return pd.DataFrame()
+    baseline["case_stratum"] = baseline["case_id"].map(case_stratum)
+    if "planning_surrogate_alarm" in baseline:
+        baseline["alarm"] = parse_bool(baseline["planning_surrogate_alarm"])
+    else:
+        threshold = pd.to_numeric(
+            baseline.get(
+                "planning_surrogate_error_threshold",
+                pd.Series(0.08841767562905925, index=baseline.index),
+            ),
+            errors="coerce",
+        ).fillna(0.08841767562905925)
+        baseline["alarm"] = baseline["predicted_error"].ge(threshold)
+
+    def summarize(group: pd.DataFrame, stratum: str) -> dict[str, object]:
+        group = group.copy()
+        actual_q75 = group.groupby("case_id")["actual_error"].transform(
+            lambda values: values.quantile(0.75)
+        )
+        group["case_relative_top_quartile"] = group["actual_error"].ge(actual_q75)
+        x_rank = group.groupby("case_id")["predicted_error"].rank(method="average")
+        y_rank = group.groupby("case_id")["actual_error"].rank(method="average")
+        controlled_x = within_group_zscore(x_rank, group["case_id"])
+        controlled_y = within_group_zscore(y_rank, group["case_id"])
+        alarm = parse_bool(group["alarm"])
+        high_error = parse_bool(group["case_relative_top_quartile"])
+        alarm_count = int(alarm.sum())
+        high_count = int(high_error.sum())
+        median_actual = float(group["actual_error"].median())
+        alarm_median = float(group.loc[alarm, "actual_error"].median()) if alarm_count else np.nan
+        quiet_median = (
+            float(group.loc[~alarm, "actual_error"].median()) if (~alarm).any() else np.nan
+        )
+        return {
+            "case_stratum": stratum,
+            "queries": len(group),
+            "cases": int(group["case_id"].nunique()),
+            "raw_spearman": float(
+                group["predicted_error"].rank().corr(group["actual_error"].rank())
+            ),
+            "case_controlled_rank_correlation": float(controlled_x.corr(controlled_y)),
+            "case_relative_top_quartile_auc": float(
+                binary_auc(high_error, group["predicted_error"])
+            ),
+            "alarm_rate": float(alarm.mean()),
+            "alarm_precision_top_quartile": (
+                float((alarm & high_error).sum() / alarm_count) if alarm_count else np.nan
+            ),
+            "alarm_recall_top_quartile": (
+                float((alarm & high_error).sum() / high_count) if high_count else np.nan
+            ),
+            "median_predicted_error": float(group["predicted_error"].median()),
+            "median_actual_error": median_actual,
+            "median_prediction_to_actual_ratio": (
+                float(group["predicted_error"].median() / median_actual)
+                if median_actual > 0.0
+                else np.nan
+            ),
+            "median_actual_error_alarm": alarm_median,
+            "median_actual_error_no_alarm": quiet_median,
+            "alarm_actual_error_lift": (
+                alarm_median / quiet_median
+                if np.isfinite(alarm_median) and np.isfinite(quiet_median) and quiet_median > 0.0
+                else np.nan
+            ),
+            "mean_absolute_log_error": float(
+                np.abs(
+                    np.log(np.clip(group["predicted_error"], 1e-10, None))
+                    - np.log(np.clip(group["actual_error"], 1e-10, None))
+                ).mean()
+            ),
+        }
+
+    rows = [summarize(baseline, "all")]
+    for stratum in ("known_boundary", "new_ood_holdout"):
+        group = baseline.loc[baseline["case_stratum"].eq(stratum)]
+        if not group.empty:
+            rows.append(summarize(group, stratum))
+    return pd.DataFrame(rows)
+
+
 def early_failure_predictors(traces: pd.DataFrame, max_query: int = 3) -> pd.DataFrame:
     baseline = traces.loc[
         traces["strategy_id"].eq("max_value") & traces["query_idx"].le(max_query)
@@ -680,7 +900,13 @@ def early_failure_predictors(traces: pd.DataFrame, max_query: int = 3) -> pd.Dat
     )
 
 
-def save_plots(per_case: pd.DataFrame, pooled: pd.DataFrame, output_dir: Path) -> None:
+def save_plots(
+    per_case: pd.DataFrame,
+    pooled: pd.DataFrame,
+    output_dir: Path,
+    *,
+    highlighted_strategy_ids: Sequence[str] = (),
+) -> None:
     plot_dir = output_dir / "plots"
     plot_dir.mkdir(parents=True, exist_ok=True)
     complete = pooled.loc[pooled["num_cases"].eq(pooled["num_cases"].max())].head(15)
@@ -756,7 +982,19 @@ def save_plots(per_case: pd.DataFrame, pooled: pd.DataFrame, output_dir: Path) -
             capsize=3,
             alpha=0.8,
         )
-        for _, row in ordered.iterrows():
+        highlighted = set(highlighted_strategy_ids) | {"action_l1"}
+        highlighted_rows = ordered.loc[ordered["strategy_id"].isin(highlighted)]
+        if not highlighted_rows.empty:
+            ax.scatter(
+                highlighted_rows["query_overhead_ratio"],
+                highlighted_rows["delta_success_rate"],
+                facecolors="none",
+                edgecolors="#111827",
+                linewidths=1.5,
+                s=125,
+                zorder=4,
+            )
+        for _, row in highlighted_rows.iterrows():
             ax.annotate(
                 row["strategy_id"],
                 (row["query_overhead_ratio"], row["delta_success_rate"]),
@@ -819,10 +1057,12 @@ def write_report(
     selected: pd.DataFrame,
     difficulty_summary: pd.DataFrame,
     error_correlations: pd.DataFrame,
+    surrogate_transfer: pd.DataFrame,
     early_predictors: pd.DataFrame,
     pooled_by_stratum: pd.DataFrame,
     frozen_results: pd.DataFrame,
     frozen_vs_action: pd.DataFrame,
+    failure_modes: pd.DataFrame,
 ) -> None:
     max_cases = int(pooled["num_cases"].max()) if not pooled.empty else 0
     complete = pooled.loc[pooled["num_cases"].eq(max_cases)].head(12)
@@ -894,6 +1134,18 @@ def write_report(
                 f"`{top['online_metric']}` versus `{top['prediction_error']}`, "
                 f"case-controlled rank correlation "
                 f"{top['case_controlled_rank_correlation']:.3f}."
+            )
+        if not surrogate_transfer.empty:
+            transfer = surrogate_transfer.loc[
+                surrogate_transfer["case_stratum"].eq("all")
+            ].iloc[0]
+            key_findings.append(
+                "- Frozen future-proprio surrogate transfer: case-controlled "
+                f"rank correlation {transfer['case_controlled_rank_correlation']:.3f}, "
+                "case-relative top-quartile AUROC "
+                f"{transfer['case_relative_top_quartile_auc']:.3f}, alarm rate "
+                f"{100 * transfer['alarm_rate']:.1f}%, and median calibration ratio "
+                f"{transfer['median_prediction_to_actual_ratio']:.2f}x."
             )
     elif not selected.empty:
         for row in selected.itertuples(index=False):
@@ -972,6 +1224,16 @@ def write_report(
         if not pooled_by_stratum.empty
         else "Stratified results are unavailable.",
         "",
+        "## Paired failure-mode diagnostics",
+        "",
+        failure_modes.to_markdown(index=False)
+        if not failure_modes.empty
+        else "Failure-mode diagnostics are unavailable.",
+        "",
+        "These labels are exploratory LIBERO-PRO heuristics, not official "
+        "LIBERO-Safety constraints. Their unadjusted exact tests describe a "
+        "possible change in failure mode and are not additional primary endpoints.",
+        "",
         "## Difficulty-gate diagnostic",
         "",
         difficulty_summary.to_markdown(index=False)
@@ -982,6 +1244,12 @@ def write_report(
         "`actual_gate` is the online gated policy and is the causal rollout result.",
         "",
         "## Mechanism diagnostics",
+        "",
+        "### Frozen future-proprio surrogate transfer",
+        "",
+        surrogate_transfer.to_markdown(index=False)
+        if not surrogate_transfer.empty
+        else "Surrogate transfer diagnostics are unavailable.",
         "",
         "Top case-controlled correlations between online uncertainty and next-chunk error:",
         "",
@@ -1065,7 +1333,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         episodes, traces
     )
     error_correlations = prediction_error_correlations(traces)
+    surrogate_transfer = surrogate_transfer_diagnostics(traces)
     early_predictors = early_failure_predictors(traces)
+    failure_modes = failure_mode_paired_table(episodes)
     episodes.to_csv(output_dir / "episode_outcomes.csv", index=False)
     per_case.to_csv(output_dir / "paired_by_case.csv", index=False)
     paired_seeds.to_csv(output_dir / "paired_seed_outcomes.csv", index=False)
@@ -1086,8 +1356,22 @@ def main(argv: Sequence[str] | None = None) -> int:
     q0_difficulty_by_case.to_csv(output_dir / "q0_difficulty_by_case.csv", index=False)
     difficulty_summary.to_csv(output_dir / "difficulty_gate_summary.csv", index=False)
     error_correlations.to_csv(output_dir / "prediction_error_correlations.csv", index=False)
+    surrogate_transfer.to_csv(
+        output_dir / "surrogate_transfer_diagnostics.csv", index=False
+    )
     early_predictors.to_csv(output_dir / "early_failure_predictors_q0_3.csv", index=False)
-    save_plots(per_case, pooled, output_dir)
+    failure_modes.to_csv(output_dir / "paired_failure_modes.csv", index=False)
+    highlighted = (
+        frozen_results["strategy_id"].tolist()
+        if not frozen_results.empty
+        else selected["strategy_id"].tolist()
+    )
+    save_plots(
+        per_case,
+        pooled,
+        output_dir,
+        highlighted_strategy_ids=highlighted,
+    )
     save_diagnostic_plots(error_correlations, early_predictors, output_dir)
     write_report(
         campaign_dirs,
@@ -1100,10 +1384,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         selected,
         difficulty_summary,
         error_correlations,
+        surrogate_transfer,
         early_predictors,
         pooled_by_stratum,
         frozen_results,
         frozen_vs_action,
+        failure_modes,
     )
     summary = {
         "campaign_dirs": [str(path) for path in campaign_dirs],
@@ -1116,6 +1402,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         "frozen_confirmatory_results": frozen_results.to_dict(orient="records"),
         "frozen_vs_action_l1": frozen_vs_action.to_dict(orient="records"),
         "difficulty_gate": difficulty_summary.to_dict(orient="records"),
+        "surrogate_transfer": surrogate_transfer.to_dict(orient="records"),
+        "paired_failure_modes": failure_modes.to_dict(orient="records"),
         "top_complete_strategies": pooled.head(10).to_dict(orient="records"),
     }
     (output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

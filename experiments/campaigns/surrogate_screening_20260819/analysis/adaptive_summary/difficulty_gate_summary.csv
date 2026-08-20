@@ -1,0 +1,8 @@
+case_id,paired_rollouts,difficulty_gate_rate,baseline_success_rate,action_success_rate,counterfactual_gate_success_rate,counterfactual_delta_vs_baseline
+goal_mug_task9_init0_surrogate_screen,8,1.0,1.0,1.0,1.0,0.0
+long_milk_task9_init0_surrogate_screen,8,1.0,0.875,0.875,0.875,0.0
+long_mug_task4_init0_surrogate_screen,8,0.0,0.625,0.625,0.625,0.0
+milk_task5_init0_surrogate_screen,8,1.0,0.5,0.25,0.25,-0.25
+spatial_mug_task0_init0_surrogate_screen,8,1.0,0.75,1.0,1.0,0.25
+yellow_task8_init0_surrogate_screen,8,1.0,0.25,0.25,0.25,0.0
+POOLED,48,0.8333333333333334,0.6666666666666666,0.6666666666666666,0.6666666666666666,0.0

@@ -76,6 +76,26 @@ def number(text: str) -> float:
 def parse_strategy_id(strategy_id: str) -> tuple[str, dict[str, float | int]]:
     patterns: list[tuple[str, str]] = [
         (
+            r"phase_surrogate_l(?P<risk>[-+0-9.eE]+)_r(?P<phase_fraction>[-+0-9.eE]+)_e(?P<surrogate_threshold>[-+0-9.eE]+)_h(?P<horizon>\d+)",
+            "phase_surrogate_requery_action",
+        ),
+        (
+            r"surrogate_disagreement_l(?P<risk>[-+0-9.eE]+)_e(?P<surrogate_threshold>[-+0-9.eE]+)_h(?P<horizon>\d+)",
+            "surrogate_disagreement_requery_action",
+        ),
+        (
+            r"surrogate_horizon_l(?P<risk>[-+0-9.eE]+)_e(?P<surrogate_threshold>[-+0-9.eE]+)_h(?P<horizon>\d+)",
+            "surrogate_horizon_action",
+        ),
+        (
+            r"surrogate_gate_l(?P<risk>[-+0-9.eE]+)_e(?P<surrogate_threshold>[-+0-9.eE]+)_h(?P<horizon>\d+)",
+            "surrogate_gated_requery_action",
+        ),
+        (
+            r"phase_requery_l(?P<risk>[-+0-9.eE]+)_r(?P<phase_fraction>[-+0-9.eE]+)_h(?P<horizon>\d+)",
+            "phase_requery_action",
+        ),
+        (
             r"difficulty_requery_l(?P<risk>[-+0-9.eE]+)_t(?P<threshold>[-+0-9.eE]+)_h(?P<horizon>\d+)",
             "difficulty_gated_requery_action",
         ),
@@ -111,6 +131,10 @@ def parse_strategy_id(strategy_id: str) -> tuple[str, dict[str, float | int]]:
             overrides["planning_uncertainty_margin"] = number(values["uncertainty_margin"])
         if values.get("phase_fraction") is not None:
             overrides["planning_phase_fraction"] = number(values["phase_fraction"])
+        if values.get("surrogate_threshold") is not None:
+            overrides["planning_surrogate_error_threshold"] = number(
+                values["surrogate_threshold"]
+            )
         if values.get("horizon") is not None:
             overrides["planning_short_open_loop_steps"] = int(values["horizon"])
         return f"{planning_strategy}:{number(values['risk']):g}", overrides

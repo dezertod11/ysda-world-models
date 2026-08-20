@@ -20,7 +20,13 @@ def read_rows(path: Path) -> list[dict[str, str]]:
 
 def case_stratum(case_id: str) -> str:
     holdout_prefixes = ("spatial_mug_", "long_milk_", "goal_mug_")
-    return "new_ood_holdout" if case_id.startswith(holdout_prefixes) else "known_boundary"
+    if case_id.endswith(("_surrogate_screen", "_surrogate_confirm")):
+        return "new_ood_holdout" if case_id.startswith("new_ood_") else "known_boundary"
+    return (
+        "new_ood_holdout"
+        if case_id.startswith(("new_ood_", *holdout_prefixes))
+        else "known_boundary"
+    )
 
 
 def safe_name(value: str) -> str:
@@ -30,17 +36,27 @@ def safe_name(value: str) -> str:
 def max_timesteps_for_suite(suite: str) -> int:
     if suite.startswith("libero_10"):
         return 520
-    if suite.startswith("libero_goal"):
+    if suite.startswith("libero_object"):
+        return 280
+    if suite.startswith("libero_goal_with"):
         return 320
+    if suite.startswith("libero_goal"):
+        return 300
     return 220
 
 
 def selected_strategies(path: Path) -> dict[str, str]:
     rows = read_rows(path)
     result = {row["selection_category"]: row["strategy_id"] for row in rows}
-    expected = {"no_extra_inference", "adaptive_horizon"}
-    if set(result) != expected:
-        raise ValueError(f"Expected frozen categories {sorted(expected)}, got {sorted(result)}")
+    supported = [
+        {"no_extra_inference", "adaptive_horizon"},
+        {"non_surrogate_adaptive", "surrogate_adaptive"},
+    ]
+    if set(result) not in supported:
+        raise ValueError(
+            "Expected one of the frozen category sets "
+            f"{[sorted(values) for values in supported]}, got {sorted(result)}"
+        )
     return result
 
 
@@ -53,7 +69,7 @@ def select_discordant_rows(
 ) -> list[dict[str, str]]:
     selected_rows: list[dict[str, str]] = []
     seen: set[tuple[str, str]] = set()
-    for category in ("no_extra_inference", "adaptive_horizon"):
+    for category in selected:
         strategy = selected[category]
         strategy_rows = [row for row in rows if row["strategy_id"] == strategy]
         for stratum in ("known_boundary", "new_ood_holdout"):
@@ -91,22 +107,17 @@ def build_config(
     selected: dict[str, str],
     replay_rows: list[dict[str, str]],
 ) -> dict:
-    no_extra_token, no_extra_overrides = parse_strategy_id(
-        selected["no_extra_inference"]
-    )
-    adaptive_token, adaptive_overrides = parse_strategy_id(selected["adaptive_horizon"])
-    common_overrides = {**no_extra_overrides, **adaptive_overrides}
-    strategy_lambdas = " ".join(
-        [
-            "max_value:0",
-            "uncertainty_penalty_action:1.0",
-            no_extra_token,
-            adaptive_token,
-        ]
-    )
     jobs = []
     for index, row in enumerate(replay_rows):
         rollout_seed = int(float(row["rollout_seed"]))
+        selected_token, selected_overrides = parse_strategy_id(row["strategy_id"])
+        strategy_tokens = [
+            "max_value:0",
+            "uncertainty_penalty_action:1",
+            "disagreement_requery_action:1",
+            selected_token,
+        ]
+        strategy_lambdas = " ".join(dict.fromkeys(strategy_tokens))
         jobs.append(
             {
                 "name": safe_name(
@@ -127,7 +138,7 @@ def build_config(
                 "selection_category": row["selection_category"],
                 "selection_reason": row["selection_reason"],
                 "selected_strategy_id": row["strategy_id"],
-                **common_overrides,
+                **selected_overrides,
             }
         )
     defaults = dict(base_config["defaults"])
@@ -198,7 +209,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         losses_per_stratum=args.losses_per_stratum,
     )
     if not replay_rows:
-        raise RuntimeError("No selected-strategy discordant outcomes found")
+        print("No selected-strategy discordant outcomes found")
+        return 3
     base_config = json.loads(args.base_config.read_text(encoding="utf-8"))
     config = build_config(base_config, selected, replay_rows)
     args.output.parent.mkdir(parents=True, exist_ok=True)

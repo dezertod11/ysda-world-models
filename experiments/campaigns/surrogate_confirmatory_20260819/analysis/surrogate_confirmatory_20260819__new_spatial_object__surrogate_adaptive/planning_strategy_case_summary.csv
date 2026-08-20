@@ -1,0 +1,2 @@
+planning_strategy,planning_risk_lambda,suite,task_id,init_state_id,episodes,successes,success_rate,mean_final_t,selected_not_max_value_rate
+phase_surrogate_requery_action,1.0,libero_spatial_object,0,0,20,20,1.0,75.2,0.34

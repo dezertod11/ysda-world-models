@@ -28,6 +28,13 @@ frozen 1080-execution campaign. The per-video manifest distinguishes original
 confirmatory outcomes from exact-replay outcomes; the selected binary pair
 fully reproduced in 5/8 replays.
 
+## Surrogate/requery confirmatory
+
+[`surrogate_confirmatory_20260819`](surrogate_confirmatory_20260819/README.md)
+tracks seven matched-seed groups selected from the latest 960-execution frozen
+campaign. Their MP4 replays are queued until GPU 2-7 capacity becomes
+available; the confirmatory statistics are already complete.
+
 ## LIBERO-Safety
 
 [`safety_violations_20260730`](safety_violations_20260730/README.md) contains
