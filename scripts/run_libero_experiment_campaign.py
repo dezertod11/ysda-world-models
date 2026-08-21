@@ -179,6 +179,16 @@ def _common_pro_paired_env(
         ),
         f"{prefix}EXPERIMENT_SPLIT": str(job.get("experiment_split", "unspecified")),
         f"{prefix}CASE_ID": str(job.get("case_id", job["name"])),
+        f"{prefix}RECORD_TEMPORAL_OVERLAP": _as_bool_env(
+            job.get("record_temporal_overlap", False)
+        ),
+        f"{prefix}TEMPORAL_OVERLAP_DIR": str(run_dir / "temporal_overlap" / run_name),
+        f"{prefix}TEMPORAL_OVERLAP_SEED_MODE": str(
+            job.get("temporal_overlap_seed_mode", "independent")
+        ),
+        f"{prefix}TEMPORAL_OVERLAP_MAX_WINDOW": str(
+            job.get("temporal_overlap_max_window", 8)
+        ),
         f"{prefix}PLANNING_ACTION_WEIGHT": str(job.get("planning_action_weight", 0.5)),
         f"{prefix}PLANNING_DIFFICULTY_THRESHOLD": str(
             job.get("planning_difficulty_threshold", 0.088588)
@@ -283,6 +293,18 @@ def build_job(
                 job.get("experiment_split", "unspecified")
             ),
             "LIBERO_PRO_PLANNING_GRID_CASE_ID": str(job.get("case_id", job["name"])),
+            "LIBERO_PRO_PLANNING_GRID_RECORD_TEMPORAL_OVERLAP": _as_bool_env(
+                job.get("record_temporal_overlap", False)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_TEMPORAL_OVERLAP_DIR": str(
+                run_dir / "temporal_overlap" / run_name
+            ),
+            "LIBERO_PRO_PLANNING_GRID_TEMPORAL_OVERLAP_SEED_MODE": str(
+                job.get("temporal_overlap_seed_mode", "independent")
+            ),
+            "LIBERO_PRO_PLANNING_GRID_TEMPORAL_OVERLAP_MAX_WINDOW": str(
+                job.get("temporal_overlap_max_window", 8)
+            ),
             "LIBERO_PRO_PLANNING_GRID_ACTION_WEIGHT": str(
                 job.get("planning_action_weight", 0.5)
             ),

@@ -117,6 +117,18 @@ fi
 if [[ -n "${LIBERO_PRO_PAIRED_CASE_ID:-}" ]]; then
   EXTRA_ARGS+=(--case-id "${LIBERO_PRO_PAIRED_CASE_ID}")
 fi
+if [[ "${LIBERO_PRO_PAIRED_RECORD_TEMPORAL_OVERLAP:-0}" == "1" ]]; then
+  EXTRA_ARGS+=(--record-temporal-overlap)
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR:-}" ]]; then
+  EXTRA_ARGS+=(--temporal-overlap-dir "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE:-}" ]]; then
+  EXTRA_ARGS+=(--temporal-overlap-seed-mode "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW:-}" ]]; then
+  EXTRA_ARGS+=(--temporal-overlap-max-window "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW}")
+fi
 
 python -m cosmos_policy.experiments.robot.libero.uncertainty_comparison collect-paired \
   --suites "${LIBERO_PRO_PAIRED_SUITES:-libero_spatial_object}" \

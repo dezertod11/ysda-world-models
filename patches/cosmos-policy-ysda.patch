@@ -986,12 +986,216 @@ index 0000000..735db26
 +            "episode_eef_jerk_mean": full_kinematics["jerk_mean"],
 +            "episode_eef_dimensionless_jerk_proxy": full_kinematics["dimensionless_jerk_proxy"],
 +        }
+diff --git a/cosmos_policy/experiments/robot/libero/temporal_overlap.py b/cosmos_policy/experiments/robot/libero/temporal_overlap.py
+new file mode 100644
+index 0000000..3f5791c
+--- /dev/null
++++ b/cosmos_policy/experiments/robot/libero/temporal_overlap.py
+@@ -0,0 +1,198 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Time-aligned action-chunk consistency metrics for receding-horizon control."""
++
++from __future__ import annotations
++
++from typing import Dict, Optional
++
++import numpy as np
++
++
++EPS = 1e-8
++CONTINUOUS_ACTION_DIM = 6
++
++
++def _invalid_metrics(executed_steps: int = 0) -> Dict[str, float]:
++    return {
++        "overlap_valid": False,
++        "overlap_length": 0.0,
++        "overlap_previous_executed_steps": float(executed_steps),
++        "overlap_selected_rmse": float("nan"),
++        "overlap_selected_all_rmse": float("nan"),
++        "overlap_first_l2": float("nan"),
++        "overlap_xyz_rmse": float("nan"),
++        "overlap_rot_rmse": float("nan"),
++        "overlap_gripper_mismatch": float("nan"),
++        "overlap_cosine_distance": float("nan"),
++        "overlap_direction_reversal_rate": float("nan"),
++        "overlap_support_min": float("nan"),
++        "overlap_switch_gap": float("nan"),
++        "overlap_set_chamfer": float("nan"),
++        "overlap_energy_distance": float("nan"),
++        "overlap_mmd2_median": float("nan"),
++        "overlap_mmd_gamma": float("nan"),
++        "overlap_shift": float("nan"),
++        "overlap_coupled_mean": float("nan"),
++    }
++
++
++def _validate_actions(name: str, actions: np.ndarray) -> np.ndarray:
++    array = np.asarray(actions, dtype=np.float64)
++    if array.ndim != 3:
++        raise ValueError(f"{name} must have shape [samples, horizon, action_dim], got {array.shape}")
++    if array.shape[0] < 1 or array.shape[1] < 1 or array.shape[2] < 1:
++        raise ValueError(f"{name} has an empty dimension: {array.shape}")
++    if not np.isfinite(array).all():
++        raise ValueError(f"{name} contains non-finite actions")
++    return array
++
++
++def _rmse(left: np.ndarray, right: np.ndarray) -> float:
++    return float(np.sqrt(np.mean(np.square(left - right))))
++
++
++def _pairwise_rmse(left: np.ndarray, right: np.ndarray) -> np.ndarray:
++    differences = left[:, None, ...] - right[None, :, ...]
++    return np.sqrt(np.mean(np.square(differences), axis=tuple(range(2, differences.ndim))))
++
++
++def _pairwise_squared_distance(values: np.ndarray) -> np.ndarray:
++    flat = values.reshape(values.shape[0], -1)
++    differences = flat[:, None, :] - flat[None, :, :]
++    return np.sum(np.square(differences), axis=-1)
++
++
++def _rbf_mmd2(old: np.ndarray, new: np.ndarray) -> tuple[float, float]:
++    combined = np.concatenate([old, new], axis=0)
++    squared = _pairwise_squared_distance(combined)
++    upper = squared[np.triu_indices(len(combined), k=1)]
++    positive = upper[upper > EPS]
++    gamma = float(np.median(positive)) if positive.size else 1.0
++
++    old_squared = _pairwise_squared_distance(old)
++    new_squared = _pairwise_squared_distance(new)
++    old_new = old.reshape(old.shape[0], -1)[:, None, :] - new.reshape(new.shape[0], -1)[None, :, :]
++    cross_squared = np.sum(np.square(old_new), axis=-1)
++    old_kernel = np.exp(-old_squared / max(gamma, EPS))
++    new_kernel = np.exp(-new_squared / max(gamma, EPS))
++    cross_kernel = np.exp(-cross_squared / max(gamma, EPS))
++
++    def off_diagonal_mean(kernel: np.ndarray) -> float:
++        count = kernel.shape[0]
++        if count < 2:
++            return 0.0
++        return float((kernel.sum() - np.trace(kernel)) / (count * (count - 1)))
++
++    mmd2 = off_diagonal_mean(old_kernel) + off_diagonal_mean(new_kernel) - 2.0 * float(cross_kernel.mean())
++    return float(mmd2), gamma
++
++
++def _cosine_metrics(old: np.ndarray, new: np.ndarray) -> tuple[float, float]:
++    old_norm = np.linalg.norm(old, axis=-1)
++    new_norm = np.linalg.norm(new, axis=-1)
++    denominator = old_norm * new_norm
++    both_zero = (old_norm <= EPS) & (new_norm <= EPS)
++    valid = denominator > EPS
++    cosine = np.zeros_like(denominator)
++    cosine[both_zero] = 1.0
++    cosine[valid] = np.sum(old[valid] * new[valid], axis=-1) / denominator[valid]
++    cosine = np.clip(cosine, -1.0, 1.0)
++    return float(np.mean(1.0 - cosine)), float(np.mean(cosine < 0.0))
++
++
++def temporal_overlap_metrics(
++    previous_actions: Optional[np.ndarray],
++    current_actions: np.ndarray,
++    *,
++    previous_selected_idx: int = 0,
++    current_selected_idx: int = 0,
++    previous_executed_steps: int = 0,
++    max_window: Optional[int] = 8,
++) -> Dict[str, float]:
++    """Compare an old unexecuted tail with the new time-aligned prefix.
++
++    Actions have shape ``[B, H, D]``. If the previous query executed ``K``
++    actions, ``previous[:, K:K+L]`` is aligned with ``current[:, :L]``.
++    Metrics are intentionally unscaled; robust action-dimension scales and
++    frozen RBF bandwidths are fitted later on calibration episodes.
++    """
++    current = _validate_actions("current_actions", current_actions)
++    if previous_actions is None:
++        return _invalid_metrics(previous_executed_steps)
++    previous = _validate_actions("previous_actions", previous_actions)
++    if previous.shape[2] != current.shape[2]:
++        raise ValueError(f"action dimensions differ: previous={previous.shape[2]} current={current.shape[2]}")
++    if not 0 <= previous_selected_idx < previous.shape[0]:
++        raise IndexError("previous_selected_idx is outside the previous candidate set")
++    if not 0 <= current_selected_idx < current.shape[0]:
++        raise IndexError("current_selected_idx is outside the current candidate set")
++
++    available = min(previous.shape[1] - int(previous_executed_steps), current.shape[1])
++    if max_window is not None:
++        available = min(available, int(max_window))
++    if previous_executed_steps <= 0 or available <= 0:
++        return _invalid_metrics(previous_executed_steps)
++
++    old = previous[:, previous_executed_steps : previous_executed_steps + available]
++    new = current[:, :available]
++    continuous_dim = min(CONTINUOUS_ACTION_DIM, old.shape[2])
++    old_continuous = old[:, :, :continuous_dim]
++    new_continuous = new[:, :, :continuous_dim]
++    selected_old = old_continuous[previous_selected_idx]
++    selected_new = new_continuous[current_selected_idx]
++
++    pairwise = _pairwise_rmse(old_continuous, new_continuous)
++    selected_rmse = float(pairwise[previous_selected_idx, current_selected_idx])
++    support = float(pairwise[previous_selected_idx].min())
++    within_old = _pairwise_rmse(old_continuous, old_continuous)
++    within_new = _pairwise_rmse(new_continuous, new_continuous)
++    energy = 2.0 * float(pairwise.mean()) - float(within_old.mean()) - float(within_new.mean())
++    mmd2, gamma = _rbf_mmd2(old_continuous, new_continuous)
++    old_flat = old_continuous.reshape(old_continuous.shape[0], -1)
++    new_flat = new_continuous.reshape(new_continuous.shape[0], -1)
++    spread = float(np.var(old_flat, axis=0).sum() + np.var(new_flat, axis=0).sum())
++    shift = float(np.linalg.norm(old_flat.mean(axis=0) - new_flat.mean(axis=0)) / np.sqrt(spread + EPS))
++    cosine_distance, reversal_rate = _cosine_metrics(selected_old, selected_new)
++
++    coupled = float("nan")
++    if old.shape[0] == new.shape[0]:
++        coupled = float(np.mean(np.diag(pairwise)))
++
++    result = _invalid_metrics(previous_executed_steps)
++    result.update(
++        {
++            "overlap_valid": True,
++            "overlap_length": float(available),
++            "overlap_selected_rmse": selected_rmse,
++            "overlap_selected_all_rmse": _rmse(old[previous_selected_idx], new[current_selected_idx]),
++            "overlap_first_l2": float(np.linalg.norm(selected_old[0] - selected_new[0])),
++            "overlap_xyz_rmse": _rmse(
++                old[previous_selected_idx, :, : min(3, old.shape[2])],
++                new[current_selected_idx, :, : min(3, new.shape[2])],
++            ),
++            "overlap_rot_rmse": (
++                _rmse(
++                    old[previous_selected_idx, :, 3:continuous_dim],
++                    new[current_selected_idx, :, 3:continuous_dim],
++                )
++                if continuous_dim > 3
++                else float("nan")
++            ),
++            "overlap_gripper_mismatch": (
++                float(np.mean(np.sign(old[previous_selected_idx, :, -1]) != np.sign(new[current_selected_idx, :, -1])))
++                if old.shape[2] > CONTINUOUS_ACTION_DIM
++                else float("nan")
++            ),
++            "overlap_cosine_distance": cosine_distance,
++            "overlap_direction_reversal_rate": reversal_rate,
++            "overlap_support_min": support,
++            "overlap_switch_gap": selected_rmse - support,
++            "overlap_set_chamfer": float(0.5 * (pairwise.min(axis=1).mean() + pairwise.min(axis=0).mean())),
++            "overlap_energy_distance": float(energy),
++            "overlap_mmd2_median": mmd2,
++            "overlap_mmd_gamma": gamma,
++            "overlap_shift": shift,
++            "overlap_coupled_mean": coupled,
++        }
++    )
++    return result
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
 new file mode 100644
-index 0000000..92fd230
+index 0000000..69a8acf
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
-@@ -0,0 +1,2505 @@
+@@ -0,0 +1,2746 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
 +
@@ -1041,6 +1245,7 @@ index 0000000..92fd230
 +    SafetySignalTracker,
 +    has_official_safety_violation,
 +)
++from cosmos_policy.experiments.robot.libero.temporal_overlap import temporal_overlap_metrics
 +from cosmos_policy.experiments.robot.libero.uncertainty_metrics import (
 +    extract_future_proprio_from_sample,
 +    latent_internal_consistency,
@@ -1102,6 +1307,16 @@ index 0000000..92fd230
 +    "planning_query_risk_enabled",
 +    "planning_requery_triggered",
 +    "planning_selected_open_loop_steps",
++    "temporal_overlap_seed_mode",
++    "temporal_overlap_sidecar",
++    "temporal_overlap_sidecar_query_index",
++    "critical_event_type",
++    "critical_event_t",
++    "steps_to_first_critical_event",
++    "pre_critical_event_query",
++    "critical_event_within_8",
++    "critical_event_within_16",
++    "critical_event_within_32",
 +}
 +
 +
@@ -1390,7 +1605,9 @@ index 0000000..92fd230
 +    if image.shape[:2] == reference.shape[:2]:
 +        return image
 +    resample = Image.Resampling.BILINEAR if hasattr(Image, "Resampling") else Image.BILINEAR
-+    return np.asarray(Image.fromarray(image.astype(np.uint8)).resize((reference.shape[1], reference.shape[0]), resample))
++    return np.asarray(
++        Image.fromarray(image.astype(np.uint8)).resize((reference.shape[1], reference.shape[0]), resample)
++    )
 +
 +
 +def _global_ssim(pred: np.ndarray, actual: np.ndarray) -> float:
@@ -1444,7 +1661,9 @@ index 0000000..92fd230
 +        return {}
 +    pred = _to_numpy_array(predicted_normalized).astype(np.float32)
 +    pred = pred.reshape(-1, pred.shape[-1]).mean(axis=0)
-+    actual = rescale_proprio(actual_raw, dataset_stats, non_negative_only=False, scale_multiplier=1.0).astype(np.float32)
++    actual = rescale_proprio(actual_raw, dataset_stats, non_negative_only=False, scale_multiplier=1.0).astype(
++        np.float32
++    )
 +    diff = pred - actual
 +    metrics = {
 +        f"{prefix}_l2": float(np.linalg.norm(diff)),
@@ -1590,15 +1809,10 @@ index 0000000..92fd230
 +    logs = np.full_like(features, np.nan, dtype=np.float64)
 +    valid = np.isfinite(features) & (features > 0.0)
 +    logs[valid] = np.log(np.clip(features[valid], 1e-10, None))
-+    logs[~np.isfinite(logs)] = PROPRIO_ERROR_SURROGATE_V1_LOG_MEDIANS[
-+        ~np.isfinite(logs)
-+    ]
-+    normalized = (
-+        logs - PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS
-+    ) / PROPRIO_ERROR_SURROGATE_V1_LOG_STDS
++    logs[~np.isfinite(logs)] = PROPRIO_ERROR_SURROGATE_V1_LOG_MEDIANS[~np.isfinite(logs)]
++    normalized = (logs - PROPRIO_ERROR_SURROGATE_V1_LOG_MEANS) / PROPRIO_ERROR_SURROGATE_V1_LOG_STDS
 +    predicted_log_error = float(
-+        PROPRIO_ERROR_SURROGATE_V1_INTERCEPT
-+        + np.dot(PROPRIO_ERROR_SURROGATE_V1_COEFFICIENTS, normalized)
++        PROPRIO_ERROR_SURROGATE_V1_INTERCEPT + np.dot(PROPRIO_ERROR_SURROGATE_V1_COEFFICIENTS, normalized)
 +    )
 +    return float(np.exp(np.clip(predicted_log_error, -30.0, 30.0)))
 +
@@ -1670,10 +1884,7 @@ index 0000000..92fd230
 +        dtype=np.float32,
 +    )
 +    future_proprio_consistency = np.asarray(
-+        [
-+            metrics.get("latent_future_proprio_copy_std_mean", np.nan)
-+            for metrics in latent_metrics
-+        ],
++        [metrics.get("latent_future_proprio_copy_std_mean", np.nan) for metrics in latent_metrics],
 +        dtype=np.float32,
 +    )
 +    action_first_consistency = _fill_nan_with_mean(action_first_consistency)
@@ -1684,16 +1895,12 @@ index 0000000..92fd230
 +
 +    future_proprios = [
 +        future_proprio
-+        for future_proprio in (
-+            extract_future_proprio_from_sample(sample) for sample in samples
-+        )
++        for future_proprio in (extract_future_proprio_from_sample(sample) for sample in samples)
 +        if future_proprio is not None
 +    ]
 +    future_proprio_across_sample_std_mean = float("nan")
 +    if len(future_proprios) >= 2:
-+        future_proprio_across_sample_std_mean = float(
-+            np.stack(future_proprios).std(axis=0).mean()
-+        )
++        future_proprio_across_sample_std_mean = float(np.stack(future_proprios).std(axis=0).mean())
 +
 +    predicted_proprio_error = predict_future_proprio_error(
 +        float(np.nanmean(action_chunk_consistency)),
@@ -1710,9 +1917,7 @@ index 0000000..92fd230
 +    uncertainty_action_chunk = _zscore_array(action_chunk_consistency)
 +    uncertainty_action_max = _zscore_array(action_max_consistency)
 +    uncertainty_value = _zscore_array(value_consistency)
-+    uncertainty_combined = (
-+        action_weight * uncertainty_action + (1.0 - action_weight) * uncertainty_value
-+    )
++    uncertainty_combined = action_weight * uncertainty_action + (1.0 - action_weight) * uncertainty_value
 +    consensus_first, consensus_chunk = _candidate_action_consensus(samples)
 +    uncertainty_consensus = _zscore_array(consensus_first)
 +
@@ -1917,15 +2122,9 @@ index 0000000..92fd230
 +        "candidate_action_max_consistency_std": float(np.nanstd(action_max_consistency)),
 +        "candidate_value_internal_consistency_mean": float(np.nanmean(value_consistency)),
 +        "candidate_value_internal_consistency_std": float(np.nanstd(value_consistency)),
-+        "candidate_future_proprio_internal_consistency_mean": float(
-+            np.nanmean(future_proprio_consistency)
-+        ),
-+        "candidate_future_proprio_internal_consistency_std": float(
-+            np.nanstd(future_proprio_consistency)
-+        ),
-+        "candidate_future_proprio_across_sample_std_mean": float(
-+            future_proprio_across_sample_std_mean
-+        ),
++        "candidate_future_proprio_internal_consistency_mean": float(np.nanmean(future_proprio_consistency)),
++        "candidate_future_proprio_internal_consistency_std": float(np.nanstd(future_proprio_consistency)),
++        "candidate_future_proprio_across_sample_std_mean": float(future_proprio_across_sample_std_mean),
 +        "candidate_action_consensus_first_mean": float(np.mean(consensus_first)),
 +        "candidate_action_consensus_first_std": float(np.std(consensus_first)),
 +        "candidate_action_consensus_chunk_mean": float(np.mean(consensus_chunk)),
@@ -1974,8 +2173,18 @@ index 0000000..92fd230
 +    terminate_on_safety_violation: bool = False,
 +    experiment_split: str = "unspecified",
 +    case_id: str = "",
++    record_temporal_overlap: bool = False,
++    temporal_overlap_sidecar_path: Optional[Path] = None,
++    temporal_overlap_seed_mode: str = "independent",
++    temporal_overlap_max_window: int = 8,
 +) -> Tuple[pd.DataFrame, List[np.ndarray]]:
 +    """Run one episode and return per-query uncertainty rows."""
++    temporal_overlap_seed_mode = temporal_overlap_seed_mode.lower()
++    if temporal_overlap_seed_mode not in {"independent", "coupled"}:
++        raise ValueError("temporal_overlap_seed_mode must be 'independent' or 'coupled'")
++    if temporal_overlap_max_window < 1:
++        raise ValueError("temporal_overlap_max_window must be positive")
++
 +    task_suite = benchmark.get_benchmark_dict()[suite_name]()
 +    task = task_suite.get_task(task_id)
 +    task_description = task.language
@@ -2007,17 +2216,29 @@ index 0000000..92fd230
 +    t = 0
 +    query_idx = 0
 +    episode_risk_enabled: Optional[bool] = None
-+    safety_tracker = (
-+        SafetySignalTracker(env, obs)
-+        if collect_safety_signals or terminate_on_safety_violation
-+        else None
-+    )
++    previous_candidate_actions: Optional[np.ndarray] = None
++    previous_selected_sample_idx = 0
++    previous_executed_steps = 0
++    sidecar_queries: Dict[str, List[np.ndarray]] = {
++        "candidate_actions_raw": [],
++        "candidate_values": [],
++        "candidate_seeds": [],
++        "candidate_future_proprio": [],
++        "selected_sample_idx": [],
++        "query_t": [],
++        "t_after": [],
++        "executed_steps": [],
++    }
++    actual_executed_actions: List[np.ndarray] = []
++    actual_action_query_index: List[int] = []
++    safety_tracker = SafetySignalTracker(env, obs) if collect_safety_signals or terminate_on_safety_violation else None
 +
 +    try:
 +        while t < max_steps:
 +            obs_before_query = obs
 +            observation = prepare_observation(obs, resize_size, cfg.flip_images)
-+            seeds = tuple(int(base_seed + offset + query_idx * 1000) for offset in uncertainty_seed_offsets)
++            seed_stride = 1000 if temporal_overlap_seed_mode == "independent" else 0
++            seeds = tuple(int(base_seed + offset + query_idx * seed_stride) for offset in uncertainty_seed_offsets)
 +            samples, metrics = sample_action_ensemble(
 +                cfg,
 +                model,
@@ -2027,9 +2248,7 @@ index 0000000..92fd230
 +                seeds=seeds,
 +                num_denoising_steps_action=cfg.num_denoising_steps_action,
 +                prediction_mode=(
-+                    "autoregressive"
-+                    if cfg.ar_future_prediction or cfg.ar_value_prediction
-+                    else "parallel"
++                    "autoregressive" if cfg.ar_future_prediction or cfg.ar_value_prediction else "parallel"
 +                ),
 +                num_denoising_steps_future_state=cfg.num_denoising_steps_future_state,
 +                num_denoising_steps_value=cfg.num_denoising_steps_value,
@@ -2050,9 +2269,7 @@ index 0000000..92fd230
 +                "t": t,
 +                "task_description": task_description,
 +                "prediction_mode": (
-+                    "autoregressive"
-+                    if cfg.ar_future_prediction or cfg.ar_value_prediction
-+                    else "parallel"
++                    "autoregressive" if cfg.ar_future_prediction or cfg.ar_value_prediction else "parallel"
 +                ),
 +                "num_open_loop_steps": cfg.num_open_loop_steps,
 +                "num_denoising_steps_action": cfg.num_denoising_steps_action,
@@ -2066,7 +2283,9 @@ index 0000000..92fd230
 +                "task_level_id": int(getattr(task, "level_id", -1)),
 +                "intervention_mode": action_intervention.mode if action_intervention else "none",
 +                "intervention_start_t": action_intervention.start_t if action_intervention else -1,
-+                "intervention_end_t": action_intervention.end_t if action_intervention and action_intervention.end_t is not None else -1,
++                "intervention_end_t": action_intervention.end_t
++                if action_intervention and action_intervention.end_t is not None
++                else -1,
 +                "intervention_start_query": (
 +                    action_intervention.start_query
 +                    if action_intervention and action_intervention.start_query is not None
@@ -2102,28 +2321,44 @@ index 0000000..92fd230
 +                "difficulty_gated_requery_action",
 +                "adaptive_difficulty_action",
 +            }:
-+                episode_risk_enabled = bool(
-+                    planning_diagnostics["planning_episode_risk_enabled"]
-+                )
++                episode_risk_enabled = bool(planning_diagnostics["planning_episode_risk_enabled"])
 +            selected_sample = samples[selected_sample_idx]
 +            row.update(planning_diagnostics)
 +            row["selected_seed"] = seeds[selected_sample_idx] if selected_sample_idx < len(seeds) else -1
 +            max_value_sample_idx = int(planning_diagnostics["max_value_sample_idx"])
 +            row["max_value_seed"] = seeds[max_value_sample_idx] if max_value_sample_idx < len(seeds) else -1
 +
++            candidate_actions = np.stack([np.asarray(sample["actions"], dtype=np.float32) for sample in samples])
++            if record_temporal_overlap:
++                row.update(
++                    temporal_overlap_metrics(
++                        previous_candidate_actions,
++                        candidate_actions,
++                        previous_selected_idx=previous_selected_sample_idx,
++                        current_selected_idx=selected_sample_idx,
++                        previous_executed_steps=previous_executed_steps,
++                        max_window=temporal_overlap_max_window,
++                    )
++                )
++                row["temporal_overlap_seed_mode"] = temporal_overlap_seed_mode
++                row["temporal_overlap_sidecar"] = (
++                    str(temporal_overlap_sidecar_path) if temporal_overlap_sidecar_path is not None else ""
++                )
++                row["temporal_overlap_sidecar_query_index"] = len(sidecar_queries["query_t"])
++
 +            # Execute the selected candidate chunk.
 +            chunk_success = False
 +            executed_steps = 0
 +            intervention_steps = 0
 +            diagnostic_marker = safety_tracker.mark_query_start() if safety_tracker is not None else -1
-+            selected_open_loop_steps = int(
-+                planning_diagnostics["planning_selected_open_loop_steps"]
-+            )
++            selected_open_loop_steps = int(planning_diagnostics["planning_selected_open_loop_steps"])
 +            for action in selected_sample["actions"][:selected_open_loop_steps]:
 +                action_to_execute = action
 +                if action_intervention is not None and action_intervention.applies(t, query_idx):
 +                    action_to_execute = action_intervention.apply(action)
 +                    intervention_steps += 1
++                actual_executed_actions.append(np.asarray(action_to_execute, dtype=np.float32).copy())
++                actual_action_query_index.append(query_idx)
 +                obs, _reward, done, _info = env.step(
 +                    action_to_execute.tolist() if hasattr(action_to_execute, "tolist") else action_to_execute
 +                )
@@ -2163,6 +2398,35 @@ index 0000000..92fd230
 +                        chunk_success=chunk_success,
 +                    )
 +                )
++            if record_temporal_overlap:
++                future_proprio = []
++                for sample in samples:
++                    prediction = extract_future_proprio_from_sample(sample)
++                    if prediction is None:
++                        future_proprio.append(np.full((0,), np.nan, dtype=np.float32))
++                    else:
++                        future_proprio.append(np.asarray(prediction, dtype=np.float32).reshape(-1))
++                proprio_size = max((value.size for value in future_proprio), default=0)
++                padded_future_proprio = np.full((len(future_proprio), proprio_size), np.nan, dtype=np.float32)
++                for sample_idx, prediction in enumerate(future_proprio):
++                    padded_future_proprio[sample_idx, : prediction.size] = prediction
++
++                sidecar_queries["candidate_actions_raw"].append(candidate_actions)
++                sidecar_queries["candidate_values"].append(
++                    np.asarray(
++                        [sample.get("value_prediction", np.nan) for sample in samples],
++                        dtype=np.float32,
++                    )
++                )
++                sidecar_queries["candidate_seeds"].append(np.asarray(seeds, dtype=np.int64))
++                sidecar_queries["candidate_future_proprio"].append(padded_future_proprio)
++                sidecar_queries["selected_sample_idx"].append(np.asarray(selected_sample_idx, dtype=np.int64))
++                sidecar_queries["query_t"].append(np.asarray(row["t"], dtype=np.int64))
++                sidecar_queries["t_after"].append(np.asarray(t, dtype=np.int64))
++                sidecar_queries["executed_steps"].append(np.asarray(executed_steps, dtype=np.int64))
++                previous_candidate_actions = candidate_actions
++                previous_selected_sample_idx = selected_sample_idx
++                previous_executed_steps = executed_steps
 +            rows.append(row)
 +
 +            if done:
@@ -2188,10 +2452,85 @@ index 0000000..92fd230
 +            )
 +            for key, value in episode_safety.items():
 +                trace[key] = value
++            event_candidates = [
++                ("official_safety_violation", int(episode_safety["official_safety_violation_t"])),
++                ("target_drop_candidate", int(episode_safety["target_drop_candidate_t"])),
++                (
++                    "wrong_object_interaction_candidate",
++                    int(episode_safety["wrong_object_interaction_candidate_t"]),
++                ),
++            ]
++            valid_events = [event for event in event_candidates if event[1] >= 0]
++            if valid_events:
++                critical_event_type, critical_event_t = min(valid_events, key=lambda event: event[1])
++            else:
++                critical_event_type, critical_event_t = "none", -1
++            trace["critical_event_type"] = critical_event_type
++            trace["critical_event_t"] = int(critical_event_t)
++            if critical_event_t >= 0:
++                steps_to_event = critical_event_t - trace["t"].astype(int)
++                trace["steps_to_first_critical_event"] = steps_to_event
++                trace["pre_critical_event_query"] = steps_to_event > 0
++                for horizon in (8, 16, 32):
++                    trace[f"critical_event_within_{horizon}"] = (steps_to_event > 0) & (steps_to_event <= horizon)
++            else:
++                trace["steps_to_first_critical_event"] = -1
++                trace["pre_critical_event_query"] = True
++                for horizon in (8, 16, 32):
++                    trace[f"critical_event_within_{horizon}"] = False
 +        if "prediction_value_executed_sample" in trace:
 +            trace["prediction_error_value_abs_final_success"] = (
 +                trace["prediction_value_executed_sample"] - float(success)
 +            ).abs()
++        if "critical_event_t" not in trace:
++            trace["critical_event_type"] = "none"
++            trace["critical_event_t"] = -1
++            trace["steps_to_first_critical_event"] = -1
++            trace["pre_critical_event_query"] = True
++            for horizon in (8, 16, 32):
++                trace[f"critical_event_within_{horizon}"] = False
++        if record_temporal_overlap and temporal_overlap_sidecar_path is not None:
++            temporal_overlap_sidecar_path.parent.mkdir(parents=True, exist_ok=True)
++            sidecar_payload = {}
++            for key, values in sidecar_queries.items():
++                if not values:
++                    continue
++                if key != "candidate_future_proprio":
++                    sidecar_payload[key] = np.stack(values)
++                    continue
++                sample_count = values[0].shape[0]
++                proprio_size = max(value.shape[1] for value in values)
++                padded = np.full(
++                    (len(values), sample_count, proprio_size),
++                    np.nan,
++                    dtype=np.float32,
++                )
++                for query_position, value in enumerate(values):
++                    padded[query_position, :, : value.shape[1]] = value
++                sidecar_payload[key] = padded
++            sidecar_payload.update(
++                {
++                    "actual_executed_actions": np.asarray(actual_executed_actions, dtype=np.float32),
++                    "actual_action_query_index": np.asarray(actual_action_query_index, dtype=np.int64),
++                    "schema_version": np.asarray(1, dtype=np.int64),
++                    "suite": np.asarray(suite_name),
++                    "task_id": np.asarray(task_id, dtype=np.int64),
++                    "episode_id": np.asarray(episode_id, dtype=np.int64),
++                    "pair_id": np.asarray(pair_id if pair_id is not None else -1, dtype=np.int64),
++                    "rollout_id": np.asarray(
++                        rollout_id if rollout_id is not None else episode_id,
++                        dtype=np.int64,
++                    ),
++                    "init_state_id": np.asarray(init_state_id, dtype=np.int64),
++                    "base_seed": np.asarray(base_seed, dtype=np.int64),
++                    "seed_mode": np.asarray(temporal_overlap_seed_mode),
++                    "critical_event_t": np.asarray(
++                        int(trace["critical_event_t"].iloc[0]) if "critical_event_t" in trace else -1,
++                        dtype=np.int64,
++                    ),
++                }
++            )
++            np.savez_compressed(temporal_overlap_sidecar_path, **sidecar_payload)
 +    return trace, frames
 +
 +
@@ -2232,9 +2571,16 @@ index 0000000..92fd230
 +    value_ensemble_aggregation_scheme: str = "average",
 +    experiment_split: str = "unspecified",
 +    case_id: str = "",
++    record_temporal_overlap: bool = False,
++    temporal_overlap_dir: Optional[Path] = None,
++    temporal_overlap_seed_mode: str = "independent",
++    temporal_overlap_max_window: int = 8,
 +) -> Tuple[pd.DataFrame, Path]:
 +    """Collect traces for multiple suites/tasks/episodes."""
 +    output_dir.mkdir(parents=True, exist_ok=True)
++    resolved_temporal_overlap_dir = temporal_overlap_dir or (output_dir / f"{run_name}__temporal_overlap")
++    if record_temporal_overlap:
++        resolved_temporal_overlap_dir.mkdir(parents=True, exist_ok=True)
 +    all_traces: List[pd.DataFrame] = []
 +
 +    # Load once.  We validate/prewarm using the first suite, then reuse the model for the rest.
@@ -2271,9 +2617,16 @@ index 0000000..92fd230
 +            for ep in range(episodes_per_task):
 +                init_state_id = init_state_offset + ep
 +                episode_seed = base_seed + episode_counter * 17
-+                print(
-+                    f"[collect] suite={suite_name} task={task_id} ep={ep} "
-+                    f"init={init_state_id} seed={episode_seed}"
++                print(f"[collect] suite={suite_name} task={task_id} ep={ep} init={init_state_id} seed={episode_seed}")
++                temporal_overlap_sidecar_path = (
++                    resolved_temporal_overlap_dir
++                    / (
++                        f"{run_name}__suite-{suite_name}__task-{task_id}"
++                        f"__init-{init_state_id}__episode-{episode_counter}"
++                        f"__seed-{episode_seed}.npz"
++                    )
++                    if record_temporal_overlap
++                    else None
 +                )
 +                trace, frames = run_uncertainty_episode(
 +                    cfg=cfg,
@@ -2303,6 +2656,10 @@ index 0000000..92fd230
 +                    terminate_on_safety_violation=terminate_on_safety_violation,
 +                    experiment_split=experiment_split,
 +                    case_id=case_id,
++                    record_temporal_overlap=record_temporal_overlap,
++                    temporal_overlap_sidecar_path=temporal_overlap_sidecar_path,
++                    temporal_overlap_seed_mode=temporal_overlap_seed_mode,
++                    temporal_overlap_max_window=temporal_overlap_max_window,
 +                )
 +                if len(trace) == 0:
 +                    print("[collect] empty trace")
@@ -2361,6 +2718,10 @@ index 0000000..92fd230
 +        "prediction_mode": prediction_mode,
 +        "experiment_split": experiment_split,
 +        "case_id": case_id,
++        "record_temporal_overlap": record_temporal_overlap,
++        "temporal_overlap_dir": str(resolved_temporal_overlap_dir),
++        "temporal_overlap_seed_mode": temporal_overlap_seed_mode,
++        "temporal_overlap_max_window": temporal_overlap_max_window,
 +        "cfg": asdict(cfg),
 +    }
 +    (output_dir / f"{run_name}__metadata.json").write_text(json.dumps(metadata, indent=2))
@@ -2412,15 +2773,20 @@ index 0000000..92fd230
 +    value_ensemble_aggregation_scheme: str = "average",
 +    experiment_split: str = "unspecified",
 +    case_id: str = "",
++    record_temporal_overlap: bool = False,
++    temporal_overlap_dir: Optional[Path] = None,
++    temporal_overlap_seed_mode: str = "independent",
++    temporal_overlap_max_window: int = 8,
 +    resume: bool = False,
 +) -> Tuple[pd.DataFrame, Path]:
 +    """Collect repeated rollouts for identical suite/task/init until both outcomes appear."""
 +    output_dir.mkdir(parents=True, exist_ok=True)
++    resolved_temporal_overlap_dir = temporal_overlap_dir or (output_dir / f"{run_name}__temporal_overlap")
++    if record_temporal_overlap:
++        resolved_temporal_overlap_dir.mkdir(parents=True, exist_ok=True)
 +    existing_trace_path = output_dir / f"{run_name}__query_traces.parquet"
 +    existing_traces = (
-+        pd.read_parquet(existing_trace_path)
-+        if resume and existing_trace_path.is_file()
-+        else pd.DataFrame()
++        pd.read_parquet(existing_trace_path) if resume and existing_trace_path.is_file() else pd.DataFrame()
 +    )
 +    all_traces: List[pd.DataFrame] = [existing_traces] if len(existing_traces) else []
 +    pair_summaries: List[Dict[str, Any]] = []
@@ -2449,9 +2815,7 @@ index 0000000..92fd230
 +        )
 +
 +    episode_counter = (
-+        int(existing_traces["episode_id"].max()) + 1
-+        if len(existing_traces) and "episode_id" in existing_traces
-+        else 0
++        int(existing_traces["episode_id"].max()) + 1 if len(existing_traces) and "episode_id" in existing_traces else 0
 +    )
 +    pair_counter = pair_id_start
 +    for suite_name in suites:
@@ -2462,7 +2826,9 @@ index 0000000..92fd230
 +        for task_id in selected_task_ids:
 +            task = task_suite.get_task(task_id)
 +            available_init_states = get_task_init_states_compat(task_suite, task_id, task)
-+            selected_init_state_ids = list(init_state_ids) if init_state_ids else list(range(len(available_init_states)))
++            selected_init_state_ids = (
++                list(init_state_ids) if init_state_ids else list(range(len(available_init_states)))
++            )
 +            for init_state_id in selected_init_state_ids:
 +                if init_state_id >= len(available_init_states):
 +                    print(
@@ -2478,16 +2844,12 @@ index 0000000..92fd230
 +                    else pd.DataFrame()
 +                )
 +                existing_episodes = (
-+                    existing_pair.sort_values("query_idx")
-+                    .groupby("rollout_id", dropna=False)
-+                    .first()
++                    existing_pair.sort_values("query_idx").groupby("rollout_id", dropna=False).first()
 +                    if len(existing_pair)
 +                    else pd.DataFrame()
 +                )
 +                completed_rollouts = (
-+                    {int(value) for value in existing_episodes.index.tolist()}
-+                    if len(existing_episodes)
-+                    else set()
++                    {int(value) for value in existing_episodes.index.tolist()} if len(existing_episodes) else set()
 +                )
 +                n_success = int(existing_episodes["success"].astype(bool).sum()) if len(existing_episodes) else 0
 +                n_failed = int(len(existing_episodes) - n_success)
@@ -2502,11 +2864,22 @@ index 0000000..92fd230
 +                    rollout_seed = base_seed + pair_id * 10000 + rollout_id * rollout_seed_step
 +                    rollout_intervention = (
 +                        action_intervention
-+                        if action_intervention is not None and rollout_uses_intervention(intervention_rollouts, rollout_id)
++                        if action_intervention is not None
++                        and rollout_uses_intervention(intervention_rollouts, rollout_id)
 +                        else None
 +                    )
 +                    intervention_label = f" intervention={rollout_intervention.mode}" if rollout_intervention else ""
 +                    print(f"[paired]   rollout={rollout_id} seed={rollout_seed}{intervention_label}")
++                    temporal_overlap_sidecar_path = (
++                        resolved_temporal_overlap_dir
++                        / (
++                            f"{run_name}__suite-{suite_name}__task-{task_id}"
++                            f"__init-{init_state_id}__pair-{pair_id}"
++                            f"__rollout-{rollout_id}__seed-{rollout_seed}.npz"
++                        )
++                        if record_temporal_overlap
++                        else None
++                    )
 +                    trace, frames = run_uncertainty_episode(
 +                        cfg=cfg,
 +                        model=model,
@@ -2537,6 +2910,10 @@ index 0000000..92fd230
 +                        terminate_on_safety_violation=terminate_on_safety_violation,
 +                        experiment_split=experiment_split,
 +                        case_id=case_id,
++                        record_temporal_overlap=record_temporal_overlap,
++                        temporal_overlap_sidecar_path=temporal_overlap_sidecar_path,
++                        temporal_overlap_seed_mode=temporal_overlap_seed_mode,
++                        temporal_overlap_max_window=temporal_overlap_max_window,
 +                    )
 +                    episode_counter += 1
 +                    if len(trace) == 0:
@@ -2623,6 +3000,10 @@ index 0000000..92fd230
 +        "prediction_mode": prediction_mode,
 +        "experiment_split": experiment_split,
 +        "case_id": case_id,
++        "record_temporal_overlap": record_temporal_overlap,
++        "temporal_overlap_dir": str(resolved_temporal_overlap_dir),
++        "temporal_overlap_seed_mode": temporal_overlap_seed_mode,
++        "temporal_overlap_max_window": temporal_overlap_max_window,
 +        "resume": resume,
 +        "cfg": asdict(cfg),
 +    }
@@ -2632,11 +3013,7 @@ index 0000000..92fd230
 +            {
 +                "run_name": run_name,
 +                "num_query_rows": int(len(traces)),
-+                "num_rollouts": int(
-+                    traces[["pair_id", "rollout_id"]].drop_duplicates().shape[0]
-+                    if len(traces)
-+                    else 0
-+                ),
++                "num_rollouts": int(traces[["pair_id", "rollout_id"]].drop_duplicates().shape[0] if len(traces) else 0),
 +                "completed": True,
 +            },
 +            indent=2,
@@ -2652,7 +3029,16 @@ index 0000000..92fd230
 +
 +
 +def _episode_group_columns(df: pd.DataFrame) -> List[str]:
-+    candidates = ["suite", "task_id", "episode_id", "pair_id", "rollout_id", "init_state_id", "base_seed", "rollout_seed"]
++    candidates = [
++        "suite",
++        "task_id",
++        "episode_id",
++        "pair_id",
++        "rollout_id",
++        "init_state_id",
++        "base_seed",
++        "rollout_seed",
++    ]
 +    return [col for col in candidates if col in df.columns]
 +
 +
@@ -2716,7 +3102,9 @@ index 0000000..92fd230
 +    return float((sum_pos - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 +
 +
-+def best_threshold_balanced_accuracy(labels_failed: np.ndarray, scores: np.ndarray, high_means_failed: bool) -> Tuple[float, float]:
++def best_threshold_balanced_accuracy(
++    labels_failed: np.ndarray, scores: np.ndarray, high_means_failed: bool
++) -> Tuple[float, float]:
 +    mask = ~np.isnan(scores)
 +    labels = labels_failed[mask].astype(bool)
 +    scores = scores[mask].astype(float)
@@ -2764,7 +3152,11 @@ index 0000000..92fd230
 +                p_value = float("nan")
 +        threshold, bal_acc = best_threshold_balanced_accuracy(labels, scores, high_means_failed)
 +        pooled_std = float(np.nanstd(scores))
-+        effect = float((np.nanmean(failed_scores) - np.nanmean(success_scores)) / pooled_std) if pooled_std > 0 else float("nan")
++        effect = (
++            float((np.nanmean(failed_scores) - np.nanmean(success_scores)) / pooled_std)
++            if pooled_std > 0
++            else float("nan")
++        )
 +        rows.append(
 +            {
 +                "feature": col,
@@ -2897,7 +3289,9 @@ index 0000000..92fd230
 +    return (series - series.mean()) / std
 +
 +
-+def add_composite_scores(episode_df: pd.DataFrame, ranked_df: Optional[pd.DataFrame] = None, top_k: int = 5) -> pd.DataFrame:
++def add_composite_scores(
++    episode_df: pd.DataFrame, ranked_df: Optional[pd.DataFrame] = None, top_k: int = 5
++) -> pd.DataFrame:
 +    """Add predefined and top-k oriented composite risk scores."""
 +    result = episode_df.copy()
 +    predefined = [
@@ -2952,7 +3346,11 @@ index 0000000..92fd230
 +            if np.isnan(values).all():
 +                continue
 +            valid = ~np.isnan(values)
-+            interp = np.interp(grid, progress[valid], values[valid]) if valid.sum() > 1 else np.full_like(grid, values[valid][0])
++            interp = (
++                np.interp(grid, progress[valid], values[valid])
++                if valid.sum() > 1
++                else np.full_like(grid, values[valid][0])
++            )
 +            for p, value in zip(grid, interp):
 +                row = dict(zip(group_cols, keys))
 +                row.update(
@@ -3116,20 +3514,26 @@ index 0000000..92fd230
 +        "num_success": int((episode_df["failed"] == 0).sum()),
 +        "num_failed": int((episode_df["failed"] == 1).sum()),
 +        "top_episode_features": ranked_with_composites.head(15).to_dict(orient="records"),
-+        "top_metric_families": metric_family_ranked_df.head(15).to_dict(orient="records") if len(metric_family_ranked_df) else [],
-+        "top_aggregations": aggregation_ranked_df.head(15).to_dict(orient="records") if len(aggregation_ranked_df) else [],
-+        "top_within_suite_features": ranked_within_suite_df.head(15).to_dict(orient="records") if len(ranked_within_suite_df) else [],
++        "top_metric_families": metric_family_ranked_df.head(15).to_dict(orient="records")
++        if len(metric_family_ranked_df)
++        else [],
++        "top_aggregations": aggregation_ranked_df.head(15).to_dict(orient="records")
++        if len(aggregation_ranked_df)
++        else [],
++        "top_within_suite_features": ranked_within_suite_df.head(15).to_dict(orient="records")
++        if len(ranked_within_suite_df)
++        else [],
 +        "top_within_suite_task_features": ranked_within_suite_task_df.head(15).to_dict(orient="records")
 +        if len(ranked_within_suite_task_df)
 +        else [],
-+        "top_within_pair_features": ranked_within_pair_df.head(15).to_dict(orient="records") if len(ranked_within_pair_df) else [],
++        "top_within_pair_features": ranked_within_pair_df.head(15).to_dict(orient="records")
++        if len(ranked_within_pair_df)
++        else [],
 +        "top_time_aligned": aligned_ranked_df.head(15).to_dict(orient="records") if len(aligned_ranked_df) else [],
 +        "top_uncertainty_error_correlations": uncertainty_error_corr_df.head(15).to_dict(orient="records")
 +        if len(uncertainty_error_corr_df)
 +        else [],
-+        "composite_features": {
-+            key: value for key, value in episode_df.attrs.items() if key.startswith("risk_")
-+        },
++        "composite_features": {key: value for key, value in episode_df.attrs.items() if key.startswith("risk_")},
 +    }
 +    summary_path.write_text(json.dumps(summary, indent=2))
 +    return {
@@ -3292,6 +3696,33 @@ index 0000000..92fd230
 +        )
 +        subparser.add_argument("--case-id", default="")
 +
++    def add_temporal_overlap_args(subparser: argparse.ArgumentParser) -> None:
++        subparser.add_argument(
++            "--record-temporal-overlap",
++            action="store_true",
++            help=(
++                "Compare the previous unexecuted action tail with the next aligned "
++                "prefix and save full per-query candidate tensors"
++            ),
++        )
++        subparser.add_argument(
++            "--temporal-overlap-dir",
++            default="",
++            help="Optional directory for compressed per-episode overlap tensor sidecars",
++        )
++        subparser.add_argument(
++            "--temporal-overlap-seed-mode",
++            choices=["independent", "coupled"],
++            default="independent",
++            help="Use query-dependent seeds or common random numbers across adjacent queries",
++        )
++        subparser.add_argument(
++            "--temporal-overlap-max-window",
++            type=int,
++            default=8,
++            help="Maximum time-aligned overlap length compared between adjacent chunks",
++        )
++
 +    collect = subparsers.add_parser("collect", help="Collect uncertainty traces")
 +    collect.add_argument("--suites", default="libero_spatial_object", help="Comma-separated LIBERO/LIBERO-PRO suites")
 +    collect.add_argument("--task-ids", default="0", help="Comma list/range, e.g. 0,1 or 0-3; use all for all tasks")
@@ -3303,8 +3734,12 @@ index 0000000..92fd230
 +    collect.add_argument("--output-dir", default="experiments/uncertainty")
 +    collect.add_argument("--run-name", default="")
 +    collect.add_argument("--collect-prediction-errors", action="store_true")
-+    collect.add_argument("--save-videos", action="store_true", help="Save exact rollout MP4s captured during collection")
-+    collect.add_argument("--video-dir", default="", help="Optional output directory for MP4s; defaults to <run>__videos")
++    collect.add_argument(
++        "--save-videos", action="store_true", help="Save exact rollout MP4s captured during collection"
++    )
++    collect.add_argument(
++        "--video-dir", default="", help="Optional output directory for MP4s; defaults to <run>__videos"
++    )
 +    collect.add_argument("--video-fps", type=int, default=30)
 +    collect.add_argument(
 +        "--record-denoising-trace",
@@ -3315,6 +3750,7 @@ index 0000000..92fd230
 +    add_planning_args(collect)
 +    add_safety_args(collect)
 +    add_inference_args(collect)
++    add_temporal_overlap_args(collect)
 +
 +    paired = subparsers.add_parser("collect-paired", help="Collect repeated rollouts for identical task/init states")
 +    paired.add_argument("--suites", default="libero_spatial_object", help="Comma-separated LIBERO/LIBERO-PRO suites")
@@ -3358,6 +3794,7 @@ index 0000000..92fd230
 +    add_planning_args(paired)
 +    add_safety_args(paired)
 +    add_inference_args(paired)
++    add_temporal_overlap_args(paired)
 +    paired.add_argument(
 +        "--resume",
 +        action="store_true",
@@ -3417,6 +3854,10 @@ index 0000000..92fd230
 +            value_ensemble_aggregation_scheme=args.value_ensemble_aggregation,
 +            experiment_split=args.experiment_split,
 +            case_id=args.case_id,
++            record_temporal_overlap=args.record_temporal_overlap,
++            temporal_overlap_dir=(Path(args.temporal_overlap_dir) if args.temporal_overlap_dir else None),
++            temporal_overlap_seed_mode=args.temporal_overlap_seed_mode,
++            temporal_overlap_max_window=args.temporal_overlap_max_window,
 +        )
 +        print(f"Saved traces: {trace_path}")
 +        if "success" in traces and traces["success"].nunique() >= 2:
@@ -3476,6 +3917,10 @@ index 0000000..92fd230
 +            value_ensemble_aggregation_scheme=args.value_ensemble_aggregation,
 +            experiment_split=args.experiment_split,
 +            case_id=args.case_id,
++            record_temporal_overlap=args.record_temporal_overlap,
++            temporal_overlap_dir=(Path(args.temporal_overlap_dir) if args.temporal_overlap_dir else None),
++            temporal_overlap_seed_mode=args.temporal_overlap_seed_mode,
++            temporal_overlap_max_window=args.temporal_overlap_max_window,
 +            resume=args.resume,
 +        )
 +        print(f"Saved traces: {trace_path}")
@@ -4807,6 +5252,95 @@ index 0000000..6153d3f
 +    episode = tracker.episode_summary(False, final_t=8, max_steps=8)
 +    assert episode["kinematic_deadlock_candidate"]
 +    assert episode["failure_type"] == "kinematic_deadlock_candidate"
+diff --git a/tests/test_temporal_overlap.py b/tests/test_temporal_overlap.py
+new file mode 100644
+index 0000000..860f5fc
+--- /dev/null
++++ b/tests/test_temporal_overlap.py
+@@ -0,0 +1,83 @@
++import numpy as np
++
++from cosmos_policy.experiments.robot.libero.temporal_overlap import temporal_overlap_metrics
++
++
++def aligned_chunks(samples: int = 2) -> tuple[np.ndarray, np.ndarray]:
++    previous = np.zeros((samples, 16, 7), dtype=np.float32)
++    current = np.zeros((samples, 16, 7), dtype=np.float32)
++    for sample in range(samples):
++        for step in range(16):
++            previous[sample, step, :6] = sample * 100 + step
++            current[sample, step, :6] = sample * 100 + step + 8
++        previous[sample, :, -1] = 1.0
++        current[sample, :, -1] = 1.0
++    return previous, current
++
++
++def test_exact_absolute_time_alignment_is_zero() -> None:
++    previous, current = aligned_chunks()
++    metrics = temporal_overlap_metrics(
++        previous,
++        current,
++        previous_selected_idx=1,
++        current_selected_idx=1,
++        previous_executed_steps=8,
++    )
++    assert metrics["overlap_valid"]
++    assert metrics["overlap_length"] == 8
++    assert metrics["overlap_selected_rmse"] == 0.0
++    assert metrics["overlap_support_min"] == 0.0
++    assert metrics["overlap_gripper_mismatch"] == 0.0
++
++
++def test_new_selector_switch_is_separated_from_support_loss() -> None:
++    previous, current = aligned_chunks()
++    metrics = temporal_overlap_metrics(
++        previous,
++        current,
++        previous_selected_idx=0,
++        current_selected_idx=1,
++        previous_executed_steps=8,
++    )
++    assert metrics["overlap_support_min"] == 0.0
++    assert metrics["overlap_selected_rmse"] > 0.0
++    assert metrics["overlap_switch_gap"] == metrics["overlap_selected_rmse"]
++
++
++def test_full_chunk_execution_has_no_overlap() -> None:
++    previous, current = aligned_chunks()
++    metrics = temporal_overlap_metrics(
++        previous,
++        current,
++        previous_executed_steps=16,
++    )
++    assert not metrics["overlap_valid"]
++    assert metrics["overlap_length"] == 0
++    assert np.isnan(metrics["overlap_selected_rmse"])
++
++
++def test_shorter_execution_uses_fixed_nearest_window() -> None:
++    previous, current = aligned_chunks()
++    current[:, :, :6] -= 4.0
++    metrics = temporal_overlap_metrics(
++        previous,
++        current,
++        previous_executed_steps=4,
++        max_window=8,
++    )
++    assert metrics["overlap_valid"]
++    assert metrics["overlap_length"] == 8
++    assert metrics["overlap_selected_rmse"] == 0.0
++
++
++def test_candidate_count_one_is_supported() -> None:
++    previous, current = aligned_chunks(samples=1)
++    metrics = temporal_overlap_metrics(
++        previous,
++        current,
++        previous_executed_steps=8,
++    )
++    assert metrics["overlap_valid"]
++    assert np.isfinite(metrics["overlap_mmd2_median"])
++    assert metrics["overlap_coupled_mean"] == 0.0
 diff --git a/tests/test_vfd_metrics.py b/tests/test_vfd_metrics.py
 new file mode 100644
 index 0000000..20bd33f

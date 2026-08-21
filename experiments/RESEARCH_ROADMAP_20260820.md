@@ -260,6 +260,13 @@ $$
 erratic failure и является более прямым feedback signal, чем uncertainty
 внутри одного query.
 
+**Статус 21 августа 2026.** Пункты 1-3 реализованы. Smoke test подтвердил
+форму `[Q,4,16,7]`, exact $A_q[8:16]\leftrightarrow A_{q+1}[0:8]$ alignment
+и CSV/NPZ round-trip. Passive campaign на 240 independent и 72 coupled
+rollout запущена на GPU 2-7. Конфигурация до просмотра outcomes зафиксирована
+в [`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md).
+Пункты 4-7 остаются следующими этапами и не должны подбираться по partial run.
+
 1. Добавить сохранение полных candidate chunks и, на подвыборке, action latent
    embeddings.
 2. Проверить exact alignment $A_q[8:16]$ против $A_{q+1}[0:8]$ и same-seed

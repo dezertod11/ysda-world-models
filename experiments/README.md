@@ -25,6 +25,13 @@ task success как самостоятельный planner trigger.
 формулы TIDE/STAC-style metrics, learned baseline и полный план проверки
 находятся в
 [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md).
+Замороженная passive-кампания, splits, integrity gates и точная команда
+запуска описаны в
+[`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md).
+Smoke test прошёл 21 августа: sidecar имеет форму `[8,4,16,7]`, все семь
+доступных overlap-переходов пересчитались из NPZ без расхождений. Основная
+кампания на 312 rollout запущена на серверных GPU 2-7; до её завершения выводов
+о качестве detector делать нельзя.
 Универсальная WSL-команда `ysda-exp-status`, состояния кампании и метод расчёта
 ETA описаны в
 [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md).
@@ -51,6 +58,7 @@ ETA описаны в
 | [`FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md`](FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md) | Итог causal 2x2: selection, feedback horizon, task-level robustness, failure modes и compute |
 | [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md) | Текущий план: causal 2x2, RCS, grounded Q/QWM, JRD/CP, StressDream и safety filter |
 | [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md) | Old tail против new prefix: TIDE/STAC, Hide-and-Seek baseline, формулы, collector schema и causal test |
+| [`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md) | Frozen passive run: 12 cases, independent/coupled seeds, event labels, integrity gates и запуск |
 | [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md) | Универсальная команда `ysda-exp-status`: progress, jobs, rollout, ETA и READY/FAILED/STALLED |
 | [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md) | Итог 960 confirmatory rollout: формулы, статистика, failure modes и ограничения |
 | [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb) | Таблицы и графики screening, frozen confirmatory и surrogate transfer |

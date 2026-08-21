@@ -38,6 +38,9 @@ experiments/uncertainty/
 experiments/campaigns/**/runs/
 experiments/campaigns/**/videos/
 experiments/campaigns/**/logs/
+experiments/campaigns/**/temporal_overlap/
+experiments/campaigns/*_launcher.log
+experiments/campaigns/*_launcher.pid
 experiments/campaigns/**/*query_traces.csv
 experiments/campaigns/**/*query_traces.parquet
 experiments/campaigns/**/all_query_traces.parquet
