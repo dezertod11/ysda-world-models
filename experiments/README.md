@@ -19,6 +19,9 @@ Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся �
 формулы TIDE/STAC-style metrics, learned baseline и полный план проверки
 находятся в
 [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md).
+Универсальная WSL-команда `ysda-exp-status`, состояния кампании и метод расчёта
+ETA описаны в
+[`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md).
 
 Предыдущий этап находится в
 [`LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb`](LIBERO_ADAPTIVE_PLANNING_RESULTS.ipynb)
@@ -41,6 +44,7 @@ Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся �
 |---|---|
 | [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md) | Текущий план: causal 2x2, RCS, grounded Q/QWM, JRD/CP, StressDream и safety filter |
 | [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md) | Old tail против new prefix: TIDE/STAC, Hide-and-Seek baseline, формулы, collector schema и causal test |
+| [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md) | Универсальная команда `ysda-exp-status`: progress, jobs, rollout, ETA и READY/FAILED/STALLED |
 | [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md) | Итог 960 confirmatory rollout: формулы, статистика, failure modes и ограничения |
 | [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb) | Таблицы и графики screening, frozen confirmatory и surrogate transfer |
 | [`SURROGATE_REQUERY_HYPOTHESES_20260819.md`](SURROGATE_REQUERY_HYPOTHESES_20260819.md) | Протокол и гипотезы, замороженные до confirmatory outcomes |
