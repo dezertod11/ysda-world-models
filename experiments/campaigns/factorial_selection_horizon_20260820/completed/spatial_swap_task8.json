@@ -1,0 +1,8 @@
+{
+  "job": "spatial_swap_task8",
+  "gpu": "5",
+  "status": "completed",
+  "started_at": "2026-08-20T21:13:41",
+  "finished_at": "2026-08-20T23:31:51",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/factorial_selection_horizon_20260820/logs/spatial_swap_task8.log"
+}

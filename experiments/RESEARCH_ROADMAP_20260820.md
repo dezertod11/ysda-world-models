@@ -1,6 +1,6 @@
 # Research roadmap: robust world-model planning
 
-Дата обновления: 20 августа 2026 года.
+Дата обновления: 21 августа 2026 года.
 
 Этот документ является текущим планом. Frozen-протоколы
 `ADAPTIVE_PLANNING_HYPOTHESES_20260813.md` и
@@ -30,23 +30,28 @@ Task failure и safety violation считаются разными endpoints. Р
 | Наблюдение | Результат | Следствие |
 |---|---:|---|
 | Fixed action uncertainty penalty | 151/240 против 146/240, +2.1 п.п., CI через ноль | Одного reranking недостаточно |
-| Disagreement-triggered `h=8` + reranking | 161/240, +6.25 п.п., CI [+1.7; +11.3], Holm `p=0.0474` | Самый сильный текущий метод |
+| Предыдущий confirmatory `h=8` + reranking | 161/240, +6.25 п.п., CI [+1.7; +11.3], Holm `p=0.0474` | Эффект воспроизвёлся в новом causal 2x2 |
 | Нормированная цена adaptive requery | 1.27x policy-query cost | Нужен явный success/compute trade-off |
-| Future-proprio surrogate | case-controlled `rho=0.579`, AUROC 0.731 | Prediction error предсказуем online |
+| Latest future-proprio surrogate transfer | case-controlled `rho=0.653`, AUROC 0.763 | Next-chunk prediction error предсказуем online |
 | Surrogate-gated planner | +0.4 п.п., CI через ноль | Proprio error не равен task-critical risk |
 | Early episode-fail predictor | AUROC 0.547 | Один абсолютный threshold между tasks не работает |
 | Failure-mode shift | drops уменьшились, timeout вырос | Нужны отдельные progress и safety objectives |
+| Selection-only causal control | 90/168 против 100/168, -6.0 п.п., CI через ноль | Internal action uncertainty пока не даёт надёжный candidate ranking |
+| Horizon-only causal control | 114/168, +8.3 п.п., CI [0.0; +16.7] | Disagreement полезен как сигнал более раннего feedback |
+| Combined causal 2x2 | 121/168, +12.5 п.п., CI [+4.8; +20.8], McNemar `p=0.00646` | Главный подтверждённый механизм - adaptive feedback horizon |
+| Early terminal-fail prediction | лучший case-controlled AUROC 0.575 | Local prediction error предсказывается заметно лучше, чем конечный fail |
 
-Нельзя утверждать, что adaptive requery выигрывает именно из-за reranking:
-текущий результат смешивает новый candidate и более раннее observation.
+Новый matched 2x2 разделил reranking и более раннее observation. Прямой
+reranking не подтвердился, а feedback-horizon effect положителен. Добавочный
+эффект risk-aware candidate при уже adaptive horizon остаётся неопределённым.
 
-## Текущий эксперимент P0
+## Завершённый эксперимент P0
 
 ### Matched 2x2: selection x feedback horizon
 
-Кампания `factorial_selection_horizon_20260820` запущена и не анализируется до
-полного завершения. Дизайн: 7 LIBERO-PRO cases, 24 новых paired seeds, четыре
-условия, всего 672 rollout.
+Кампания `factorial_selection_horizon_20260820` полностью завершена и
+проанализирована: 7 LIBERO-PRO cases, 24 новых paired seeds, четыре условия,
+всего 672 rollout.
 
 | Условие | Candidate | Horizon при disagreement |
 |---|---|---:|
@@ -69,17 +74,32 @@ $$
 I=AH-A-H+B.
 $$
 
+Результат:
+
+| Contrast | Эффект | 95% CI | Интерпретация |
+|---|---:|---:|---|
+| `A-B` | -6.0 п.п. | [-13.7; +1.8] | прямой uncertainty reranking не подтверждён |
+| `H-B` | +8.3 п.п. | [0.0; +16.7] | более ранний feedback полезен даже с `max(value)` candidate |
+| `AH-A` | +18.5 п.п. | [+10.1; +26.8] | сильный horizon effect при фиксированном risk-aware selector |
+| `AH-H` | +4.2 п.п. | [-2.4; +10.7] | добавочная польза reranking не доказана |
+| `AH-B` | +12.5 п.п. | [+4.8; +20.8] | combined strategy лучше на tested case/seed set |
+
 Решение после P0:
 
-- если \(H-B>0\), а \(A-B\approx0\), uncertainty используется прежде всего
-  как сигнал момента feedback;
-- если \(A-B>0\), развиваем candidate score;
-- если interaction велик, сохраняем combined rule и не интерпретируем эффекты
-  аддитивно;
-- regression на `goal_mug` считается blocking result для безусловного метода.
+- uncertainty/disagreement используется прежде всего как feedback-timing
+  signal;
+- `requery_l1_h8` остаётся лучшей эмпирической стратегией, а
+  `horizon_only_l1_h8` - обязательным causal baseline;
+- линейный candidate penalty не усложняется без нового support или grounded
+  consequence signal;
+- из-за regressions `goal_mug` (-4.2 п.п.) и `milk_task5` (-8.3 п.п.) метод не
+  считается uniform improvement и требует guard;
+- следующий trigger-кандидат - cross-query temporal overlap consistency.
 
 Полный frozen protocol:
 [`FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md`](FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md).
+Полный разбор результата:
+[`FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md`](FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md).
 
 ## Целевая архитектура
 
@@ -240,8 +260,8 @@ $$
 erratic failure и является более прямым feedback signal, чем uncertainty
 внутри одного query.
 
-1. После завершения P0 добавить сохранение полных candidate chunks и, на
-   подвыборке, action latent embeddings.
+1. Добавить сохранение полных candidate chunks и, на подвыборке, action latent
+   embeddings.
 2. Проверить exact alignment $A_q[8:16]$ против $A_{q+1}[0:8]$ и same-seed
    reproducibility.
 3. Passive run: TIDE-style selected MSE, support, Chamfer, STAC MMD и

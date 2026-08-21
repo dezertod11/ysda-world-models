@@ -1,0 +1,5 @@
+planning_strategy,planning_risk_lambda,suite,task_id,init_state_id,episodes,successes,success_rate,mean_final_t,selected_not_max_value_rate
+max_value,0.0,libero_goal_with_mug,9,0,24,23,0.9583333333333334,161.95833333333334,0.0
+disagreement_requery_action,1.0,libero_goal_with_mug,9,0,24,22,0.9166666666666666,171.20833333333334,0.41595800033300034
+max_value_disagreement_requery,1.0,libero_goal_with_mug,9,0,24,19,0.7916666666666666,186.04166666666666,0.0
+uncertainty_penalty_action,1.0,libero_goal_with_mug,9,0,24,19,0.7916666666666666,186.16666666666666,0.41645622895622897

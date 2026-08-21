@@ -1,14 +1,20 @@
 # Эксперименты
 
-Для текущей линии uncertainty-aware planning начинать следует с итогового
-отчёта
+Для текущей линии uncertainty-aware planning начинать следует с нового
+causal-отчёта
+[`FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md`](FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md).
+В matched 2x2 на 672 rollout `requery_l1_h8` дал 121/168 success против
+100/168 у `max(value)`: +12.5 п.п., 95% CI `[+4.8; +20.8]`, exact McNemar
+`p=0.00646`. Horizon-only control дал +8.3 п.п., а один только risk-aware
+selection -6.0 п.п. Главный подтверждённый механизм состоит в более раннем
+feedback из реальной среды, а не в прямом uncertainty reranking.
+
+Предыдущий этап с future-proprio surrogate описан в
 [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md)
-и компактного notebook
+и notebook
 [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb).
-В frozen confirmatory проверке `requery_l1_h8` дал 161/240 success против
-146/240 у `max(value)`: +6.25 п.п., 95% CI `[+1.7; +11.3]` п.п.,
-Holm-corrected `p=0.0474`. Learned future-proprio surrogate перенёсся как
-оценка prediction error, но не дал прироста task success.
+Surrogate переносится как оценка next-chunk prediction error, но не улучшил
+task success как самостоятельный planner trigger.
 
 Следующие гипотезы и порядок работ после разбора новых статей зафиксированы в
 [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md). Общий разбор
@@ -42,6 +48,7 @@ ETA описаны в
 
 | Файл | Назначение |
 |---|---|
+| [`FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md`](FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md) | Итог causal 2x2: selection, feedback horizon, task-level robustness, failure modes и compute |
 | [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md) | Текущий план: causal 2x2, RCS, grounded Q/QWM, JRD/CP, StressDream и safety filter |
 | [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md) | Old tail против new prefix: TIDE/STAC, Hide-and-Seek baseline, формулы, collector schema и causal test |
 | [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md) | Универсальная команда `ysda-exp-status`: progress, jobs, rollout, ETA и READY/FAILED/STALLED |
@@ -106,6 +113,22 @@ campaigns/surrogate_confirmatory_20260819/
     paired_failure_modes.csv
     surrogate_transfer_diagnostics.csv
     plots/
+
+campaigns/factorial_selection_horizon_20260820/
+  manifest.json             # status=completed, 672/672 rollout
+  analysis/selection_horizon_factorial/
+    README.md
+    factorial_strategy_summary.csv
+    factorial_effects_pooled.csv
+    factorial_effects_by_case.csv
+    factorial_seed_outcomes.csv
+    plots/
+  analysis/adaptive_summary/
+    README.md
+    paired_failure_modes.csv
+    prediction_error_correlations.csv
+    surrogate_transfer_diagnostics.csv
+    plots/
 ```
 
 `uncertainty/` содержит более ранние exploratory и video runs. Они полезны для
@@ -124,7 +147,7 @@ campaigns/surrogate_confirmatory_20260819/
 | Adaptive planning frozen confirmatory | Завершена, 1080/1080 strategy executions на 180 paired seeds и 6 cases |
 | Surrogate/requery screening | Завершён, 816/816 strategy executions; используется только для выбора гиперпараметров |
 | Surrogate/requery frozen confirmatory | Завершён, 960/960 strategy executions на 240 paired seeds и 12 cases |
-| Selection x horizon causal 2x2 | Запущен 20 августа 2026: 672 rollout, результат не анализировать до полного завершения |
+| Selection x horizon causal 2x2 | Завершён 21 августа 2026: 672/672 rollout, 168 matched seeds, 7 cases |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео
@@ -149,3 +172,7 @@ discordant seed. Их индекс, фактические replay outcomes и п
 как отдельная очередь. Статистический результат уже завершён; видео появятся в
 `final_results_media/surrogate_confirmatory_20260819`, когда GPU 2-7 освободятся
 после текущей shared-server training job.
+
+Factorial-кампания запускалась с `save_videos=false`; её 672 rollout не имеют
+видео. Для визуального разбора следует запускать отдельные replays заранее
+выбранных discordant seeds, не подменяя ими исходные статистические outcomes.

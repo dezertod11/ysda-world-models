@@ -1,0 +1,8 @@
+{
+  "job": "goal_mug_task9",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-08-20T19:08:15",
+  "finished_at": "2026-08-20T21:01:24",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/factorial_selection_horizon_20260820/logs/goal_mug_task9.log"
+}

@@ -1,0 +1,8 @@
+{
+  "job": "spatial_mug_task0",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-08-20T19:08:15",
+  "finished_at": "2026-08-20T20:36:44",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/factorial_selection_horizon_20260820/logs/spatial_mug_task0.log"
+}
