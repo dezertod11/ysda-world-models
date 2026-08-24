@@ -43,6 +43,9 @@ Task failure и safety violation считаются разными endpoints. Р
 | Temporal overlap passive campaign | 312/312 rollout; core overlap AUROC около 0.5, frozen TPR 0.04-0.12 | Plain old-tail/new-prefix distance пока не является failure detector |
 | Event-label audit | 26/81 collector events находятся в successful episodes | Expected release и physical drop должны быть разделены task-aware predicates |
 | Coupled-noise ablation | selected RMSE ratio 1.017, correlation 0.974; success 48/72 против 49/72 | Disagreement создаётся context revision, coupling почти не убирает noise |
+| Corrected boundary screening | 264 rollout; 30/40 task-OOD cases all-fail, 9 all-success, 1 mixed | Discrete task replacement даёт grounding stress, но мало paired boundary data |
+| Early within-case detector | лучший preregistered AUROC 0.613; лучший exploratory 0.678, BH q=0.87 | Plain stochastic uncertainty/overlap не прошли frozen gate |
+| Physical replay audit | `spatial_task/task7/init0`: 5 success, 1 confirmed target drop | Case полезен для expansion, но пока только provisional |
 
 Новый matched 2x2 разделил reranking и более раннее observation. Прямой
 reranking не подтвердился, а feedback-horizon effect положителен. Добавочный
@@ -279,12 +282,14 @@ LIBERO-PRO task case передавал policy исходную filename-derived
 outcomes. Полный разбор:
 [`TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md`](TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md).
 
-**Обновление 24 августа 2026.** Ground-truth repair завершён: BDDL instruction
-передаётся policy, successful object-specific release отделён от premature
-drop, а schema-v2 sidecar сохраняет step-level predicate/object state. После
-успешного real-model smoke запущен 264-rollout boundary screening 40 исправленных
-task-OOD cases и двух known mixed controls. Протокол:
+**Обновление 24 августа 2026.** Ground-truth repair и 264-rollout boundary
+screening завершены. Из 40 task-OOD cases 30 all-fail, 9 all-success и только
+один mixed; две known controls остались confirmed mixed. Лучший preregistered
+early signal дал macro AUROC 0.613, а exploratory normalized overlap shift -
+0.678 при `BH q=0.87`. Plain detector не прошёл gate. Протокол:
 [`GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md`](GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md).
+Результаты:
+[`GROUND_TRUTH_BOUNDARY_SCREENING_RESULTS_20260824.md`](GROUND_TRUTH_BOUNDARY_SCREENING_RESULTS_20260824.md).
 
 1. Добавить сохранение полных candidate chunks и, на подвыборке, action latent
    embeddings.
@@ -447,24 +452,28 @@ thresholds замораживаются и переносятся на целы�
 7. Success всегда публикуется вместе с query cost, timeout, drop и safety.
 8. Видео - mechanism evidence, не статистическая выборка.
 
-## Текущий приоритет после passive overlap audit
+## Текущий приоритет после corrected boundary screening
 
-1. Исправить LIBERO-PRO task instruction source и добавить preflight
-   `policy instruction == perturbed BDDL language/goal`.
-2. Заменить эвристический drop label на goal-predicate-aware grasp/release
-   events и проверить их по видео.
-3. Найти 4-6 same-task/init boundary cases с минимум 15-30 success и 15-30
-   fail на case; убрать deterministic case identity из primary detector test.
-4. Повторить passive overlap только с within-case, phase-matched и
-   simulator-validated endpoints. Первый shortlist: cosine, selected-all RMSE,
-   previous proprio error, first-action std и value baselines.
-5. Запускать closed-loop overlap-triggered horizon только после frozen gate
-   AUROC >= 0.65, AUPRC/prevalence >= 2, TPR >= 0.30 при FPR <= 0.05.
-6. Параллельно провести P2 causal future validation и подготовить grounded Q:
-   эти ветки не зависят от успеха plain overlap.
-7. Если repaired overlap снова не проходит gate, перейти к learned temporal
-   detector/grounded critic, не подбирать дополнительные distance weights.
-8. P5/P7 вести отдельной safety веткой, не смешивая с task-success planner.
+1. Не продолжать sweep коэффициентов plain uncertainty/overlap: repaired
+   within-case detector не прошёл frozen gate.
+2. Расширить `spatial_task/task7/init0` и две known mixed controls fresh seeds;
+   параллельно искать 3-5 cases с success rate 20-80% через плавную настройку
+   pose, distractor, appearance и language difficulty.
+3. В primary dataset требовать минимум 15-30 success и 15-30 fail на case;
+   all-fail/all-success task-OOD cases оставить для transfer stress test.
+4. Реализовать simulator branching: из одного состояния фактически исполнить
+   каждый candidate chunk и измерить goal progress, drop, wrong-object и
+   no-progress. Это primary проверка способности score улучшать planning.
+5. Провести P2 causal action-conditioned future validation и сравнить ordering
+   predicted consequences с ordering реальных branched outcomes.
+6. Продолжить adaptive feedback horizon как отдельную causal ветку: это пока
+   единственный компонент, который дал воспроизводимый gain.
+7. Temporal overlap оставить в shortlist только как normalized set shift и
+   rotation feature для learned phase-conditioned detector. Closed-loop доступен
+   лишь после held-out gate AUROC >= 0.65, AUPRC/prevalence >= 2,
+   TPR >= 0.30 при FPR <= 0.05 и median lead >= 8.
+8. P5/P7 вести отдельной safety веткой, не смешивая task failure и official
+   safety constraint violation.
 
 Ближайший сильный результат должен отвечать не «uncertainty коррелирует с
 ошибкой», а одному из двух утверждений:

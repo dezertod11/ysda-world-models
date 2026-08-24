@@ -7,6 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
+import imageio.v2 as imageio
 import numpy as np
 from libero.libero import benchmark
 
@@ -31,6 +32,8 @@ def main() -> None:
     parser.add_argument("--task-id", required=True, type=int)
     parser.add_argument("--init-state-id", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=128)
+    parser.add_argument("--video-out", type=Path)
+    parser.add_argument("--video-fps", type=int, default=30)
     parser.add_argument("--expect-success", action="store_true")
     parser.add_argument("--expect-fail", action="store_true")
     parser.add_argument("--expect-drop", action="store_true")
@@ -56,10 +59,13 @@ def main() -> None:
                 break
 
         tracker = SafetySignalTracker(env, observation)
+        frames = [np.flipud(observation["agentview_image"])] if args.video_out else []
         success = False
         final_t = 0
         for final_t, action in enumerate(actions, start=1):
             observation, _reward, done, info = env.step(action.tolist())
+            if args.video_out:
+                frames.append(np.flipud(observation["agentview_image"]))
             tracker.observe(
                 observation,
                 action,
@@ -85,6 +91,15 @@ def main() -> None:
             "success": bool(success),
             **summary,
         }
+        if args.video_out:
+            args.video_out.parent.mkdir(parents=True, exist_ok=True)
+            with imageio.get_writer(
+                args.video_out, fps=args.video_fps, macro_block_size=1
+            ) as writer:
+                for frame in frames:
+                    writer.append_data(np.asarray(frame, dtype=np.uint8))
+            result["video_path"] = str(args.video_out)
+            result["video_frames"] = len(frames)
         print(json.dumps(result, indent=2, ensure_ascii=False))
 
         if args.expect_success and not success:

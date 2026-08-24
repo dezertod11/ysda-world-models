@@ -1,0 +1,20 @@
+{
+  "campaign_dir": "experiments/campaigns/ground_truth_boundary_screening_20260824",
+  "num_rollouts": 264,
+  "num_success": 72,
+  "num_failed": 192,
+  "task_ood_cases": 40,
+  "task_ood_all_fail_cases": 30,
+  "task_ood_all_success_cases": 9,
+  "task_ood_mixed_cases": 1,
+  "confirmed_mixed_cases": 2,
+  "confirmed_mixed_episodes": 24,
+  "confirmed_mixed_failures": 11,
+  "best_preregistered_early_metric": "negative_selected_value",
+  "best_preregistered_early_macro_auc": 0.6125,
+  "best_exploratory_early_metric": "overlap_normalized_shift",
+  "best_exploratory_early_macro_auc": 0.6776785714285714,
+  "best_exploratory_bh_q": 0.8702259548090382,
+  "future_proprio_feedback_q5_macro_auc": 0.7397321428571428,
+  "metrics_with_bh_q_below_0_05": 0
+}

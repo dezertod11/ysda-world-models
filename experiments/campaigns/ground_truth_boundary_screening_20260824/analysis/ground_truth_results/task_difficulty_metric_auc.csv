@@ -1,0 +1,17 @@
+metric,family,num_deterministic_cases,num_all_fail_cases,failure_auc,spearman_with_success_rate
+negative_selected_value,value,39,30,0.6851851851851852,-0.27007384217860386
+negative_mean_value,value,39,30,0.6814814814814815,-0.2688281141242745
+future_image_error,feedback,39,30,0.662962962962963,-0.2782956473371776
+value_range,uncertainty,39,30,0.6037037037037037,-0.17340534516264602
+value_std,uncertainty,39,30,0.6,-0.1682978601398957
+latent_value_element_std,latent,39,30,0.5777777777777777,-0.05755263611001613
+action_chunk_std,uncertainty,39,30,0.48518518518518516,0.0429776178743627
+future_proprio_error,feedback,39,30,0.42962962962962964,0.09641935140509197
+latent_future_proprio_copy_std,latent,39,30,0.37777777777777777,0.22211331208692373
+latent_action_copy_std,latent,39,30,0.3333333333333333,0.26920183254057334
+action_first_step_std,uncertainty,39,30,0.25555555555555554,0.38418253195517266
+selected_overlap_rmse,overlap,39,30,,
+selected_overlap_all_rmse,overlap,39,30,,
+overlap_cosine_distance,overlap,39,30,,
+overlap_rotation_rmse,overlap,39,30,,
+overlap_normalized_shift,overlap,39,30,,

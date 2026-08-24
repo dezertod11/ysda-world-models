@@ -1,0 +1,41 @@
+{
+  "campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/ground_truth_boundary_screening_20260824",
+  "trace_files": 6,
+  "num_cases": 42,
+  "num_rollouts": 264,
+  "num_success": 72,
+  "num_failed": 192,
+  "confirmed_mixed_cases": 2,
+  "provisional_mixed_cases": 1,
+  "instruction_shift_cases": 40,
+  "target_drop_failures": 9,
+  "recommended_expansion_cases": [
+    {
+      "suite": "libero_10_with_milk",
+      "task_id": 9,
+      "init_state_id": 0,
+      "num_success": 5,
+      "num_failed": 7,
+      "success_rate": 0.4166666666666667,
+      "screen_status": "confirmed_mixed"
+    },
+    {
+      "suite": "libero_goal_with_mug",
+      "task_id": 9,
+      "init_state_id": 0,
+      "num_success": 8,
+      "num_failed": 4,
+      "success_rate": 0.6666666666666666,
+      "screen_status": "confirmed_mixed"
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task_id": 7,
+      "init_state_id": 0,
+      "num_success": 5,
+      "num_failed": 1,
+      "success_rate": 0.8333333333333334,
+      "screen_status": "provisional_mixed"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+suite,num_rollouts,num_success,target_drop_failures,wrong_object_events,num_failed,success_rate
+libero_10_task,60,6,6,54,54,0.1
+libero_10_with_milk,12,5,0,0,7,0.4166666666666667
+libero_goal_task,60,6,1,20,54,0.1
+libero_goal_with_mug,12,8,1,0,4,0.6666666666666666
+libero_object_task,60,6,0,45,54,0.1
+libero_spatial_task,60,41,1,12,19,0.6833333333333333

@@ -1,0 +1,11 @@
+{
+  "campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/ground_truth_boundary_screening_20260824",
+  "trace_files": 6,
+  "episodes": 264,
+  "queries": 10255,
+  "checked_overlaps": 9991,
+  "seed_modes": [
+    "independent"
+  ],
+  "valid": true
+}

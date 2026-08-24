@@ -4,13 +4,11 @@
 
 ## Статус запуска
 
-Кампания `ground_truth_boundary_screening_20260824` запущена 24 августа в
-12:22 MSK на GPU 5 и 6. Перед ней успешно прошли 40-task semantic preflight,
-38 focused Cosmos tests, headless simulator smoke и один реальный model rollout:
-schema-v2 sidecar содержит 12 query, 96 исполненных действий и 96 выровненных
-simulator-state записей. Основная кампания находится в состоянии `running`;
-частичные доли success/fail не интерпретируются до завершения всех jobs и
-автоматического integrity check.
+Кампания `ground_truth_boundary_screening_20260824` завершена 24 августа в
+18:36 MSK на GPU 5 и 6: 6/6 jobs, 264/264 rollout, 10 255 query и 9 991/9 991
+валидных overlap transitions. Получено 72 success и 192 fail. Полный анализ и
+решение по направлению находятся в
+[`GROUND_TRUTH_BOUNDARY_SCREENING_RESULTS_20260824.md`](GROUND_TRUTH_BOUNDARY_SCREENING_RESULTS_20260824.md).
 
 ## Зачем нужен новый запуск
 
@@ -107,6 +105,13 @@ fail; один minority outcome даёт только `provisional_mixed`.
   --watch 60
 ```
 
-После завершения результаты появляются в
-`analysis/boundary_screening/`: seed-level outcomes, полный case summary,
-список mixed cases, Wilson confidence intervals и график success rates.
+Compact результаты находятся в
+`campaigns/ground_truth_boundary_screening_20260824/analysis/`: seed-level
+outcomes, полный case summary, early-metric inference, replay audit и графики.
+
+Screening нашёл две confirmed mixed controls и один provisional новый case.
+Из 40 task-OOD cases 30 были all-fail, 9 all-success и только один mixed.
+Лучший preregistered early signal дал macro AUROC 0.613, ни одна метрика не
+прошла multiple-testing correction. Поэтому task replacement сохраняется как
+OOD stress benchmark, но plain uncertainty/overlap detector не допускается к
+closed-loop intervention.

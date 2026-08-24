@@ -179,8 +179,12 @@ def plot_cases(summary: pd.DataFrame, output_path: Path) -> None:
         for suite, task_id in zip(ordered["suite"], ordered["task_id"])
     ]
     rates = ordered["success_rate"].to_numpy(dtype=float)
-    lower = rates - ordered["success_rate_ci95_low"].to_numpy(dtype=float)
-    upper = ordered["success_rate_ci95_high"].to_numpy(dtype=float) - rates
+    lower = np.maximum(
+        rates - ordered["success_rate_ci95_low"].to_numpy(dtype=float), 0.0
+    )
+    upper = np.maximum(
+        ordered["success_rate_ci95_high"].to_numpy(dtype=float) - rates, 0.0
+    )
     colors = [
         "#D1495B" if status == "all_fail" else
         "#2A9D8F" if status == "all_success" else

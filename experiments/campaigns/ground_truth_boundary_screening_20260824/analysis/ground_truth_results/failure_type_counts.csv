@@ -1,0 +1,8 @@
+group,failure_type,count
+mixed_control,timeout_partial_goal,6
+mixed_control,kinematic_deadlock_candidate,4
+mixed_control,target_drop_candidate,1
+task_ood,wrong_object_interaction_candidate,125
+task_ood,timeout_no_goal,32
+task_ood,kinematic_deadlock_candidate,16
+task_ood,target_drop_candidate,8

@@ -1,0 +1,12 @@
+query_idx,observed_after_step,num_episodes,macro_failure_auc,per_case_auc_json
+0,8,24,0.5602678571428572,"{""libero_10_with_milk/task9/init0"": 0.7142857142857143, ""libero_goal_with_mug/task9/init0"": 0.40625}"
+1,16,24,0.3236607142857143,"{""libero_10_with_milk/task9/init0"": 0.42857142857142855, ""libero_goal_with_mug/task9/init0"": 0.21875}"
+2,24,24,0.6933035714285714,"{""libero_10_with_milk/task9/init0"": 0.5428571428571428, ""libero_goal_with_mug/task9/init0"": 0.84375}"
+3,32,24,0.4642857142857143,"{""libero_10_with_milk/task9/init0"": 0.42857142857142855, ""libero_goal_with_mug/task9/init0"": 0.5}"
+4,40,24,0.37589285714285714,"{""libero_10_with_milk/task9/init0"": 0.3142857142857143, ""libero_goal_with_mug/task9/init0"": 0.4375}"
+5,48,24,0.7397321428571428,"{""libero_10_with_milk/task9/init0"": 0.8857142857142857, ""libero_goal_with_mug/task9/init0"": 0.59375}"
+6,56,24,0.5241071428571429,"{""libero_10_with_milk/task9/init0"": 0.4857142857142857, ""libero_goal_with_mug/task9/init0"": 0.5625}"
+7,64,24,0.55,"{""libero_10_with_milk/task9/init0"": 0.6, ""libero_goal_with_mug/task9/init0"": 0.5}"
+8,72,24,0.42678571428571427,"{""libero_10_with_milk/task9/init0"": 0.22857142857142856, ""libero_goal_with_mug/task9/init0"": 0.625}"
+9,80,24,0.39419642857142856,"{""libero_10_with_milk/task9/init0"": 0.2571428571428571, ""libero_goal_with_mug/task9/init0"": 0.53125}"
+10,88,24,0.25491071428571427,"{""libero_10_with_milk/task9/init0"": 0.22857142857142856, ""libero_goal_with_mug/task9/init0"": 0.28125}"
