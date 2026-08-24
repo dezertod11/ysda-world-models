@@ -279,6 +279,13 @@ LIBERO-PRO task case передавал policy исходную filename-derived
 outcomes. Полный разбор:
 [`TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md`](TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md).
 
+**Обновление 24 августа 2026.** Ground-truth repair завершён: BDDL instruction
+передаётся policy, successful object-specific release отделён от premature
+drop, а schema-v2 sidecar сохраняет step-level predicate/object state. После
+успешного real-model smoke запущен 264-rollout boundary screening 40 исправленных
+task-OOD cases и двух known mixed controls. Протокол:
+[`GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md`](GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md).
+
 1. Добавить сохранение полных candidate chunks и, на подвыборке, action latent
    embeddings.
 2. Проверить exact alignment $A_q[8:16]$ против $A_{q+1}[0:8]$ и same-seed

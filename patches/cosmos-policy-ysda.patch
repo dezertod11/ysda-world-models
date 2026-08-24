@@ -296,22 +296,62 @@ index 00c2845..7e06e12 100644
  
      return return_dict
 diff --git a/cosmos_policy/experiments/robot/libero/libero_utils.py b/cosmos_policy/experiments/robot/libero/libero_utils.py
-index 9d7dd6a..b3107f7 100644
+index 9d7dd6a..dfb23e9 100644
 --- a/cosmos_policy/experiments/robot/libero/libero_utils.py
 +++ b/cosmos_policy/experiments/robot/libero/libero_utils.py
-@@ -30,7 +30,11 @@ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
+@@ -27,13 +27,50 @@ from PIL import Image, ImageDraw, ImageFont
+ from cosmos_policy.experiments.robot.robot_utils import DATE, DATE_TIME
+ 
+ 
++def get_libero_bddl_file(task):
++    """Resolve the BDDL file used by a LIBERO benchmark task."""
++    parts = [get_libero_path("bddl_files"), task.problem_folder]
++    if hasattr(task, "level"):
++        parts.append(f"L{int(task.level)}")
++    parts.append(task.bddl_file)
++    return os.path.join(*parts)
++
++
++def _normalize_task_description(description):
++    if isinstance(description, (list, tuple)):
++        description = " ".join(str(token) for token in description)
++    return str(description or "").strip()
++
++
++def get_libero_task_description(task, env=None):
++    """Return the instruction encoded by the active BDDL problem.
++
++    LIBERO-PRO task perturbations rewrite ``(:language ...)`` without renaming
++    the BDDL file.  ``task.language`` is derived from that stale filename, so
++    prefer the instruction parsed by the environment whenever it is available.
++    """
++    description = _normalize_task_description(
++        getattr(env, "language_instruction", None) if env is not None else None
++    )
++    if description:
++        return description
++    try:
++        from libero.libero.envs.bddl_utils import get_problem_info
++
++        problem = get_problem_info(get_libero_bddl_file(task))
++        description = _normalize_task_description(problem.get("language_instruction"))
++    except (AttributeError, KeyError, OSError, TypeError, ValueError):
++        description = ""
++    return description or _normalize_task_description(getattr(task, "language", ""))
++
++
  def get_libero_env(task, model_family, resolution=256):
      """Initializes and returns the LIBERO environment, along with the task description."""
-     task_description = task.language
+-    task_description = task.language
 -    task_bddl_file = os.path.join(get_libero_path("bddl_files"), task.problem_folder, task.bddl_file)
-+    task_bddl_parts = [get_libero_path("bddl_files"), task.problem_folder]
-+    if hasattr(task, "level"):
-+        task_bddl_parts.append(f"L{int(task.level)}")
-+    task_bddl_parts.append(task.bddl_file)
-+    task_bddl_file = os.path.join(*task_bddl_parts)
++    task_bddl_file = get_libero_bddl_file(task)
      env_args = {"bddl_file_name": task_bddl_file, "camera_heights": resolution, "camera_widths": resolution}
      env = OffScreenRenderEnv(**env_args)
      env.seed(0)  # IMPORTANT: seed seems to affect object positions even when using fixed initial state
++    task_description = get_libero_task_description(task, env)
+     return env, task_description
+ 
+ 
 diff --git a/cosmos_policy/experiments/robot/libero/run_libero_eval.py b/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 index 8ced47f..13ba41e 100644
 --- a/cosmos_policy/experiments/robot/libero/run_libero_eval.py
@@ -424,10 +464,10 @@ index 8ced47f..13ba41e 100644
      log_message(f"Number of tasks: {num_tasks}", log_file)
 diff --git a/cosmos_policy/experiments/robot/libero/safety_signals.py b/cosmos_policy/experiments/robot/libero/safety_signals.py
 new file mode 100644
-index 0000000..735db26
+index 0000000..6103a5b
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/safety_signals.py
-@@ -0,0 +1,558 @@
+@@ -0,0 +1,699 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Post-action failure diagnostics for LIBERO and LIBERO-Safety rollouts.
 +
@@ -439,6 +479,7 @@ index 0000000..735db26
 +
 +from __future__ import annotations
 +
++import json
 +from dataclasses import dataclass
 +from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 +
@@ -604,9 +645,18 @@ index 0000000..735db26
 +        self.object_states = getattr(self.env, "object_states_dict", {}) or {}
 +        self.movable_objects = self._movable_object_names()
 +        self.target_objects = self._target_object_names(parsed_problem)
++        self.goal_relevant_objects = self._goal_relevant_object_names()
 +        self.non_target_objects = [
-+            name for name in self.movable_objects if name not in set(self.target_objects)
++            name for name in self.movable_objects if name not in set(self.goal_relevant_objects)
 +        ]
++        self.target_goal_indices = {
++            name: [
++                index
++                for index, state in enumerate(self.goal_states)
++                if len(state) >= 2 and state[1] == name
++            ]
++            for name in self.target_objects
++        }
 +
 +        self.initial_object_positions = self._object_positions(initial_obs)
 +        self.peak_target_z = {
@@ -616,6 +666,8 @@ index 0000000..735db26
 +        }
 +        self.target_was_lifted = {name: False for name in self.target_objects}
 +        self.drop_event_t: Optional[int] = None
++        self.drop_event_object: Optional[str] = None
++        self.successful_release_event_t: Dict[str, int] = {}
 +        self.wrong_object_event_t: Optional[int] = None
 +        self.first_goal_progress_t: Optional[int] = None
 +        self.first_target_lift_t: Optional[int] = None
@@ -627,8 +679,11 @@ index 0000000..735db26
 +        if initial_eef is not None:
 +            self.eef_positions.append(initial_eef)
 +        self.actions: List[np.ndarray] = []
-+        self.records: List[Dict[str, float]] = []
-+        self.initial_goal_progress = self._goal_progress()
++        self.records: List[Dict[str, Any]] = []
++        self.latest_goal_predicate_satisfaction = self._goal_predicate_satisfaction()
++        self.initial_goal_progress = self._goal_progress(
++            self.latest_goal_predicate_satisfaction
++        )
 +        self.max_goal_progress = self.initial_goal_progress
 +
 +    def _movable_object_names(self) -> List[str]:
@@ -645,7 +700,12 @@ index 0000000..735db26
 +        targets: List[str] = []
 +        movable = set(self.movable_objects)
 +        for state in self.goal_states:
-+            if len(state) >= 2 and state[1] in movable and state[1] not in targets:
++            if (
++                len(state) >= 2
++                and isinstance(state[1], str)
++                and state[1] in movable
++                and state[1] not in targets
++            ):
 +                targets.append(state[1])
 +        if targets:
 +            return targets
@@ -654,6 +714,33 @@ index 0000000..735db26
 +            if name in movable and name not in targets:
 +                targets.append(name)
 +        return targets
++
++    def _goal_relevant_object_names(self) -> List[str]:
++        movable = set(self.movable_objects)
++        relevant: List[str] = []
++        for state in self.goal_states:
++            for argument in state[1:]:
++                if isinstance(argument, str) and argument in movable and argument not in relevant:
++                    relevant.append(argument)
++        return relevant or list(self.target_objects)
++
++    def _goal_predicate_satisfaction(self) -> np.ndarray:
++        satisfaction = np.full(len(self.goal_states), -1, dtype=np.int8)
++        if not hasattr(self.env, "_eval_predicate"):
++            return satisfaction
++        for index, state in enumerate(self.goal_states):
++            try:
++                satisfaction[index] = int(bool(self.env._eval_predicate(state)))
++            except (AttributeError, KeyError, TypeError, ValueError):
++                continue
++        return satisfaction
++
++    def _target_goal_satisfaction(self, predicates: np.ndarray) -> Dict[str, bool]:
++        result = {}
++        for name, indices in self.target_goal_indices.items():
++            values = predicates[indices] if indices else np.asarray([], dtype=np.int8)
++            result[name] = bool(len(values) and np.all(values == 1))
++        return result
 +
 +    def _eef_position(self, obs: Mapping[str, Any]) -> Optional[np.ndarray]:
 +        return _safe_array(obs.get("robot0_eef_pos"), expected_size=3)
@@ -676,16 +763,11 @@ index 0000000..735db26
 +                positions[name] = position[:3].copy()
 +        return positions
 +
-+    def _goal_progress(self) -> float:
-+        if not self.goal_states or not hasattr(self.env, "_eval_predicate"):
++    def _goal_progress(self, predicates: Optional[np.ndarray] = None) -> float:
++        if not self.goal_states:
 +            return float("nan")
-+        satisfied = 0
-+        for state in self.goal_states:
-+            try:
-+                satisfied += int(bool(self.env._eval_predicate(state)))
-+            except (AttributeError, KeyError, TypeError, ValueError):
-+                continue
-+        return float(satisfied / len(self.goal_states))
++        values = self._goal_predicate_satisfaction() if predicates is None else predicates
++        return float(np.sum(values == 1) / len(self.goal_states))
 +
 +    def _robot_contact_counts(self) -> Tuple[int, int]:
 +        sim = getattr(self.env, "sim", None)
@@ -738,7 +820,10 @@ index 0000000..735db26
 +        if eef is not None:
 +            self.eef_positions.append(eef[:3].copy())
 +        object_positions = self._object_positions(obs)
-+        progress = self._goal_progress()
++        predicate_satisfaction = self._goal_predicate_satisfaction()
++        self.latest_goal_predicate_satisfaction = predicate_satisfaction.copy()
++        target_goal_satisfied = self._target_goal_satisfaction(predicate_satisfaction)
++        progress = self._goal_progress(predicate_satisfaction)
 +        if np.isfinite(progress):
 +            if (
 +                self.first_goal_progress_t is None
@@ -750,6 +835,9 @@ index 0000000..735db26
 +
 +        max_target_lift = 0.0
 +        min_target_eef_distance = float("nan")
++        target_released = {name: False for name in self.target_objects}
++        successful_releases_before = set(self.successful_release_event_t)
++        drop_event_before = self.drop_event_t
 +        for name in self.target_objects:
 +            position = object_positions.get(name)
 +            initial = self.initial_object_positions.get(name)
@@ -772,17 +860,21 @@ index 0000000..735db26
 +                )
 +            dropped_from_peak = self.peak_target_z[name] - float(position[2])
 +            released = not np.isfinite(distance) or distance >= self.thresholds.released_distance_m
-+            if (
-+                self.drop_event_t is None
-+                and self.target_was_lifted.get(name, False)
++            release_candidate = (
++                self.target_was_lifted.get(name, False)
 +                and dropped_from_peak >= self.thresholds.target_drop_from_peak_m
 +                and released
-+                and not task_success
-+            ):
++            )
++            target_released[name] = bool(release_candidate)
++            if release_candidate and (task_success or target_goal_satisfied.get(name, False)):
++                self.successful_release_event_t.setdefault(name, int(t))
++            elif release_candidate and self.drop_event_t is None:
 +                self.drop_event_t = int(t)
++                self.drop_event_object = name
 +
 +        max_non_target_displacement = 0.0
 +        max_non_target_lift = 0.0
++        wrong_object_event_before = self.wrong_object_event_t
 +        for name in self.non_target_objects:
 +            position = object_positions.get(name)
 +            initial = self.initial_object_positions.get(name)
@@ -808,6 +900,23 @@ index 0000000..735db26
 +        self.official_cost_types.update(costs)
 +        robot_contacts, target_contacts = self._robot_contact_counts()
 +
++        object_position_matrix = np.full((len(self.movable_objects), 3), np.nan, dtype=np.float32)
++        for index, name in enumerate(self.movable_objects):
++            position = object_positions.get(name)
++            if position is not None:
++                object_position_matrix[index] = np.asarray(position[:3], dtype=np.float32)
++        target_goal_array = np.asarray(
++            [target_goal_satisfied.get(name, False) for name in self.target_objects],
++            dtype=np.int8,
++        )
++        target_released_array = np.asarray(
++            [target_released.get(name, False) for name in self.target_objects],
++            dtype=np.int8,
++        )
++        eef_record = np.full(3, np.nan, dtype=np.float32)
++        if eef is not None:
++            eef_record[:] = np.asarray(eef[:3], dtype=np.float32)
++
 +        self.records.append(
 +            {
 +                "t": float(t),
@@ -816,13 +925,28 @@ index 0000000..735db26
 +                "target_eef_distance_min": min_target_eef_distance,
 +                "non_target_displacement_max": float(max_non_target_displacement),
 +                "non_target_lift_max": float(max_non_target_lift),
-+                "target_drop_candidate": float(self.drop_event_t is not None),
-+                "wrong_object_interaction_candidate": float(self.wrong_object_event_t is not None),
++                "target_drop_candidate": float(
++                    drop_event_before is None and self.drop_event_t == int(t)
++                ),
++                "successful_target_release": float(
++                    bool(set(self.successful_release_event_t) - successful_releases_before)
++                ),
++                "wrong_object_interaction_candidate": float(
++                    wrong_object_event_before is None and self.wrong_object_event_t == int(t)
++                ),
++                "target_goal_satisfied_fraction": float(target_goal_array.mean())
++                if target_goal_array.size
++                else float("nan"),
 +                "official_safety_violation": float(violation),
 +                "official_safety_cost": float(sum(costs.values())),
 +                "robot_contact_count": float(robot_contacts),
 +                "robot_target_contact_count": float(target_contacts),
 +                "action_motion_norm": float(np.linalg.norm(action_array[:-1])),
++                "goal_predicates_satisfied": predicate_satisfaction.copy(),
++                "object_positions": object_position_matrix,
++                "eef_position": eef_record,
++                "target_goal_satisfied": target_goal_array,
++                "target_released": target_released_array,
 +            }
 +        )
 +
@@ -869,6 +993,12 @@ index 0000000..735db26
 +            "observed_non_target_displacement_max": float(values("non_target_displacement_max").max()),
 +            "observed_non_target_lift_max": float(values("non_target_lift_max").max()),
 +            "observed_target_drop_candidate": float(values("target_drop_candidate").max()),
++            "observed_successful_target_release": float(
++                values("successful_target_release").max()
++            ),
++            "observed_target_goal_satisfied_fraction_end": float(
++                values("target_goal_satisfied_fraction")[-1]
++            ),
 +            "observed_wrong_object_interaction_candidate": float(
 +                values("wrong_object_interaction_candidate").max()
 +            ),
@@ -887,6 +1017,41 @@ index 0000000..735db26
 +            "observed_eef_jerk_mean": kinematics["jerk_mean"],
 +            "observed_eef_jerk_max": kinematics["jerk_max"],
 +            "observed_eef_dimensionless_jerk_proxy": kinematics["dimensionless_jerk_proxy"],
++        }
++
++    def simulator_trace_sidecar(self) -> Dict[str, np.ndarray]:
++        """Return step-aligned simulator state for label and video audits."""
++        if not self.records:
++            return {}
++
++        def stack(name: str, dtype: Any) -> np.ndarray:
++            return np.stack([np.asarray(record[name], dtype=dtype) for record in self.records])
++
++        initial_positions = np.full((len(self.movable_objects), 3), np.nan, dtype=np.float32)
++        for index, name in enumerate(self.movable_objects):
++            position = self.initial_object_positions.get(name)
++            if position is not None:
++                initial_positions[index] = np.asarray(position[:3], dtype=np.float32)
++
++        goal_states = [
++            [str(value) for value in state]
++            for state in self.goal_states
++        ]
++        return {
++            "safety_t": np.asarray([record["t"] for record in self.records], dtype=np.int64),
++            "safety_goal_predicates_json": np.asarray(
++                [json.dumps(goal_states, ensure_ascii=True)], dtype=np.str_
++            ),
++            "safety_goal_predicates_satisfied": stack(
++                "goal_predicates_satisfied", np.int8
++            ),
++            "safety_object_names": np.asarray(self.movable_objects, dtype=np.str_),
++            "safety_object_initial_positions": initial_positions,
++            "safety_object_positions": stack("object_positions", np.float32),
++            "safety_eef_positions": stack("eef_position", np.float32),
++            "safety_target_names": np.asarray(self.target_objects, dtype=np.str_),
++            "safety_target_goal_satisfied": stack("target_goal_satisfied", np.int8),
++            "safety_target_released": stack("target_released", np.int8),
 +        }
 +
 +    def _deadlock_candidate(self) -> bool:
@@ -916,6 +1081,8 @@ index 0000000..735db26
 +        official_violation = self.official_violation_t is not None
 +        drop = self.drop_event_t is not None
 +        wrong_object = self.wrong_object_event_t is not None
++        successful_release_t = min(self.successful_release_event_t.values(), default=-1)
++        final_predicates = self.latest_goal_predicate_satisfaction
 +
 +        if success:
 +            failure_type = "success"
@@ -965,8 +1132,15 @@ index 0000000..735db26
 +            ),
 +            "official_safety_cost_types": ",".join(sorted(self.official_cost_types)),
 +            "target_objects": ",".join(self.target_objects),
++            "goal_relevant_objects": ",".join(self.goal_relevant_objects),
 +            "target_drop_candidate": bool(drop),
 +            "target_drop_candidate_t": int(self.drop_event_t if self.drop_event_t is not None else -1),
++            "target_drop_candidate_object": self.drop_event_object or "",
++            "successful_target_release": bool(self.successful_release_event_t),
++            "successful_target_release_t": int(successful_release_t),
++            "successful_target_release_objects": ",".join(
++                sorted(self.successful_release_event_t)
++            ),
 +            "wrong_object_interaction_candidate": bool(wrong_object),
 +            "wrong_object_interaction_candidate_t": int(
 +                self.wrong_object_event_t if self.wrong_object_event_t is not None else -1
@@ -981,6 +1155,13 @@ index 0000000..735db26
 +                self.first_target_lift_t if self.first_target_lift_t is not None else -1
 +            ),
 +            "episode_target_lift_max": float(max_target_lift),
++            "goal_predicates_json": json.dumps(
++                [[str(value) for value in state] for state in self.goal_states],
++                ensure_ascii=True,
++            ),
++            "goal_predicates_satisfied_final_json": json.dumps(
++                final_predicates.astype(int).tolist()
++            ),
 +            "episode_eef_path_length": full_kinematics["path_length"],
 +            "episode_eef_net_displacement": full_kinematics["net_displacement"],
 +            "episode_eef_jerk_mean": full_kinematics["jerk_mean"],
@@ -1192,10 +1373,10 @@ index 0000000..3f5791c
 +    return result
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
 new file mode 100644
-index 0000000..69a8acf
+index 0000000..c16b082
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
-@@ -0,0 +1,2746 @@
+@@ -0,0 +1,2764 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
 +
@@ -1232,6 +1413,7 @@ index 0000000..69a8acf
 +    get_libero_dummy_action,
 +    get_libero_env,
 +    get_libero_image,
++    get_libero_task_description,
 +    get_libero_wrist_image,
 +)
 +from cosmos_policy.experiments.robot.libero.run_libero_eval import (
@@ -1272,6 +1454,9 @@ index 0000000..69a8acf
 +    "num_queries",
 +    "num_samples",
 +    "task_description",
++    "benchmark_task_description",
++    "task_instruction_source",
++    "task_instruction_differs_from_benchmark",
 +    "task_level",
 +    "task_level_id",
 +    "intervention_mode",
@@ -2187,13 +2372,17 @@ index 0000000..69a8acf
 +
 +    task_suite = benchmark.get_benchmark_dict()[suite_name]()
 +    task = task_suite.get_task(task_id)
-+    task_description = task.language
++    benchmark_task_description = str(task.language).strip()
 +    init_states = get_task_init_states_compat(task_suite, task_id, task)
 +    if init_state_id >= len(init_states):
 +        raise ValueError(f"init_state_id={init_state_id} but only {len(init_states)} states are available")
 +
 +    resize_size = get_image_resize_size(cfg.model_family)
-+    env, _ = get_libero_env(task, cfg.model_family, resolution=cfg.env_img_res)
++    env, task_description = get_libero_env(task, cfg.model_family, resolution=cfg.env_img_res)
++    task_description = get_libero_task_description(task, env)
++    task_instruction_source = (
++        "bddl" if str(getattr(env, "language_instruction", "") or "").strip() else "benchmark"
++    )
 +    env.reset()
 +    obs = env.set_init_state(init_states[init_state_id])
 +
@@ -2268,6 +2457,11 @@ index 0000000..69a8acf
 +                "query_idx": query_idx,
 +                "t": t,
 +                "task_description": task_description,
++                "benchmark_task_description": benchmark_task_description,
++                "task_instruction_source": task_instruction_source,
++                "task_instruction_differs_from_benchmark": bool(
++                    task_description != benchmark_task_description
++                ),
 +                "prediction_mode": (
 +                    "autoregressive" if cfg.ar_future_prediction or cfg.ar_value_prediction else "parallel"
 +                ),
@@ -2512,8 +2706,11 @@ index 0000000..69a8acf
 +                {
 +                    "actual_executed_actions": np.asarray(actual_executed_actions, dtype=np.float32),
 +                    "actual_action_query_index": np.asarray(actual_action_query_index, dtype=np.int64),
-+                    "schema_version": np.asarray(1, dtype=np.int64),
++                    "schema_version": np.asarray(2, dtype=np.int64),
 +                    "suite": np.asarray(suite_name),
++                    "task_description": np.asarray(task_description),
++                    "benchmark_task_description": np.asarray(benchmark_task_description),
++                    "task_instruction_source": np.asarray(task_instruction_source),
 +                    "task_id": np.asarray(task_id, dtype=np.int64),
 +                    "episode_id": np.asarray(episode_id, dtype=np.int64),
 +                    "pair_id": np.asarray(pair_id if pair_id is not None else -1, dtype=np.int64),
@@ -2530,6 +2727,8 @@ index 0000000..69a8acf
 +                    ),
 +                }
 +            )
++            if safety_tracker is not None:
++                sidecar_payload.update(safety_tracker.simulator_trace_sidecar())
 +            np.savez_compressed(temporal_overlap_sidecar_path, **sidecar_payload)
 +    return trace, frames
 +
@@ -5108,16 +5307,17 @@ index 0000000..381bd86
 +    assert alarm_without_disagreement["planning_selected_open_loop_steps"] == 16.0
 diff --git a/tests/test_safety_signals.py b/tests/test_safety_signals.py
 new file mode 100644
-index 0000000..6153d3f
+index 0000000..79be5b6
 --- /dev/null
 +++ b/tests/test_safety_signals.py
-@@ -0,0 +1,140 @@
+@@ -0,0 +1,194 @@
 +from __future__ import annotations
 +
 +from types import SimpleNamespace
 +
 +import numpy as np
 +
++from cosmos_policy.experiments.robot.libero.libero_utils import get_libero_task_description
 +from cosmos_policy.experiments.robot.libero.safety_signals import (
 +    SafetySignalTracker,
 +    has_official_safety_violation,
@@ -5174,6 +5374,14 @@ index 0000000..6153d3f
 +    assert official_safety_costs(info) == {"CheckRobotContact": 1.0}
 +    assert has_official_safety_violation(info)
 +    assert not has_official_safety_violation({"cost": {"Fall": 0}})
++
++
++def test_bddl_instruction_overrides_filename_language():
++    task = SimpleNamespace(language="put the cream cheese in the bowl")
++    env = SimpleNamespace(language_instruction="put the wine bottle in the bowl")
++
++    assert get_libero_task_description(task, env) == "put the wine bottle in the bowl"
++    assert get_libero_task_description(task, None) == "put the cream cheese in the bowl"
 +
 +
 +def test_target_drop_candidate_and_query_metrics():
@@ -5238,6 +5446,51 @@ index 0000000..6153d3f
 +    episode = tracker.episode_summary(True, final_t=2, max_steps=10)
 +    assert episode["failure_type"] == "success"
 +    assert episode["safe_task_success"]
++    assert episode["successful_target_release"]
++    assert not episode["target_drop_candidate"]
++
++
++def test_satisfied_target_predicate_marks_expected_release_before_episode_success():
++    env, tracker = make_tracker()
++    marker = tracker.mark_query_start()
++    env.object_states_dict["target"].position[:] = [0.0, 0.0, 0.90]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.91])},
++        np.zeros(7),
++        t=1,
++    )
++    env.object_states_dict["target"].position[:] = [0.2, 0.0, 0.80]
++    env.goal = True
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.4, 0.0, 0.90])},
++        np.zeros(7),
++        t=2,
++        task_success=False,
++    )
++
++    query = tracker.query_summary(marker)
++    episode = tracker.episode_summary(False, final_t=2, max_steps=10)
++    sidecar = tracker.simulator_trace_sidecar()
++    assert query["observed_successful_target_release"] == 1.0
++    assert query["observed_target_drop_candidate"] == 0.0
++    assert episode["successful_target_release"]
++    assert not episode["target_drop_candidate"]
++    assert sidecar["safety_goal_predicates_satisfied"].shape == (2, 1)
++    assert sidecar["safety_object_positions"].shape == (2, 3, 3)
++
++
++def test_goal_receptacle_is_not_a_wrong_object():
++    env, tracker = make_tracker()
++    env.object_states_dict["plate"].position[:] = [0.5, 0.0, 0.80]
++    tracker.observe(
++        {"robot0_eef_pos": np.array([0.0, 0.0, 0.85])},
++        np.zeros(7),
++        t=1,
++    )
++
++    episode = tracker.episode_summary(False, final_t=1, max_steps=10)
++    assert "plate" in tracker.goal_relevant_objects
++    assert not episode["wrong_object_interaction_candidate"]
 +
 +
 +def test_stationary_failed_episode_is_deadlock_candidate():

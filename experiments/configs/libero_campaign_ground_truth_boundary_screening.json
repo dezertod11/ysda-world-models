@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "ground_truth_smoke": {
+      "description": "One corrected LIBERO-PRO task rollout validating BDDL instruction and schema-v2 simulator labels",
+      "jobs": [
+        {
+          "name": "goal_task6_ground_truth_smoke",
+          "gpu_slot": 0,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 1,
+          "case_id": "goal_task_ground_truth_smoke",
+          "suites": "libero_goal_task",
+          "task_ids": "6",
+          "init_state_ids": "0",
+          "base_seed": 1490000,
+          "max_timesteps": 96,
+          "strategy_lambdas": "max_value:0"
+        }
+      ]
+    },
+    "ground_truth_boundary_screening": {
+      "description": "Corrected BDDL-instruction screening of 40 task-OOD cases plus two known natural mixed cases",
+      "jobs": [
+        {
+          "name": "goal_task_all",
+          "gpu_slot": 1,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 6,
+          "case_id": "goal_task_all_init0",
+          "suites": "libero_goal_task",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "base_seed": 1500000,
+          "max_timesteps": 320,
+          "strategy_lambdas": "max_value:0"
+        },
+        {
+          "name": "spatial_task_all",
+          "gpu_slot": 0,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 6,
+          "case_id": "spatial_task_all_init0",
+          "suites": "libero_spatial_task",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "base_seed": 1600000,
+          "max_timesteps": 240,
+          "strategy_lambdas": "max_value:0"
+        },
+        {
+          "name": "object_task_all",
+          "gpu_slot": 1,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 6,
+          "case_id": "object_task_all_init0",
+          "suites": "libero_object_task",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "base_seed": 1700000,
+          "max_timesteps": 300,
+          "strategy_lambdas": "max_value:0"
+        },
+        {
+          "name": "libero10_task_all",
+          "gpu_slot": 0,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 6,
+          "case_id": "libero10_task_all_init0",
+          "suites": "libero_10_task",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "base_seed": 1800000,
+          "max_timesteps": 520,
+          "strategy_lambdas": "max_value:0"
+        },
+        {
+          "name": "known_goal_mug_task9",
+          "gpu_slot": 1,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 12,
+          "case_id": "known_goal_mug_task9_init0",
+          "suites": "libero_goal_with_mug",
+          "task_ids": "9",
+          "init_state_ids": "0",
+          "base_seed": 1900000,
+          "max_timesteps": 320,
+          "strategy_lambdas": "max_value:0"
+        },
+        {
+          "name": "known_long_milk_task9",
+          "gpu_slot": 1,
+          "kind": "pro_planning_grid",
+          "experiment_split": "screen",
+          "max_rollouts": 12,
+          "case_id": "known_long_milk_task9_init0",
+          "suites": "libero_10_with_milk",
+          "task_ids": "9",
+          "init_state_ids": "0",
+          "base_seed": 2000000,
+          "max_timesteps": 520,
+          "strategy_lambdas": "max_value:0"
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "uncertainty_seeds": "0,1,2,3",
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "record_temporal_overlap": true,
+    "temporal_overlap_seed_mode": "independent",
+    "temporal_overlap_max_window": 8,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "num_open_loop_steps": 8,
+    "num_denoising_steps_action": 10,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "planning_action_weight": 0.5,
+    "planning_difficulty_threshold": 0.088588,
+    "planning_value_margin": 0.002,
+    "planning_uncertainty_margin": 0.0,
+    "planning_phase_fraction": 0.5,
+    "planning_short_open_loop_steps": 8,
+    "planning_surrogate_error_threshold": 0.08841767562905925
+  }
+}

@@ -79,6 +79,13 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
     task_ids = _parse_int_spec(job["task_ids"])
     if any(task_id < 0 for task_id in task_ids):
         raise ValueError(f"{job['name']}: task ids must be non-negative")
+    experiment_split = str(job.get("experiment_split", "unspecified"))
+    valid_splits = {"unspecified", "screen", "calibration", "holdout", "generalization"}
+    if experiment_split not in valid_splits:
+        raise ValueError(
+            f"{job['name']}: invalid experiment_split={experiment_split!r}; "
+            f"choose from {sorted(valid_splits)}"
+        )
 
     if kind == "safety_paired":
         commit = os.environ.get(

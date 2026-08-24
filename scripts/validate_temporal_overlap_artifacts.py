@@ -24,6 +24,7 @@ def locate_sidecar(raw_path: str, campaign_dir: Path) -> Path:
 def validate_sidecar(trace: pd.DataFrame, sidecar_path: Path) -> dict[str, int | str]:
     episode = trace.sort_values("query_idx").reset_index(drop=True)
     with np.load(sidecar_path, allow_pickle=False) as data:
+        available_keys = set(data.files)
         actions = data["candidate_actions_raw"]
         selected = data["selected_sample_idx"]
         query_t = data["query_t"]
@@ -31,6 +32,26 @@ def validate_sidecar(trace: pd.DataFrame, sidecar_path: Path) -> dict[str, int |
         candidate_seeds = data["candidate_seeds"]
         actual_actions = data["actual_executed_actions"]
         seed_mode = str(data["seed_mode"].item())
+        schema_version = int(data["schema_version"].item())
+        sidecar_description = (
+            str(data["task_description"].item())
+            if "task_description" in available_keys
+            else ""
+        )
+        safety_arrays = {
+            key: np.asarray(data[key])
+            for key in (
+                "safety_t",
+                "safety_goal_predicates_satisfied",
+                "safety_object_names",
+                "safety_object_positions",
+                "safety_eef_positions",
+                "safety_target_names",
+                "safety_target_goal_satisfied",
+                "safety_target_released",
+            )
+            if key in available_keys
+        }
 
     if actions.ndim != 4 or actions.shape[0] != len(episode):
         raise AssertionError(
@@ -52,6 +73,39 @@ def validate_sidecar(trace: pd.DataFrame, sidecar_path: Path) -> dict[str, int |
         )
     if len(actual_actions) != int(executed_steps.sum()):
         raise AssertionError(f"Executed action count mismatch in {sidecar_path}")
+    if sidecar_description and sidecar_description != str(episode["task_description"].iloc[0]):
+        raise AssertionError(f"Task instruction differs between trace and sidecar: {sidecar_path}")
+    if schema_version >= 2:
+        required_safety = {
+            "safety_t",
+            "safety_goal_predicates_satisfied",
+            "safety_object_names",
+            "safety_object_positions",
+            "safety_eef_positions",
+            "safety_target_names",
+            "safety_target_goal_satisfied",
+            "safety_target_released",
+        }
+        missing_safety = sorted(required_safety - set(safety_arrays))
+        if missing_safety:
+            raise AssertionError(
+                f"Schema v{schema_version} sidecar lacks safety arrays {missing_safety}: {sidecar_path}"
+            )
+        safety_steps = len(safety_arrays["safety_t"])
+        if safety_steps != len(actual_actions):
+            raise AssertionError(f"Safety trace/action length mismatch in {sidecar_path}")
+        if safety_arrays["safety_object_positions"].shape[:2] != (
+            safety_steps,
+            len(safety_arrays["safety_object_names"]),
+        ):
+            raise AssertionError(f"Safety object pose shape mismatch in {sidecar_path}")
+        if safety_arrays["safety_target_goal_satisfied"].shape[:2] != (
+            safety_steps,
+            len(safety_arrays["safety_target_names"]),
+        ):
+            raise AssertionError(f"Safety target predicate shape mismatch in {sidecar_path}")
+    else:
+        safety_steps = 0
     if seed_mode == "coupled" and len(candidate_seeds) > 1:
         if not np.all(candidate_seeds == candidate_seeds[0]):
             raise AssertionError(
@@ -110,6 +164,8 @@ def validate_sidecar(trace: pd.DataFrame, sidecar_path: Path) -> dict[str, int |
         "samples": actions.shape[1],
         "checked_overlaps": checked_overlaps,
         "seed_mode": seed_mode,
+        "schema_version": schema_version,
+        "safety_steps": safety_steps,
     }
 
 

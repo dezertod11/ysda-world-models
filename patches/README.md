@@ -12,6 +12,8 @@ of vendoring complete upstream Git histories.
 fixed and adaptive planning selection, the frozen future-proprio error
 surrogate, adaptive requery policies, candidate-level diagnostics, replay
 controls, VFD/safety instrumentation and focused tests used in the experiments.
+It also makes LIBERO-PRO task perturbations use the active BDDL instruction and
+records task-aware predicate/release labels in schema-v2 trajectory sidecars.
 `libero-pro-ysda.patch` contains the OOD benchmark definitions,
 BDDL tasks and initialization states used by the project.
 

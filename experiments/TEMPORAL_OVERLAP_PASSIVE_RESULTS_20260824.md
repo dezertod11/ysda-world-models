@@ -209,6 +209,14 @@ coupled 48 success; discordant outcomes равны 4 против 3. Следо�
 
 ## Что делаем дальше
 
+> **Обновление 24 августа 2026.** P0 реализован. Проверка всех четырёх
+> `*_task` suites обнаружила instruction shift в 40/40 задачах. Active BDDL
+> instruction теперь передаётся policy, а object-specific goal predicates
+> отличают успешный release от premature drop. Replay старого successful
+> multi-object episode удалил ложный drop, replay реального failed episode
+> сохранил drop label. Новый протокол и screening описаны в
+> [`GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md`](GROUND_TRUTH_REPAIR_AND_BOUNDARY_SCREENING_20260824.md).
+
 ### P0. Исправить ground truth до новых detector sweeps
 
 1. Для LIBERO-PRO `*_task` читать instruction из perturbed BDDL, а не из имени
@@ -293,4 +301,3 @@ grounded action-conditioned critic.
 
 Компактные audit tables находятся в
 `campaigns/temporal_overlap_passive_20260821/analysis/result_audit/`.
-
