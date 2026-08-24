@@ -1,0 +1,2 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_goal_task,6,0,0,0,1490000,ground_truth_smoke_20260824__goal_task6_ground_truth_smoke__libero_goal_task__task6__init0__max_value__l0,max_value,0.0,False,96,12,0.0,0.3956751674413681,0.3956751674413681,0.0

@@ -1,0 +1,8 @@
+{
+  "job": "goal_task6_ground_truth_smoke",
+  "gpu": "6",
+  "status": "completed",
+  "started_at": "2026-08-24T12:15:55",
+  "finished_at": "2026-08-24T12:20:12",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/ground_truth_smoke_20260824/logs/goal_task6_ground_truth_smoke.log"
+}

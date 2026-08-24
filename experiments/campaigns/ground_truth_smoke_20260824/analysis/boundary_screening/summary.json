@@ -1,0 +1,13 @@
+{
+  "campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/ground_truth_smoke_20260824",
+  "trace_files": 1,
+  "num_cases": 1,
+  "num_rollouts": 1,
+  "num_success": 0,
+  "num_failed": 1,
+  "confirmed_mixed_cases": 0,
+  "provisional_mixed_cases": 0,
+  "instruction_shift_cases": 1,
+  "target_drop_failures": 0,
+  "recommended_expansion_cases": []
+}
