@@ -1,0 +1,28 @@
+{
+  "episodes": 312,
+  "successes": 215,
+  "failures": 97,
+  "collector_event_episodes": 81,
+  "collector_events_on_success": 26,
+  "case_mode_cells": 24,
+  "mixed_outcome_case_mode_cells": 5,
+  "instruction_goal_mismatch_case_mode_cells": 2,
+  "matched_seed_mode_pairs": 72,
+  "paired_outcomes": {
+    "both_success": 45,
+    "both_fail": 20,
+    "independent_only": 4,
+    "coupled_only": 3
+  },
+  "integrity": {
+    "trace_files": 24,
+    "episodes": 312,
+    "queries": 8146,
+    "checked_overlaps": 7834,
+    "seed_modes": [
+      "coupled",
+      "independent"
+    ],
+    "valid": true
+  }
+}

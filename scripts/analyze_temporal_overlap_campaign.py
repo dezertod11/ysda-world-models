@@ -83,9 +83,16 @@ def average_precision(labels: Sequence[bool], scores: Sequence[float]) -> float:
     positives = int(frame["label"].sum())
     if positives == 0:
         return float("nan")
-    frame = frame.sort_values("score", ascending=False, kind="stable")
-    precision = frame["label"].astype(int).cumsum() / np.arange(1, len(frame) + 1)
-    return float(precision[frame["label"]].sum() / positives)
+    thresholds = (
+        frame.groupby("score", sort=False)["label"]
+        .agg(["sum", "count"])
+        .sort_index(ascending=False)
+    )
+    true_positives = thresholds["sum"].cumsum()
+    predicted_positives = thresholds["count"].cumsum()
+    precision = true_positives / predicted_positives
+    recall_increment = thresholds["sum"] / positives
+    return float((precision * recall_increment).sum())
 
 
 def conformal_upper_threshold(success_scores: Sequence[float], alpha: float) -> float:
@@ -144,7 +151,15 @@ def load_campaign_traces(campaign_dir: Path) -> tuple[pd.DataFrame, list[Path]]:
     if not paths:
         paths = sorted(campaign_dir.rglob("*__query_traces.parquet"))
     if not paths:
-        raise FileNotFoundError(f"No query trace parquet files under {campaign_dir}")
+        aggregate = campaign_dir / "analysis" / "temporal_overlap" / "all_query_traces.parquet"
+        if not aggregate.is_file():
+            raise FileNotFoundError(f"No query trace parquet files under {campaign_dir}")
+        frame = pd.read_parquet(aggregate)
+        if "source_trace" not in frame:
+            frame["source_trace"] = str(aggregate)
+        if "source_run" not in frame:
+            frame["source_run"] = "aggregate"
+        return frame, [aggregate]
 
     frames = []
     for path in paths:
@@ -509,7 +524,7 @@ def make_plots(
             positive = pd.to_numeric(test.loc[labels, metric], errors="coerce").dropna()
             axis.boxplot(
                 [negative, positive],
-                labels=["no event <=16", "event <=16"],
+                tick_labels=["no event <=16", "event <=16"],
                 vert=False,
                 showfliers=False,
             )
@@ -535,6 +550,9 @@ def write_report(
     best = h16.iloc[0].to_dict() if len(h16) else {}
     best_overlap_rows = h16.loc[h16["metric_family"].eq("overlap")]
     best_overlap = best_overlap_rows.iloc[0].to_dict() if len(best_overlap_rows) else {}
+    best_by_seed_mode = {}
+    for seed_mode, rows in h16.groupby("seed_mode", sort=False):
+        best_by_seed_mode[str(seed_mode)] = rows.iloc[0].to_dict()
     event_episodes = int(
         traces.loc[traces["critical_event_t"].ge(0), "episode_uid"].nunique()
         if "critical_event_t" in traces
@@ -548,6 +566,7 @@ def write_report(
         "calibration_source": calibration_source,
         "best_h16": best,
         "best_overlap_h16": best_overlap,
+        "best_h16_by_seed_mode": best_by_seed_mode,
     }
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False, default=str), encoding="utf-8"
@@ -559,32 +578,34 @@ def write_report(
         f"- Trace files: {len(trace_paths)}",
         f"- Episodes: {summary['episodes']}",
         f"- Query rows: {summary['query_rows']}",
-        f"- Episodes with a physical critical event: {event_episodes}",
+        f"- Episodes with a collector-labeled critical event: {event_episodes}",
         f"- Threshold calibration: {calibration_source}",
         "",
         "## Main readout",
         "",
     ]
-    if best:
+    if best_by_seed_mode:
         lines.extend(
             [
-                f"Best H=16 query metric: `{best['metric']}`; AUPRC={best['auprc']:.3f}, "
-                f"AUROC={best['auroc']:.3f}, prevalence={best['prevalence']:.3f}.",
-                "",
+                "| Seed mode | Best H=16 metric | AUPRC | Prevalence | AUROC | TPR | FPR |",
+                "|---|---|---:|---:|---:|---:|---:|",
             ]
         )
-    if best_overlap:
-        lines.extend(
-            [
-                f"Best overlap metric: `{best_overlap['metric']}`; "
-                f"AUPRC={best_overlap['auprc']:.3f}, AUROC={best_overlap['auroc']:.3f}.",
-                "",
-            ]
-        )
+        for seed_mode, row in best_by_seed_mode.items():
+            lines.append(
+                f"| {seed_mode} | `{row['metric']}` | {row['auprc']:.3f} | "
+                f"{row['prevalence']:.3f} | {row['auroc']:.3f} | "
+                f"{row['tpr']:.3f} | {row['fpr']:.3f} |"
+            )
+        lines.append("")
     lines.extend(
         [
+            "Average precision is computed over unique score thresholds, so tied scores "
+            "cannot gain from source-row ordering.",
+            "",
             "This is a passive detector experiment: overlap scores did not alter candidate selection or execution.",
             "Post-event queries are excluded. Terminal timeout/fail separation is reported only as a secondary endpoint.",
+            "Collector event labels are heuristic and require a task-semantic audit before the table can be interpreted as failure prediction.",
             "A causal planning claim requires a later frozen-threshold paired intervention run.",
             "",
             "## Outputs",

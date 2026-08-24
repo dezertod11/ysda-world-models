@@ -9,10 +9,19 @@ sys.path.insert(0, str(SCRIPTS))
 
 from analyze_temporal_overlap_campaign import (
     analyze_campaign,
+    average_precision,
     detector_table,
     event_detection_table,
     prepare_traces,
 )
+
+
+def test_average_precision_is_invariant_to_tie_order():
+    labels = [True, False, False, True]
+    scores = [1.0, 1.0, 1.0, 1.0]
+
+    assert average_precision(labels, scores) == pytest.approx(0.5)
+    assert average_precision(list(reversed(labels)), scores) == pytest.approx(0.5)
 
 
 def synthetic_traces() -> pd.DataFrame:

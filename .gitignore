@@ -51,6 +51,7 @@ experiments/campaigns/**/time_aligned_features.csv
 experiments/campaigns/adaptive_screening_20260813/analysis/adaptive_screening_*/
 experiments/campaigns/adaptive_regime_threshold_20260813/analysis/adaptive_regime_*/
 experiments/campaigns/adaptive_confirmatory_20260813/analysis/adaptive_confirmatory_*/
+experiments/campaigns/temporal_overlap_passive_*/analysis/temporal_overlap_passive_*/
 
 # Generated media and logs
 rollouts/

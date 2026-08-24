@@ -1,6 +1,6 @@
 # Research roadmap: robust world-model planning
 
-Дата обновления: 21 августа 2026 года.
+Дата обновления: 24 августа 2026 года.
 
 Этот документ является текущим планом. Frozen-протоколы
 `ADAPTIVE_PLANNING_HYPOTHESES_20260813.md` и
@@ -40,6 +40,9 @@ Task failure и safety violation считаются разными endpoints. Р
 | Horizon-only causal control | 114/168, +8.3 п.п., CI [0.0; +16.7] | Disagreement полезен как сигнал более раннего feedback |
 | Combined causal 2x2 | 121/168, +12.5 п.п., CI [+4.8; +20.8], McNemar `p=0.00646` | Главный подтверждённый механизм - adaptive feedback horizon |
 | Early terminal-fail prediction | лучший case-controlled AUROC 0.575 | Local prediction error предсказывается заметно лучше, чем конечный fail |
+| Temporal overlap passive campaign | 312/312 rollout; core overlap AUROC около 0.5, frozen TPR 0.04-0.12 | Plain old-tail/new-prefix distance пока не является failure detector |
+| Event-label audit | 26/81 collector events находятся в successful episodes | Expected release и physical drop должны быть разделены task-aware predicates |
+| Coupled-noise ablation | selected RMSE ratio 1.017, correlation 0.974; success 48/72 против 49/72 | Disagreement создаётся context revision, coupling почти не убирает noise |
 
 Новый matched 2x2 разделил reranking и более раннее observation. Прямой
 reranking не подтвердился, а feedback-horizon effect положителен. Добавочный
@@ -260,12 +263,21 @@ $$
 erratic failure и является более прямым feedback signal, чем uncertainty
 внутри одного query.
 
-**Статус 21 августа 2026.** Пункты 1-3 реализованы. Smoke test подтвердил
-форму `[Q,4,16,7]`, exact $A_q[8:16]\leftrightarrow A_{q+1}[0:8]$ alignment
-и CSV/NPZ round-trip. Passive campaign на 240 independent и 72 coupled
-rollout запущена на GPU 2-7. Конфигурация до просмотра outcomes зафиксирована
-в [`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md).
-Пункты 4-7 остаются следующими этапами и не должны подбираться по partial run.
+**Статус 24 августа 2026.** Пункты 1-3 завершены: 240 independent и 72
+coupled rollout. Smoke test подтвердил форму `[Q,4,16,7]`, exact
+$A_q[8:16]\leftrightarrow A_{q+1}[0:8]$ alignment и CSV/NPZ round-trip.
+Plain selected/support/Chamfer/energy distances дали AUROC около 0.5;
+frozen-threshold TPR составил только 0.04-0.12. Coupled seeds практически не
+снизили distances.
+
+Дополнительный audit показал, что event endpoint непригоден для
+confirmatory detector claim: 26/81 событий возникли в successful episodes,
+обычное выкладывание первого предмета было размечено как drop, а один
+LIBERO-PRO task case передавал policy исходную filename-derived команду при
+изменённой BDDL goal. Поэтому пункты 4-7 **не запускаются на текущих labels**.
+Сначала выполняются semantic ground-truth repair и поиск same-case mixed
+outcomes. Полный разбор:
+[`TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md`](TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md).
 
 1. Добавить сохранение полных candidate chunks и, на подвыборке, action latent
    embeddings.
@@ -428,18 +440,23 @@ thresholds замораживаются и переносятся на целы�
 7. Success всегда публикуется вместе с query cost, timeout, drop и safety.
 8. Видео - mechanism evidence, не статистическая выборка.
 
-## Приоритет после завершения P0
+## Текущий приоритет после passive overlap audit
 
-1. Зафиксировать вывод 2x2 и выбрать selection/horizon baseline.
-2. Реализовать P1a overlap logging: это почти бесплатный signal поверх уже
-   генерируемых chunks и прямой тест роли feedback.
-3. После passive P1a сравнить TIDE, STAC и learned Hide-and-Seek-style detector
-   при одинаковом split и локальных event labels.
-4. Параллельно реализовать P1b RCS; затем сравнить cross-query consistency с
-   within-query action support.
-5. Провести P2 causal future validation.
-6. Параллельно подготовить datasets для P3 grounded Q и P4 JRD ensemble.
-7. После P2 запустить P3 QWM-lite и только затем P6 StressDream-lite.
+1. Исправить LIBERO-PRO task instruction source и добавить preflight
+   `policy instruction == perturbed BDDL language/goal`.
+2. Заменить эвристический drop label на goal-predicate-aware grasp/release
+   events и проверить их по видео.
+3. Найти 4-6 same-task/init boundary cases с минимум 15-30 success и 15-30
+   fail на case; убрать deterministic case identity из primary detector test.
+4. Повторить passive overlap только с within-case, phase-matched и
+   simulator-validated endpoints. Первый shortlist: cosine, selected-all RMSE,
+   previous proprio error, first-action std и value baselines.
+5. Запускать closed-loop overlap-triggered horizon только после frozen gate
+   AUROC >= 0.65, AUPRC/prevalence >= 2, TPR >= 0.30 при FPR <= 0.05.
+6. Параллельно провести P2 causal future validation и подготовить grounded Q:
+   эти ветки не зависят от успеха plain overlap.
+7. Если repaired overlap снова не проходит gate, перейти к learned temporal
+   detector/grounded critic, не подбирать дополнительные distance weights.
 8. P5/P7 вести отдельной safety веткой, не смешивая с task-success planner.
 
 Ближайший сильный результат должен отвечать не «uncertainty коррелирует с

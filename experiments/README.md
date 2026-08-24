@@ -30,8 +30,10 @@ task success как самостоятельный planner trigger.
 [`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md).
 Smoke test прошёл 21 августа: sidecar имеет форму `[8,4,16,7]`, все семь
 доступных overlap-переходов пересчитались из NPZ без расхождений. Основная
-кампания на 312 rollout запущена на серверных GPU 2-7; до её завершения выводов
-о качестве detector делать нельзя.
+кампания завершена: 312/312 rollout. Plain overlap detector не прошёл passive
+gate, а audit обнаружил систематически невалидные event labels. Честный разбор,
+исправленный AP и следующий протокол находятся в
+[`TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md`](TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md).
 Универсальная WSL-команда `ysda-exp-status`, состояния кампании и метод расчёта
 ETA описаны в
 [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md).
@@ -59,6 +61,7 @@ ETA описаны в
 | [`RESEARCH_ROADMAP_20260820.md`](RESEARCH_ROADMAP_20260820.md) | Текущий план: causal 2x2, RCS, grounded Q/QWM, JRD/CP, StressDream и safety filter |
 | [`TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md) | Old tail против new prefix: TIDE/STAC, Hide-and-Seek baseline, формулы, collector schema и causal test |
 | [`TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md`](TEMPORAL_OVERLAP_PASSIVE_RUN_20260821.md) | Frozen passive run: 12 cases, independent/coupled seeds, event labels, integrity gates и запуск |
+| [`TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md`](TEMPORAL_OVERLAP_PASSIVE_RESULTS_20260824.md) | Итог 312-rollout overlap campaign: label audit, corrected metrics, coupled control и go/no-go |
 | [`MLSPACE_EXPERIMENT_MONITORING.md`](MLSPACE_EXPERIMENT_MONITORING.md) | Универсальная команда `ysda-exp-status`: progress, jobs, rollout, ETA и READY/FAILED/STALLED |
 | [`SURROGATE_REQUERY_RESULTS_20260820.md`](SURROGATE_REQUERY_RESULTS_20260820.md) | Итог 960 confirmatory rollout: формулы, статистика, failure modes и ограничения |
 | [`LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](LIBERO_SURROGATE_REQUERY_RESULTS.ipynb) | Таблицы и графики screening, frozen confirmatory и surrogate transfer |
@@ -137,6 +140,15 @@ campaigns/factorial_selection_horizon_20260820/
     prediction_error_correlations.csv
     surrogate_transfer_diagnostics.csv
     plots/
+
+campaigns/temporal_overlap_passive_20260821/
+  manifest.json             # status=completed, 312/312 rollout
+  analysis/result_audit/
+    README.md
+    case_event_audit.csv
+    paired_seed_mode_outcomes.csv
+    seed_mode_q1_metric_comparison.csv
+    key_query_metrics_h16.csv
 ```
 
 `uncertainty/` содержит более ранние exploratory и video runs. Они полезны для
@@ -156,6 +168,7 @@ campaigns/factorial_selection_horizon_20260820/
 | Surrogate/requery screening | Завершён, 816/816 strategy executions; используется только для выбора гиперпараметров |
 | Surrogate/requery frozen confirmatory | Завершён, 960/960 strategy executions на 240 paired seeds и 12 cases |
 | Selection x horizon causal 2x2 | Завершён 21 августа 2026: 672/672 rollout, 168 matched seeds, 7 cases |
+| Temporal overlap passive detection | Завершён 24 августа 2026: 312/312 rollout; detector gate не пройден, event labels требуют repair |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео
