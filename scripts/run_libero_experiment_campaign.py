@@ -45,14 +45,19 @@ def expand_jobs(profile: Mapping[str, Any], defaults: Mapping[str, Any]) -> List
         job.update(copy.deepcopy(raw_job))
         if not job.get("enabled", True):
             continue
-        if job["kind"] != "pro_position_sweep":
+        if job["kind"] not in {"pro_position_sweep", "pro_position_planning_sweep"}:
             jobs.append(job)
             continue
 
+        expanded_kind = (
+            "pro_position_paired"
+            if job["kind"] == "pro_position_sweep"
+            else "pro_position_planning_grid"
+        )
         levels = job.pop("position_levels")
         for level_index, level in enumerate(levels):
             expanded = copy.deepcopy(job)
-            expanded["kind"] = "pro_position_paired"
+            expanded["kind"] = expanded_kind
             expanded["position_level"] = str(level)
             expanded["name"] = f"{job['name']}_{str(level).replace('.', 'p')}"
             expanded["base_seed"] = int(job["base_seed"]) + level_index * 10000
@@ -112,7 +117,13 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
                 )
         return
 
-    if kind not in {"pro_paired", "pro_position_paired", "pro_planning_grid"}:
+    if kind not in {
+        "pro_paired",
+        "pro_position_paired",
+        "pro_planning_grid",
+        "pro_position_planning_grid",
+        "pro_environment_planning_grid",
+    }:
         raise ValueError(f"{job['name']}: unsupported kind {kind}")
 
     libero_root = PROJECT_ROOT / "LIBERO-PRO/libero/libero"
@@ -120,8 +131,10 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
         suite = suite.strip()
         if not suite:
             continue
-        if kind == "pro_position_paired":
+        if kind in {"pro_position_paired", "pro_position_planning_grid"}:
             source_name = f"libero_object_temp_{job['position_level']}"
+        elif kind == "pro_environment_planning_grid":
+            source_name = suite.removesuffix("_env")
         else:
             source_name = suite
         bddl_dir = libero_root / "bddl_files" / source_name
@@ -255,7 +268,11 @@ def build_job(
         )
         return commands, env, completion_marker
 
-    if kind == "pro_planning_grid":
+    if kind in {
+        "pro_planning_grid",
+        "pro_position_planning_grid",
+        "pro_environment_planning_grid",
+    }:
         env = {
             "LIBERO_CONFIG_PATH": str(config_dir),
             "LIBERO_PRO_PLANNING_GRID_PREFIX": run_name,
@@ -342,7 +359,35 @@ def build_job(
                 job["record_denoising_trace"]
             ),
         }
-        commands = [["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_planning_strategy_grid.sh")]]
+        commands: List[List[str]] = []
+        if kind == "pro_position_planning_grid":
+            level = str(job["position_level"])
+            commands.append(
+                [
+                    "bash",
+                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                    level,
+                ]
+            )
+            variant_root = PROJECT_ROOT / ".runtime/libero_pro_position" / level
+            env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+            env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+            env["LIBERO_PRO_POSITION_LEVEL"] = level
+        elif kind == "pro_environment_planning_grid":
+            commands.append(
+                [
+                    "bash",
+                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_environment_variant.sh"),
+                    str(job.get("environment_num_init_states", 50)),
+                    str(job.get("environment_seed", 20260825)),
+                ]
+            )
+            variant_root = PROJECT_ROOT / ".runtime/libero_pro_environment"
+            env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+            env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+        commands.append(
+            ["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_planning_strategy_grid.sh")]
+        )
         return commands, env, completion_marker
 
     if kind == "safety_paired":
