@@ -144,3 +144,32 @@ Execution adds `--execute`. Final aggregation:
 ```
 
 Other methods, including Mimic-Video and the methods from Ilya, Sasha, and Nikita, must consume the same task/level/init/seed index and emit at least `method`, `factor`, `position_level`, `task_id`, `init_state_id`, `rollout_seed`, and `success`. This makes their rows directly appendable to the same paired analysis.
+
+## Active pilot run
+
+The frozen pilot was launched on 2026-08-25 at 21:06 MSK on physical GPUs 2, 3, and 4:
+
+```text
+experiments/campaigns/pro_object_baselines_pilot_20260825
+```
+
+From the local WSL checkout, inspect progress and ETA with:
+
+```bash
+./scripts/mlspace_experiment_status.sh pro_object_baselines_pilot_20260825 --verbose
+```
+
+Continuous monitoring:
+
+```bash
+./scripts/mlspace_experiment_status.sh pro_object_baselines_pilot_20260825 --watch 60
+```
+
+When the status is `COMPLETED`, build the table on the server with:
+
+```bash
+ssh mlspace-sr006 \
+  "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.venv-cosmos/bin/python \
+  /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_pro_object_baseline_benchmark.py \
+  /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/pro_object_baselines_pilot_20260825"
+```
