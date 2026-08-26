@@ -1,0 +1,91 @@
+method,factor,task_id,success_rate,cells,episodes
+Cosmos Policy (no planning),Environment,0,0.0,1,10
+Cosmos Policy (no planning),Environment,1,0.9,1,10
+Cosmos Policy (no planning),Environment,2,0.0,1,10
+Cosmos Policy (no planning),Environment,3,1.0,1,10
+Cosmos Policy (no planning),Environment,4,0.0,1,10
+Cosmos Policy (no planning),Environment,5,0.8,1,10
+Cosmos Policy (no planning),Environment,6,0.0,1,10
+Cosmos Policy (no planning),Environment,7,0.0,1,10
+Cosmos Policy (no planning),Environment,8,0.1,1,10
+Cosmos Policy (no planning),Environment,9,0.7,1,10
+Cosmos Policy (no planning),Object,0,0.5,1,10
+Cosmos Policy (no planning),Object,1,0.9,1,10
+Cosmos Policy (no planning),Object,2,1.0,1,10
+Cosmos Policy (no planning),Object,3,0.8,1,10
+Cosmos Policy (no planning),Object,4,1.0,1,10
+Cosmos Policy (no planning),Object,5,1.0,1,10
+Cosmos Policy (no planning),Object,6,1.0,1,10
+Cosmos Policy (no planning),Object,7,1.0,1,10
+Cosmos Policy (no planning),Object,8,1.0,1,10
+Cosmos Policy (no planning),Object,9,1.0,1,10
+Cosmos Policy (no planning),Position,0,0.3,10,10
+Cosmos Policy (no planning),Position,1,0.3333333333333333,9,9
+Cosmos Policy (no planning),Position,2,0.4,10,10
+Cosmos Policy (no planning),Position,3,0.2,10,10
+Cosmos Policy (no planning),Position,4,0.3,10,10
+Cosmos Policy (no planning),Position,5,0.4,10,10
+Cosmos Policy (no planning),Position,6,0.3,10,10
+Cosmos Policy (no planning),Position,7,0.2,10,10
+Cosmos Policy (no planning),Position,8,0.3,10,10
+Cosmos Policy (no planning),Position,9,0.4,10,10
+Cosmos Policy + max(value),Environment,0,0.0,1,10
+Cosmos Policy + max(value),Environment,1,0.9,1,10
+Cosmos Policy + max(value),Environment,2,0.0,1,10
+Cosmos Policy + max(value),Environment,3,0.9,1,10
+Cosmos Policy + max(value),Environment,4,0.0,1,10
+Cosmos Policy + max(value),Environment,5,0.9,1,10
+Cosmos Policy + max(value),Environment,6,0.0,1,10
+Cosmos Policy + max(value),Environment,7,0.0,1,10
+Cosmos Policy + max(value),Environment,8,0.2,1,10
+Cosmos Policy + max(value),Environment,9,0.7,1,10
+Cosmos Policy + max(value),Object,0,0.8,1,10
+Cosmos Policy + max(value),Object,1,1.0,1,10
+Cosmos Policy + max(value),Object,2,1.0,1,10
+Cosmos Policy + max(value),Object,3,1.0,1,10
+Cosmos Policy + max(value),Object,4,1.0,1,10
+Cosmos Policy + max(value),Object,5,1.0,1,10
+Cosmos Policy + max(value),Object,6,1.0,1,10
+Cosmos Policy + max(value),Object,7,1.0,1,10
+Cosmos Policy + max(value),Object,8,1.0,1,10
+Cosmos Policy + max(value),Object,9,1.0,1,10
+Cosmos Policy + max(value),Position,0,0.3,10,10
+Cosmos Policy + max(value),Position,1,0.5555555555555556,9,9
+Cosmos Policy + max(value),Position,2,0.3,10,10
+Cosmos Policy + max(value),Position,3,0.2,10,10
+Cosmos Policy + max(value),Position,4,0.3,10,10
+Cosmos Policy + max(value),Position,5,0.3,10,10
+Cosmos Policy + max(value),Position,6,0.2,10,10
+Cosmos Policy + max(value),Position,7,0.2,10,10
+Cosmos Policy + max(value),Position,8,0.3,10,10
+Cosmos Policy + max(value),Position,9,0.3,10,10
+Ours: risk-aware + adaptive requery,Environment,0,0.0,1,10
+Ours: risk-aware + adaptive requery,Environment,1,0.9,1,10
+Ours: risk-aware + adaptive requery,Environment,2,0.0,1,10
+Ours: risk-aware + adaptive requery,Environment,3,0.9,1,10
+Ours: risk-aware + adaptive requery,Environment,4,0.0,1,10
+Ours: risk-aware + adaptive requery,Environment,5,1.0,1,10
+Ours: risk-aware + adaptive requery,Environment,6,0.0,1,10
+Ours: risk-aware + adaptive requery,Environment,7,0.0,1,10
+Ours: risk-aware + adaptive requery,Environment,8,0.2,1,10
+Ours: risk-aware + adaptive requery,Environment,9,0.8,1,10
+Ours: risk-aware + adaptive requery,Object,0,0.5,1,10
+Ours: risk-aware + adaptive requery,Object,1,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,2,0.9,1,10
+Ours: risk-aware + adaptive requery,Object,3,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,4,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,5,0.9,1,10
+Ours: risk-aware + adaptive requery,Object,6,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,7,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,8,1.0,1,10
+Ours: risk-aware + adaptive requery,Object,9,1.0,1,10
+Ours: risk-aware + adaptive requery,Position,0,0.4,10,10
+Ours: risk-aware + adaptive requery,Position,1,0.4444444444444444,9,9
+Ours: risk-aware + adaptive requery,Position,2,0.3,10,10
+Ours: risk-aware + adaptive requery,Position,3,0.2,10,10
+Ours: risk-aware + adaptive requery,Position,4,0.1,10,10
+Ours: risk-aware + adaptive requery,Position,5,0.3,10,10
+Ours: risk-aware + adaptive requery,Position,6,0.3,10,10
+Ours: risk-aware + adaptive requery,Position,7,0.2,10,10
+Ours: risk-aware + adaptive requery,Position,8,0.2,10,10
+Ours: risk-aware + adaptive requery,Position,9,0.1,10,10

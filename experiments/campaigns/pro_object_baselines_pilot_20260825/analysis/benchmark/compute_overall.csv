@@ -1,0 +1,4 @@
+method,episodes,mean_queries,mean_candidate_generations,mean_adaptive_requeries,mean_query_multiplier_vs_h16,mean_executed_steps
+Cosmos Policy (no planning),299,13.37123745819398,13.37123745819398,0.0,1.0,206.23745819397993
+Cosmos Policy + max(value),299,13.264214046822742,53.05685618729097,0.0,1.0,204.4180602006689
+Ours: risk-aware + adaptive requery,299,16.959866220735787,67.83946488294315,7.3244147157190636,1.2595147409479497,207.87625418060202

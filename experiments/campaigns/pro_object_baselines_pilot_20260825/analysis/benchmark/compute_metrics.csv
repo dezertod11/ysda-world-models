@@ -1,0 +1,10 @@
+method,factor,episodes,mean_queries,mean_candidate_generations,mean_adaptive_requeries,mean_query_multiplier_vs_h16,mean_executed_steps
+Cosmos Policy (no planning),Environment,100,14.73,14.73,0.0,1.0,227.67
+Cosmos Policy (no planning),Object,100,9.42,9.42,0.0,1.0,143.47
+Cosmos Policy (no planning),Position,99,15.98989898989899,15.98989898989899,0.0,1.0,247.989898989899
+Cosmos Policy + max(value),Environment,100,14.74,58.96,0.0,1.0,227.4
+Cosmos Policy + max(value),Object,100,9.02,36.08,0.0,1.0,137.36
+Cosmos Policy + max(value),Position,99,16.060606060606062,64.24242424242425,0.0,1.0,248.93939393939394
+Ours: risk-aware + adaptive requery,Environment,100,18.58,74.32,7.98,1.2541704267954268,229.07
+Ours: risk-aware + adaptive requery,Object,100,11.95,47.8,5.19,1.2644439171939172,143.69
+Ours: risk-aware + adaptive requery,Position,99,20.383838383838384,81.53535353535354,8.818181818181818,1.2599340721666925,251.3030303030303

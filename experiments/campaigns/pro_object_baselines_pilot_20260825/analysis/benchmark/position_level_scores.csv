@@ -1,0 +1,31 @@
+method,position_level,success_rate,successes,episodes
+Cosmos Policy (no planning),x0.1,1.0,10,10
+Cosmos Policy (no planning),x0.2,0.5,5,10
+Cosmos Policy (no planning),x0.3,0.0,0,10
+Cosmos Policy (no planning),x0.4,0.0,0,10
+Cosmos Policy (no planning),x0.5,0.0,0,10
+Cosmos Policy (no planning),y0.1,1.0,10,10
+Cosmos Policy (no planning),y0.2,0.6,6,10
+Cosmos Policy (no planning),y0.3,0.0,0,10
+Cosmos Policy (no planning),y0.4,0.0,0,10
+Cosmos Policy (no planning),y0.5,0.0,0,9
+Cosmos Policy + max(value),x0.1,1.0,10,10
+Cosmos Policy + max(value),x0.2,0.5,5,10
+Cosmos Policy + max(value),x0.3,0.0,0,10
+Cosmos Policy + max(value),x0.4,0.0,0,10
+Cosmos Policy + max(value),x0.5,0.0,0,10
+Cosmos Policy + max(value),y0.1,0.7,7,10
+Cosmos Policy + max(value),y0.2,0.6,6,10
+Cosmos Policy + max(value),y0.3,0.1,1,10
+Cosmos Policy + max(value),y0.4,0.0,0,10
+Cosmos Policy + max(value),y0.5,0.0,0,9
+Ours: risk-aware + adaptive requery,x0.1,0.9,9,10
+Ours: risk-aware + adaptive requery,x0.2,0.4,4,10
+Ours: risk-aware + adaptive requery,x0.3,0.0,0,10
+Ours: risk-aware + adaptive requery,x0.4,0.0,0,10
+Ours: risk-aware + adaptive requery,x0.5,0.0,0,10
+Ours: risk-aware + adaptive requery,y0.1,0.9,9,10
+Ours: risk-aware + adaptive requery,y0.2,0.2,2,10
+Ours: risk-aware + adaptive requery,y0.3,0.0,0,10
+Ours: risk-aware + adaptive requery,y0.4,0.0,0,10
+Ours: risk-aware + adaptive requery,y0.5,0.1111111111111111,1,9

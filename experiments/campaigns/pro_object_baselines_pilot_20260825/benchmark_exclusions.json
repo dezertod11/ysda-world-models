@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "declared_at": "2026-08-26",
+  "exclusions": [
+    {
+      "job": "position_no_planning_y0p5",
+      "factor": "Position",
+      "position_level": "y0.5",
+      "task_id": 1,
+      "init_state_id": 0,
+      "method_episodes": 1,
+      "reason": "LIBERO-PRO reports zero available init states for libero_object_temp task 1 at y0.5."
+    },
+    {
+      "job": "position_max_value_y0p5",
+      "factor": "Position",
+      "position_level": "y0.5",
+      "task_id": 1,
+      "init_state_id": 0,
+      "method_episodes": 1,
+      "reason": "LIBERO-PRO reports zero available init states for libero_object_temp task 1 at y0.5."
+    },
+    {
+      "job": "position_ours_requery_l1_h8_y0p5",
+      "factor": "Position",
+      "position_level": "y0.5",
+      "task_id": 1,
+      "init_state_id": 0,
+      "method_episodes": 1,
+      "reason": "LIBERO-PRO reports zero available init states for libero_object_temp task 1 at y0.5."
+    }
+  ]
+}

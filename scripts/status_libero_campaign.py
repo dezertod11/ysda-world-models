@@ -433,7 +433,23 @@ def inspect_campaign(
     completion_records.update(marker_records)
     trace_paths = _preferred_trace_paths(campaign_dir) if include_traces else []
     trace_stats, job_trace_stats = _job_trace_stats(manifest, trace_paths, counter)
-    expected_values = [expected_job_rollouts(job) for job in jobs]
+    exclusion_payload = _read_json(campaign_dir / "benchmark_exclusions.json")
+    excluded_by_job: dict[str, int] = {}
+    for exclusion in exclusion_payload.get("exclusions", []):
+        if not isinstance(exclusion, Mapping) or not exclusion.get("job"):
+            continue
+        name = str(exclusion["job"])
+        excluded_by_job[name] = excluded_by_job.get(name, 0) + int(
+            exclusion.get("method_episodes", 1)
+        )
+
+    def valid_expected_rollouts(job: Mapping[str, Any]) -> int | None:
+        expected = expected_job_rollouts(job)
+        if expected is None:
+            return None
+        return max(expected - excluded_by_job.get(str(job.get("name", "")), 0), 0)
+
+    expected_values = [valid_expected_rollouts(job) for job in jobs]
     expected_rollouts = (
         sum(value for value in expected_values if value is not None)
         if expected_values and all(value is not None for value in expected_values)
@@ -472,7 +488,7 @@ def inspect_campaign(
                 gpu=str(job.get("gpu", "?")),
                 state=state,
                 completed_rollouts=job_trace_stats.get(name, TraceStats()).rollouts,
-                expected_rollouts=expected_job_rollouts(job),
+                expected_rollouts=valid_expected_rollouts(job),
                 elapsed_seconds=elapsed,
                 log_age_seconds=log_age,
             )
@@ -509,6 +525,7 @@ def inspect_campaign(
 
     summary_files = list((campaign_dir / "analysis").rglob("summary.json"))
     report_files = list((campaign_dir / "analysis").rglob("README.md"))
+    report_files += list((campaign_dir / "analysis").rglob("RESULTS.md"))
     return CampaignStatus(
         name=campaign_dir.name,
         path=str(campaign_dir),
@@ -581,7 +598,7 @@ def render_status(status: CampaignStatus, *, verbose: bool = False) -> str:
         lines.append(f"Activity : {_format_duration(status.activity_age_seconds)} ago")
     lines.append(
         f"Analysis : {status.analysis_summaries} summary.json, "
-        f"{status.analysis_reports} README.md"
+        f"{status.analysis_reports} report files"
     )
     if status.state == "READY":
         lines.append("Verdict  : execution is complete; results are safe to inspect")

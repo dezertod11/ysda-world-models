@@ -1,0 +1,4 @@
+candidate,reference,paired_episodes,delta_success_rate,ci95_low,ci95_high,wins,losses,ties,mcnemar_p
+Cosmos Policy + max(value),Cosmos Policy (no planning),299,0.017407407407407406,-0.01,0.04888888888888889,12,7,280,0.359283447265625
+Ours: risk-aware + adaptive requery,Cosmos Policy (no planning),299,-0.0062962962962962955,-0.04,0.027407407407407408,13,15,271,0.8505540192127228
+Ours: risk-aware + adaptive requery,Cosmos Policy + max(value),299,-0.023703703703703703,-0.05407407407407407,0.003333333333333334,6,13,280,0.1670684814453125

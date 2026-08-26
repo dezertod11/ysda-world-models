@@ -1,6 +1,6 @@
 # LIBERO-PRO Object baseline protocol
 
-Status: **frozen pilot v0.1**, 2026-08-25. The benchmark choice is still awaiting the group's final confirmation; do not tune methods on these pilot outcomes.
+Status: **completed frozen pilot v0.1**, run on 2026-08-25 and analyzed on 2026-08-26. The benchmark choice is still awaiting the group's final confirmation; do not tune methods on these pilot outcomes.
 
 ## Goal
 
@@ -9,9 +9,11 @@ Compare all policies on the same LIBERO-Object tasks and the same OOD initial co
 | Method | Object | Position | Environment | Mean |
 |---|---:|---:|---:|---:|
 | Mimic-Video | pending | pending | pending | pending |
-| Cosmos Policy, no planning | running | running | running | running |
-| Cosmos Policy + max(value) | running | running | running | running |
-| Ours, risk-aware adaptive requery | running | running | running | running |
+| Cosmos Policy, no planning | 92.0% | 31.3% | 35.0% | 52.8% |
+| Cosmos Policy + max(value) | **98.0%** | **29.6%** | 36.0% | **54.5%** |
+| Ours, risk-aware adaptive requery | 93.0% | 25.4% | **38.0%** | 52.1% |
+
+The complete report, confidence intervals, paired comparisons, compute cost, and per-shift Position scores are in [`pro_object_baselines_pilot_20260825/analysis/benchmark/RESULTS.md`](campaigns/pro_object_baselines_pilot_20260825/analysis/benchmark/RESULTS.md).
 
 This is different from our earlier boundary-case experiments. Those experiments intentionally selected difficult tasks, usually held `task/init_state` fixed, and varied stochastic rollout seeds. They were appropriate for causal strategy comparison, but not for a benchmark leaderboard. This protocol covers all ten LIBERO-Object tasks.
 
@@ -31,11 +33,13 @@ Perturbation columns:
 2. **Position**: suite `libero_object_temp`, evaluated separately on all ten official shifts `x0.1,...,x0.5,y0.1,...,y0.5`. The reported score is an equal-weight macro-average over all `10 tasks x 10 levels` cells.
 3. **Environment**: suite `libero_object_env`. LIBERO-PRO generates this suite from `libero_object` by moving the task to `living_room_table`; the benchmark script deterministically materializes the required 10 pilot init states with seed `20260825` in `.runtime/libero_pro_environment`. The same per-state seed schedule can later extend the files to 50 states without changing the first ten.
 
-The current pilot has exactly 100 episodes per method and perturbation:
+The pilot planned exactly 100 episodes per method and perturbation:
 
 - Object and Environment: `10 tasks x init ids 0..9 x 1 rollout`.
 - Position: `10 tasks x 10 position levels x init id 0 x 1 rollout`.
-- Total: `3 methods x 3 perturbations x 100 = 900` method-episodes.
+- Planned total: `3 methods x 3 perturbations x 100 = 900` method-episodes.
+
+LIBERO-PRO exposes zero init states for `libero_object_temp/task1/init0` at Position level `y0.5`. This structurally unavailable cell was skipped for every method and declared in `benchmark_exclusions.json`, leaving `897/897` scorable method-episodes. It is not counted as a failure.
 
 For the final benchmark, after the group confirms this definition, increase the number of initial states without changing any method hyperparameter. The official Cosmos Policy convention is 50 trials per task and three evaluation seeds; the final position budget must be agreed explicitly because multiplying 50 trials by ten shift levels is much larger.
 
@@ -145,9 +149,9 @@ Execution adds `--execute`. Final aggregation:
 
 Other methods, including Mimic-Video and the methods from Ilya, Sasha, and Nikita, must consume the same task/level/init/seed index and emit at least `method`, `factor`, `position_level`, `task_id`, `init_state_id`, `rollout_seed`, and `success`. This makes their rows directly appendable to the same paired analysis.
 
-## Active pilot run
+## Completed pilot run
 
-The frozen pilot was launched on 2026-08-25 at 21:06 MSK on physical GPUs 2, 3, and 4:
+The frozen pilot was launched on 2026-08-25 at 21:06 MSK on physical GPUs 2, 3, and 4 and completed in 4 h 38 min:
 
 ```text
 experiments/campaigns/pro_object_baselines_pilot_20260825
@@ -165,7 +169,7 @@ Continuous monitoring:
 ./scripts/mlspace_experiment_status.sh pro_object_baselines_pilot_20260825 --watch 60
 ```
 
-When the status is `COMPLETED`, build the table on the server with:
+Rebuild the table on the server with:
 
 ```bash
 ssh mlspace-sr006 \

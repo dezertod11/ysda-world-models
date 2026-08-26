@@ -1,0 +1,37 @@
+job,factor,position_level,method,expected_episodes,excluded_episodes,valid_expected_episodes,observed_episodes,complete,trace_files
+object_no_planning,Object,,Cosmos Policy (no planning),100,0,100,100,True,1
+object_max_value,Object,,Cosmos Policy + max(value),100,0,100,100,True,1
+object_ours_requery_l1_h8,Object,,Ours: risk-aware + adaptive requery,100,0,100,100,True,1
+environment_no_planning,Environment,,Cosmos Policy (no planning),100,0,100,100,True,1
+environment_max_value,Environment,,Cosmos Policy + max(value),100,0,100,100,True,1
+environment_ours_requery_l1_h8,Environment,,Ours: risk-aware + adaptive requery,100,0,100,100,True,1
+position_no_planning_x0p1,Position,x0.1,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_x0p2,Position,x0.2,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_x0p3,Position,x0.3,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_x0p4,Position,x0.4,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_x0p5,Position,x0.5,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_y0p1,Position,y0.1,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_y0p2,Position,y0.2,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_y0p3,Position,y0.3,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_y0p4,Position,y0.4,Cosmos Policy (no planning),10,0,10,10,True,1
+position_no_planning_y0p5,Position,y0.5,Cosmos Policy (no planning),10,1,9,9,True,1
+position_max_value_x0p1,Position,x0.1,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_x0p2,Position,x0.2,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_x0p3,Position,x0.3,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_x0p4,Position,x0.4,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_x0p5,Position,x0.5,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_y0p1,Position,y0.1,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_y0p2,Position,y0.2,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_y0p3,Position,y0.3,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_y0p4,Position,y0.4,Cosmos Policy + max(value),10,0,10,10,True,1
+position_max_value_y0p5,Position,y0.5,Cosmos Policy + max(value),10,1,9,9,True,1
+position_ours_requery_l1_h8_x0p1,Position,x0.1,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_x0p2,Position,x0.2,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_x0p3,Position,x0.3,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_x0p4,Position,x0.4,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_x0p5,Position,x0.5,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_y0p1,Position,y0.1,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_y0p2,Position,y0.2,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_y0p3,Position,y0.3,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_y0p4,Position,y0.4,Ours: risk-aware + adaptive requery,10,0,10,10,True,1
+position_ours_requery_l1_h8_y0p5,Position,y0.5,Ours: risk-aware + adaptive requery,10,1,9,9,True,1
