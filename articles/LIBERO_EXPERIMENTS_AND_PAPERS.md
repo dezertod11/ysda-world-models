@@ -1,5 +1,13 @@
 # LIBERO и LIBERO-PRO: эксперименты, статьи и протокол нашего исследования
 
+Актуальный порядок реализации новых методов после broad LIBERO-PRO Object
+transfer test вынесен в
+[`../experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](../experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).
+Главная рабочая гипотеза теперь разделяет grounded candidate ranking,
+counterfactual Value of Feedback и hard safety filtering; старые composite
+uncertainty formulas ниже сохраняются как проверенные baselines, а не как
+рекомендованный итоговый planner.
+
 Актуальность обзора: 20 августа 2026 года.
 
 Этот файл отвечает на четыре практических вопроса:

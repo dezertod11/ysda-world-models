@@ -1,6 +1,6 @@
 # Research roadmap: robust world-model planning
 
-Дата обновления: 24 августа 2026 года.
+Дата обновления: 26 августа 2026 года.
 
 Этот документ является текущим планом. Frozen-протоколы
 `ADAPTIVE_PLANNING_HYPOTHESES_20260813.md` и
@@ -46,12 +46,15 @@ Task failure и safety violation считаются разными endpoints. Р
 | Corrected boundary screening | 264 rollout; 30/40 task-OOD cases all-fail, 9 all-success, 1 mixed | Discrete task replacement даёт grounding stress, но мало paired boundary data |
 | Early within-case detector | лучший preregistered AUROC 0.613; лучший exploratory 0.678, BH q=0.87 | Plain stochastic uncertainty/overlap не прошли frozen gate |
 | Physical replay audit | `spatial_task/task7/init0`: 5 success, 1 confirmed target drop | Case полезен для expansion, но пока только provisional |
+| LIBERO-PRO Object broad pilot | `max(value)` 54.5%, no planning 52.8%, risk-aware requery 52.1% | Выигрыш на selected boundary cases не переносится как universal policy |
+| Частота текущего adaptive trigger | 42.9-43.4% query во всех трёх OOD factors | Trigger почти не адаптируется к сложности и вмешивается слишком часто |
+| Broad paired ours vs `max(value)` | -2.4 п.п., 95% CI [-5.4; +0.3], McNemar `p=0.167` | Следующий тест обязан отдельно проверить selection и feedback timing |
 
 Новый matched 2x2 разделил reranking и более раннее observation. Прямой
 reranking не подтвердился, а feedback-horizon effect положителен. Добавочный
 эффект risk-aware candidate при уже adaptive horizon остаётся неопределённым.
 
-## Завершённый эксперимент P0
+## Завершённый исторический causal 2x2
 
 ### Matched 2x2: selection x feedback horizon
 
@@ -258,7 +261,13 @@ $$
 Это принципиально: score отвечает «что выполнить», horizon - «сколько времени
 не смотреть на реальный мир», constraint filter - «что выполнять нельзя».
 
-## Очередь экспериментов
+## Архив предыдущей очереди экспериментов
+
+Разделы P1a-P7 ниже сохраняют постановки, сформулированные до широкого
+LIBERO-PRO Object transfer test. Они полезны как каталог методов, но больше не
+задают порядок запуска. Актуальная последовательность и frozen go/no-go gates
+находятся в разделе «Текущий приоритет» и в
+[`GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).
 
 ### P1a. Temporal overlap consistency
 
@@ -452,28 +461,97 @@ thresholds замораживаются и переносятся на целы�
 7. Success всегда публикуется вместе с query cost, timeout, drop и safety.
 8. Видео - mechanism evidence, не статистическая выборка.
 
-## Текущий приоритет после corrected boundary screening
+## Текущий приоритет после broad LIBERO-PRO transfer
 
-1. Не продолжать sweep коэффициентов plain uncertainty/overlap: repaired
-   within-case detector не прошёл frozen gate.
-2. Расширить `spatial_task/task7/init0` и две known mixed controls fresh seeds;
-   параллельно искать 3-5 cases с success rate 20-80% через плавную настройку
-   pose, distractor, appearance и language difficulty.
-3. В primary dataset требовать минимум 15-30 success и 15-30 fail на case;
-   all-fail/all-success task-OOD cases оставить для transfer stress test.
-4. Реализовать simulator branching: из одного состояния фактически исполнить
-   каждый candidate chunk и измерить goal progress, drop, wrong-object и
-   no-progress. Это primary проверка способности score улучшать planning.
-5. Провести P2 causal action-conditioned future validation и сравнить ordering
-   predicted consequences с ordering реальных branched outcomes.
-6. Продолжить adaptive feedback horizon как отдельную causal ветку: это пока
-   единственный компонент, который дал воспроизводимый gain.
-7. Temporal overlap оставить в shortlist только как normalized set shift и
-   rotation feature для learned phase-conditioned detector. Closed-loop доступен
-   лишь после held-out gate AUROC >= 0.65, AUPRC/prevalence >= 2,
-   TPR >= 0.30 при FPR <= 0.05 и median lead >= 8.
-8. P5/P7 вести отдельной safety веткой, не смешивая task failure и official
-   safety constraint violation.
+Полный frozen protocol:
+[`GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).
+
+### P0. Broad causal horizon controls
+
+На тех же LIBERO-PRO Object cells сравниваются `maxV-H16`, `maxV-H8`,
+`horizon-only`, compute-matched random requery и прежний `risk-H8`. Selection
+остаётся `max(value)` во всех новых controls. Это отделяет пользу свежего
+observation от качества uncertainty-reranking и от простого роста compute.
+
+Статус 26 августа: frozen campaign
+`pro_object_horizon_controls_p0_20260826` запущена на MLSpace GPU 6. План:
+24 jobs, 897 новых strategy episodes и matched merge с 598 сохранёнными
+`maxV-H16`/`risk-H8` episodes. P1 реализуется параллельно как код, но не
+запускается до завершения P0. Последовательный launcher уже поставлен в
+очередь: после P0 он строит causal report и только затем начинает P1/P2.
+
+### P1. Counterfactual Value of Feedback
+
+Из одного simulator snapshot строятся две ветки: выполнить старый chunk 16
+шагов или выполнить 8 шагов, requery и продолжить новым plan. Target gate - не
+terminal failure, а индивидуальная польза вмешательства:
+
+$$
+\operatorname{VoF}(s)=
+\mathbb E[G_{\mathrm{feedback}}-G_{\mathrm{open}}\mid s]
+-c_{\mathrm{query}}.
+$$
+
+Gate проверяется при intervention budgets 10%, 20% и 30% против random policy
+того же бюджета.
+
+Реализация P1/P2 snapshot collector завершена 26 августа. Simulator replay
+после ненулевого prefix имеет max state error `1.06e-15`, полный Cosmos smoke
+собрал четыре candidate branches и feedback branch с replay error `8.12e-16`.
+Dry-run manifest проверен: 12 jobs и 300 targets, по 100 на Object,
+Environment и Position. Запуск pilot остаётся заблокирован только порядком
+экспериментов до завершения P0. Подробности:
+[`COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md`](COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md).
+
+### P2. Grounded candidate critic и QWM-lite
+
+Каждый candidate chunk фактически исполняется из одного snapshot. Grounded
+utility включает BDDL progress и отдельные penalties `drop`, `wrong_object`,
+`no_progress`, `constraint`. Critic обучается только на real transitions;
+world-model rollout используется только для короткого depth-1/2 search.
+
+### P3. Semantic action-conditioned consequence model
+
+Сравниваются Cosmos reconstruction latent, frozen semantic latent и их
+комбинация с proprio. Основные targets - task progress и critical events, а не
+pixel MSE. Privileged simulator state разрешён для labels/evaluation, но не
+подаётся planner во время deployment.
+
+### P4. Epistemic ensemble и conformal routing
+
+Пять independently trained probabilistic transition heads дают epistemic
+disagreement. Он управляет `B`, execution horizon и expensive evaluator;
+trajectory-level conformal calibration задаёт ID false-positive rate.
+
+### P5. RCS coarse-to-fine baseline
+
+Re-denoising consistency проверяется как candidate-support score. Низкий RCS
+может вызвать grounded evaluator или requery, но не интерпретируется как
+вероятность task success.
+
+### P6. Tail-risk / StressDream
+
+CVaR и steered diffusion noise запускаются только после causal проверки
+`fixed action -> predicted consequence`. Первый режим - offline stress testing
+и hard-negative mining при matched world-model forward budget.
+
+### P7. Constraint-conditioned safety shield
+
+LIBERO-Safety остаётся отдельной веткой: hard feasible set,
+trajectory-calibrated threshold и явный fallback. Task value не компенсирует
+official safety violation.
+
+### Порядок принятия решений
+
+1. Завершить P0 и выбрать не более одного horizon controller.
+2. Одним snapshot-branching collector собрать targets одновременно для P1-P4.
+3. Сначала проверить offline uplift/ranking; closed-loop разрешается только
+   после held-out gate.
+4. Заморозить один VoF gate и один grounded ranker.
+5. Проверить `maxV`, `VoF`, `grounded-Q`, `grounded-Q+VoF` на целых unseen
+   tasks/OOD families.
+6. Только затем добавлять ensemble, tail risk и safety filter отдельными
+   ablations.
 
 Ближайший сильный результат должен отвечать не «uncertainty коррелирует с
 ошибкой», а одному из двух утверждений:

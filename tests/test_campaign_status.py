@@ -34,6 +34,18 @@ def test_expected_rollouts_supports_ranges_and_strategy_count():
     assert status.expected_job_rollouts(job) == 3 * 3 * 2 * 2
 
 
+def test_expected_rollouts_uses_counterfactual_snapshot_target():
+    job = {
+        "name": "vof",
+        "environment": {
+            "LIBERO_PRO_VOF_TARGET_DECISION_STATES": "100",
+            "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": "4",
+        },
+    }
+
+    assert status.expected_job_rollouts(job) == 100
+
+
 def test_completed_campaign_counts_strategy_executions(tmp_path, monkeypatch):
     campaign = tmp_path / "status_test_campaign"
     (campaign / "runs").mkdir(parents=True)
@@ -101,3 +113,16 @@ def test_eta_uses_completed_job_rate_and_gpu_queue():
     )
 
     assert eta == pytest.approx(600.0)
+
+
+def test_counterfactual_feedback_rows_are_counted_as_snapshots(tmp_path):
+    campaign = tmp_path / "vof_campaign"
+    (campaign / "runs").mkdir(parents=True)
+    frame = pd.DataFrame({"snapshot_id": ["a", "b", "c"], "local_vof": [0.0, 1.0, -1.0]})
+    frame.to_parquet(campaign / "runs" / "vof__feedback_pairs.parquet", index=False)
+
+    paths = status._preferred_trace_paths(campaign)
+    stats = status._sum_stats(status.TraceCounter().count(path) for path in paths)
+
+    assert len(paths) == 1
+    assert stats.rollouts == 3

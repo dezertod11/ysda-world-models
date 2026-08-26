@@ -39,6 +39,13 @@ OUTPUT_DIR="${LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR:-$PROJECT_ROOT/experiments/unc
 ANALYSIS_DIR="${LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR:-$OUTPUT_DIR/${RUN_PREFIX}__analysis}"
 FORCE="${LIBERO_PRO_PLANNING_GRID_FORCE:-0}"
 
+if [[ "$OUTPUT_DIR" != /* ]]; then
+  OUTPUT_DIR="$PROJECT_ROOT/$OUTPUT_DIR"
+fi
+if [[ "$ANALYSIS_DIR" != /* ]]; then
+  ANALYSIS_DIR="$PROJECT_ROOT/$ANALYSIS_DIR"
+fi
+
 read -r -a STRATEGIES <<< "${LIBERO_PRO_PLANNING_GRID_STRATEGIES:-max_value uncertainty_penalty_action uncertainty_penalty_value uncertainty_penalty_combined}"
 read -r -a LAMBDAS <<< "${LIBERO_PRO_PLANNING_GRID_LAMBDAS:-0.25 0.5 1.0 2.0 3.0}"
 read -r -a STRATEGY_LAMBDAS <<< "${LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS:-}"

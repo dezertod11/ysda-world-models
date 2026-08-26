@@ -24,7 +24,14 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CAMPAIGN_ROOT = PROJECT_ROOT / "experiments" / "campaigns"
 FINAL_STATES = {"READY", "FAILED", "STALLED", "MISSING"}
-EPISODE_KEYS = ("pair_id", "rollout_id", "episode_id", "rollout_seed", "seed")
+EPISODE_KEYS = (
+    "snapshot_id",
+    "pair_id",
+    "rollout_id",
+    "episode_id",
+    "rollout_seed",
+    "seed",
+)
 
 
 @dataclass(frozen=True)
@@ -132,6 +139,12 @@ def expected_job_rollouts(job: Mapping[str, Any]) -> int | None:
     environment = job.get("environment", {})
     if not isinstance(environment, Mapping):
         return None
+    decision_states = _env_value(environment, ("TARGET_DECISION_STATES",))
+    if decision_states is not None:
+        try:
+            return int(decision_states)
+        except ValueError:
+            return None
     maximum = _env_value(
         environment,
         ("MAX_ROLLOUTS_PER_INIT", "MAX_ROLLOUTS", "EPISODES_PER_TASK"),
@@ -207,6 +220,8 @@ def _count_trace(path: Path) -> TraceStats:
 def _preferred_trace_paths(run_dir: Path) -> list[Path]:
     candidates = list((run_dir / "runs").glob("*__query_traces.parquet"))
     candidates += list((run_dir / "runs").glob("*__query_traces.csv"))
+    candidates += list((run_dir / "runs").glob("*__feedback_pairs.parquet"))
+    candidates += list((run_dir / "runs").glob("*__feedback_pairs.csv"))
     selected: dict[str, Path] = {}
     for path in sorted(candidates):
         identity = path.with_suffix("").name

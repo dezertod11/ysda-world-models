@@ -15,16 +15,22 @@ an unreliable action chunk before execution and improve the standard
 - Full validation: 23 jobs, 1078 strategy executions and 13351 policy queries.
 - LIBERO-Safety physical evaluation is complete: 144/144 rollouts, zero task
   successes and four official safety violations.
-- The latest frozen LIBERO-PRO confirmatory campaign completed 960/960
-  executions on 12 cases. Adaptive `requery_l1_h8` improved success from
-  146/240 (60.8%) to 161/240 (67.1%): +6.25 percentage points, paired 95% CI
-  `[+1.7, +11.3]`, Holm-corrected `p=0.0474`, at 1.27x normalized query cost.
+- On selected boundary cases, adaptive `requery_l1_h8` improved success from
+  146/240 (60.8%) to 161/240 (67.1%) at 1.27x normalized query cost.
+- On the broader 897-episode LIBERO-PRO Object pilot, that gain did not
+  transfer: no planning scored 52.8%, `max(value)` 54.5%, and risk-aware
+  adaptive requery 52.1%. The current research focus is therefore grounded
+  candidate evaluation and selective feedback timing, not another static
+  uncertainty penalty.
 - A frozen future-proprio error surrogate transferred as a physical prediction
   error estimator (case-controlled Spearman 0.579, top-quartile AUROC 0.731),
   but its gated planner did not improve task success.
 
-The latest formulas, tables and limitations are documented in
-[`experiments/SURROGATE_REQUERY_RESULTS_20260820.md`](experiments/SURROGATE_REQUERY_RESULTS_20260820.md).
+The current staged research plan is documented in
+[`experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).
+P0 causal horizon controls are running on MLSpace GPU 6. The queued
+`scripts/run_grounded_planning_sequence.sh` analyzes P0 before starting the
+300-state exact-snapshot P1/P2 pilot, so the two campaigns cannot overlap.
 
 ## Repository layout
 
@@ -80,6 +86,14 @@ bash scripts/setup_mlspace_libero_safety.sh
 
 ## Main entry points
 
+- Current research roadmap:
+  [`experiments/RESEARCH_ROADMAP_20260820.md`](experiments/RESEARCH_ROADMAP_20260820.md)
+- Frozen next-stage protocol:
+  [`experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md)
+- Exact-state P1/P2 feedback and candidate protocol:
+  [`experiments/COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md`](experiments/COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md)
+- Broad LIBERO-PRO Object baseline:
+  [`experiments/campaigns/pro_object_baselines_pilot_20260825/analysis/benchmark/RESULTS.md`](experiments/campaigns/pro_object_baselines_pilot_20260825/analysis/benchmark/RESULTS.md)
 - Latest surrogate/requery result:
   [`experiments/LIBERO_SURROGATE_REQUERY_RESULTS.ipynb`](experiments/LIBERO_SURROGATE_REQUERY_RESULTS.ipynb)
 - Latest written analysis:

@@ -18,6 +18,18 @@ def _read_metadata(base: Path, run_name: str) -> dict:
     return json.loads(path.read_text())
 
 
+def _read_trace(base: Path, run_name: str) -> pd.DataFrame:
+    candidates = [
+        (base / f"{run_name}__query_traces.parquet", pd.read_parquet),
+        (base / f"{run_name}__query_traces.csv", pd.read_csv),
+    ]
+    for path, reader in candidates:
+        if path.exists():
+            return reader(path)
+    expected = ", ".join(str(path) for path, _ in candidates)
+    raise FileNotFoundError(f"No query trace for {run_name}; expected one of: {expected}")
+
+
 def _episode_table(trace: pd.DataFrame, run_name: str, metadata: dict) -> pd.DataFrame:
     group_cols = [
         col
@@ -66,11 +78,8 @@ def main() -> None:
 
     episode_frames = []
     for run_name in [x.strip() for x in args.run_names.split(",") if x.strip()]:
-        trace_path = args.base_dir / f"{run_name}__query_traces.csv"
-        if not trace_path.exists():
-            raise FileNotFoundError(trace_path)
         metadata = _read_metadata(args.base_dir, run_name)
-        trace = pd.read_csv(trace_path)
+        trace = _read_trace(args.base_dir, run_name)
         episode_frames.append(_episode_table(trace, run_name, metadata))
 
     episodes = pd.concat(episode_frames, ignore_index=True)

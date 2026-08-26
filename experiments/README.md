@@ -1,7 +1,25 @@
 # Эксперименты
 
-Для текущей линии uncertainty-aware planning начинать следует с нового
-causal-отчёта
+Текущий frozen протокол и активный broad-transfer запуск находятся в
+[`GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).
+Campaign `pro_object_horizon_controls_p0_20260826` запущена 26 августа на
+MLSpace GPU 6: 24 jobs и 897 новых matched strategy episodes для `maxV-H8`,
+`horizon-only` и compute-matched `random-H8`. Статус из WSL:
+
+```bash
+scripts/mlspace_experiment_status.sh pro_object_horizon_controls_p0_20260826 --verbose
+```
+
+Следующий exact-state P1/P2 collector уже реализован и прошёл replay smoke;
+его frozen schema, utilities и launch gate находятся в
+[`COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md`](COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md).
+Dry-run manifest содержит 12 jobs и 300 decision-state targets. Последовательный
+launcher `scripts/run_grounded_planning_sequence.sh` ждёт P0, затем строит его
+отчёт, запускает P1/P2 на освободившейся GPU 6 и выполняет offline-анализ.
+Состояние очереди записывается в
+`campaigns/grounded_planning_sequence_20260826/status.json`.
+
+Для предшествующего causal результата следует смотреть отчёт
 [`FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md`](FACTORIAL_SELECTION_HORIZON_RESULTS_20260821.md).
 В matched 2x2 на 672 rollout `requery_l1_h8` дал 121/168 success против
 100/168 у `max(value)`: +12.5 п.п., 95% CI `[+4.8; +20.8]`, exact McNemar
@@ -169,6 +187,7 @@ campaigns/temporal_overlap_passive_20260821/
 | Surrogate/requery frozen confirmatory | Завершён, 960/960 strategy executions на 240 paired seeds и 12 cases |
 | Selection x horizon causal 2x2 | Завершён 21 августа 2026: 672/672 rollout, 168 matched seeds, 7 cases |
 | Temporal overlap passive detection | Завершён 24 августа 2026: 312/312 rollout; detector gate не пройден, event labels требуют repair |
+| Broad horizon controls P0 | Запущен 26 августа 2026: 24 jobs, 897 новых episodes; MLSpace GPU 6 |
 | LIBERO-Safety physical | Завершена, 144/144: 0 task success, 4 official violations |
 
 ## Видео

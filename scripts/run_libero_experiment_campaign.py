@@ -45,15 +45,21 @@ def expand_jobs(profile: Mapping[str, Any], defaults: Mapping[str, Any]) -> List
         job.update(copy.deepcopy(raw_job))
         if not job.get("enabled", True):
             continue
-        if job["kind"] not in {"pro_position_sweep", "pro_position_planning_sweep"}:
+        if job["kind"] not in {
+            "pro_position_sweep",
+            "pro_position_planning_sweep",
+            "pro_position_counterfactual_feedback_sweep",
+        }:
             jobs.append(job)
             continue
 
-        expanded_kind = (
-            "pro_position_paired"
-            if job["kind"] == "pro_position_sweep"
-            else "pro_position_planning_grid"
-        )
+        expanded_kind = {
+            "pro_position_sweep": "pro_position_paired",
+            "pro_position_planning_sweep": "pro_position_planning_grid",
+            "pro_position_counterfactual_feedback_sweep": (
+                "pro_position_counterfactual_feedback"
+            ),
+        }[job["kind"]]
         levels = job.pop("position_levels")
         for level_index, level in enumerate(levels):
             expanded = copy.deepcopy(job)
@@ -123,6 +129,9 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
         "pro_planning_grid",
         "pro_position_planning_grid",
         "pro_environment_planning_grid",
+        "pro_counterfactual_feedback",
+        "pro_position_counterfactual_feedback",
+        "pro_environment_counterfactual_feedback",
     }:
         raise ValueError(f"{job['name']}: unsupported kind {kind}")
 
@@ -131,9 +140,16 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
         suite = suite.strip()
         if not suite:
             continue
-        if kind in {"pro_position_paired", "pro_position_planning_grid"}:
+        if kind in {
+            "pro_position_paired",
+            "pro_position_planning_grid",
+            "pro_position_counterfactual_feedback",
+        }:
             source_name = f"libero_object_temp_{job['position_level']}"
-        elif kind == "pro_environment_planning_grid":
+        elif kind in {
+            "pro_environment_planning_grid",
+            "pro_environment_counterfactual_feedback",
+        }:
             source_name = suite.removesuffix("_env")
         else:
             source_name = suite
@@ -387,6 +403,86 @@ def build_job(
             env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
         commands.append(
             ["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_planning_strategy_grid.sh")]
+        )
+        return commands, env, completion_marker
+
+    if kind in {
+        "pro_counterfactual_feedback",
+        "pro_position_counterfactual_feedback",
+        "pro_environment_counterfactual_feedback",
+    }:
+        env = {
+            "LIBERO_CONFIG_PATH": str(config_dir),
+            "LIBERO_PRO_VOF_RUN_NAME": run_name,
+            "LIBERO_PRO_VOF_SUITES": str(job["suites"]),
+            "LIBERO_PRO_VOF_TASK_IDS": str(job["task_ids"]),
+            "LIBERO_PRO_VOF_INIT_STATE_IDS": str(job["init_state_ids"]),
+            "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": str(job["rollouts_per_init"]),
+            "LIBERO_PRO_VOF_BASE_SEED": str(job["base_seed"]),
+            "LIBERO_PRO_VOF_ROLLOUT_SEED_STEP": str(job.get("rollout_seed_step", 97)),
+            "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": str(job["uncertainty_seeds"]),
+            "LIBERO_PRO_VOF_MAX_TIMESTEPS": str(job["max_timesteps"]),
+            "LIBERO_PRO_VOF_TARGET_DECISION_STATES": str(job["target_decision_states"]),
+            "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": str(job.get("phase_cap_fraction", 0.4)),
+            "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": str(
+                job.get("terminal_continuation_fraction", 0.2)
+            ),
+            "LIBERO_PRO_VOF_QUERY_COST": str(job.get("query_cost", 0.0)),
+            "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": str(
+                job.get("num_denoising_steps_action", 5)
+            ),
+            "LIBERO_PRO_VOF_PREDICTION_MODE": str(job.get("prediction_mode", "parallel")),
+            "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": str(
+                job.get("num_denoising_steps_future_state", 1)
+            ),
+            "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_VALUE": str(
+                job.get("num_denoising_steps_value", 1)
+            ),
+            "LIBERO_PRO_VOF_NUM_FUTURE_STATE_SAMPLES": str(
+                job.get("num_future_state_samples", 1)
+            ),
+            "LIBERO_PRO_VOF_NUM_VALUE_SAMPLES": str(job.get("num_value_samples", 1)),
+            "LIBERO_PRO_VOF_VALUE_ENSEMBLE_AGGREGATION": str(
+                job.get("value_ensemble_aggregation", "average")
+            ),
+            "LIBERO_PRO_VOF_EXPERIMENT_SPLIT": str(
+                job.get("experiment_split", "screen")
+            ),
+            "LIBERO_PRO_VOF_CASE_ID": str(job.get("case_id", job["name"])),
+            "LIBERO_PRO_VOF_OUTPUT_DIR": str(run_dir / "runs"),
+            "LIBERO_PRO_VOF_RESUME": "1",
+        }
+        commands = []
+        if kind == "pro_position_counterfactual_feedback":
+            level = str(job["position_level"])
+            commands.append(
+                [
+                    "bash",
+                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                    level,
+                ]
+            )
+            variant_root = PROJECT_ROOT / ".runtime/libero_pro_position" / level
+            env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+            env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+            env["LIBERO_PRO_POSITION_LEVEL"] = level
+        elif kind == "pro_environment_counterfactual_feedback":
+            commands.append(
+                [
+                    "bash",
+                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_environment_variant.sh"),
+                    str(job.get("environment_num_init_states", 10)),
+                    str(job.get("environment_seed", 20260825)),
+                ]
+            )
+            variant_root = PROJECT_ROOT / ".runtime/libero_pro_environment"
+            env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+            env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+        commands.append(
+            [
+                "bash",
+                str(PROJECT_ROOT / "scripts/run_libero_pro_counterfactual_feedback_collect.sh"),
+            ]
         )
         return commands, env, completion_marker
 

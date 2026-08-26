@@ -177,3 +177,11 @@ ssh mlspace-sr006 \
   /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/analyze_pro_object_baseline_benchmark.py \
   /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/pro_object_baselines_pilot_20260825"
 ```
+
+## Frozen follow-up
+
+Широкий pilot показал, что combined risk-aware strategy не переносится как
+универсальная замена `max(value)`. Следующая preregistered проверка отдельно
+сравнивает fixed short horizon, disagreement-triggered horizon и matched-random
+requery без замены max-value candidate. Протокол и дальнейшие go/no-go gates:
+[`GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).

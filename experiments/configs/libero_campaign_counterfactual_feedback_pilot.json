@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "counterfactual_feedback_pilot_p1_p2": {
+      "description": "Exact-state LIBERO-PRO Object snapshot branches for P1 Value of Feedback and P2 grounded candidate ranking",
+      "jobs": [
+        {
+          "name": "object_snapshots",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "pro_object__object",
+          "suites": "libero_object_object",
+          "task_ids": "0-9",
+          "init_state_ids": "0-9",
+          "rollouts_per_init": 2,
+          "base_seed": 2600000,
+          "target_decision_states": 100
+        },
+        {
+          "name": "environment_snapshots",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "pro_object__environment",
+          "suites": "libero_object_env",
+          "task_ids": "0-9",
+          "init_state_ids": "0-9",
+          "rollouts_per_init": 2,
+          "base_seed": 2700000,
+          "target_decision_states": 100
+        },
+        {
+          "name": "position_snapshots",
+          "kind": "pro_position_counterfactual_feedback_sweep",
+          "case_id": "pro_object__position",
+          "suites": "libero_object_temp",
+          "position_levels": [
+            "x0.1",
+            "x0.2",
+            "x0.3",
+            "x0.4",
+            "x0.5",
+            "y0.1",
+            "y0.2",
+            "y0.3",
+            "y0.4",
+            "y0.5"
+          ],
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "rollouts_per_init": 4,
+          "base_seed": 2800000,
+          "target_decision_states": 10
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "phase_cap_fraction": 0.4,
+    "terminal_continuation_fraction": 0.2,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "screen",
+    "environment_num_init_states": 10,
+    "environment_seed": 20260825
+  }
+}

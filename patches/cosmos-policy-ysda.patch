@@ -1373,10 +1373,10 @@ index 0000000..3f5791c
 +    return result
 diff --git a/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
 new file mode 100644
-index 0000000..c16b082
+index 0000000..a2abe30
 --- /dev/null
 +++ b/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py
-@@ -0,0 +1,2764 @@
+@@ -0,0 +1,2782 @@
 +# SPDX-License-Identifier: Apache-2.0
 +"""Collect and compare Cosmos Policy uncertainty traces on LIBERO / LIBERO-PRO.
 +
@@ -1390,6 +1390,7 @@ index 0000000..c16b082
 +import json
 +import math
 +import os
++import random
 +from dataclasses import asdict, dataclass
 +from datetime import datetime
 +from pathlib import Path
@@ -2018,6 +2019,7 @@ index 0000000..c16b082
 +    open_loop_steps: int = 16,
 +    short_open_loop_steps: int = 8,
 +    surrogate_error_threshold: float = PROPRIO_ERROR_SURROGATE_V1_DEFAULT_THRESHOLD,
++    random_requery_u: float = 1.0,
 +) -> Tuple[int, Dict[str, Any]]:
 +    """Select which sampled candidate chunk to execute.
 +
@@ -2040,6 +2042,8 @@ index 0000000..c16b082
 +        raise ValueError("short_open_loop_steps must be in [1, open_loop_steps]")
 +    if surrogate_error_threshold < 0.0:
 +        raise ValueError("surrogate_error_threshold must be non-negative")
++    if not 0.0 <= random_requery_u <= 1.0:
++        raise ValueError("random_requery_u must be in [0, 1]")
 +
 +    strategy = strategy.lower()
 +    values = np.asarray([float(sample.get("value_prediction", np.nan)) for sample in samples], dtype=np.float32)
@@ -2207,6 +2211,14 @@ index 0000000..c16b082
 +        requery_triggered = bool(action_idx != max_value_idx)
 +        if requery_triggered:
 +            selected_open_loop_steps = int(short_open_loop_steps)
++    elif strategy == "max_value_random_requery_43":
++        risk = np.zeros(len(samples), dtype=np.float32)
++        scores = values.copy()
++        selected = max_value_idx
++        effective_strategy = "max_value"
++        requery_triggered = bool(random_requery_u < 0.43)
++        if requery_triggered:
++            selected_open_loop_steps = int(short_open_loop_steps)
 +    elif strategy in {"disagreement_requery_action", "adaptive_horizon_action"}:
 +        risk = uncertainty_action
 +        scores = action_scores
@@ -2280,6 +2292,10 @@ index 0000000..c16b082
 +        "planning_phase_fraction": float(phase_fraction),
 +        "planning_short_open_loop_steps": float(short_open_loop_steps),
 +        "planning_surrogate_error_threshold": float(surrogate_error_threshold),
++        "planning_random_requery_u": float(random_requery_u),
++        "planning_random_requery_rate": 0.43
++        if strategy == "max_value_random_requery_43"
++        else 0.0,
 +        "planning_predicted_proprio_error": float(predicted_proprio_error),
 +        "planning_surrogate_alarm": bool(surrogate_alarm),
 +        "planning_episode_risk_enabled": bool(episode_risk_enabled) if episode_risk_enabled is not None else False,
@@ -2508,6 +2524,7 @@ index 0000000..c16b082
 +                open_loop_steps=cfg.num_open_loop_steps,
 +                short_open_loop_steps=planning_short_open_loop_steps,
 +                surrogate_error_threshold=planning_surrogate_error_threshold,
++                random_requery_u=random.Random(int(seeds[0]) ^ 0x5F3759DF).random(),
 +            )
 +            if planning_strategy in {
 +                "difficulty_gated_action",
@@ -3791,6 +3808,7 @@ index 0000000..c16b082
 +                "phase_gated_action",
 +                "phase_requery_action",
 +                "max_value_disagreement_requery",
++                "max_value_random_requery_43",
 +                "disagreement_requery_action",
 +                "difficulty_gated_requery_action",
 +                "surrogate_gated_requery_action",
@@ -4902,10 +4920,10 @@ index ef9e42c..df979ea 100644
          return denoised_output
 diff --git a/tests/test_planning_selection.py b/tests/test_planning_selection.py
 new file mode 100644
-index 0000000..381bd86
+index 0000000..e071c15
 --- /dev/null
 +++ b/tests/test_planning_selection.py
-@@ -0,0 +1,399 @@
+@@ -0,0 +1,429 @@
 +from __future__ import annotations
 +
 +import numpy as np
@@ -5163,6 +5181,36 @@ index 0000000..381bd86
 +    assert selected == 0
 +    assert diagnostics["planning_requery_triggered"] is False
 +    assert diagnostics["planning_selected_open_loop_steps"] == 16.0
++
++
++def test_random_requery_control_preserves_max_value_and_uses_frozen_rate() -> None:
++    candidates = [
++        sample_with_action_copies(0.8, first_std=1.0, later_std=1.0),
++        sample_with_action_copies(0.7, first_std=0.0, later_std=0.0),
++    ]
++
++    selected, triggered = select_planning_sample(
++        candidates,
++        strategy="max_value_random_requery_43",
++        random_requery_u=0.42,
++        open_loop_steps=16,
++        short_open_loop_steps=8,
++    )
++    _, not_triggered = select_planning_sample(
++        candidates,
++        strategy="max_value_random_requery_43",
++        random_requery_u=0.43,
++        open_loop_steps=16,
++        short_open_loop_steps=8,
++    )
++
++    assert selected == 0
++    assert triggered["max_value_selected"] is True
++    assert triggered["planning_requery_triggered"] is True
++    assert triggered["planning_selected_open_loop_steps"] == 8.0
++    assert triggered["planning_random_requery_rate"] == 0.43
++    assert not_triggered["planning_requery_triggered"] is False
++    assert not_triggered["planning_selected_open_loop_steps"] == 16.0
 +
 +
 +def test_frozen_proprio_error_surrogate_matches_its_center_point() -> None:
