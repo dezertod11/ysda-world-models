@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "interpretation": "exploratory_already_exposed_P4b_not_new_holdout",
+  "source": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/p4b_residual_risk_20260907/terminal_holdout_analysis/candidate_scores.parquet",
+  "source_sha256": "1ebd6c41a6d63b47492e274390b8f494229149dad0b94f338e22fcb8187c5521",
+  "strict_pools": 194,
+  "excluded_pools": 6,
+  "methods": 12,
+  "source_code_sha256": {
+    "geometry": "e930de71133b2b7eaadc03e2192897a1a43c28902acf73bf69205a63332f6c46",
+    "consensus": "a6dc6b388cce6731aae4163da87ff92f2389341c4ea0150983f2285f2f8c3923"
+  }
+}

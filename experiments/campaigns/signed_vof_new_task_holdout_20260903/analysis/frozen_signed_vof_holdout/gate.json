@@ -1,0 +1,35 @@
+{
+  "expected_pairs": 240,
+  "all_pairs": 240,
+  "strict_pairs": 240,
+  "router": {
+    "states": 240,
+    "commit_success_rate": 0.5958333333333333,
+    "policy_success_rate": 0.6166666666666667,
+    "query_rate": 0.525,
+    "rescues": 24,
+    "harms": 19,
+    "neutral_queries": 83,
+    "raw_success_delta": 0.020833333333333332,
+    "adjusted_success_delta": 0.007708333333333343
+  },
+  "raw_cluster_ci": [
+    -0.041666666666666664,
+    0.07916666666666666
+  ],
+  "adjusted_cluster_ci": [
+    -0.05416927083333332,
+    0.07
+  ],
+  "rescue_vs_harm_auc": 0.3980952380952381,
+  "exact_mcnemar_pvalue": 0.542384011856484,
+  "checks": {
+    "integrity_at_least_228_of_240": true,
+    "raw_router_delta_positive": true,
+    "adjusted_cluster_ci_lower_positive": false,
+    "query_rate_at_most_60pct": true,
+    "atlas_cell_coverage": true
+  },
+  "pass": false,
+  "decision": "do_not_promote_signed_vof_router"
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "terminal_event_atlas": {
+      "description": "Event-enriched exact-state commit-vs-requery atlas on natural LIBERO-PRO success/fail boundary cells",
+      "jobs": [
+        {
+          "name": "object_task0_boundary",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_event_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "10-49",
+          "rollouts_per_init": 2,
+          "base_seed": 10100000,
+          "target_decision_states": 120,
+          "gpu_slot": 0
+        },
+        {
+          "name": "environment_tasks1_3_boundary",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "terminal_event_environment_tasks1_3",
+          "suites": "libero_object_env",
+          "task_ids": "1,3",
+          "init_state_ids": "20-49",
+          "rollouts_per_init": 2,
+          "base_seed": 10200000,
+          "target_decision_states": 120,
+          "gpu_slot": 1
+        },
+        {
+          "name": "environment_task5_boundary",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "terminal_event_environment_task5",
+          "suites": "libero_object_env",
+          "task_ids": "5",
+          "init_state_ids": "20-49",
+          "rollouts_per_init": 2,
+          "base_seed": 10300000,
+          "target_decision_states": 100,
+          "gpu_slot": 2
+        },
+        {
+          "name": "environment_tasks8_9_boundary",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "terminal_event_environment_tasks8_9",
+          "suites": "libero_object_env",
+          "task_ids": "8,9",
+          "init_state_ids": "20-49",
+          "rollouts_per_init": 2,
+          "base_seed": 10400000,
+          "target_decision_states": 120,
+          "gpu_slot": 3
+        },
+        {
+          "name": "position_x0p2_boundary",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "terminal_event_position_x0p2",
+          "suites": "libero_object_temp",
+          "position_level": "x0.2",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "rollouts_per_init": 6,
+          "base_seed": 10500000,
+          "target_decision_states": 100,
+          "gpu_slot": 0
+        },
+        {
+          "name": "position_y0p2_boundary",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "terminal_event_position_y0p2",
+          "suites": "libero_object_temp",
+          "position_level": "y0.2",
+          "task_ids": "0-9",
+          "init_state_ids": "0",
+          "rollouts_per_init": 6,
+          "base_seed": 10600000,
+          "target_decision_states": 100,
+          "gpu_slot": 1
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "sampling_mode": "phase_balanced",
+    "snapshot_query_indices": "0,3,6,9",
+    "phase_cap_fraction": 0.3,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "terminal_selected_feedback_only": true,
+    "continuation_num_candidates": 0,
+    "skip_feedback_branch": false,
+    "query_cost": 0.025,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "continuation_prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "development",
+    "environment_num_init_states": 50,
+    "environment_seed": 20260825
+  }
+}

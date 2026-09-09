@@ -1,0 +1,13 @@
+{
+  "n_states": 80,
+  "all_proposal_oracle_successes": 62,
+  "all_proposal_oracle_success_rate": 0.775,
+  "all_proposal_oracle_ci_low": 0.6790123456790124,
+  "all_proposal_oracle_ci_high": 0.8625,
+  "deployable_oracle_successes": 11,
+  "deployable_oracle_success_rate": 0.1375,
+  "deployable_oracle_ci_low": 0.06329113924050633,
+  "deployable_oracle_ci_high": 0.21518987341772153,
+  "passing_deployable_proposals": [],
+  "decision": "develop_perception_backed_regrasp_then_test_reserve"
+}

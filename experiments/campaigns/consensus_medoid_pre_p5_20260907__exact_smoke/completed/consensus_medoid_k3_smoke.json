@@ -1,0 +1,8 @@
+{
+  "job": "consensus_medoid_k3_smoke",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-09-07T12:33:26",
+  "finished_at": "2026-09-07T12:35:08",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_medoid_pre_p5_20260907__exact_smoke/logs/consensus_medoid_k3_smoke.log"
+}

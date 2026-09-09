@@ -1,0 +1,11 @@
+{
+  "states": 617,
+  "independent_groups": 119,
+  "rescues": 32,
+  "harms": 28,
+  "net_rescues": 4,
+  "open_success_rate": 0.6855753646677472,
+  "feedback_success_rate": 0.6920583468395461,
+  "strict_integrity_states": 600,
+  "output_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/terminal_event_atlas_20260901/analysis/terminal_event_atlas"
+}

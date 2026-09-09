@@ -1,0 +1,8 @@
+{
+  "job": "y0p2_task9",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-09-04T15:56:05",
+  "finished_at": "2026-09-04T15:59:08",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_20260904__screen20/logs/y0p2_task9.log"
+}

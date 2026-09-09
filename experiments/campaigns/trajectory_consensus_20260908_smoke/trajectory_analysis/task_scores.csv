@@ -1,0 +1,8 @@
+factor,task_id,method,size,sum,mean
+Object,0,first,1,1,1.0
+Object,0,max_value,1,1,1.0
+Object,0,old_guarded,1,1,1.0
+Object,0,physical_density,1,0,0.0
+Object,0,physical_medoid,1,0,0.0
+Object,0,v2_0,1,1,1.0
+Object,0,v2_1,1,1,1.0

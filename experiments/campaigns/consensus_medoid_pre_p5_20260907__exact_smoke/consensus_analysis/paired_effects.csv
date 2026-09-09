@@ -1,0 +1,4 @@
+reference,method,paired_episodes,reference_success_rate,method_success_rate,delta_success_rate,ci95_low,ci95_high,rescues,harms,mcnemar_exact_p
+consensus_medoid_only,first,1,1.0,0.0,-1.0,-1.0,-1.0,0,1,1.0
+consensus_medoid_only,max_value,1,1.0,0.0,-1.0,-1.0,-1.0,0,1,1.0
+first,max_value,1,0.0,0.0,0.0,0.0,0.0,0,0,1.0

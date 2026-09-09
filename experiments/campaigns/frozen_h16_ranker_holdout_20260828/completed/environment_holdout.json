@@ -1,0 +1,8 @@
+{
+  "job": "environment_holdout",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-08-28T13:40:10",
+  "finished_at": "2026-08-28T14:40:11",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/frozen_h16_ranker_holdout_20260828/logs/environment_holdout.log"
+}

@@ -1,0 +1,8 @@
+terminal_outcome,baseline_failure_type,method_failure_type,pairs
+rescue,timeout_no_goal,success,15
+harm,success,timeout_no_goal,10
+rescue,target_drop_candidate,success,6
+rescue,kinematic_deadlock_candidate,success,3
+harm,success,kinematic_deadlock_candidate,1
+harm,success,target_drop_candidate,1
+harm,success,wrong_object_interaction_candidate,1

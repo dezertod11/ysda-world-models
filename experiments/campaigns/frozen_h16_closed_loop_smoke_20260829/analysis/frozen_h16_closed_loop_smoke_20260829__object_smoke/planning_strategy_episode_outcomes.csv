@@ -1,0 +1,3 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_object_object,8,5,0,0,6100000,frozen_h16_closed_loop_smoke_20260829__object_smoke__libero_object_object__task8__init5__max_value__l0,max_value,0.0,True,147,10,0.0,0.5467027068138123,0.5467027068138123,0.0
+libero_object_object,8,5,0,0,6100000,frozen_h16_closed_loop_smoke_20260829__object_smoke__libero_object_object__task8__init5__frozen_factor_ridge__l0,frozen_factor_ridge,0.0,True,147,10,0.5,0.5475836127996445,0.5485044032335281,-0.0020964009883920496

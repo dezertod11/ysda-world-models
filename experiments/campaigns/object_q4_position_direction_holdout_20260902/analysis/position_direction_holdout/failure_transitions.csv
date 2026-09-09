@@ -1,0 +1,5 @@
+condition_id,terminal_outcome,open_terminal_failure_type,feedback_terminal_failure_type,pairs
+position_x0p2_task0,rescue,target_drop_candidate,success,1
+position_y0p2_task0,rescue,timeout_no_goal,success,10
+position_y0p2_task0,harm,success,timeout_no_goal,7
+position_y0p2_task0,harm,success,target_drop_candidate,2

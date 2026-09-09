@@ -1,0 +1,5 @@
+mode,replica_id,max_action_abs_diff,max_value_abs_diff,selected_index_match_rate,exact
+default,a,0.0,0.0,1.0,True
+default,b,0.0,0.0,1.0,True
+warn,a,0.0,0.0,1.0,True
+warn,b,0.0,0.0,1.0,True

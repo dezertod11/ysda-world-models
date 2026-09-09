@@ -22,7 +22,9 @@ import pandas as pd
 from libero.libero import benchmark
 
 from cosmos_policy.experiments.robot.cosmos_utils import (
+    get_future_state_prediction,
     get_model,
+    get_value_prediction,
     init_t5_text_embeddings_cache,
     load_dataset_stats,
 )
@@ -30,7 +32,6 @@ from cosmos_policy.experiments.robot.libero.libero_utils import (
     get_libero_dummy_action,
     get_libero_env,
     get_libero_image,
-    get_libero_task_description,
     get_libero_wrist_image,
 )
 from cosmos_policy.experiments.robot.libero.run_libero_eval import (
@@ -40,6 +41,9 @@ from cosmos_policy.experiments.robot.libero.run_libero_eval import (
     validate_config,
 )
 from cosmos_policy.experiments.robot.libero.safety_signals import SafetySignalTracker
+from cosmos_policy.experiments.robot.libero.terminal_grounded_critic import (
+    terminal_candidate_feature_rows,
+)
 from cosmos_policy.experiments.robot.libero.uncertainty_comparison import (
     default_policy_config,
     get_task_init_states_compat,
@@ -62,7 +66,9 @@ from counterfactual_feedback_utils import (
     PHASES,
     local_branch_utility,
     prefixed,
+    snapshot_is_scheduled,
     should_run_terminal_continuation,
+    should_continue_candidate_to_terminal,
     terminal_branch_utility,
     value_of_feedback,
 )
@@ -224,9 +230,15 @@ def _sample_candidates(
     task_description: str,
     seeds: Sequence[int],
     resize_size: int,
+    *,
+    prediction_mode: str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, float]]:
     observation = prepare_observation(obs, resize_size, cfg.flip_images)
-    return sample_action_ensemble(
+    resolved_prediction_mode = prediction_mode or (
+        "autoregressive" if cfg.ar_future_prediction or cfg.ar_value_prediction else "parallel"
+    )
+    sampling_mode = "parallel" if resolved_prediction_mode == "dual" else resolved_prediction_mode
+    samples, metrics = sample_action_ensemble(
         cfg,
         model,
         dict(dataset_stats),
@@ -234,14 +246,77 @@ def _sample_candidates(
         task_description,
         seeds=seeds,
         num_denoising_steps_action=cfg.num_denoising_steps_action,
-        prediction_mode=(
-            "autoregressive" if cfg.ar_future_prediction or cfg.ar_value_prediction else "parallel"
-        ),
+        prediction_mode=sampling_mode,
         num_denoising_steps_future_state=cfg.num_denoising_steps_future_state,
         num_denoising_steps_value=cfg.num_denoising_steps_value,
         num_future_state_samples=cfg.num_future_state_predictions_in_ensemble,
         num_value_samples=cfg.num_value_predictions_in_ensemble,
     )
+    if resolved_prediction_mode != "dual":
+        return samples, metrics
+
+    autoregressive_values = []
+    for sample, seed in zip(samples, seeds):
+        indices = sample["latent_indices"]
+        future = get_future_state_prediction(
+            cfg,
+            model=model,
+            data_batch=sample["data_batch"],
+            generated_latent_with_action=sample["generated_latent"],
+            orig_clean_latent_frames=sample["orig_clean_latent_frames"],
+            future_proprio_latent_idx=indices["future_proprio_latent_idx"],
+            future_wrist_image_latent_idx=indices["future_wrist_image_latent_idx"],
+            future_wrist_image2_latent_idx=indices["future_wrist_image2_latent_idx"],
+            future_image_latent_idx=indices["future_image_latent_idx"],
+            future_image2_latent_idx=indices["future_image2_latent_idx"],
+            seed=int(seed),
+            randomize_seed=False,
+            num_denoising_steps_future_state=cfg.num_denoising_steps_future_state,
+            use_ensemble_future_state_predictions=(
+                cfg.num_future_state_predictions_in_ensemble > 1
+            ),
+            num_future_state_predictions_in_ensemble=(
+                cfg.num_future_state_predictions_in_ensemble
+            ),
+            future_state_ensemble_aggregation_scheme=(
+                cfg.future_state_ensemble_aggregation_scheme
+            ),
+        )
+        value = get_value_prediction(
+            cfg,
+            model=model,
+            data_batch=sample["data_batch"],
+            future_state_samples_list=future["future_state_samples_list"],
+            seed=int(seed),
+            randomize_seed=False,
+            num_denoising_steps_value=cfg.num_denoising_steps_value,
+            use_ensemble_value_predictions=cfg.num_value_predictions_in_ensemble > 1,
+            num_value_predictions_in_ensemble=cfg.num_value_predictions_in_ensemble,
+        )
+        sample["parallel_value_prediction"] = float(sample["value_prediction"])
+        sample["autoregressive_value_prediction"] = float(value["value_prediction"])
+        sample["autoregressive_future_image_predictions"] = future[
+            "future_image_predictions"
+        ]
+        sample["autoregressive_future_state_generated_latent"] = future[
+            "future_state_samples_list"
+        ][-1]
+        if value.get("generated_value_samples"):
+            sample["autoregressive_value_generated_latent"] = value[
+                "generated_value_samples"
+            ][-1]
+        sample["prediction_mode"] = "dual"
+        autoregressive_values.append(float(value["value_prediction"]))
+
+    ar_values = np.asarray(autoregressive_values, dtype=np.float64)
+    metrics.update(
+        {
+            "autoregressive_value_mean": float(ar_values.mean()),
+            "autoregressive_value_std": float(ar_values.std()),
+            "autoregressive_value_range": float(np.ptp(ar_values)),
+        }
+    )
+    return samples, metrics
 
 
 def _select_max_value(samples: Sequence[Mapping[str, Any]], *, open_loop_steps: int) -> tuple[int, dict[str, Any]]:
@@ -268,6 +343,7 @@ def _continue_to_terminal(
     absolute_t: int,
     max_t: int,
     resize_size: int,
+    prediction_mode: str | None = None,
 ) -> tuple[Mapping[str, Any], bool, int, int]:
     success = bool(env.check_success())
     continuation_queries = 0
@@ -284,6 +360,7 @@ def _continue_to_terminal(
             task_description,
             seeds,
             resize_size,
+            prediction_mode=prediction_mode,
         )
         selected_idx, _diagnostics = _select_max_value(
             samples, open_loop_steps=cfg.num_open_loop_steps
@@ -295,6 +372,55 @@ def _continue_to_terminal(
             tracker,
             absolute_t=absolute_t,
             max_t=max_t,
+        )
+        continuation_queries += 1
+    return obs, success, absolute_t, continuation_queries
+
+
+def _continue_to_horizon(
+    cfg: Any,
+    model: Any,
+    dataset_stats: Mapping[str, Any],
+    env: Any,
+    obs: Mapping[str, Any],
+    tracker: SafetySignalTracker,
+    task_description: str,
+    uncertainty_seed_offsets: Sequence[int],
+    *,
+    rollout_seed: int,
+    absolute_t: int,
+    target_t: int,
+    resize_size: int,
+    prediction_mode: str | None = None,
+) -> tuple[Mapping[str, Any], bool, int, int]:
+    """Follow the frozen max-value policy until a matched consequence horizon."""
+    success = bool(env.check_success())
+    continuation_queries = 0
+    while not success and absolute_t < target_t:
+        seeds = tuple(
+            int(rollout_seed + 8_000_000 + absolute_t * 1000 + offset)
+            for offset in uncertainty_seed_offsets
+        )
+        samples, _metrics = _sample_candidates(
+            cfg,
+            model,
+            dataset_stats,
+            obs,
+            task_description,
+            seeds,
+            resize_size,
+            prediction_mode=prediction_mode,
+        )
+        selected_idx, _diagnostics = _select_max_value(
+            samples, open_loop_steps=cfg.num_open_loop_steps
+        )
+        obs, success, absolute_t, _executed = _execute_actions(
+            env,
+            obs,
+            samples[selected_idx]["actions"][: cfg.num_open_loop_steps],
+            tracker,
+            absolute_t=absolute_t,
+            max_t=target_t,
         )
         continuation_queries += 1
     return obs, success, absolute_t, continuation_queries
@@ -314,8 +440,16 @@ def _run_candidate_branch(
     snapshot_t: int,
     max_t: int,
     resize_size: int,
+    consequence_horizon_steps: int,
     terminal_continuation: bool,
-) -> tuple[dict[str, Any], Mapping[str, Any], np.ndarray]:
+    continuation_prediction_mode: str | None = None,
+) -> tuple[
+    dict[str, Any],
+    Mapping[str, Any],
+    np.ndarray,
+    Mapping[str, Any],
+    np.ndarray,
+]:
     obs_start = _restore_snapshot(env, snapshot_state)
     tracker = SafetySignalTracker(env, obs_start)
     marker = tracker.mark_query_start()
@@ -347,6 +481,37 @@ def _run_candidate_branch(
             chunk_success=success,
         )
     )
+    horizon_obs = endpoint_obs
+    horizon_state = endpoint_state
+    if consequence_horizon_steps > cfg.num_open_loop_steps:
+        target_t = min(max_t, snapshot_t + consequence_horizon_steps)
+        obs_end, success, absolute_t, continuation_queries = _continue_to_horizon(
+            cfg,
+            model,
+            dataset_stats,
+            env,
+            obs_end,
+            tracker,
+            task_description,
+            uncertainty_seed_offsets,
+            rollout_seed=rollout_seed,
+            absolute_t=absolute_t,
+            target_t=target_t,
+            resize_size=resize_size,
+            prediction_mode=continuation_prediction_mode,
+        )
+        horizon_obs = _copy_observation(obs_end)
+        horizon_state = np.asarray(env.get_sim_state(), dtype=np.float64).copy()
+        horizon_outcome = _local_outcome(
+            tracker,
+            marker,
+            obs_start,
+            obs_end,
+            success=success,
+            executed_steps=absolute_t - snapshot_t,
+        )
+        horizon_outcome["continuation_queries"] = int(continuation_queries)
+        outcome.update(prefixed(horizon_outcome, "h32_"))
     if terminal_continuation:
         obs_end, success, absolute_t, continuation_queries = _continue_to_terminal(
             cfg,
@@ -361,6 +526,7 @@ def _run_candidate_branch(
             absolute_t=absolute_t,
             max_t=max_t,
             resize_size=resize_size,
+            prediction_mode=continuation_prediction_mode,
         )
         outcome.update(
             _terminal_outcome(
@@ -373,7 +539,7 @@ def _run_candidate_branch(
         )
     else:
         outcome["terminal_available"] = False
-    return outcome, endpoint_obs, endpoint_state
+    return outcome, endpoint_obs, endpoint_state, horizon_obs, horizon_state
 
 
 def _run_feedback_branch(
@@ -392,8 +558,18 @@ def _run_feedback_branch(
     max_t: int,
     resize_size: int,
     feedback_steps: int,
+    consequence_horizon_steps: int,
     terminal_continuation: bool,
-) -> tuple[dict[str, Any], Mapping[str, Any], np.ndarray, dict[str, Any]]:
+    continuation_prediction_mode: str | None = None,
+    requery_prediction_mode: str | None = None,
+) -> tuple[
+    dict[str, Any],
+    Mapping[str, Any],
+    np.ndarray,
+    Mapping[str, Any],
+    np.ndarray,
+    dict[str, Any],
+]:
     obs_start = _restore_snapshot(env, snapshot_state)
     tracker = SafetySignalTracker(env, obs_start)
     marker = tracker.mark_query_start()
@@ -428,6 +604,7 @@ def _run_feedback_branch(
             task_description,
             seeds,
             resize_size,
+            prediction_mode=requery_prediction_mode,
         )
         selected_idx, diagnostics = _select_max_value(
             samples, open_loop_steps=cfg.num_open_loop_steps
@@ -461,6 +638,37 @@ def _run_feedback_branch(
         executed_steps=first_steps + second_steps,
     )
     outcome["feedback_requery_performed"] = bool(requery_payload["performed"])
+    horizon_obs = endpoint_obs
+    horizon_state = endpoint_state
+    if consequence_horizon_steps > cfg.num_open_loop_steps:
+        target_t = min(max_t, snapshot_t + consequence_horizon_steps)
+        obs_mid, success, absolute_t, continuation_queries = _continue_to_horizon(
+            cfg,
+            model,
+            dataset_stats,
+            env,
+            obs_mid,
+            tracker,
+            task_description,
+            uncertainty_seed_offsets,
+            rollout_seed=rollout_seed,
+            absolute_t=absolute_t,
+            target_t=target_t,
+            resize_size=resize_size,
+            prediction_mode=continuation_prediction_mode,
+        )
+        horizon_obs = _copy_observation(obs_mid)
+        horizon_state = np.asarray(env.get_sim_state(), dtype=np.float64).copy()
+        horizon_outcome = _local_outcome(
+            tracker,
+            marker,
+            obs_start,
+            obs_mid,
+            success=success,
+            executed_steps=absolute_t - snapshot_t,
+        )
+        horizon_outcome["continuation_queries"] = int(continuation_queries)
+        outcome.update(prefixed(horizon_outcome, "h32_"))
     if terminal_continuation:
         obs_mid, success, absolute_t, continuation_queries = _continue_to_terminal(
             cfg,
@@ -475,6 +683,7 @@ def _run_feedback_branch(
             absolute_t=absolute_t,
             max_t=max_t,
             resize_size=resize_size,
+            prediction_mode=continuation_prediction_mode,
         )
         outcome.update(
             _terminal_outcome(
@@ -487,19 +696,57 @@ def _run_feedback_branch(
         )
     else:
         outcome["terminal_available"] = False
-    return outcome, endpoint_obs, endpoint_state, requery_payload
+    return (
+        outcome,
+        endpoint_obs,
+        endpoint_state,
+        horizon_obs,
+        horizon_state,
+        requery_payload,
+    )
 
 
-def _candidate_features(sample: Mapping[str, Any], candidate_idx: int) -> dict[str, Any]:
-    actions = np.asarray(sample["actions"], dtype=np.float32)
-    result: dict[str, Any] = {
-        "candidate_idx": int(candidate_idx),
-        "candidate_value": float(sample.get("value_prediction", np.nan)),
-        "candidate_first_action_l1": float(np.abs(actions[0]).mean()),
-        "candidate_action_chunk_l1": float(np.abs(actions).mean()),
-        "candidate_action_chunk_l2": float(np.sqrt(np.mean(actions**2))),
-    }
-    result.update(latent_internal_consistency(dict(sample)))
+def _candidate_features(
+    sample: Mapping[str, Any],
+    candidate_idx: int,
+    feature_row: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    if feature_row is None:
+        actions = np.asarray(sample["actions"], dtype=np.float32)
+        result: dict[str, Any] = {
+            "candidate_value": float(sample.get("value_prediction", np.nan)),
+            "candidate_first_action_l1": float(np.abs(actions[0]).mean()),
+            "candidate_action_chunk_l1": float(np.abs(actions).mean()),
+            "candidate_action_chunk_l2": float(np.sqrt(np.mean(actions**2))),
+        }
+        result.update(latent_internal_consistency(dict(sample)))
+    else:
+        result = dict(feature_row)
+    if "parallel_value_prediction" in sample:
+        result["candidate_parallel_value"] = float(sample["parallel_value_prediction"])
+        result["candidate_autoregressive_value"] = float(
+            sample["autoregressive_value_prediction"]
+        )
+        ar_sample = dict(sample)
+        ar_sample["future_state_generated_latent"] = sample[
+            "autoregressive_future_state_generated_latent"
+        ]
+        if "autoregressive_value_generated_latent" in sample:
+            ar_sample["value_generated_latent"] = sample[
+                "autoregressive_value_generated_latent"
+            ]
+        ar_consistency = latent_internal_consistency(ar_sample)
+        for key, value in ar_consistency.items():
+            if key.startswith("latent_future_proprio") or key.startswith("latent_value"):
+                result[f"autoregressive_{key}"] = value
+        future = extract_future_proprio_from_sample(ar_sample)
+        if future is not None:
+            future_vector = np.asarray(future, dtype=np.float64).reshape(-1, 9).mean(axis=0)
+            for dimension, value in enumerate(future_vector):
+                result[
+                    f"candidate_autoregressive_predicted_future_proprio_d{dimension}"
+                ] = float(value)
+    result["candidate_idx"] = int(candidate_idx)
     return result
 
 
@@ -512,9 +759,14 @@ def _sidecar_payload(
     selected_idx: int,
     candidate_endpoint_states: Sequence[np.ndarray],
     candidate_endpoint_obs: Sequence[Mapping[str, Any]],
-    feedback_endpoint_state: np.ndarray,
-    feedback_endpoint_obs: Mapping[str, Any],
+    candidate_horizon_states: Sequence[np.ndarray],
+    candidate_horizon_obs: Sequence[Mapping[str, Any]],
+    feedback_endpoint_state: np.ndarray | None,
+    feedback_endpoint_obs: Mapping[str, Any] | None,
+    feedback_horizon_state: np.ndarray | None,
+    feedback_horizon_obs: Mapping[str, Any] | None,
     requery: Mapping[str, Any],
+    consequence_horizon_steps: int,
 ) -> dict[str, np.ndarray]:
     future_images = [
         sample.get("future_image_predictions", {}).get("future_image") for sample in samples
@@ -523,6 +775,27 @@ def _sidecar_payload(
         sample.get("future_image_predictions", {}).get("future_wrist_image") for sample in samples
     ]
     future_proprio = [extract_future_proprio_from_sample(dict(sample)) for sample in samples]
+    autoregressive_future_images = [
+        sample.get("autoregressive_future_image_predictions", {}).get("future_image")
+        for sample in samples
+    ]
+    autoregressive_future_wrists = [
+        sample.get("autoregressive_future_image_predictions", {}).get(
+            "future_wrist_image"
+        )
+        for sample in samples
+    ]
+    autoregressive_future_proprio = []
+    for sample in samples:
+        generated = sample.get("autoregressive_future_state_generated_latent")
+        if generated is None:
+            autoregressive_future_proprio.append(None)
+            continue
+        ar_sample = dict(sample)
+        ar_sample["future_state_generated_latent"] = generated
+        autoregressive_future_proprio.append(
+            extract_future_proprio_from_sample(ar_sample)
+        )
     payload = {
         "current_agentview": np.asarray(
             get_libero_image(obs, flip_images=cfg.flip_images), dtype=np.uint8
@@ -555,25 +828,74 @@ def _sidecar_payload(
         "candidate_endpoint_proprio": np.stack(
             [np.asarray(proprio_from_libero_obs(dict(value)), dtype=np.float32) for value in candidate_endpoint_obs]
         ),
-        "feedback_endpoint_state": np.asarray(feedback_endpoint_state, dtype=np.float64),
-        "feedback_endpoint_agentview": np.asarray(
-            get_libero_image(feedback_endpoint_obs, flip_images=cfg.flip_images), dtype=np.uint8
-        ),
-        "feedback_endpoint_wrist": np.asarray(
-            get_libero_wrist_image(feedback_endpoint_obs, flip_images=cfg.flip_images), dtype=np.uint8
-        ),
-        "feedback_endpoint_proprio": np.asarray(
-            proprio_from_libero_obs(dict(feedback_endpoint_obs)), dtype=np.float32
-        ),
     }
+    if feedback_endpoint_state is not None and feedback_endpoint_obs is not None:
+        payload.update(
+            {
+                "feedback_endpoint_state": np.asarray(
+                    feedback_endpoint_state, dtype=np.float64
+                ),
+                "feedback_endpoint_agentview": np.asarray(
+                    get_libero_image(feedback_endpoint_obs, flip_images=cfg.flip_images),
+                    dtype=np.uint8,
+                ),
+                "feedback_endpoint_wrist": np.asarray(
+                    get_libero_wrist_image(feedback_endpoint_obs, flip_images=cfg.flip_images),
+                    dtype=np.uint8,
+                ),
+                "feedback_endpoint_proprio": np.asarray(
+                    proprio_from_libero_obs(dict(feedback_endpoint_obs)),
+                    dtype=np.float32,
+                ),
+            }
+        )
+    if (
+        consequence_horizon_steps > cfg.num_open_loop_steps
+        and feedback_horizon_state is not None
+        and feedback_horizon_obs is not None
+    ):
+        payload.update(
+            {
+                "candidate_h32_endpoint_states": np.stack(candidate_horizon_states),
+                "candidate_h32_endpoint_proprio": np.stack(
+                    [
+                        np.asarray(proprio_from_libero_obs(dict(value)), dtype=np.float32)
+                        for value in candidate_horizon_obs
+                    ]
+                ),
+                "feedback_h32_endpoint_state": np.asarray(
+                    feedback_horizon_state, dtype=np.float64
+                ),
+                "feedback_h32_endpoint_proprio": np.asarray(
+                    proprio_from_libero_obs(dict(feedback_horizon_obs)), dtype=np.float32
+                ),
+            }
+        )
     payload.update(runtime_snapshot_arrays(snapshot_state))
     for key, value in (
         ("candidate_predicted_future_images", _stack_optional(future_images, dtype=np.uint8)),
         ("candidate_predicted_future_wrists", _stack_optional(future_wrists, dtype=np.uint8)),
         ("candidate_predicted_future_proprio", _stack_optional(future_proprio)),
+        (
+            "candidate_autoregressive_predicted_future_images",
+            _stack_optional(autoregressive_future_images, dtype=np.uint8),
+        ),
+        (
+            "candidate_autoregressive_predicted_future_wrists",
+            _stack_optional(autoregressive_future_wrists, dtype=np.uint8),
+        ),
+        (
+            "candidate_autoregressive_predicted_future_proprio",
+            _stack_optional(autoregressive_future_proprio),
+        ),
     ):
         if value.size:
             payload[key] = value
+    if all("autoregressive_value_prediction" in sample for sample in samples):
+        payload["candidate_autoregressive_values"] = np.asarray(
+            [sample["autoregressive_value_prediction"] for sample in samples],
+            dtype=np.float32,
+        )
 
     requery_samples = list(requery.get("samples", []))
     if requery_samples:
@@ -642,18 +964,32 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
     task_ids = parse_int_list(args.task_ids)
     init_state_ids = parse_int_list(args.init_state_ids)
     uncertainty_seed_offsets = parse_seed_list(args.uncertainty_seeds)
+    continuation_seed_offsets = (
+        uncertainty_seed_offsets[: args.continuation_num_candidates]
+        if args.continuation_num_candidates > 0
+        else uncertainty_seed_offsets
+    )
+    continuation_prediction_mode = (
+        None
+        if args.continuation_prediction_mode == "inherit"
+        else args.continuation_prediction_mode
+    )
+    fixed_query_indices = tuple(sorted(set(parse_int_list(args.snapshot_query_indices))))
     if not suites:
         raise ValueError("at least one suite is required")
     if len(existing_keys) >= args.target_decision_states:
         print(f"[vof] already complete: {len(existing_keys)} snapshots")
         return pd.DataFrame(feedback_rows), pd.DataFrame(candidate_rows)
 
+    config_prediction_mode = (
+        "parallel" if args.prediction_mode == "dual" else args.prediction_mode
+    )
     cfg = default_policy_config(
         suites[0],
         seed=args.base_seed,
         num_open_loop_steps=args.open_loop_steps,
         num_denoising_steps_action=args.num_denoising_steps_action,
-        prediction_mode=args.prediction_mode,
+        prediction_mode=config_prediction_mode,
         num_denoising_steps_future_state=args.num_denoising_steps_future_state,
         num_denoising_steps_value=args.num_denoising_steps_value,
         num_future_state_samples=args.num_future_state_samples,
@@ -724,9 +1060,10 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                 model,
                                 dataset_stats,
                                 obs,
-                                get_libero_task_description(task, main_env),
+                                str(task.language),
                                 seeds,
                                 resize_size,
+                                prediction_mode=args.prediction_mode,
                             )
                             selected_idx, planning_diagnostics = _select_max_value(
                                 samples, open_loop_steps=cfg.num_open_loop_steps
@@ -739,11 +1076,17 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                 rollout_id,
                                 query_idx,
                             )
-                            needs_phase = phase_counts.get(phase, 0) < phase_cap
                             collect_snapshot = (
                                 key not in existing_keys
-                                and phase not in phases_seen_in_episode
-                                and needs_phase
+                                and snapshot_is_scheduled(
+                                    args.sampling_mode,
+                                    query_idx=query_idx,
+                                    phase=phase,
+                                    phases_seen_in_episode=phases_seen_in_episode,
+                                    phase_count=phase_counts.get(phase, 0),
+                                    phase_cap=phase_cap,
+                                    fixed_query_indices=fixed_query_indices,
+                                )
                                 and len(existing_keys) < args.target_decision_states
                             )
                             branch_bundle: dict[str, Any] | None = None
@@ -765,20 +1108,44 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                     "query_idx": int(query_idx),
                                     "t": int(t),
                                     "phase_at_snapshot": phase,
-                                    "task_description": get_libero_task_description(task, main_env),
+                                    "task_description": str(task.language),
                                     "num_candidates": int(len(samples)),
                                     "open_loop_steps": int(cfg.num_open_loop_steps),
                                     "feedback_steps": int(args.feedback_steps),
+                                    "consequence_horizon_steps": int(
+                                        args.consequence_horizon_steps
+                                    ),
                                     "terminal_continuation": bool(terminal_continuation),
+                                    "prediction_mode": args.prediction_mode,
+                                    "continuation_prediction_mode": (
+                                        continuation_prediction_mode or args.prediction_mode
+                                    ),
                                     "experiment_split": args.experiment_split,
                                     "case_id": args.case_id,
                                 }
                                 query_features = {**query_metrics, **planning_diagnostics}
                                 candidate_bundle = []
+                                causal_feature_rows = terminal_candidate_feature_rows(samples)
                                 endpoint_states = []
                                 endpoint_obs = []
+                                horizon_states = []
+                                horizon_obs = []
                                 for candidate_idx, sample in enumerate(samples):
-                                    outcome, candidate_obs, endpoint_state = _run_candidate_branch(
+                                    candidate_terminal_continuation = (
+                                        should_continue_candidate_to_terminal(
+                                            terminal_continuation,
+                                            args.terminal_selected_feedback_only,
+                                            candidate_idx,
+                                            selected_idx,
+                                        )
+                                    )
+                                    (
+                                        outcome,
+                                        candidate_obs,
+                                        endpoint_state,
+                                        candidate_horizon_obs,
+                                        candidate_horizon_state,
+                                    ) = _run_candidate_branch(
                                         cfg,
                                         model,
                                         dataset_stats,
@@ -786,75 +1153,123 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                         snapshot_state,
                                         sample,
                                         common["task_description"],
-                                        uncertainty_seed_offsets,
+                                        continuation_seed_offsets,
                                         rollout_seed=rollout_seed,
                                         snapshot_t=t,
                                         max_t=max_t,
                                         resize_size=resize_size,
-                                        terminal_continuation=terminal_continuation,
+                                        consequence_horizon_steps=args.consequence_horizon_steps,
+                                        terminal_continuation=(
+                                            candidate_terminal_continuation
+                                        ),
+                                        continuation_prediction_mode=continuation_prediction_mode,
                                     )
                                     row = {
                                         **common,
                                         **query_features,
-                                        **_candidate_features(sample, candidate_idx),
+                                        **_candidate_features(
+                                            sample,
+                                            candidate_idx,
+                                            causal_feature_rows[candidate_idx],
+                                        ),
                                         **outcome,
                                         "candidate_seed": int(seeds[candidate_idx]),
                                         "candidate_is_max_value": bool(candidate_idx == selected_idx),
+                                        "candidate_terminal_continuation": bool(
+                                            candidate_terminal_continuation
+                                        ),
                                     }
                                     candidate_bundle.append(row)
                                     endpoint_states.append(endpoint_state)
                                     endpoint_obs.append(candidate_obs)
+                                    horizon_states.append(candidate_horizon_state)
+                                    horizon_obs.append(candidate_horizon_obs)
 
-                                feedback_outcome, feedback_obs, feedback_state, requery = _run_feedback_branch(
-                                    cfg,
-                                    model,
-                                    dataset_stats,
-                                    branch_env,
-                                    snapshot_state,
-                                    samples[selected_idx],
-                                    common["task_description"],
-                                    uncertainty_seed_offsets,
-                                    rollout_seed=rollout_seed,
-                                    query_idx=query_idx,
-                                    snapshot_t=t,
-                                    max_t=max_t,
-                                    resize_size=resize_size,
-                                    feedback_steps=args.feedback_steps,
-                                    terminal_continuation=terminal_continuation,
-                                )
                                 open_outcome = candidate_bundle[selected_idx]
-                                feedback_row = {
-                                    **common,
-                                    **query_features,
-                                    "selected_candidate_idx": int(selected_idx),
-                                    "selected_candidate_seed": int(seeds[selected_idx]),
-                                    **prefixed(
-                                        {
-                                            key_name: value
-                                            for key_name, value in open_outcome.items()
-                                            if key_name not in common and key_name not in query_features
-                                        },
-                                        "open_",
-                                    ),
-                                    **prefixed(feedback_outcome, "feedback_"),
-                                    **prefixed(dict(requery.get("metrics", {})), "feedback_query_"),
-                                    **prefixed(dict(requery.get("diagnostics", {})), "feedback_query_"),
-                                    "query_cost": float(args.query_cost),
-                                    "local_vof": value_of_feedback(
-                                        open_outcome,
-                                        feedback_outcome,
-                                        query_cost=args.query_cost,
-                                    ),
-                                }
-                                if terminal_continuation:
-                                    feedback_row["terminal_vof"] = value_of_feedback(
-                                        open_outcome,
-                                        feedback_outcome,
-                                        query_cost=args.query_cost,
-                                        terminal=True,
-                                    )
+                                if args.skip_feedback_branch:
+                                    feedback_obs = None
+                                    feedback_state = None
+                                    feedback_horizon_obs = None
+                                    feedback_horizon_state = None
+                                    requery = {}
+                                    feedback_row = {
+                                        **common,
+                                        **query_features,
+                                        "selected_candidate_idx": int(selected_idx),
+                                        "selected_candidate_seed": int(seeds[selected_idx]),
+                                        "feedback_available": False,
+                                        "query_cost": float(args.query_cost),
+                                        "local_vof": np.nan,
+                                        "terminal_vof": np.nan,
+                                    }
                                 else:
-                                    feedback_row["terminal_vof"] = np.nan
+                                    (
+                                        feedback_outcome,
+                                        feedback_obs,
+                                        feedback_state,
+                                        feedback_horizon_obs,
+                                        feedback_horizon_state,
+                                        requery,
+                                    ) = _run_feedback_branch(
+                                        cfg,
+                                        model,
+                                        dataset_stats,
+                                        branch_env,
+                                        snapshot_state,
+                                        samples[selected_idx],
+                                        common["task_description"],
+                                        continuation_seed_offsets,
+                                        rollout_seed=rollout_seed,
+                                        query_idx=query_idx,
+                                        snapshot_t=t,
+                                        max_t=max_t,
+                                        resize_size=resize_size,
+                                        feedback_steps=args.feedback_steps,
+                                        consequence_horizon_steps=args.consequence_horizon_steps,
+                                        terminal_continuation=terminal_continuation,
+                                        continuation_prediction_mode=continuation_prediction_mode,
+                                        requery_prediction_mode=args.prediction_mode,
+                                    )
+                                    feedback_row = {
+                                        **common,
+                                        **query_features,
+                                        "selected_candidate_idx": int(selected_idx),
+                                        "selected_candidate_seed": int(seeds[selected_idx]),
+                                        "feedback_available": True,
+                                        **prefixed(
+                                            {
+                                                key_name: value
+                                                for key_name, value in open_outcome.items()
+                                                if key_name not in common
+                                                and key_name not in query_features
+                                            },
+                                            "open_",
+                                        ),
+                                        **prefixed(feedback_outcome, "feedback_"),
+                                        **prefixed(
+                                            dict(requery.get("metrics", {})),
+                                            "feedback_query_",
+                                        ),
+                                        **prefixed(
+                                            dict(requery.get("diagnostics", {})),
+                                            "feedback_query_",
+                                        ),
+                                        "query_cost": float(args.query_cost),
+                                        "local_vof": value_of_feedback(
+                                            open_outcome,
+                                            feedback_outcome,
+                                            query_cost=args.query_cost,
+                                        ),
+                                    }
+                                    if terminal_continuation:
+                                        feedback_row["terminal_vof"] = value_of_feedback(
+                                            open_outcome,
+                                            feedback_outcome,
+                                            query_cost=args.query_cost,
+                                            terminal=True,
+                                        )
+                                    else:
+                                        feedback_row["terminal_vof"] = np.nan
 
                                 sidecar_path = sidecar_dir / f"{snapshot_name}.npz"
                                 payload = _sidecar_payload(
@@ -866,9 +1281,14 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                     selected_idx,
                                     endpoint_states,
                                     endpoint_obs,
+                                    horizon_states,
+                                    horizon_obs,
                                     feedback_state,
                                     feedback_obs,
+                                    feedback_horizon_state,
+                                    feedback_horizon_obs,
                                     requery,
+                                    args.consequence_horizon_steps,
                                 )
                                 np.savez_compressed(sidecar_path, **payload)
                                 feedback_row["sidecar_path"] = str(sidecar_path)
@@ -910,6 +1330,12 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
                                     f"phase={phase} key={_snapshot_id(key)} replay_max_abs={replay_error:.3e}"
                                 )
                             query_idx += 1
+                            if (
+                                args.sampling_mode == "fixed_queries"
+                                and fixed_query_indices
+                                and query_idx > fixed_query_indices[-1]
+                            ):
+                                break
             finally:
                 main_env.close()
                 branch_env.close()
@@ -920,6 +1346,7 @@ def collect(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
         "arguments": vars(args),
         "phase_counts": phase_counts,
         "phase_cap": phase_cap,
+        "fixed_query_indices": list(fixed_query_indices),
         "num_snapshots": len(existing_keys),
         "num_candidate_rows": len(candidate_rows),
         "schema": {
@@ -961,6 +1388,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-timesteps", type=int, default=280)
     parser.add_argument("--target-decision-states", type=int, default=100)
     parser.add_argument(
+        "--sampling-mode",
+        choices=["phase_balanced", "fixed_queries"],
+        default="phase_balanced",
+        help="Exploratory phase balancing or outcome-independent fixed query indices",
+    )
+    parser.add_argument(
+        "--snapshot-query-indices",
+        default="0,3,6,9",
+        help="Comma/range specification used only by fixed_queries sampling",
+    )
+    parser.add_argument(
         "--phase-cap-fraction",
         type=float,
         default=0.4,
@@ -968,10 +1406,49 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--open-loop-steps", type=int, default=16)
     parser.add_argument("--feedback-steps", type=int, default=8)
+    parser.add_argument(
+        "--consequence-horizon-steps",
+        type=int,
+        choices=[16, 32],
+        default=16,
+        help="Matched branch horizon; 32 adds one frozen max-value continuation query",
+    )
     parser.add_argument("--terminal-continuation-fraction", type=float, default=0.2)
+    parser.add_argument(
+        "--terminal-selected-feedback-only",
+        action="store_true",
+        help=(
+            "Continue only the selected commit candidate and the separate "
+            "feedback branch to terminal; all candidates still reach H16"
+        ),
+    )
+    parser.add_argument(
+        "--continuation-num-candidates",
+        type=int,
+        default=0,
+        help="Candidate count for the fixed continuation policy; 0 uses the full initial pool",
+    )
+    parser.add_argument(
+        "--skip-feedback-branch",
+        action="store_true",
+        help="Collect candidate terminal branches without the separate 8+8 feedback branch",
+    )
     parser.add_argument("--query-cost", type=float, default=0.0)
     parser.add_argument("--num-denoising-steps-action", type=int, default=5)
-    parser.add_argument("--prediction-mode", choices=["parallel", "autoregressive"], default="parallel")
+    parser.add_argument(
+        "--prediction-mode",
+        choices=["parallel", "autoregressive", "dual"],
+        default="parallel",
+    )
+    parser.add_argument(
+        "--continuation-prediction-mode",
+        choices=["inherit", "parallel", "autoregressive"],
+        default="inherit",
+        help=(
+            "Prediction mode for frozen branch continuation queries; inherit keeps "
+            "the candidate-generation mode"
+        ),
+    )
     parser.add_argument("--num-denoising-steps-future-state", type=int, default=1)
     parser.add_argument("--num-denoising-steps-value", type=int, default=1)
     parser.add_argument("--num-future-state-samples", type=int, default=1)
@@ -995,8 +1472,20 @@ def main() -> None:
         args.run_name = datetime.now().strftime("counterfactual_feedback_%Y%m%d_%H%M%S")
     if args.open_loop_steps != 16 or args.feedback_steps != 8:
         raise ValueError("frozen pilot requires open_loop_steps=16 and feedback_steps=8")
+    if args.consequence_horizon_steps < args.open_loop_steps:
+        raise ValueError("consequence horizon cannot be shorter than the open-loop chunk")
     if args.target_decision_states < 1:
         raise ValueError("target_decision_states must be positive")
+    candidate_count = len(parse_seed_list(args.uncertainty_seeds))
+    if not 0 <= args.continuation_num_candidates <= candidate_count:
+        raise ValueError(
+            "continuation_num_candidates must be 0 or no larger than the initial candidate count"
+        )
+    fixed_query_indices = parse_int_list(args.snapshot_query_indices)
+    if any(index < 0 for index in fixed_query_indices):
+        raise ValueError("snapshot query indices must be non-negative")
+    if args.sampling_mode == "fixed_queries" and not fixed_query_indices:
+        raise ValueError("fixed_queries sampling requires snapshot query indices")
     if not 0.25 <= args.phase_cap_fraction <= 1.0:
         raise ValueError("phase_cap_fraction must be in [0.25, 1]")
     feedback, candidates = collect(args)

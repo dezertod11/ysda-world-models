@@ -1,0 +1,33 @@
+{
+  "experiment": "phase_vof_terminal_transfer_20260831",
+  "frozen_at": "2026-08-31T17:13:01+03:00",
+  "supersedes": "PHASE_VOF_TERMINAL_TRANSFER_FREEZE_MANIFEST_V2_20260831.json",
+  "protocol_status": "interaction-support amendment before outcome inspection",
+  "amendment": {
+    "observed_before_refreeze": "coverage only: task 6 produced six approach-only states; no success, dense VoF, rescue or harm outcome inspected",
+    "historical_selection_source": "completed Environment init5-9 rollouts: task7 zero target contact; tasks8/9 nonzero contact support",
+    "outcomes_from_current_campaign_observed": false,
+    "scientific_rule_or_gate_changed": false,
+    "final_tasks": [5, 8, 9],
+    "final_init_states": "10-19"
+  },
+  "files": {
+    "experiments/PHASE_VOF_TERMINAL_TRANSFER_PROTOCOL_20260831.md": "8e9b615ae1755be5f8590e824ff7057101c85b0855843a6f58f6fdbfe5107382",
+    "experiments/configs/libero_campaign_phase_vof_terminal_transfer.json": "9b76aa7508307cc3fdf34846c62e3123ed647030d3ddb28a6231ba0c7d9e6866",
+    "scripts/counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "scripts/collect_counterfactual_feedback.py": "a00ae9ddebb98914577208cdedec012008cbd8185501a7ff39dc6a5e13692012",
+    "scripts/run_libero_experiment_campaign.py": "51c6521dc57b1ab2f5f049ec862b4fc3fc7f59c96ac86251257997ca357e7450",
+    "scripts/run_libero_pro_counterfactual_feedback_collect.sh": "1d2f5d42e592ec188eef5accb65921a88114a12c579dedda2595ece699878ce7",
+    "scripts/relabel_counterfactual_dense.py": "55658669cb61ec26ce5fe21102a2441c997669afd8856026e0d59fd5ec62fc15",
+    "scripts/relabel_counterfactual_dense_campaign.py": "84bd91120a3b116b85af4ba0e2c7092209dc30c39f82c48e2e7fdee5fb10c43d",
+    "scripts/analyze_phase_vof_terminal_transfer.py": "1ce36593655f778cb0422d33696c6f8919efc06ac508bf6c10c18fbd913ba82c",
+    "scripts/run_phase_vof_terminal_transfer_sequence.sh": "e258baf7272e621445e19745c7cf1f4c95487bb47c2e761c64614f1600187a7a",
+    "tests/test_counterfactual_feedback_utils.py": "47c1bc22583533ff30dd1a375126ebd988ab5d9c6d717c798643ada8507a4d3e",
+    "tests/test_phase_vof_terminal_transfer.py": "c23022285721e10da7fc784be67b0785c7d9ca99c7040d225ecf8fafc4c3dae8"
+  },
+  "validation": {
+    "targeted_tests": "20 passed",
+    "campaign_dry_run": "passed",
+    "gpu_assignment": [2, 3, 4, 5, 7]
+  }
+}

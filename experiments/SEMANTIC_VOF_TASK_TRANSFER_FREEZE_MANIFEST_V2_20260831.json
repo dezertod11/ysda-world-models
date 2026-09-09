@@ -1,0 +1,26 @@
+{
+  "experiment": "semantic_vof_task_transfer_20260831",
+  "frozen_at": "2026-08-31T19:12:34+03:00",
+  "supersedes": "SEMANTIC_VOF_TASK_TRANSFER_FREEZE_MANIFEST_20260831.json",
+  "protocol_status": "technical import-path amendment before feature extraction or outcome inspection",
+  "amendment": {
+    "outcomes_observed": false,
+    "change": "add project root to sys.path for standalone script execution",
+    "scientific_rule_or_gate_changed": false
+  },
+  "split": {
+    "train": "Environment tasks 0-3, 98 strict states",
+    "test": "Environment tasks 5,8,9, 67 strict states",
+    "overlapping_tasks": 0
+  },
+  "primary_model": "scalar+semantic2",
+  "files": {
+    "experiments/SEMANTIC_VOF_TASK_TRANSFER_PROTOCOL_20260831.md": "546348f6844b823f9b5ee24f1d8217925e89f4bd204fbb811eedd549f83cbcf1",
+    "scripts/evaluate_semantic_vof_transfer.py": "35edc3504b1612f91960b8a7613fa9ff2a990f0cb58e2190e8a6c5938124af2e",
+    "tests/test_semantic_vof_transfer.py": "269fa04738f2de5bd78dcd2390439043afc8f2980cb4eb59118be086c5bc50cf"
+  },
+  "validation": {
+    "tests": "2 passed",
+    "gpu": 6
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-06T11:12:39+00:00",
+  "model_name": "p3e_recovery_outcome_ensemble_v1",
+  "model_type": "independent_logistic_terminal_success_heads",
+  "source_branches": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_transfer_ablation_20260905/analysis/development/online_branches.parquet",
+  "source_branches_sha256": "d34a2262357f2a371e8b37e12e5e32eb21582dd66768e1610e2793022786ee22",
+  "development_cases": 75,
+  "development_cells": 15,
+  "cross_validation": "leave-one-position-task-cell-out",
+  "features": [
+    "trigger_localization_world_x",
+    "trigger_localization_world_y",
+    "trigger_localization_world_z",
+    "trigger_localization_peak_probability",
+    "trigger_localization_entropy",
+    "trigger_localization_score_range",
+    "trigger_estimated_target_eef_distance_m"
+  ],
+  "strategies": [
+    "baseline_h8",
+    "workspace_retreat_only",
+    "workspace_calibrated"
+  ],
+  "logistic_c": 0.3,
+  "primitive_cost_lambda": 0.25,
+  "primitive_costs": {
+    "baseline_h8": 0.0,
+    "workspace_retreat_only": 0.010714285714285714,
+    "workspace_calibrated": 0.08928571428571429
+  },
+  "feature_medians": [
+    -0.08559745794293105,
+    -0.1057387676523716,
+    0.03839259594678879,
+    0.09335763250291956,
+    0.3350270938969929,
+    33.86860752105713,
+    0.1566342059139588
+  ],
+  "feature_means": [
+    -0.05574319892810931,
+    -0.0683165007164586,
+    0.07606771194686492,
+    0.11186681221744997,
+    0.34394894183844693,
+    34.946430334647495,
+    0.16983272770314503
+  ],
+  "feature_scales": [
+    0.12216294250315637,
+    0.10333335242643485,
+    0.07374661923099253,
+    0.07131760918035479,
+    0.09483227646978362,
+    10.61532435889616,
+    0.09296849906346034
+  ],
+  "heads": {
+    "baseline_h8": {
+      "coefficients": [
+        -0.48310315651661806,
+        -0.646008956913192,
+        0.10622543257681788,
+        0.3202878250317297,
+        -0.07381750707459801,
+        0.16726521513008344,
+        -0.827275730047055
+      ],
+      "intercept": -0.5133713446364967
+    },
+    "workspace_retreat_only": {
+      "coefficients": [
+        -0.15581701221836353,
+        -0.1605711763414059,
+        -0.03040907373006893,
+        0.4662710426503589,
+        0.03292835243809539,
+        -0.2560399054789066,
+        -1.1528085648315696
+      ],
+      "intercept": -0.18781553072951573
+    },
+    "workspace_calibrated": {
+      "coefficients": [
+        0.014234764804041466,
+        0.17678630938328185,
+        -1.0157278852426657,
+        0.2490608126994863,
+        -0.282765497930186,
+        0.16108675343515078,
+        -0.6957486685171947
+      ],
+      "intercept": 1.4026582811856958
+    }
+  },
+  "development_gate_pass": true,
+  "selection_note": "Localization-only C=0.3 tied for best terminal OOF SR in the compact linear sweep; the smallest feature family was selected."
+}

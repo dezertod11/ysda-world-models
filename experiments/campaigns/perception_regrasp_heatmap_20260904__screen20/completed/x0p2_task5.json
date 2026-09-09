@@ -1,0 +1,8 @@
+{
+  "job": "x0p2_task5",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-09-04T15:51:47",
+  "finished_at": "2026-09-04T15:56:06",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_20260904__screen20/logs/x0p2_task5.log"
+}

@@ -1,0 +1,8 @@
+{
+  "shared_init_clusters": 30,
+  "primary_delta": 0.016666666666666666,
+  "control_delta": 0.016666666666666666,
+  "interaction_delta": 0.0,
+  "interaction_ci_low": -0.13333333333333333,
+  "interaction_ci_high": 0.13333333333333333
+}

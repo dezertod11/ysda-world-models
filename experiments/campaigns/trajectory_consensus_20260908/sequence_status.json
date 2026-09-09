@@ -1,0 +1,15 @@
+{
+  "run_base": "trajectory_consensus_20260908",
+  "status": "superseded_draining",
+  "stage": "full",
+  "pid": 786278,
+  "gpus": [
+    "6",
+    "7"
+  ],
+  "started_at": "2026-09-07T22:52:00.676017+00:00",
+  "updated_at": "2026-09-08T07:45:43.973498+00:00",
+  "child_pid": 1175267,
+  "superseded_by": "trajectory_consensus_20260908_compact",
+  "reason": "User requested fewer rollouts and GPUs 3-7; original results retained"
+}

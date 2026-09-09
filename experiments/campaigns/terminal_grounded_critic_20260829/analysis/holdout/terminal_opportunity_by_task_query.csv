@@ -1,0 +1,5 @@
+factor,task_id,task_description,query_idx,snapshots,heterogeneous_snapshots,success_rescues,maxv_sr,oracle_sr
+Object,8,pick the chocolate pudding and place it in the basket,0,5,0,0,1.0,1.0
+Object,8,pick the chocolate pudding and place it in the basket,3,5,0,0,1.0,1.0
+Object,9,pick the orange juice and place it in the basket,0,5,0,0,1.0,1.0
+Object,9,pick the orange juice and place it in the basket,3,5,0,0,1.0,1.0

@@ -1,0 +1,59 @@
+{
+  "scripts": {
+    "run_consensus_valid_support_night.py": "1d5a9af7c80c63d1519056a11fa6882eacbda539a27e2ca274f105597594b6f8",
+    "analyze_consensus_valid_support.py": "6a998fd893f696e4f2f07a340de13cc6b21ee54156fcb38efe8944d271dec46d",
+    "analyze_p5_boundary_pilot.py": "4cddb82fc20e4755b31f8dc55679be06c2af8ea2ae8ad444c811fb3308de5748",
+    "run_libero_experiment_campaign.py": "9498f8237585c724a2ff6a26e2d6494d1370e2493825401a872f879d2d59bfc3",
+    "collect_counterfactual_feedback.py": "7286c98375028c16ef3d669c92b3c87a1d467e104f9d89fd88b9a186952eb207",
+    "counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "run_libero_pro_counterfactual_feedback_collect.sh": "75d0e2f5e2b2f472ccd2ada3b86ae8eb5bc20a7278e743c08078517271c2d724",
+    "run_libero_pro_planning_strategy_grid.sh": "d474dba26d2a733a4ea7c75bfd14eb4d5f128d06dd03bcfb1766f6b9b6d9232a",
+    "analyze_trajectory_consensus_campaign.py": "58fce43e38511a3c13e9f4ba2f811cb4c7d80c40eefd77baafc12b4e6df6d7c3",
+    "analyze_consensus_reference_campaign.py": "cf11ecd9134336e85a222e5139ddb05fb701e90ec352659d40cdc4cb5e0d731e"
+  },
+  "configs": {
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260909_valid199/config.json": "2188d8c123df3308a1a8d137b2a78bd5f95c0764f69d7170eec5d0e6766ece0f",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/config.json": "8aa9db26037f392e9621d7e94074ab58d6544d972597fca9f37279c416caeb90",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p5_boundary_candidates_20260909/config.json": "f380580331b516ab433de90a6e0d44fae3698f1e31581dc6bcefaf1fda75b337"
+  },
+  "original_runtime_manifest": {
+    "dependency": "trajectory_consensus_20260908_compact",
+    "compact_config_sha256": "8555076a5de5b336f00b4e64672bfda36d3f1e37733f86404726b3cdd6178b6e",
+    "original_source_manifest_sha256": "b90ad4e3d8ce98d08c4e698fd34a34ee98a749aff282e695be5b6342b25c126d",
+    "geometry_sha256": "e930de71133b2b7eaadc03e2192897a1a43c28902acf73bf69205a63332f6c46",
+    "methods": [
+      {
+        "label": "raw_medoid",
+        "strategy": "trajectory_raw_medoid",
+        "candidates": 4
+      },
+      {
+        "label": "keystone",
+        "strategy": "keystone_cluster_medoid",
+        "candidates": 4
+      },
+      {
+        "label": "kdpe_endpoint",
+        "strategy": "trajectory_kdpe_endpoint",
+        "candidates": 4
+      }
+    ],
+    "extra_rollouts": 600,
+    "smoke_rollouts": 3,
+    "selection_uses_terminal_outcomes": false,
+    "script_sha256": {
+      "run_consensus_reference_sequence.py": "09d678d43984ec608f4bba19a19a6edd4bfe9d4afabba48d954b4d12c305ce1e",
+      "analyze_consensus_reference_campaign.py": "cf11ecd9134336e85a222e5139ddb05fb701e90ec352659d40cdc4cb5e0d731e",
+      "run_libero_experiment_campaign.py": "9498f8237585c724a2ff6a26e2d6494d1370e2493825401a872f879d2d59bfc3",
+      "analyze_trajectory_consensus_campaign.py": "58fce43e38511a3c13e9f4ba2f811cb4c7d80c40eefd77baafc12b4e6df6d7c3"
+    }
+  },
+  "pilot_is_development": true,
+  "gpu_ids": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ]
+}

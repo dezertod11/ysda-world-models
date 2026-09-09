@@ -1,0 +1,24 @@
+{
+  "experiment": "semantic_vof_task_transfer_20260831",
+  "frozen_at": "2026-08-31T19:11:22+03:00",
+  "protocol_status": "retrospective task-transfer screen frozen before transfer feature extraction",
+  "split": {
+    "train": "Environment tasks 0-3, 98 strict states",
+    "test": "Environment tasks 5,8,9, 67 strict states",
+    "overlapping_tasks": 0
+  },
+  "primary_model": "scalar+semantic2",
+  "semantic_features": [
+    "clip_agent_candidate_disagreement",
+    "clip_cross_view_selected"
+  ],
+  "files": {
+    "experiments/SEMANTIC_VOF_TASK_TRANSFER_PROTOCOL_20260831.md": "546348f6844b823f9b5ee24f1d8217925e89f4bd204fbb811eedd549f83cbcf1",
+    "scripts/evaluate_semantic_vof_transfer.py": "2e02b1fabf12915c406816ce1ef00fdc29e1a7465bdefb9faff6e552e9ad8efc",
+    "tests/test_semantic_vof_transfer.py": "269fa04738f2de5bd78dcd2390439043afc8f2980cb4eb59118be086c5bc50cf"
+  },
+  "validation": {
+    "tests": "2 passed",
+    "gpu": 6
+  }
+}

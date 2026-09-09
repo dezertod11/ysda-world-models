@@ -1,0 +1,11 @@
+planning_strategy,planning_risk_lambda,suite,task_id,init_state_id,episodes,successes,success_rate,mean_final_t,selected_not_max_value_rate
+max_value,0.0,libero_object_temp,0,0,1,1,1.0,144.0,0.0
+max_value,0.0,libero_object_temp,1,0,1,1,1.0,133.0,0.0
+max_value,0.0,libero_object_temp,2,0,1,1,1.0,113.0,0.0
+max_value,0.0,libero_object_temp,3,0,1,1,1.0,120.0,0.0
+max_value,0.0,libero_object_temp,4,0,1,1,1.0,146.0,0.0
+max_value,0.0,libero_object_temp,5,0,1,1,1.0,122.0,0.0
+max_value,0.0,libero_object_temp,6,0,1,1,1.0,156.0,0.0
+max_value,0.0,libero_object_temp,7,0,1,1,1.0,123.0,0.0
+max_value,0.0,libero_object_temp,8,0,1,1,1.0,153.0,0.0
+max_value,0.0,libero_object_temp,9,0,1,1,1.0,105.0,0.0

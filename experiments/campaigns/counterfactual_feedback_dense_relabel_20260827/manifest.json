@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-27T22:04:03",
+  "source_campaign": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/counterfactual_feedback_p1_p2_20260826",
+  "status": "completed",
+  "jobs": [
+    {
+      "name": "object_snapshots",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__object_snapshots",
+      "returncode": 0
+    },
+    {
+      "name": "environment_snapshots",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__environment_snapshots",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_x0p1",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_x0p1",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_x0p2",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_x0p2",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_x0p3",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_x0p3",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_x0p4",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_x0p4",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_x0p5",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_x0p5",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_y0p1",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_y0p1",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_y0p2",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_y0p2",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_y0p3",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_y0p3",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_y0p4",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_y0p4",
+      "returncode": 0
+    },
+    {
+      "name": "position_snapshots_y0p5",
+      "run_name": "counterfactual_feedback_p1_p2_20260826__position_snapshots_y0p5",
+      "returncode": 0
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+states,independent_groups,open_success_rate,feedback_success_rate,success_delta,success_delta_ci_low,success_delta_ci_high,rescues,harms,net_rescues,discordance_rate,both_success,both_fail,mean_query_cost,always_requery_adjusted_delta,discordance_pvalue,strict_integrity_states
+572,113,0.6905594405594405,0.6940559440559441,0.0034965034965034965,-0.025180990342860844,0.031667079207920786,29,27,2,0.0979020979020979,368,148,0.024999999999999994,-0.021503496503496485,0.8938530948350217,555

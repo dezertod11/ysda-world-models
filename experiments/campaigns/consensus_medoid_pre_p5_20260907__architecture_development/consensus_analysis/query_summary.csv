@@ -1,0 +1,4 @@
+planning_strategy,query_rows,selected_not_max_value_rate,guarded_switch_rate
+cosmos_consensus_guarded,1009,0.5688800792864221,0.5688800792864221
+keystone_cluster_medoid,1075,0.8297674418604651,0.0
+max_value,998,0.0,0.0

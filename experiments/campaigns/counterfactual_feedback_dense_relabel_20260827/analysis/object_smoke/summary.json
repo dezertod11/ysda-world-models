@@ -1,0 +1,8 @@
+{
+  "snapshots": 100,
+  "unique_analysis_snapshots": 100,
+  "candidate_outcomes": 400,
+  "terminal_snapshots": 19,
+  "replay_integrity_failures_1e_9": 2,
+  "output_dir": "experiments/campaigns/counterfactual_feedback_dense_relabel_20260827/analysis/object_smoke"
+}

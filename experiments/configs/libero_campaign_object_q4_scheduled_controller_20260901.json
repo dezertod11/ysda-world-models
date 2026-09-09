@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "object_q4_scheduled_controller": {
+      "description": "New-seed paired deployment validation of maxV-H16 versus fixed query-4 H8-requery-H8",
+      "jobs": [
+        {
+          "name": "object_q4_init0_9",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_deployment_init0_9",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-9",
+          "max_rollouts": 2,
+          "base_seed": 13100000,
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_q4_init10_19",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_deployment_init10_19",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "10-19",
+          "max_rollouts": 2,
+          "base_seed": 13200000,
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_q4_init20_29",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_deployment_init20_29",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "20-29",
+          "max_rollouts": 2,
+          "base_seed": 13300000,
+          "gpu_slot": 2
+        },
+        {
+          "name": "object_q4_init30_39",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_deployment_init30_39",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "30-39",
+          "max_rollouts": 2,
+          "base_seed": 13400000,
+          "gpu_slot": 3
+        },
+        {
+          "name": "object_q4_init40_49",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_deployment_init40_49",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "max_rollouts": 2,
+          "base_seed": 13500000,
+          "gpu_slot": 4
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "num_open_loop_steps": 16,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "strategy_lambdas": "max_value:0 max_value_scheduled_requery:0",
+    "planning_short_open_loop_steps": 8,
+    "planning_scheduled_requery_query_idx": 4,
+    "experiment_split": "generalization",
+    "record_temporal_overlap": false
+  }
+}
+

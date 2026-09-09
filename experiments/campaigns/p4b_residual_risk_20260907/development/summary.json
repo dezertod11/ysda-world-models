@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-07T01:29:06+00:00",
+  "status": "development_pass",
+  "rows": 5668,
+  "variants": 4,
+  "eligible_selectors": 12,
+  "chosen": {
+    "variant": "p4_original",
+    "metric": "mean_plus_epistemic_rms",
+    "risk_lambda": 2.0,
+    "candidate_spearman": 0.5249941420317745,
+    "snapshots": 391,
+    "selection_change_rate": 0.6035805626598465,
+    "baseline_residual_mean": 1.0826671750039396,
+    "selected_residual_mean": 1.0663666315090932,
+    "pooled_residual_delta": -0.016300543494846508,
+    "pooled_relative_delta": -0.01505591364658044,
+    "environment_residual_delta": -0.011045781735381389,
+    "object_residual_delta": -0.009811843236287435,
+    "position_residual_delta": -0.033647436844675166,
+    "worst_factor_residual_delta": -0.009811843236287435,
+    "metric_order": 2
+  },
+  "selector_sha256": "341f7ebd34fca8086e4221a333f532a3dc9896b3f86ae4ed14a12e053031c892"
+}

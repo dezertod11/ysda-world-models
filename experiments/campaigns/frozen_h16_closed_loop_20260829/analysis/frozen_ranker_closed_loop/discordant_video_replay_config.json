@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "frozen_h16_discordant_video_replays": {
+      "description": "Post-hoc paired video replays of frozen-ranker gains and losses; excluded from primary statistics",
+      "jobs": [
+        {
+          "name": "frozen_gain_environment_00_task8_init7_seed5270485",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_gain_00",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "7",
+          "max_rollouts": 1,
+          "base_seed": 5270485,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        },
+        {
+          "name": "frozen_gain_position_01_task8_init7_seed5420291",
+          "case_id": "frozen_video__frozen_closed_loop__Position_y0p3__frozen_gain_01",
+          "suites": "libero_object_temp",
+          "task_ids": "8",
+          "init_state_ids": "7",
+          "max_rollouts": 1,
+          "base_seed": 5420291,
+          "planning_frozen_ranker_factor": "Position",
+          "kind": "pro_position_planning_grid",
+          "position_level": "y0.3"
+        },
+        {
+          "name": "frozen_gain_position_02_task9_init5_seed5450097",
+          "case_id": "frozen_video__frozen_closed_loop__Position_y0p3__frozen_gain_02",
+          "suites": "libero_object_temp",
+          "task_ids": "9",
+          "init_state_ids": "5",
+          "max_rollouts": 1,
+          "base_seed": 5450097,
+          "planning_frozen_ranker_factor": "Position",
+          "kind": "pro_position_planning_grid",
+          "position_level": "y0.3"
+        },
+        {
+          "name": "frozen_gain_position_03_task9_init7_seed5470388",
+          "case_id": "frozen_video__frozen_closed_loop__Position_y0p3__frozen_gain_03",
+          "suites": "libero_object_temp",
+          "task_ids": "9",
+          "init_state_ids": "7",
+          "max_rollouts": 1,
+          "base_seed": 5470388,
+          "planning_frozen_ranker_factor": "Position",
+          "kind": "pro_position_planning_grid",
+          "position_level": "y0.3"
+        },
+        {
+          "name": "frozen_loss_environment_00_task8_init7_seed5270388",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_loss_00",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "7",
+          "max_rollouts": 1,
+          "base_seed": 5270388,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        },
+        {
+          "name": "frozen_loss_environment_01_task9_init7_seed5320097",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_loss_01",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "7",
+          "max_rollouts": 1,
+          "base_seed": 5320097,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        },
+        {
+          "name": "frozen_loss_environment_02_task9_init9_seed5340097",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_loss_02",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "9",
+          "max_rollouts": 1,
+          "base_seed": 5340097,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        },
+        {
+          "name": "frozen_loss_environment_03_task9_init9_seed5340582",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_loss_03",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "9",
+          "max_rollouts": 1,
+          "base_seed": 5340582,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        },
+        {
+          "name": "frozen_loss_environment_04_task9_init9_seed5340679",
+          "case_id": "frozen_video__frozen_closed_loop__Environment__frozen_loss_04",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "9",
+          "max_rollouts": 1,
+          "base_seed": 5340679,
+          "planning_frozen_ranker_factor": "Environment",
+          "kind": "pro_environment_planning_grid",
+          "environment_num_init_states": 10,
+          "environment_seed": 20260829
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": true,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5",
+    "max_timesteps": 280,
+    "num_open_loop_steps": 16,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "strategy_lambdas": "max_value:0 frozen_factor_ridge:0",
+    "planning_frozen_ranker_model": "experiments/frozen_models/factor_h16_dense_ridge_v1.json",
+    "experiment_split": "generalization",
+    "record_temporal_overlap": false
+  }
+}

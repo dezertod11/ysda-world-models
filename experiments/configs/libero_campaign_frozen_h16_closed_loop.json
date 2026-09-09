@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "frozen_h16_closed_loop_smoke": {
+      "description": "Implementation-only smoke test for paired maxV-H16 versus the frozen factor-specific H16 ranker",
+      "jobs": [
+        {
+          "name": "object_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "frozen_closed_loop__Object",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "5",
+          "max_rollouts": 1,
+          "base_seed": 6100000,
+          "planning_frozen_ranker_factor": "Object"
+        },
+        {
+          "name": "environment_smoke",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "frozen_closed_loop__Environment",
+          "suites": "libero_object_env",
+          "task_ids": "7",
+          "init_state_ids": "5",
+          "max_rollouts": 1,
+          "base_seed": 6200000,
+          "planning_frozen_ranker_factor": "Environment"
+        },
+        {
+          "name": "position_x0p3_smoke",
+          "kind": "pro_position_planning_grid",
+          "case_id": "frozen_closed_loop__Position_x0p3",
+          "suites": "libero_object_temp",
+          "position_level": "x0.3",
+          "task_ids": "4",
+          "init_state_ids": "5",
+          "max_rollouts": 1,
+          "base_seed": 6300000,
+          "planning_frozen_ranker_factor": "Position"
+        },
+        {
+          "name": "position_y0p3_smoke",
+          "kind": "pro_position_planning_grid",
+          "case_id": "frozen_closed_loop__Position_y0p3",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "8",
+          "init_state_ids": "5",
+          "max_rollouts": 1,
+          "base_seed": 6400000,
+          "planning_frozen_ranker_factor": "Position"
+        }
+      ]
+    },
+    "frozen_h16_closed_loop_full": {
+      "description": "Preregistered 360-pair closed-loop validation of maxV-H16 versus the frozen factor-specific H16 ranker",
+      "jobs": [
+        {
+          "name": "object_full",
+          "kind": "pro_planning_grid",
+          "case_id": "frozen_closed_loop__Object",
+          "suites": "libero_object_object",
+          "task_ids": "8-9",
+          "init_state_ids": "5-9",
+          "max_rollouts": 12,
+          "base_seed": 5100000,
+          "planning_frozen_ranker_factor": "Object"
+        },
+        {
+          "name": "environment_full",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "frozen_closed_loop__Environment",
+          "suites": "libero_object_env",
+          "task_ids": "7-9",
+          "init_state_ids": "5-9",
+          "max_rollouts": 8,
+          "base_seed": 5200000,
+          "planning_frozen_ranker_factor": "Environment"
+        },
+        {
+          "name": "position_x0p3_full",
+          "kind": "pro_position_planning_grid",
+          "case_id": "frozen_closed_loop__Position_x0p3",
+          "suites": "libero_object_temp",
+          "position_level": "x0.3",
+          "task_ids": "4-5",
+          "init_state_ids": "5-9",
+          "max_rollouts": 6,
+          "base_seed": 5300000,
+          "planning_frozen_ranker_factor": "Position"
+        },
+        {
+          "name": "position_y0p3_full",
+          "kind": "pro_position_planning_grid",
+          "case_id": "frozen_closed_loop__Position_y0p3",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "8-9",
+          "init_state_ids": "5-9",
+          "max_rollouts": 6,
+          "base_seed": 5400000,
+          "planning_frozen_ranker_factor": "Position"
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5",
+    "max_timesteps": 280,
+    "num_open_loop_steps": 16,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "strategy_lambdas": "max_value:0 frozen_factor_ridge:0",
+    "planning_frozen_ranker_model": "experiments/frozen_models/factor_h16_dense_ridge_v1.json",
+    "experiment_split": "generalization",
+    "record_temporal_overlap": false,
+    "environment_num_init_states": 10,
+    "environment_seed": 20260829
+  }
+}

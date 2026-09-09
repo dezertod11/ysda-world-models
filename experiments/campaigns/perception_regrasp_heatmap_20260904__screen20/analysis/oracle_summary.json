@@ -1,0 +1,13 @@
+{
+  "n_states": 20,
+  "all_proposal_oracle_successes": 1,
+  "all_proposal_oracle_success_rate": 0.05,
+  "all_proposal_oracle_ci_low": 0.0,
+  "all_proposal_oracle_ci_high": 0.15,
+  "deployable_oracle_successes": 1,
+  "deployable_oracle_success_rate": 0.05,
+  "deployable_oracle_ci_low": 0.0,
+  "deployable_oracle_ci_high": 0.15,
+  "passing_deployable_proposals": [],
+  "decision": "deprioritize_recovery_proposals"
+}

@@ -1,0 +1,13 @@
+utility,method,factor,snapshots,mean_selected_utility,mean_regret,top1_accuracy
+local_utility_v1,cosmos_value,Object,100,0.0,0.0,1.0
+local_utility_v1,oracle,Object,100,0.0,0.0,1.0
+local_utility_v1,random,Object,100,0.0,0.0,1.0
+local_utility_v1,value_minus_internal_action,Object,100,0.0,0.0,1.0
+dense_utility_v2,cosmos_value,Object,100,0.3355331850863568,0.020192064623331004,0.44
+dense_utility_v2,oracle,Object,100,0.3557252497096879,0.0,1.0
+dense_utility_v2,random,Object,100,0.3408276865977279,0.014897563111959939,0.25
+dense_utility_v2,value_minus_internal_action,Object,100,0.34269533973192745,0.013029909977760445,0.37
+terminal_utility_v1,cosmos_value,Object,19,2.6842105263157894,0.3157894736842105,0.8947368421052632
+terminal_utility_v1,oracle,Object,19,3.0,0.0,1.0
+terminal_utility_v1,random,Object,19,2.6842105263157894,0.3157894736842105,0.8947368421052632
+terminal_utility_v1,value_minus_internal_action,Object,19,2.6315789473684212,0.3684210526315789,0.8947368421052632

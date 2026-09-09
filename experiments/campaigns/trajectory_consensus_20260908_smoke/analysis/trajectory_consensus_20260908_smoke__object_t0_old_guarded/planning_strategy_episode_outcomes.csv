@@ -1,0 +1,2 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_object_object,0,0,0,0,18000000,trajectory_consensus_20260908_smoke__object_t0_old_guarded__libero_object_object__task0__init0__cosmos_consensus_guarded__l0p0,cosmos_consensus_guarded,0.0,True,221,14,0.5,0.49887077297483173,0.49955253303050995,1.254740003451096

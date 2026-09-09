@@ -1,0 +1,14 @@
+{
+  "states": 60,
+  "rescues": 16,
+  "harms": 3,
+  "raw_success_delta": 0.21666666666666667,
+  "adjusted_terminal_delta": 0.19166666666666662,
+  "success_delta_ci_low": 0.05,
+  "success_delta_ci_high": 0.4,
+  "mcnemar_pvalue": 0.004425048828125,
+  "integrity_pass": true,
+  "practical_gate_pass": true,
+  "confirmatory_gate_pass": true,
+  "output_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_requery_holdout_20260901/analysis/object_q4_holdout"
+}

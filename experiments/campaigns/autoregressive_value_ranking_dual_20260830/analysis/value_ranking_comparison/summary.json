@@ -1,0 +1,20 @@
+{
+  "candidate_files": 10,
+  "paired_candidates": 80,
+  "states": 10,
+  "mixed_states": 5,
+  "action_signature_max_abs": 0.0,
+  "parallel_value_alias_max_abs": 0.0,
+  "terminal_outcome_agreement": 1.0,
+  "parallel_mixed_top1_success_rate": 0.4,
+  "autoregressive_mixed_top1_success_rate": 0.4,
+  "mixed_top1_delta_states": 0,
+  "rescues": 1,
+  "harms": 1,
+  "candidate_value_spearman": 0.6212142522269105,
+  "future_proprio_l2_mean": 0.013581302307130078,
+  "future_proprio_l2_p95": 0.022414846996365232,
+  "validity_pass": true,
+  "efficacy_pass": false,
+  "gate": "FAIL"
+}

@@ -1,0 +1,10 @@
+factor,method,episodes,successes,sr,drops,mean_queries
+Environment,first,50,19,0.38,0,14.54
+Environment,max_value,50,20,0.4,1,14.46
+Environment,winner,50,20,0.4,1,14.36
+Object,first,50,47,0.94,2,9.36
+Object,max_value,50,47,0.94,0,9.2
+Object,winner,50,48,0.96,1,9.12
+Position,first,79,27,0.34177215189873417,2,15.455696202531646
+Position,max_value,79,29,0.3670886075949367,2,15.215189873417721
+Position,winner,79,25,0.31645569620253167,0,15.468354430379748

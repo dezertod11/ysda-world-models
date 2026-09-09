@@ -1,0 +1,58 @@
+[
+  {
+    "label": "first",
+    "strategy": "first",
+    "density_weight": 0.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 1
+  },
+  {
+    "label": "max_value",
+    "strategy": "max_value",
+    "density_weight": 0.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "old_guarded",
+    "strategy": "cosmos_consensus_guarded",
+    "density_weight": 0.0,
+    "value_margin": 0.02,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "physical_medoid",
+    "strategy": "trajectory_medoid",
+    "density_weight": 1.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "physical_density",
+    "strategy": "trajectory_density",
+    "density_weight": 1.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "v2_0",
+    "strategy": "trajectory_value_density",
+    "density_weight": 0.25,
+    "value_margin": 0.25,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "v2_1",
+    "strategy": "trajectory_value_density_aligned",
+    "density_weight": 0.25,
+    "value_margin": 0.25,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  }
+]

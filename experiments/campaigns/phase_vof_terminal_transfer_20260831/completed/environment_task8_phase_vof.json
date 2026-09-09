@@ -1,0 +1,8 @@
+{
+  "job": "environment_task8_phase_vof",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-08-31T17:51:30",
+  "finished_at": "2026-08-31T17:51:53",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/logs/environment_task8_phase_vof.log"
+}

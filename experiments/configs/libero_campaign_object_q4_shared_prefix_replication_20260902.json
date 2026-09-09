@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "object_q4_shared_prefix_replication": {
+      "description": "Frozen shared-prefix terminal replication of Object task-0 query-4 feedback",
+      "jobs": [
+        {
+          "name": "object_q4_shared_init0_9",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_replication_init0_9",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-9",
+          "rollouts_per_init": 2,
+          "base_seed": 15100000,
+          "target_decision_states": 20,
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_q4_shared_init10_19",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_replication_init10_19",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "10-19",
+          "rollouts_per_init": 2,
+          "base_seed": 15200000,
+          "target_decision_states": 20,
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_q4_shared_init20_29",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_replication_init20_29",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "20-29",
+          "rollouts_per_init": 2,
+          "base_seed": 15300000,
+          "target_decision_states": 20,
+          "gpu_slot": 2
+        },
+        {
+          "name": "object_q4_shared_init30_39",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_replication_init30_39",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "30-39",
+          "rollouts_per_init": 2,
+          "base_seed": 15400000,
+          "target_decision_states": 20,
+          "gpu_slot": 3
+        },
+        {
+          "name": "object_q4_shared_init40_49",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_replication_init40_49",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "rollouts_per_init": 2,
+          "base_seed": 15500000,
+          "target_decision_states": 20,
+          "gpu_slot": 4
+        }
+      ]
+    },
+    "object_q4_shared_prefix_smoke": {
+      "description": "One-pair execution smoke for the shared-prefix replication",
+      "jobs": [
+        {
+          "name": "object_q4_shared_smoke",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "object_q4_shared_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "rollouts_per_init": 1,
+          "base_seed": 15090000,
+          "target_decision_states": 1,
+          "gpu_slot": 0
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "sampling_mode": "fixed_queries",
+    "snapshot_query_indices": "4",
+    "phase_cap_fraction": 1.0,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "terminal_selected_feedback_only": true,
+    "continuation_num_candidates": 0,
+    "skip_feedback_branch": false,
+    "query_cost": 0.025,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "continuation_prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "holdout"
+  }
+}

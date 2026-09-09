@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-09-08T07:40:07.660894+00:00",
+  "reason": "User requested usual-size evaluation and GPUs 3-7",
+  "original_freeze": {
+    "full_config.json": "4f36f03807d5a34fdff2cf975253df7332179442dfa2d515a09d7d555d260e7c",
+    "winner.json": "d05cca69b0c09d15822beaf4c08551a1ac3e276f099da7672df0f1282b00ac47",
+    "source_sha256.json": "b90ad4e3d8ce98d08c4e698fd34a34ee98a749aff282e695be5b6342b25c126d"
+  },
+  "config_sha256": "8555076a5de5b336f00b4e64672bfda36d3f1e37733f86404726b3cdd6178b6e",
+  "winner": {
+    "label": "winner",
+    "strategy": "trajectory_medoid",
+    "density_weight": 1.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  "target_rollouts": 600,
+  "reused_rollouts": 35,
+  "subset_rule": "Object/Environment init2-6; Position all ten levels init1; all ten tasks",
+  "selection_uses_outcomes": false
+}

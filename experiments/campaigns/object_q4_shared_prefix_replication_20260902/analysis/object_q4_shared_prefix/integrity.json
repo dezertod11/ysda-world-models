@@ -1,0 +1,23 @@
+{
+  "pairs": 100,
+  "target_pairs": 100,
+  "expected_keys_match": true,
+  "missing_keys": 0,
+  "unexpected_keys": 0,
+  "duplicate_snapshot_ids": 0,
+  "suite_matches": true,
+  "task_matches": true,
+  "query_matches": true,
+  "init_states_match": true,
+  "split_matches": true,
+  "feedback_performed": 100,
+  "completed_before_requery": 0,
+  "feedback_paths_valid": 100,
+  "terminal_labels_complete": true,
+  "candidate_pool_size_valid": true,
+  "one_max_value_candidate_per_pool": true,
+  "strict_replay_pairs": 100,
+  "minimum_strict_replay_pairs": 95,
+  "max_replay_state_abs_error": 1.2850659729043978e-10,
+  "valid": true
+}

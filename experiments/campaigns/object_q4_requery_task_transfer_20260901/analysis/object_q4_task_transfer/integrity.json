@@ -1,0 +1,19 @@
+{
+  "suite_matches": true,
+  "task_ids_match": true,
+  "task0_excluded": true,
+  "init_state_ids_match": true,
+  "query_indices_match": true,
+  "observed_pairs": 180,
+  "target_pairs": 180,
+  "observed_task_init_cells": 90,
+  "target_task_init_cells": 90,
+  "pairs_per_cell_values": [
+    2
+  ],
+  "expected_pairs_per_cell": 2,
+  "duplicate_analysis_states": 0,
+  "strict_integrity_states": 177,
+  "max_replay_state_abs": 0.04607635312140701,
+  "valid": false
+}

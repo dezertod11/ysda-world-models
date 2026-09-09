@@ -1,0 +1,8 @@
+method,factor,queries,switched,aligned_prediction_queries,job_seconds,episodes
+first,Object,12,0,11,235.0,1
+max_value,Object,11,0,10,291.0,1
+old_guarded,Object,14,7,13,317.0,1
+physical_medoid,Object,18,13,17,341.0,1
+physical_density,Object,18,17,17,273.0,1
+v2_0,Object,9,0,8,186.0,1
+v2_1,Object,11,0,10,131.0,1

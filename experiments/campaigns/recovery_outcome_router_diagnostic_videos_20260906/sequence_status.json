@@ -1,0 +1,8 @@
+{
+  "run_base": "recovery_outcome_router_diagnostic_videos_20260906",
+  "status": "completed",
+  "stage": "finished",
+  "gpus": "3,4",
+  "exit_code": 0,
+  "updated_at": "2026-09-06T21:15:03+03:00"
+}

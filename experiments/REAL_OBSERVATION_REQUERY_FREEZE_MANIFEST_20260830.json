@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-30T16:32:04+03:00",
+  "run_prefix": "real_observation_requery_20260830",
+  "untouched_init_state_ids": "40-49",
+  "files": {
+    "experiments/REAL_OBSERVATION_REQUERY_PROTOCOL_20260830.md": "3874242dfdb625a997fd2c6bf3b573d8134baf6fa6b1272d5b9fc56ec20899db",
+    "experiments/configs/libero_campaign_real_observation_requery.json": "faac31ab7135e554a5541719a4ab4106bd522e58f823779ac047ec98ab4a41fe",
+    "cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "a3b16362bdf618c3ed85ec64a9a9b8bb8de8009499f2d48d6de4fb2478f53b61",
+    "scripts/analyze_real_observation_requery.py": "ccd0a17f6dba750e6a2471d335c6ce0f76a72a856a858516d8b582e751ed0970",
+    "scripts/run_real_observation_requery_sequence.sh": "a6eb639d3196ea5182e760cb56787474f97bc0489102f9b03a4d309b17216b82"
+  }
+}

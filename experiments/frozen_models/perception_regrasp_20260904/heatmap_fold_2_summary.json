@@ -1,0 +1,7 @@
+{
+  "fold": 2,
+  "train_rows": 256,
+  "test_rows": 132,
+  "median_pixel_l2": 2.23606797749979,
+  "p90_pixel_l2": 3.605551275463989
+}

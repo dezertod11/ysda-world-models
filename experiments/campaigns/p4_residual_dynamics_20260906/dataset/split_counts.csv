@@ -1,0 +1,7 @@
+split,factor,rows,groups,snapshots
+calibration,ID,616,48,154
+id_test,ID,708,56,177
+ood_test,Environment,1240,148,310
+ood_test,Object,480,45,120
+ood_test,Position,748,96,187
+train,ID,1876,148,469

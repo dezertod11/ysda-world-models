@@ -1,0 +1,7 @@
+{
+  "run_base": "perception_regrasp_heatmap_20260904",
+  "status": "completed",
+  "stage": "stopped_terminal_screen_gate",
+  "exit_code": 0,
+  "updated_at": "2026-09-04T16:03:15+03:00"
+}

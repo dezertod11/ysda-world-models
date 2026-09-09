@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-09-06T14:20:00+03:00",
+  "stage": "P3e_recovery_outcome_router_holdout",
+  "development_source": {
+    "cases": 75,
+    "cells": 15,
+    "init_state_ids": [40, 41, 42, 43, 44],
+    "branches_sha256": "d34a2262357f2a371e8b37e12e5e32eb21582dd66768e1610e2793022786ee22"
+  },
+  "frozen_router": {
+    "model": "independent_logistic_terminal_success_heads",
+    "features": 7,
+    "logistic_c": 0.3,
+    "primitive_cost_lambda": 0.25,
+    "artifact_sha256": "9da9c15aa452466c30399f110672f98e8349f78b81e4a2a66dfbd842e9ae1428"
+  },
+  "development_oof": {
+    "full_successes": 56,
+    "router_successes": 58,
+    "rescues_vs_full": 2,
+    "harms_vs_full": 0,
+    "gate_pass": true
+  },
+  "holdout": {
+    "cases": 75,
+    "cells": 15,
+    "init_state_ids": [45, 46, 47, 48, 49],
+    "manifest_sha256": "dea8fb29090c25e6a5d72a6785b008a5057147eb66028f810dddea28ebe46c11",
+    "outcomes_seen_at_freeze": false
+  },
+  "checksum_file": "experiments/frozen_models/recovery_outcome_router_20260906/SHA256SUMS"
+}

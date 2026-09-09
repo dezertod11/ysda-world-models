@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "consensus_medoid_exact_smoke": {
+      "description": "One-episode integration smoke for K1, max-value K3, and the exact structured K3 consensus medoid",
+      "jobs": [
+        {
+          "name": "baseline_k1_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0",
+          "strategy_lambdas": "first:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "max_value_k3_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0,1,2",
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "consensus_medoid_k3_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0,1,2",
+          "strategy_lambdas": "consensus_medoid_only:0",
+          "gpu_slot": 2
+        }
+      ]
+    },
+    "consensus_medoid_exact_development": {
+      "description": "Exact attached-file test on 40 matched LIBERO-PRO Object task-0 initial states",
+      "jobs": [
+        {
+          "name": "baseline_k1",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-39",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0",
+          "strategy_lambdas": "first:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "max_value_k3",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-39",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0,1,2",
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "consensus_medoid_k3",
+          "kind": "pro_planning_grid",
+          "case_id": "consensus_exact_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-39",
+          "max_rollouts": 1,
+          "base_seed": 16100000,
+          "uncertainty_seeds": "0,1,2",
+          "strategy_lambdas": "consensus_medoid_only:0",
+          "gpu_slot": 2
+        }
+      ]
+    },
+    "cosmos_consensus_architecture_smoke": {
+      "description": "One-episode smoke for KeyStone and Cosmos-aware guarded consensus at K5",
+      "jobs": [
+        {
+          "name": "max_value_k5_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "keystone_k5_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "keystone_cluster_medoid:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "cosmos_guarded_k5_smoke",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_smoke",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "cosmos_consensus_guarded:0",
+          "planning_value_margin": 0.02,
+          "planning_uncertainty_margin": 0.1,
+          "gpu_slot": 2
+        }
+      ]
+    },
+    "cosmos_consensus_architecture_development": {
+      "description": "Matched K5 development comparison of max-value, KeyStone, and Cosmos-aware guarded consensus",
+      "jobs": [
+        {
+          "name": "max_value_k5",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "keystone_k5",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "keystone_cluster_medoid:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "cosmos_guarded_k5",
+          "kind": "pro_planning_grid",
+          "case_id": "cosmos_consensus_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "max_rollouts": 1,
+          "base_seed": 16200000,
+          "uncertainty_seeds": "0,1,2,3,4",
+          "strategy_lambdas": "cosmos_consensus_guarded:0",
+          "planning_value_margin": 0.02,
+          "planning_uncertainty_margin": 0.1,
+          "gpu_slot": 2
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "max_timesteps": 280,
+    "num_open_loop_steps": 5,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "development",
+    "record_temporal_overlap": false,
+    "planning_action_weight": 0.5,
+    "planning_difficulty_threshold": 0.088588,
+    "planning_value_margin": 0.002,
+    "planning_uncertainty_margin": 0.0,
+    "planning_phase_fraction": 0.3,
+    "planning_short_open_loop_steps": 5,
+    "planning_surrogate_error_threshold": 0.08841767562905925,
+    "environment_num_init_states": 50,
+    "environment_seed": 20260907
+  }
+}

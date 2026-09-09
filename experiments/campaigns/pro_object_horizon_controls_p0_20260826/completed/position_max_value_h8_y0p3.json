@@ -1,0 +1,8 @@
+{
+  "job": "position_max_value_h8_y0p3",
+  "gpu": "6",
+  "status": "completed",
+  "started_at": "2026-08-26T20:10:20",
+  "finished_at": "2026-08-26T20:27:28",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/pro_object_horizon_controls_p0_20260826/logs/position_max_value_h8_y0p3.log"
+}

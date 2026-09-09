@@ -1,0 +1,9 @@
+proposal,position_level,task_id,n_states,successes,success_rate,drop_rate,wrong_rate,safety_rate,mean_queries
+perception_regrasp_h8,x0.2,5,10,8,0.8,0.1,0.1,0.0,11.1
+perception_regrasp_h8,x0.2,6,10,9,0.9,0.2,0.0,0.0,16.3
+perception_regrasp_h8,x0.2,9,10,0,0.0,0.1,0.6,0.0,23.0
+perception_regrasp_h8,y0.2,4,10,0,0.0,0.0,0.9,0.0,23.0
+perception_regrasp_h8,y0.2,6,10,10,1.0,0.0,0.0,0.0,11.7
+perception_regrasp_h8,y0.2,9,10,8,0.8,0.0,0.0,0.0,12.0
+perception_regrasp_h8,y0.3,1,10,10,1.0,0.0,0.0,0.0,12.8
+perception_regrasp_h8,y0.3,5,10,4,0.4,0.0,0.1,0.0,20.6

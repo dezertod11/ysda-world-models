@@ -1,0 +1,3 @@
+mode,left_replica,right_replica,inputs_match,action_max_abs_diff,value_max_abs_diff,selected_index_match_rate,strict_match
+default,a,b,True,0.00744965672492981,0.0003763437271118164,1.0,False
+warn,a,b,True,0.005098879337310791,0.0004330575466156006,1.0,False

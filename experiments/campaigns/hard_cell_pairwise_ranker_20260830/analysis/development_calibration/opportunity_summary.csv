@@ -1,0 +1,4 @@
+factor,states,mixed_states,success_rescues,maxv_sr,oracle_sr
+Object,20,17,13,0.3,0.95
+Position,20,3,3,0.0,0.15
+All,40,20,16,0.15,0.55

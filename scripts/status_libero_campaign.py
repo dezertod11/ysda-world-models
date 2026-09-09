@@ -25,6 +25,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CAMPAIGN_ROOT = PROJECT_ROOT / "experiments" / "campaigns"
 FINAL_STATES = {"READY", "FAILED", "STALLED", "MISSING"}
 EPISODE_KEYS = (
+    "row_uid",
     "snapshot_id",
     "pair_id",
     "rollout_id",
@@ -139,6 +140,36 @@ def expected_job_rollouts(job: Mapping[str, Any]) -> int | None:
     environment = job.get("environment", {})
     if not isinstance(environment, Mapping):
         return None
+    expected_branches = _env_value(environment, ("EXPECTED_BRANCHES",))
+    if expected_branches is not None:
+        try:
+            return int(expected_branches)
+        except ValueError:
+            return None
+    recovery_manifest = _env_value(environment, ("RECOVERY_MANIFEST",))
+    recovery_proposals = _env_value(environment, ("RECOVERY_PROPOSALS",))
+    recovery_level = _env_value(environment, ("RECOVERY_POSITION_LEVEL",))
+    recovery_task = _env_value(environment, ("RECOVERY_TASK_ID",))
+    if recovery_manifest and recovery_proposals and recovery_level and recovery_task:
+        try:
+            frozen = pd.read_parquet(
+                Path(recovery_manifest), columns=["position_level", "task_id"]
+            )
+            count = int(
+                (
+                    frozen["position_level"].astype(str).eq(recovery_level)
+                    & frozen["task_id"].astype(int).eq(int(recovery_task))
+                ).sum()
+            )
+            maximum = _env_value(environment, ("RECOVERY_MAX_STATES",))
+            if maximum is not None and int(maximum) > 0:
+                count = min(count, int(maximum))
+            proposals = len(
+                [item for item in recovery_proposals.split(",") if item.strip()]
+            )
+            return count * proposals
+        except (OSError, TypeError, ValueError):
+            return None
     decision_states = _env_value(environment, ("TARGET_DECISION_STATES",))
     if decision_states is not None:
         try:
@@ -165,7 +196,7 @@ def expected_job_rollouts(job: Mapping[str, Any]) -> int | None:
 
 
 def _trace_columns(path: Path) -> list[str]:
-    desired = {*EPISODE_KEYS, "success"}
+    desired = {*EPISODE_KEYS, "proposal", "success", "terminal_success"}
     if path.suffix == ".parquet":
         try:
             import pyarrow.parquet as pq
@@ -178,7 +209,8 @@ def _trace_columns(path: Path) -> list[str]:
             available = set(pd.read_csv(path, nrows=0).columns)
         except Exception:
             return []
-    return [column for column in (*EPISODE_KEYS, "success") if column in available and column in desired]
+    ordered = (*EPISODE_KEYS, "proposal", "success", "terminal_success")
+    return [column for column in ordered if column in available and column in desired]
 
 
 def _as_success(series: pd.Series) -> pd.Series:
@@ -189,7 +221,9 @@ def _as_success(series: pd.Series) -> pd.Series:
 
 def _count_trace(path: Path) -> TraceStats:
     columns = _trace_columns(path)
-    if "pair_id" in columns and "rollout_id" in columns:
+    if "row_uid" in columns and "proposal" in columns:
+        episode_keys = ["row_uid", "proposal"]
+    elif "pair_id" in columns and "rollout_id" in columns:
         episode_keys = ["pair_id", "rollout_id"]
     else:
         episode_key = next((key for key in EPISODE_KEYS if key in columns), None)
@@ -206,9 +240,14 @@ def _count_trace(path: Path) -> TraceStats:
     if frame.empty:
         return TraceStats(files=1)
     episodes = frame.drop_duplicates(episode_keys, keep="first")
-    if "success" not in episodes:
+    success_column = (
+        "terminal_success"
+        if "terminal_success" in episodes
+        else "success" if "success" in episodes else ""
+    )
+    if not success_column:
         return TraceStats(files=1, rollouts=len(episodes))
-    success = _as_success(episodes["success"])
+    success = _as_success(episodes[success_column])
     return TraceStats(
         files=1,
         rollouts=len(episodes),
@@ -222,6 +261,8 @@ def _preferred_trace_paths(run_dir: Path) -> list[Path]:
     candidates += list((run_dir / "runs").glob("*__query_traces.csv"))
     candidates += list((run_dir / "runs").glob("*__feedback_pairs.parquet"))
     candidates += list((run_dir / "runs").glob("*__feedback_pairs.csv"))
+    candidates += list((run_dir / "runs").glob("*__recovery_branches.parquet"))
+    candidates += list((run_dir / "runs").glob("*__recovery_branches.csv"))
     selected: dict[str, Path] = {}
     for path in sorted(candidates):
         identity = path.with_suffix("").name
@@ -345,19 +386,29 @@ def _estimate_eta(
     job_stats: Mapping[str, TraceStats],
     starts: Mapping[str, datetime | None],
     now: datetime,
+    *,
+    dynamic_capacity: int | None = None,
 ) -> float | None:
     if jobs and all(str(job.get("name")) in markers for job in jobs):
         return 0.0
+    if dynamic_capacity is not None and dynamic_capacity <= 0:
+        return None
 
     seconds_per_rollout = []
     completed_durations = []
+    recent_names = set(markers)
+    if dynamic_capacity is not None:
+        valid = [(name, marker) for name, marker in markers.items()
+                 if not marker.get("reused", False) and (_marker_duration(marker) or 0) > 0]
+        valid.sort(key=lambda item: _parse_time(item[1].get("finished_at")) or datetime.min)
+        recent_names = {name for name, _ in valid[-20:]}
     for job in jobs:
         name = str(job.get("name", ""))
         marker = markers.get(name)
-        if not marker:
+        if not marker or marker.get("reused", False) or name not in recent_names:
             continue
         duration = _marker_duration(marker)
-        if duration is None:
+        if duration is None or duration <= 0:
             continue
         completed_durations.append(duration)
         observed = job_stats.get(name, TraceStats()).rollouts
@@ -368,11 +419,12 @@ def _estimate_eta(
     per_rollout = statistics.median(seconds_per_rollout) if seconds_per_rollout else None
     per_job = statistics.median(completed_durations) if completed_durations else None
     if per_rollout is None and per_job is None:
-        active_observed = sum(value.rollouts for value in job_stats.values())
-        active_starts = [value for value in starts.values() if value is not None]
+        active_starts = {name: start for name, start in starts.items()
+                         if name not in markers and start is not None}
+        active_observed = sum(job_stats.get(name, TraceStats()).rollouts for name in active_starts)
         if active_observed and active_starts:
-            elapsed = max((now - min(active_starts)).total_seconds(), 1.0)
-            per_rollout = elapsed * max(len(active_starts), 1) / active_observed
+            elapsed = sum(max((now - start).total_seconds(), 1.0) for start in active_starts.values())
+            per_rollout = elapsed / active_observed
         else:
             return None
 
@@ -393,6 +445,8 @@ def _estimate_eta(
         else:
             return None
         gpu_remaining[gpu] = gpu_remaining.get(gpu, 0.0) + estimate
+    if dynamic_capacity is not None:
+        return sum(gpu_remaining.values()) / dynamic_capacity
     return max(gpu_remaining.values(), default=0.0)
 
 
@@ -406,6 +460,27 @@ def inspect_campaign(
     manifest_path = campaign_dir / "manifest.json"
     manifest = _read_json(manifest_path)
     if not manifest:
+        sequence = _read_json(campaign_dir / "sequence_status.json")
+        if sequence:
+            now = datetime.now()
+            started = _parse_time(sequence.get("started_at"))
+            updated = _parse_time(sequence.get("updated_at"))
+            age = max(0., (now - updated).total_seconds()) if updated else None
+            state = {"waiting": "WAITING", "running": "RUNNING", "failed": "FAILED",
+                     "completed": "READY"}.get(str(sequence.get("status")), "PLANNED")
+            if state in {"WAITING", "RUNNING"} and (age is None or age > stale_minutes * 60):
+                state = "STALLED"
+            return CampaignStatus(
+                name=campaign_dir.name, path=str(campaign_dir), state=state,
+                manifest_status="sequence_only", profile=str(sequence.get("stage", "")),
+                created_at=sequence.get("started_at"),
+                finished_at=sequence.get("updated_at") if state == "READY" else None,
+                elapsed_seconds=max(0., (now-started).total_seconds()) if started else None,
+                completed_jobs=0, total_jobs=0, trace_stats=TraceStats(),
+                expected_rollouts=sequence.get("expected_rollouts"), eta_seconds=None, eta_at=None,
+                active_processes=(), activity_age_seconds=age,
+                analysis_summaries=0, analysis_reports=0, jobs=(),
+            )
         return CampaignStatus(
             name=campaign_dir.name,
             path=str(campaign_dir),
@@ -533,7 +608,16 @@ def inspect_campaign(
     elapsed = max((endpoint - created).total_seconds(), 0.0) if created else None
     eta_seconds = None
     if manifest_status == "running":
-        eta_seconds = _estimate_eta(jobs, completion_records, job_trace_stats, starts, now)
+        config = _read_json(campaign_dir / "config.json")
+        if not config and manifest.get("config"):
+            config = _read_json(Path(str(manifest["config"])))
+        capacity = None
+        if config.get("defaults", {}).get("dynamic_gpu_queue", False):
+            # Pending assignments are placeholders, not five available workers.
+            capacity = len({job.gpu for job in job_rows if job.state == "RUNNING"
+                            and job.log_age_seconds is not None and job.log_age_seconds < 600})
+        eta_seconds = _estimate_eta(jobs, completion_records, job_trace_stats, starts, now,
+                                    dynamic_capacity=capacity)
     elif manifest_status == "completed":
         eta_seconds = 0.0
     eta_at = (now + timedelta(seconds=eta_seconds)).isoformat(timespec="minutes") if eta_seconds else None
@@ -607,6 +691,8 @@ def render_status(status: CampaignStatus, *, verbose: bool = False) -> str:
         lines.append(f"ETA      : ~{eta}{suffix}")
     elif status.state == "FINALIZING":
         lines.append("ETA      : rollout finished; aggregate analysis is still active")
+    elif status.state == "WAITING":
+        lines.append("ETA      : waiting for prerequisite/capacity; no reliable finish estimate yet")
     elif status.state == "READY":
         lines.append("ETA      : complete")
     if status.activity_age_seconds is not None:
@@ -748,7 +834,7 @@ def main() -> int:
         if not args.watch or state in FINAL_STATES:
             if state == "READY":
                 return 0
-            if state in {"RUNNING", "FINALIZING", "PLANNED"}:
+            if state in {"RUNNING", "FINALIZING", "PLANNED", "WAITING"}:
                 return 3
             return 1
         time.sleep(max(args.watch, 1.0))

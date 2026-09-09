@@ -1,0 +1,2 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_object_object,0,0,0,0,18000000,trajectory_consensus_20260908_smoke__object_t0_v2_0__libero_object_object__task0__init0__trajectory_value_density__l0p25,trajectory_value_density,0.25,True,129,9,0.0,0.5955481065644158,0.5955481065644158,0.5643601790016335

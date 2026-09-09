@@ -1,0 +1,8 @@
+{
+  "job": "position_x0p2_task0_init40_49",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-09-02T17:58:59",
+  "finished_at": "2026-09-02T18:40:54",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_position_direction_holdout_20260902/logs/position_x0p2_task0_init40_49.log"
+}

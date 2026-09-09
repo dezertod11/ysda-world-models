@@ -1,0 +1,39 @@
+factor,suite,task_id,task_description,query_idx,snapshots,independent_groups,candidates_min,candidates_max,heterogeneous_snapshots,success_rescues,utility_rescues,all_candidates_fail,all_candidates_succeed,maxv_sr,oracle_sr,maxv_utility,oracle_utility,oracle_gap_pp,rescue_rate
+Object,libero_object_object,0,pick the alphabet soup and place it in the basket,3,7,7,4,8,5,3,3,1,1,0.42857142857142855,0.8571428571428571,1.2857142857142858,2.5714285714285716,42.857142857142854,0.42857142857142855
+Object,libero_object_object,0,pick the alphabet soup and place it in the basket,0,11,7,4,8,6,4,4,0,5,0.6363636363636364,1.0,1.7272727272727273,3.0,36.36363636363637,0.36363636363636365
+Object,libero_object_object,1,pick the cream cheese and place it in the basket,0,8,7,4,8,0,0,0,0,8,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,1,pick the cream cheese and place it in the basket,3,8,6,4,8,0,0,0,0,8,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,0,pick the alphabet soup and place it in the basket,0,8,1,4,4,1,0,1,4,3,0.5,0.5,1.375,1.4375,0.0,0.0
+Environment,libero_object_env,0,pick the alphabet soup and place it in the basket,0,5,5,4,4,0,0,1,5,0,0.0,0.0,-0.2,-0.1,0.0,0.0
+Environment,libero_object_env,2,pick the salad dressing and place it in the basket,3,5,5,4,4,0,0,1,5,0,0.0,0.0,-0.1,0.0,0.0,0.0
+Object,libero_object_object,2,pick the salad dressing and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,2,pick the salad dressing and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,3,pick the bbq sauce and place it in the basket,0,5,5,8,8,1,0,0,0,4,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,3,pick the bbq sauce and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,4,pick the ketchup and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,4,pick the ketchup and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,5,pick the tomato sauce and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,5,pick the tomato sauce and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,6,pick the butter and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,6,pick the butter and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,7,pick the milk and place it in the basket,0,5,5,8,8,1,0,0,0,4,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,7,pick the milk and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,8,pick the chocolate pudding and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,8,pick the chocolate pudding and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,9,pick the orange juice and place it in the basket,0,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,9,pick the orange juice and place it in the basket,3,5,5,8,8,0,0,0,0,5,1.0,1.0,3.0,3.0,0.0,0.0
+Environment,libero_object_env,1,pick the cream cheese and place it in the basket,0,3,3,4,4,0,0,0,1,2,0.6666666666666666,0.6666666666666666,2.0,2.0,0.0,0.0
+Environment,libero_object_env,1,pick the cream cheese and place it in the basket,3,3,3,4,4,0,0,0,0,3,1.0,1.0,3.0,3.0,0.0,0.0
+Environment,libero_object_env,1,pick the cream cheese and place it in the basket,4,2,2,4,4,0,0,0,0,2,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,0,pick the alphabet soup and place it in the basket,4,2,1,4,4,1,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Environment,libero_object_env,1,pick the cream cheese and place it in the basket,6,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Environment,libero_object_env,3,pick the bbq sauce and place it in the basket,5,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,0,pick the alphabet soup and place it in the basket,10,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,1,pick the cream cheese and place it in the basket,4,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,1,pick the cream cheese and place it in the basket,5,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Object,libero_object_object,1,pick the cream cheese and place it in the basket,6,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,0,pick the alphabet soup and place it in the basket,4,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,0,pick the alphabet soup and place it in the basket,7,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,0,pick the alphabet soup and place it in the basket,8,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,1,pick the cream cheese and place it in the basket,4,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0
+Position,libero_object_temp,1,pick the cream cheese and place it in the basket,11,1,1,4,4,0,0,0,0,1,1.0,1.0,3.0,3.0,0.0,0.0

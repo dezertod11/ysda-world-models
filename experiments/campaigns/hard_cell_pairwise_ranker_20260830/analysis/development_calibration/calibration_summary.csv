@@ -1,0 +1,4 @@
+factor,states,mixed_states,maxv_sr,autoregressive_sr,ranker_sr,selected_sr,oracle_sr,mixed_maxv_top1,mixed_autoregressive_top1,mixed_ranker_top1,mixed_selected_top1,mixed_selected_delta_states,selected_utility_delta,switches,switch_precision,rescues,harms,adverse_delta_events
+Object,5,4,0.4,0.6,0.8,0.8,1.0,0.25,0.5,0.75,0.75,2,1.2,5,0.4,2,0,0.0
+Position,5,0,0.0,0.0,0.0,0.0,0.0,,,,,0,0.0,4,0.0,0,0,0.0
+All,10,4,0.2,0.3,0.4,0.4,0.5,0.25,0.5,0.75,0.75,2,0.6,9,0.2222222222222222,2,0,0.0

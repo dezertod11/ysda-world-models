@@ -1,0 +1,61 @@
+{
+  "integrity": {
+    "trace_files": 12,
+    "episode_counts": {
+      "maxV-H16": 100,
+      "maxV-Q4-H8-requery-H8": 100
+    },
+    "paired_state_count": 100,
+    "identical_state_sets": true,
+    "suite_matches": true,
+    "task_ids_match": true,
+    "init_state_ids_match": true,
+    "split_values": [
+      "generalization"
+    ],
+    "all_max_value_selected": true,
+    "schedule_valid": true,
+    "strict_prefix_pairs": 34,
+    "minimum_strict_prefix_pairs": 95,
+    "max_sim_state_difference": 6.4371876662981755,
+    "max_candidate_value_difference": 0.2421358823776245,
+    "max_candidate_first_action_difference": 2.0394182205200195,
+    "valid": false
+  },
+  "gates": {
+    "integrity_pass": false,
+    "practical_gate_pass": false,
+    "confirmatory_gate_pass": false
+  },
+  "nominal": {
+    "subset": "nominal",
+    "pairs": 100,
+    "baseline_success_rate": 0.35,
+    "method_success_rate": 0.54,
+    "success_delta": 0.19,
+    "success_delta_ci_low": 0.09,
+    "success_delta_ci_high": 0.29,
+    "rescues": 25,
+    "harms": 6,
+    "mcnemar_pvalue": 0.0008779102936387062,
+    "adjusted_delta": 0.16500000000000004,
+    "baseline_mean_queries": 15.24,
+    "method_mean_queries": 15.55
+  },
+  "strict": {
+    "subset": "strict",
+    "pairs": 34,
+    "baseline_success_rate": 0.4117647058823529,
+    "method_success_rate": 0.5588235294117647,
+    "success_delta": 0.14705882352941177,
+    "success_delta_ci_low": 0.0,
+    "success_delta_ci_high": 0.29411764705882354,
+    "rescues": 7,
+    "harms": 2,
+    "mcnemar_pvalue": 0.1796875,
+    "adjusted_delta": 0.12205882352941172,
+    "baseline_mean_queries": 14.588235294117647,
+    "method_mean_queries": 15.382352941176471
+  },
+  "report": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_scheduled_controller_clean_replication_20260901/analysis/object_q4_scheduled_controller/RESULTS.md"
+}

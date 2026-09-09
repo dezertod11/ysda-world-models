@@ -1,0 +1,11 @@
+{
+  "states": 572,
+  "independent_groups": 113,
+  "rescues": 29,
+  "harms": 27,
+  "net_rescues": 2,
+  "open_success_rate": 0.6905594405594405,
+  "feedback_success_rate": 0.6940559440559441,
+  "strict_integrity_states": 555,
+  "output_dir": "experiments/campaigns/terminal_event_atlas_20260901/analysis/terminal_event_atlas_provisional"
+}

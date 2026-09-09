@@ -1,0 +1,381 @@
+{
+  "states": 265,
+  "model": "openai/clip-vit-base-patch32",
+  "ridge_alpha": 10.0,
+  "gate": {
+    "checks": {
+      "combined_group_spearman_at_least_0p20": true,
+      "combined_group_spearman_above_scalar": false,
+      "combined_uplift20_positive": true,
+      "combined_uplift20_above_scalar": false,
+      "combined_uplift20_nonnegative_each_factor": false,
+      "combined_factor_oof_spearman_nonnegative_each_factor": false,
+      "all_265_states": true,
+      "no_privileged_features": true
+    },
+    "forbidden_features": [],
+    "gate_passed": false
+  },
+  "model_summary": [
+    {
+      "family": "scalar",
+      "protocol": "group_oof",
+      "spearman": 0.470975971926387,
+      "sign_auc": 0.7113951622148343,
+      "balanced_accuracy": 0.6482288203599679,
+      "rmse": 0.04445350123255382
+    },
+    {
+      "family": "scalar",
+      "protocol": "factor_oof",
+      "spearman": 0.21930129020578484,
+      "sign_auc": 0.5877565057892927,
+      "balanced_accuracy": 0.5247907829875043,
+      "rmse": 0.048584627293617955
+    },
+    {
+      "family": "semantic",
+      "protocol": "group_oof",
+      "spearman": 0.1310776078937081,
+      "sign_auc": 0.5340479192938209,
+      "balanced_accuracy": 0.5581795253926402,
+      "rmse": 0.04988421826332245
+    },
+    {
+      "family": "semantic",
+      "protocol": "factor_oof",
+      "spearman": -0.24389923843150838,
+      "sign_auc": 0.38002980625931443,
+      "balanced_accuracy": 0.3990312965722802,
+      "rmse": 0.05457889852755147
+    },
+    {
+      "family": "combined",
+      "protocol": "group_oof",
+      "spearman": 0.433786293637126,
+      "sign_auc": 0.6988421414650923,
+      "balanced_accuracy": 0.629542588558982,
+      "rmse": 0.04544478877420218
+    },
+    {
+      "family": "combined",
+      "protocol": "factor_oof",
+      "spearman": 0.2474087632366911,
+      "sign_auc": 0.6022010776109137,
+      "balanced_accuracy": 0.5475753754442279,
+      "rmse": 0.04933922508089665
+    }
+  ],
+  "uplift_summary": [
+    {
+      "family": "scalar",
+      "budget": 0.1,
+      "selected_count": 27,
+      "uplift_per_state": 0.0023934195040930077,
+      "mean_selected_vof": 0.02349096920683878,
+      "compute_adjusted_uplift": -0.00015375030722774696,
+      "oracle_uplift_per_state": 0.008816040990627832,
+      "random_expected_uplift": -0.00047394515585083216
+    },
+    {
+      "family": "scalar",
+      "budget": 0.2,
+      "selected_count": 53,
+      "uplift_per_state": 0.0035446855646065387,
+      "mean_selected_vof": 0.017723427823032694,
+      "compute_adjusted_uplift": -0.0014553144353934623,
+      "oracle_uplift_per_state": 0.010336696197416612,
+      "random_expected_uplift": -0.0009303367874108928
+    },
+    {
+      "family": "scalar",
+      "budget": 0.3,
+      "selected_count": 80,
+      "uplift_per_state": 0.005239364267801945,
+      "mean_selected_vof": 0.017355394137093944,
+      "compute_adjusted_uplift": -0.0023078055435188094,
+      "oracle_uplift_per_state": 0.011028245970412779,
+      "random_expected_uplift": -0.0014042819432617249
+    },
+    {
+      "family": "semantic",
+      "budget": 0.1,
+      "selected_count": 27,
+      "uplift_per_state": -0.0003953977701742405,
+      "mean_selected_vof": -0.003880755892450879,
+      "compute_adjusted_uplift": -0.002942567581494995,
+      "oracle_uplift_per_state": 0.008816040990627832,
+      "random_expected_uplift": -0.00047394515585083216
+    },
+    {
+      "family": "semantic",
+      "budget": 0.2,
+      "selected_count": 53,
+      "uplift_per_state": -0.00013446982181465443,
+      "mean_selected_vof": -0.0006723491090732722,
+      "compute_adjusted_uplift": -0.005134469821814655,
+      "oracle_uplift_per_state": 0.010336696197416612,
+      "random_expected_uplift": -0.0009303367874108928
+    },
+    {
+      "family": "semantic",
+      "budget": 0.3,
+      "selected_count": 80,
+      "uplift_per_state": -0.00023316481673971555,
+      "mean_selected_vof": -0.0007723584554503078,
+      "compute_adjusted_uplift": -0.007780334628060471,
+      "oracle_uplift_per_state": 0.011028245970412779,
+      "random_expected_uplift": -0.0014042819432617249
+    },
+    {
+      "family": "combined",
+      "budget": 0.1,
+      "selected_count": 27,
+      "uplift_per_state": 0.0015527973580263391,
+      "mean_selected_vof": 0.015240418513962217,
+      "compute_adjusted_uplift": -0.0009943724532944156,
+      "oracle_uplift_per_state": 0.008816040990627832,
+      "random_expected_uplift": -0.00047394515585083216
+    },
+    {
+      "family": "combined",
+      "budget": 0.2,
+      "selected_count": 53,
+      "uplift_per_state": 0.0024408566505602328,
+      "mean_selected_vof": 0.012204283252801165,
+      "compute_adjusted_uplift": -0.002559143349439768,
+      "oracle_uplift_per_state": 0.010336696197416612,
+      "random_expected_uplift": -0.0009303367874108928
+    },
+    {
+      "family": "combined",
+      "budget": 0.3,
+      "selected_count": 80,
+      "uplift_per_state": 0.005212419385246504,
+      "mean_selected_vof": 0.017266139213629045,
+      "compute_adjusted_uplift": -0.0023347504260742506,
+      "oracle_uplift_per_state": 0.011028245970412779,
+      "random_expected_uplift": -0.0014042819432617249
+    }
+  ],
+  "factor_summary": [
+    {
+      "family": "scalar",
+      "protocol": "group_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": 0.6902881114957697,
+      "sign_auc": 0.9519557823129252,
+      "balanced_accuracy": 0.7738095238095237,
+      "rmse": 0.028925319788778107,
+      "uplift20_uplift_per_state": 0.0019158815195184525,
+      "uplift20_compute_adjusted_uplift": -0.0031861592968080777
+    },
+    {
+      "family": "scalar",
+      "protocol": "factor_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": 0.3994733788548221,
+      "sign_auc": 0.747874149659864,
+      "balanced_accuracy": 0.5654761904761905,
+      "rmse": 0.03572255556778888,
+      "uplift20_uplift_per_state": -0.0009659998904141194,
+      "uplift20_compute_adjusted_uplift": -0.00606804070674065
+    },
+    {
+      "family": "scalar",
+      "protocol": "group_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": 0.56034147492174,
+      "sign_auc": 0.7541950113378685,
+      "balanced_accuracy": 0.6873015873015873,
+      "rmse": 0.06271839550905979,
+      "uplift20_uplift_per_state": 0.007167959426824745,
+      "uplift20_compute_adjusted_uplift": 0.0020659186104982144
+    },
+    {
+      "family": "scalar",
+      "protocol": "factor_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": 0.3069512716051743,
+      "sign_auc": 0.6244897959183674,
+      "balanced_accuracy": 0.5793650793650793,
+      "rmse": 0.06654356810192649,
+      "uplift20_uplift_per_state": -0.0012085014650417716,
+      "uplift20_compute_adjusted_uplift": -0.006310542281368302
+    },
+    {
+      "family": "scalar",
+      "protocol": "group_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": -0.023675557179393496,
+      "sign_auc": 0.49830220713073003,
+      "balanced_accuracy": 0.4991511035653651,
+      "rmse": 0.028535146405002706,
+      "uplift20_uplift_per_state": -0.0022913979250190663,
+      "uplift20_compute_adjusted_uplift": -0.007363861693135009
+    },
+    {
+      "family": "scalar",
+      "protocol": "factor_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": 0.03080014614541469,
+      "sign_auc": 0.5203735144312394,
+      "balanced_accuracy": 0.4859932088285229,
+      "rmse": 0.031048593077637087,
+      "uplift20_uplift_per_state": -0.001689005782265809,
+      "uplift20_compute_adjusted_uplift": -0.0067614695503817514
+    },
+    {
+      "family": "semantic",
+      "protocol": "group_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": 0.43399065343100685,
+      "sign_auc": 0.7470238095238095,
+      "balanced_accuracy": 0.7023809523809523,
+      "rmse": 0.0362076476841244,
+      "uplift20_uplift_per_state": 0.0031206799101808425,
+      "uplift20_compute_adjusted_uplift": -0.0019813609061456877
+    },
+    {
+      "family": "semantic",
+      "protocol": "factor_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": -0.25436566379128966,
+      "sign_auc": 0.2627551020408163,
+      "balanced_accuracy": 0.35119047619047616,
+      "rmse": 0.04423117974086499,
+      "uplift20_uplift_per_state": -0.0046185423494331974,
+      "uplift20_compute_adjusted_uplift": -0.009720583165759727
+    },
+    {
+      "family": "semantic",
+      "protocol": "group_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": 0.051291369406244215,
+      "sign_auc": 0.5142857142857142,
+      "balanced_accuracy": 0.5746031746031746,
+      "rmse": 0.06861445807025221,
+      "uplift20_uplift_per_state": -0.00041504326446568506,
+      "uplift20_compute_adjusted_uplift": -0.005517084080792215
+    },
+    {
+      "family": "semantic",
+      "protocol": "factor_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": -0.20764556994306624,
+      "sign_auc": 0.41723356009070295,
+      "balanced_accuracy": 0.4031746031746032,
+      "rmse": 0.0732199803288427,
+      "uplift20_uplift_per_state": -0.0073787910043833956,
+      "uplift20_compute_adjusted_uplift": -0.012480831820709925
+    },
+    {
+      "family": "semantic",
+      "protocol": "group_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": -0.2946656923639021,
+      "sign_auc": 0.399830220713073,
+      "balanced_accuracy": 0.43463497453310695,
+      "rmse": 0.03175528049591367,
+      "uplift20_uplift_per_state": -0.002978413072505416,
+      "uplift20_compute_adjusted_uplift": -0.00805087684062136
+    },
+    {
+      "family": "semantic",
+      "protocol": "factor_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": -0.2522469857508221,
+      "sign_auc": 0.4227504244482173,
+      "balanced_accuracy": 0.4405772495755518,
+      "rmse": 0.03236470861243262,
+      "uplift20_uplift_per_state": -0.00319055228625786,
+      "uplift20_compute_adjusted_uplift": -0.008263016054373802
+    },
+    {
+      "family": "combined",
+      "protocol": "group_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": 0.6076226179318962,
+      "sign_auc": 0.8945578231292517,
+      "balanced_accuracy": 0.7708333333333333,
+      "rmse": 0.03238023067629322,
+      "uplift20_uplift_per_state": 0.0021355478999127604,
+      "uplift20_compute_adjusted_uplift": -0.0029664929164137698
+    },
+    {
+      "family": "combined",
+      "protocol": "factor_oof",
+      "factor": "Environment",
+      "states": 98,
+      "spearman": 0.5118107224145515,
+      "sign_auc": 0.810374149659864,
+      "balanced_accuracy": 0.6636904761904762,
+      "rmse": 0.03494843265089517,
+      "uplift20_uplift_per_state": 0.002163272083224932,
+      "uplift20_compute_adjusted_uplift": -0.002938768733101598
+    },
+    {
+      "family": "combined",
+      "protocol": "group_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": 0.5212210469942428,
+      "sign_auc": 0.7365079365079366,
+      "balanced_accuracy": 0.6349206349206349,
+      "rmse": 0.06265492802524536,
+      "uplift20_uplift_per_state": 0.005903530331317838,
+      "uplift20_compute_adjusted_uplift": 0.0008014895149913081
+    },
+    {
+      "family": "combined",
+      "protocol": "factor_oof",
+      "factor": "Object",
+      "states": 98,
+      "spearman": 0.13352332498135147,
+      "sign_auc": 0.5587301587301587,
+      "balanced_accuracy": 0.5285714285714286,
+      "rmse": 0.06838958691358336,
+      "uplift20_uplift_per_state": -0.0009151720744407578,
+      "uplift20_compute_adjusted_uplift": -0.006017212890767288
+    },
+    {
+      "family": "combined",
+      "protocol": "group_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": -0.05191815856777495,
+      "sign_auc": 0.5127334465195246,
+      "balanced_accuracy": 0.4961799660441426,
+      "rmse": 0.029444603679480232,
+      "uplift20_uplift_per_state": -0.002442839035729869,
+      "uplift20_compute_adjusted_uplift": -0.007515302803845812
+    },
+    {
+      "family": "combined",
+      "protocol": "factor_oof",
+      "factor": "Position",
+      "states": 69,
+      "spearman": -0.008695652173913044,
+      "sign_auc": 0.5178268251273345,
+      "balanced_accuracy": 0.4830220713073005,
+      "rmse": 0.031172584726599048,
+      "uplift20_uplift_per_state": -0.0012467021114214536,
+      "uplift20_compute_adjusted_uplift": -0.006319165879537396
+    }
+  ],
+  "report": "experiments/campaigns/semantic_vof_screen_20260831/analysis/RESULTS.md",
+  "plot": "experiments/campaigns/semantic_vof_screen_20260831/analysis/semantic_vof_screen.png"
+}

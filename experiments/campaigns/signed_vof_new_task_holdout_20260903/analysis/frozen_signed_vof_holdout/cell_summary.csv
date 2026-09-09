@@ -1,0 +1,7 @@
+position_level,task_id,task_description,commit_success_rate,policy_success_rate,query_rate,rescues,harms,neutral_queries,raw_success_delta,adjusted_success_delta,states,always_requery_success_rate,router_success_rate
+x0.2,5,pick the tomato sauce and place it in the basket,0.375,0.475,0.625,6,2,17,0.1,0.084375,40,0.625,0.475
+x0.2,6,pick the butter and place it in the basket,0.55,0.55,0.0,0,0,0,0.0,0.0,40,0.5,0.55
+y0.1,4,pick the ketchup and place it in the basket,0.65,0.675,0.15,1,0,5,0.025,0.021249999999999998,40,0.9,0.675
+y0.1,5,pick the tomato sauce and place it in the basket,0.85,1.0,0.95,6,0,32,0.15,0.12625,40,1.0,1.0
+y0.2,8,pick the chocolate pudding and place it in the basket,0.7,0.9,0.5,9,1,10,0.2,0.1875,40,0.875,0.9
+y0.3,5,pick the tomato sauce and place it in the basket,0.45,0.1,0.925,2,16,19,-0.35,-0.37312499999999993,40,0.1,0.1

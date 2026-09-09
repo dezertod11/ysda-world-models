@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "frozen_before_outcomes": true,
+  "campaign_config_sha256": "c1ef02f77735bfcac56fa66e1ab18e00d687e492e6110d5a94d5a633fb4e8999",
+  "protocol_sha256": "5ecf207bf2495c98bca0f97eeec5c6e39e4afda2ddf417a5874cb65234e6a383",
+  "frozen_router_sha256": "1f18f39418455767bf419601882c0f0f4c09f95b642272ffe5c5a620d739ce26",
+  "frozen_router": "experiments/frozen_models/signed_vof_pre_state_action_a10_v1.json",
+  "benchmark": "LIBERO-PRO Object Position",
+  "task_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "position_levels": ["x0.2", "y0.1", "y0.2", "y0.3"],
+  "init_state_ids": [0, 1, 2, 3, 4],
+  "rollouts_per_init": 1,
+  "snapshot_query_idx": 4,
+  "num_candidates": 4,
+  "max_timesteps": 280,
+  "feedback_branch_enabled": false,
+  "target_baseline_states": 180,
+  "minimum_strict_states": 171,
+  "maximum_selected_cells": 6,
+  "boundary_success_rate_interval": [0.2, 0.8],
+  "authorized_holdout_init_state_ids": "5-24",
+  "authorized_holdout_rollouts_per_init": 2
+}

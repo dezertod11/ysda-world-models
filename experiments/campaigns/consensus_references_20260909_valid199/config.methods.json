@@ -1,0 +1,17 @@
+[
+  {
+    "label": "raw_medoid",
+    "strategy": "trajectory_raw_medoid",
+    "candidates": 4
+  },
+  {
+    "label": "keystone",
+    "strategy": "keystone_cluster_medoid",
+    "candidates": 4
+  },
+  {
+    "label": "kdpe_endpoint",
+    "strategy": "trajectory_kdpe_endpoint",
+    "candidates": 4
+  }
+]

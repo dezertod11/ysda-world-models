@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "selection_policy": "Five predeclared exact-state mechanism roles selected after aggregate P3b evaluation; replay is illustrative and not an additional efficacy test.",
+  "num_states": 5,
+  "roles": [
+    "development_both_success",
+    "development_privileged_only",
+    "development_both_fail",
+    "reserve_success",
+    "reserve_fail"
+  ]
+}

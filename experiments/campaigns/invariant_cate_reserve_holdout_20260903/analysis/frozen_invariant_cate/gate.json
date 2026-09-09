@@ -1,0 +1,43 @@
+{
+  "expected_pairs": 400,
+  "all_pairs": 400,
+  "strict_pairs": 400,
+  "router": {
+    "policy": "frozen_invariant_cate",
+    "states": 400,
+    "commit_success_rate": 0.57,
+    "policy_success_rate": 0.5575,
+    "query_rate": 0.395,
+    "rescues": 18,
+    "harms": 23,
+    "neutral_queries": 117,
+    "raw_success_delta": -0.0125,
+    "adjusted_success_delta": -0.02237499999999999
+  },
+  "raw_cluster_ci": [
+    -0.045,
+    0.0225
+  ],
+  "adjusted_cluster_ci": [
+    -0.05518906249999998,
+    0.011250000000000003
+  ],
+  "router_minus_always_requery_adjusted": 0.08012499999999999,
+  "router_minus_always_requery_adjusted_ci": [
+    0.03656093749999999,
+    0.125875
+  ],
+  "novel_task_macro_adjusted_gain": 0.005625000000000003,
+  "rescue_vs_harm_auc": 0.543859649122807,
+  "exact_mcnemar_pvalue": 0.5327092552361137,
+  "checks": {
+    "strict_integrity_at_least_380": true,
+    "raw_router_delta_positive": false,
+    "adjusted_cluster_ci_lower_positive": false,
+    "query_rate_at_most_60pct": true,
+    "novel_task_macro_adjusted_nonnegative": true
+  },
+  "efficacy_pass": false,
+  "strong_superiority_pass": true,
+  "decision": "do_not_promote_invariant_cate"
+}

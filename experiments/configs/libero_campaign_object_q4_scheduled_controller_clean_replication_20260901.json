@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "object_q4_scheduled_controller_clean_replication": {
+      "description": "Independent-seed replication of the fixed task-0 query-4 controller on preflight-clean GPUs",
+      "jobs": [
+        {
+          "name": "object_q4_clean_init0_7",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init0_7",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "0-7",
+          "max_rollouts": 2,
+          "base_seed": 14100000,
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_q4_clean_init8_15",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init8_15",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "8-15",
+          "max_rollouts": 2,
+          "base_seed": 14200000,
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_q4_clean_init16_24",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init16_24",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "16-24",
+          "max_rollouts": 2,
+          "base_seed": 14300000,
+          "gpu_slot": 2
+        },
+        {
+          "name": "object_q4_clean_init25_32",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init25_32",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "25-32",
+          "max_rollouts": 2,
+          "base_seed": 14400000,
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_q4_clean_init33_40",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init33_40",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "33-40",
+          "max_rollouts": 2,
+          "base_seed": 14500000,
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_q4_clean_init41_49",
+          "kind": "pro_planning_grid",
+          "case_id": "object_task0_q4_clean_replication_init41_49",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "41-49",
+          "max_rollouts": 2,
+          "base_seed": 14600000,
+          "gpu_slot": 2
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "num_open_loop_steps": 16,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "strategy_lambdas": "max_value:0 max_value_scheduled_requery:0",
+    "planning_short_open_loop_steps": 8,
+    "planning_scheduled_requery_query_idx": 4,
+    "experiment_split": "generalization",
+    "record_temporal_overlap": false
+  }
+}

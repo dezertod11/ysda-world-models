@@ -1,0 +1,13 @@
+{
+  "n_states": 20,
+  "all_proposal_oracle_successes": 11,
+  "all_proposal_oracle_success_rate": 0.55,
+  "all_proposal_oracle_ci_low": 0.35,
+  "all_proposal_oracle_ci_high": 0.75,
+  "deployable_oracle_successes": 11,
+  "deployable_oracle_success_rate": 0.55,
+  "deployable_oracle_ci_low": 0.35,
+  "deployable_oracle_ci_high": 0.75,
+  "passing_deployable_proposals": [],
+  "decision": "freeze_rule_based_proposal_router_before_reserve"
+}

@@ -1,0 +1,7 @@
+case_id,terminal_outcome,open_terminal_failure_type,feedback_terminal_failure_type,pairs
+position_x0p2_task0,harm,success,timeout_no_goal,2
+position_x0p2_task0,rescue,timeout_no_goal,success,1
+position_y0p2_task0,rescue,timeout_no_goal,success,10
+position_y0p2_task0,harm,success,timeout_no_goal,1
+position_y0p2_task0,harm,success,wrong_object_interaction_candidate,1
+position_y0p3_task0,rescue,timeout_no_goal,success,2

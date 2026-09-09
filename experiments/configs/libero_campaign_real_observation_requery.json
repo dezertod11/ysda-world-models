@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "real_observation_requery_holdout": {
+      "description": "Frozen maxV H16 versus fixed H8 and gripper-boundary adaptive H8/H16 on untouched hard-cell init 40-49",
+      "jobs": [
+        {
+          "name": "object_h16",
+          "kind": "pro_planning_grid",
+          "case_id": "feedback_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7100000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_h8",
+          "kind": "pro_planning_grid",
+          "case_id": "feedback_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7100000,
+          "num_open_loop_steps": 8,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_gripper_adaptive",
+          "kind": "pro_planning_grid",
+          "case_id": "feedback_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7100000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "planning_short_open_loop_steps": 8,
+          "gpu_slot": 2
+        },
+        {
+          "name": "position_h16",
+          "kind": "pro_position_planning_grid",
+          "case_id": "feedback_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7300000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "position_h8",
+          "kind": "pro_position_planning_grid",
+          "case_id": "feedback_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7300000,
+          "num_open_loop_steps": 8,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "position_gripper_adaptive",
+          "kind": "pro_position_planning_grid",
+          "case_id": "feedback_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "40-49",
+          "base_seed": 7300000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "planning_short_open_loop_steps": 8,
+          "gpu_slot": 2
+        },
+        {
+          "name": "environment_h16",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "feedback_environment_task0_2",
+          "suites": "libero_object_env",
+          "task_ids": "0,2",
+          "init_state_ids": "40-49",
+          "base_seed": 7200000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 0
+        },
+        {
+          "name": "environment_h8",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "feedback_environment_task0_2",
+          "suites": "libero_object_env",
+          "task_ids": "0,2",
+          "init_state_ids": "40-49",
+          "base_seed": 7200000,
+          "num_open_loop_steps": 8,
+          "strategy_lambdas": "max_value:0",
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 1
+        },
+        {
+          "name": "environment_gripper_adaptive",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "feedback_environment_task0_2",
+          "suites": "libero_object_env",
+          "task_ids": "0,2",
+          "init_state_ids": "40-49",
+          "base_seed": 7200000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "planning_short_open_loop_steps": 8,
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 2
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "max_rollouts": 1,
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "max_timesteps": 280,
+    "uncertainty_seeds": "0,1,2,3",
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "holdout",
+    "planning_short_open_loop_steps": 8
+  }
+}

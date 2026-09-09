@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-07T02:48:41+00:00",
+  "manifest": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p4b_residual_risk_20260907/terminal_holdout_dataset/transition_manifest.parquet",
+  "manifest_sha256": "1a489fbf467726031dd8651eb7f23529e422907bfa2c10db27273491ed9e07a9",
+  "model_name": "openai/clip-vit-base-patch32",
+  "device": "cuda",
+  "rows": 800,
+  "visual_dimension": 1024,
+  "action_shape": [
+    16,
+    7
+  ],
+  "feature_sha256": "93267a2a42a91f2c963833a4fe4886d7102e8780edd62680f33411f70afdbc85"
+}

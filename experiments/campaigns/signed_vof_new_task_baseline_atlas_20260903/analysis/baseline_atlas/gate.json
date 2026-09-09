@@ -1,0 +1,20 @@
+{
+  "expected_states": 180,
+  "attempted_states": 180,
+  "strict_states": 180,
+  "eligible_cells": 16,
+  "selected_cells": 6,
+  "selected_tasks": 4,
+  "selected_directions": [
+    "x",
+    "y"
+  ],
+  "checks": {
+    "strict_completeness_at_least_95pct": true,
+    "at_least_six_boundary_cells": true,
+    "selected_cover_at_least_three_tasks": true,
+    "selected_cover_both_directions": true
+  },
+  "pass": true,
+  "decision": "advance_to_frozen_router_new_task_holdout"
+}

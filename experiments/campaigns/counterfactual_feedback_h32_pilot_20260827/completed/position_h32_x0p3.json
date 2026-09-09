@@ -1,0 +1,8 @@
+{
+  "job": "position_h32_x0p3",
+  "gpu": "5",
+  "status": "completed",
+  "started_at": "2026-08-27T23:16:08",
+  "finished_at": "2026-08-27T23:25:39",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/counterfactual_feedback_h32_pilot_20260827/logs/position_h32_x0p3.log"
+}

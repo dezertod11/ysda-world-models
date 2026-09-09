@@ -1,0 +1,2 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_object_object,0,0,0,0,16200000,consensus_medoid_pre_p5_20260907__architecture_smoke__max_value_k5_smoke__libero_object_object__task0__init0__max_value__l0,max_value,0.0,False,280,56,0.0,0.7481953044022832,0.7481953044022832,0.0

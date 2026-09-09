@@ -1,0 +1,16 @@
+method,factor,success_rate,tasks
+horizon-only,Environment,0.37,10
+horizon-only,Object,0.97,10
+horizon-only,Position,0.23444444444444446,10
+maxV-H16,Environment,0.36,10
+maxV-H16,Object,0.9800000000000001,10
+maxV-H16,Position,0.29555555555555557,10
+maxV-H8,Environment,0.35,10
+maxV-H8,Object,0.95,10
+maxV-H8,Position,0.28444444444444444,10
+random-H8,Environment,0.35,10
+random-H8,Object,0.96,10
+random-H8,Position,0.2544444444444444,10
+risk-H8,Environment,0.38,10
+risk-H8,Object,0.93,10
+risk-H8,Position,0.2544444444444444,10

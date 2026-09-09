@@ -1,0 +1,23 @@
+{
+  "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p4b_residual_risk_20260907/terminal_holdout_analysis/candidate_scores.parquet",
+  "source_sha256": "1ebd6c41a6d63b47492e274390b8f494229149dad0b94f338e22fcb8187c5521",
+  "label": "already_open_P4b_development_not_confirmatory",
+  "strict_snapshots": 194,
+  "settings_evaluated": 32,
+  "finalists": [
+    {
+      "strategy": "trajectory_value_density",
+      "density_weight": 0.25,
+      "value_margin": 0.25,
+      "minimum_density_gain": 0.1,
+      "setting_id": 2
+    },
+    {
+      "strategy": "trajectory_value_density_aligned",
+      "density_weight": 0.25,
+      "value_margin": 0.25,
+      "minimum_density_gain": 0.1,
+      "setting_id": 17
+    }
+  ]
+}

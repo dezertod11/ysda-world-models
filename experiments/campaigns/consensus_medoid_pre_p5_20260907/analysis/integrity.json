@@ -1,0 +1,35 @@
+{
+  "exact_development": {
+    "manifest_status": "completed",
+    "episodes": 120,
+    "queries": 6205,
+    "failed_episodes": 93,
+    "all_failures_reached_t280": true,
+    "all_initial_states_exact": true,
+    "selector_mismatches": 0,
+    "selector_matrix_max_abs_error": 1.672481093548117e-08,
+    "generated_horizon": 16,
+    "execution_horizon": 5,
+    "prediction_error_horizon_aligned": false,
+    "wall_seconds": 4953.0
+  },
+  "guard_value_gap_quantiles": {
+    "0.5": 0.0005521774291992188,
+    "0.95": 0.008424091339111324,
+    "1.0": 0.07271802425384521
+  },
+  "architecture_development": {
+    "manifest_status": "completed",
+    "episodes": 60,
+    "queries": 3082,
+    "failed_episodes": 46,
+    "all_failures_reached_t280": true,
+    "all_initial_states_exact": true,
+    "selector_mismatches": 0,
+    "selector_matrix_max_abs_error": 1.6951262393760658e-08,
+    "generated_horizon": 16,
+    "execution_horizon": 5,
+    "prediction_error_horizon_aligned": false,
+    "wall_seconds": 3089.0
+  }
+}

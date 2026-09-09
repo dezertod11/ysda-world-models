@@ -1,0 +1,8 @@
+{
+  "job": "object_q4_shared_init0_9",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-09-02T11:38:34",
+  "finished_at": "2026-09-02T12:08:45",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_shared_prefix_replication_20260902/logs/object_q4_shared_init0_9.log"
+}

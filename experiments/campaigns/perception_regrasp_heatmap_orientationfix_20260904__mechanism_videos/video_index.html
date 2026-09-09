@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>P3b perception regrasp mechanism replays</title>
+<style>
+body { font-family: sans-serif; margin: 24px; color: #202124; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #bbb; padding: 10px; vertical-align: top; }
+th { background: #f2f3f5; text-align: left; }
+video { max-width: 100%; background: #111; }
+</style></head><body>
+<h1>P3b perception-backed regrasp: selected exact-state replays</h1>
+<p>Illustrative mechanism evidence selected after aggregate evaluation. These five
+replays are not an additional statistical test.</p>
+<table><thead><tr><th>Case</th><th>Learned RGB regrasp</th>
+<th>Privileged-pose upper bound</th></tr></thead><tbody>
+<tr><td><strong>development_both_success</strong><br>development; x0.2/task5; init=15, rollout=0<br>target=tomato sauce</td><td><video controls preload="metadata" width="420" src="media/01_development_both_success__learned_rgb.mp4"></video><br>success=True; failure=success; final_t=154</td><td><video controls preload="metadata" width="420" src="media/01_development_both_success__privileged_pose.mp4"></video><br>success=True</td></tr>
+<tr><td><strong>development_privileged_only</strong><br>development; x0.2/task9; init=12, rollout=0<br>target=orange juice</td><td><video controls preload="metadata" width="420" src="media/02_development_privileged_only__learned_rgb.mp4"></video><br>success=False; failure=wrong_object_interaction_candidate; final_t=280</td><td><video controls preload="metadata" width="420" src="media/02_development_privileged_only__privileged_pose.mp4"></video><br>success=True</td></tr>
+<tr><td><strong>development_both_fail</strong><br>development; y0.2/task4; init=11, rollout=1<br>target=ketchup</td><td><video controls preload="metadata" width="420" src="media/03_development_both_fail__learned_rgb.mp4"></video><br>success=False; failure=wrong_object_interaction_candidate; final_t=280</td><td><video controls preload="metadata" width="420" src="media/03_development_both_fail__privileged_pose.mp4"></video><br>success=False</td></tr>
+<tr><td><strong>reserve_success</strong><br>reserve; y0.1/task8; init=20, rollout=0<br>target=chocolate pudding</td><td><video controls preload="metadata" width="420" src="media/04_reserve_success__learned_rgb.mp4"></video><br>success=True; failure=success; final_t=192</td><td>not evaluated on reserve</td></tr>
+<tr><td><strong>reserve_fail</strong><br>reserve; x0.2/task9; init=5, rollout=0<br>target=orange juice</td><td><video controls preload="metadata" width="420" src="media/05_reserve_fail__learned_rgb.mp4"></video><br>success=False; failure=wrong_object_interaction_candidate; final_t=280</td><td>not evaluated on reserve</td></tr>
+</tbody></table></body></html>

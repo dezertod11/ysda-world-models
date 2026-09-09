@@ -1,0 +1,5 @@
+policy,states,commit_success_rate,policy_success_rate,query_rate,rescues,harms,neutral_queries,raw_success_delta,adjusted_success_delta
+always_commit,400,0.57,0.57,0.0,0,0,0,0.0,0.0
+always_requery,400,0.57,0.4925,1.0,38,69,293,-0.0775,-0.10249999999999997
+frozen_invariant_cate,400,0.57,0.5575,0.395,18,23,117,-0.0125,-0.02237499999999999
+oracle_query,400,0.57,0.665,0.095,38,0,0,0.095,0.092625

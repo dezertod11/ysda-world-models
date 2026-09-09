@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "initial_requery_holdout": {
+      "description": "Independent maxV-H16 versus maxV query0-H8 then H16 holdout",
+      "jobs": [
+        {
+          "name": "environment_task8_init20_29",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "initial_requery_task8_init20_29",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "20-29",
+          "base_seed": 10100000,
+          "strategy_lambdas": "max_value:0 max_value_initial_requery:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "environment_task8_init30_39",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "initial_requery_task8_init30_39",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "30-39",
+          "base_seed": 10200000,
+          "strategy_lambdas": "max_value:0 max_value_initial_requery:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "environment_task8_init40_49",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "initial_requery_task8_init40_49",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "40-49",
+          "base_seed": 10300000,
+          "strategy_lambdas": "max_value:0 max_value_initial_requery:0",
+          "gpu_slot": 2
+        },
+        {
+          "name": "environment_task9_init20_34",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "initial_requery_task9_init20_34",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "20-34",
+          "base_seed": 10400000,
+          "strategy_lambdas": "max_value:0 max_value_initial_requery:0",
+          "gpu_slot": 3
+        },
+        {
+          "name": "environment_task9_init35_49",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "initial_requery_task9_init35_49",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "35-49",
+          "base_seed": 10500000,
+          "strategy_lambdas": "max_value:0 max_value_initial_requery:0",
+          "gpu_slot": 4
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "max_rollouts": 1,
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "max_timesteps": 280,
+    "uncertainty_seeds": "0,1,2,3",
+    "num_open_loop_steps": 16,
+    "planning_short_open_loop_steps": 8,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "generalization",
+    "environment_num_init_states": 50,
+    "environment_seed": 20260825
+  }
+}
+

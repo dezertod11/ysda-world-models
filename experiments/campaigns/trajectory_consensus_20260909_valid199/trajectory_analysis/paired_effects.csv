@@ -1,0 +1,9 @@
+method,reference,scope,pairs,macro_delta,ci95_low,ci95_high,rescues,harms,mcnemar_p,q0_pool_exact_rate,holm_macro_p
+first_k1,max_value,All,199,-0.0134006734006734,-0.05000000000000001,0.02013770356627497,5,8,0.5810546875,0.0,1.0
+first_k1,max_value,Environment,50,-0.02,-0.1,0.04,1,2,1.0,0.0,
+first_k1,max_value,Object,50,0.0,-0.06,0.06,1,1,1.0,0.0,
+first_k1,max_value,Position,99,-0.020202020202020204,-0.08080808080808081,0.04,3,5,0.7265625,0.0,
+osc_medoid,max_value,All,199,-0.006801346801346802,-0.03333333333333333,0.019863945578231294,3,6,0.5078125,0.457286432160804,1.0
+osc_medoid,max_value,Environment,50,0.0,-0.06,0.06,1,1,1.0,0.4,
+osc_medoid,max_value,Object,50,0.02,0.0,0.06,1,0,1.0,0.6,
+osc_medoid,max_value,Position,99,-0.04040404040404041,-0.0707070707070707,-0.010101010101010102,1,5,0.21875,0.41414141414141414,

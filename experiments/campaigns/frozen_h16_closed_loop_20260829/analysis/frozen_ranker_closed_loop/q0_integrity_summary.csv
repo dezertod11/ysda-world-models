@@ -1,0 +1,5 @@
+quantity,pairs,absolute_tolerance,max_abs_difference,p95_abs_difference,match_rate
+candidate_values_json,360,0.0005,0.0,0.0,1.0
+candidate_frozen_ranker_scores_json,360,0.002,0.0,0.0,1.0
+candidate_first_actions_json,360,0.005,0.0,0.0,1.0
+selector_disagreement,360,,,,0.7305555555555555

@@ -1,0 +1,8 @@
+factor,method,episodes,successes,sr,drops,drop_rate,mean_queries,mean_final_t
+Object,first,1,1,1.0,0,0.0,12.0,181.0
+Object,max_value,1,1,1.0,0,0.0,11.0,163.0
+Object,old_guarded,1,1,1.0,0,0.0,14.0,221.0
+Object,physical_density,1,0,0.0,0,0.0,18.0,280.0
+Object,physical_medoid,1,0,0.0,1,1.0,18.0,280.0
+Object,v2_0,1,1,1.0,0,0.0,9.0,129.0
+Object,v2_1,1,1,1.0,0,0.0,11.0,163.0

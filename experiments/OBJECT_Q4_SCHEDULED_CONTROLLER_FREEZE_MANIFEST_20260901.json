@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "frozen_before_deployment_validation": true,
+  "campaign_config_sha256": "ff11f3784f39c8ff3657c0758b6a29dbb64cb9d97cfadf96650d458d32b38974",
+  "protocol_sha256": "858e0308dcf9694b2f49971678535171bf598701482275f1ca60124f29f34c1c",
+  "suite": "libero_object_object",
+  "task_ids": [0],
+  "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+  "rollouts_per_init": 2,
+  "target_pairs": 100,
+  "baseline_strategy": "max_value",
+  "method_strategy": "max_value_scheduled_requery",
+  "scheduled_requery_query_idx": 4,
+  "open_loop_steps": 16,
+  "short_open_loop_steps": 8,
+  "query_cost": 0.025,
+  "minimum_strict_prefix_pairs": 95,
+  "sim_state_max_abs_tolerance": 1e-9,
+  "candidate_value_max_abs_tolerance": 1e-5,
+  "candidate_first_action_max_abs_tolerance": 1e-5,
+  "primary_endpoint": "method_success - baseline_success on strict prefix pairs",
+  "practical_gate": {
+    "raw_success_delta_gt": 0.0,
+    "adjusted_terminal_delta_gt": 0.0
+  },
+  "confirmatory_gate": {
+    "cluster_bootstrap_ci_low_gt": 0.0,
+    "mcnemar_two_sided_p_lt": 0.05
+  }
+}

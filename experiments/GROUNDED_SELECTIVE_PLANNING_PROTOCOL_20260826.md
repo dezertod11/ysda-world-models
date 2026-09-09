@@ -1,17 +1,16 @@
 # Grounded selective world-model planning: staged protocol
 
-Статус: **P0 frozen and running**.
+Статус: **P0 completed; P1/P2 pilot analyzed; all current deployment gates are no-go**.
 
 Дата фиксации: 26 августа 2026 года.
 
 P0 implementation patch: `patches/cosmos-policy-ysda.patch`, SHA-256
 `3ae78ae55a2c4ac1ca301bba4dc0b84898efdf5d1f523c03af5e32e9f6a425ea`.
 
-Активный запуск: `pro_object_horizon_controls_p0_20260826` на MLSpace,
-физическая GPU 6. Campaign содержит 24 jobs и 897 новых strategy episodes;
-существующие 598 episodes `maxV-H16`/`risk-H8` подключаются только на этапе
-анализа. Запуск начат 26 августа 2026 года после успешного three-strategy
-smoke test. Статус из WSL:
+Запуск `pro_object_horizon_controls_p0_20260826` завершил 24/24 jobs. Итоговый
+разбор P0-P2 и решения по gates опубликованы в
+[`GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md`](GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md).
+Статус из WSL:
 
 ```bash
 scripts/mlspace_experiment_status.sh pro_object_horizon_controls_p0_20260826 --verbose

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "counterfactual_feedback_h32_pilot": {
+      "description": "Matched H16/H32 dense-consequence pilot with six stochastic candidates and partial terminal calibration",
+      "jobs": [
+        {
+          "name": "object_h32",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "pro_object__object__h32",
+          "suites": "libero_object_object",
+          "task_ids": "0-9",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 2,
+          "base_seed": 3100000,
+          "target_decision_states": 12
+        },
+        {
+          "name": "environment_h32",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "pro_object__environment__h32",
+          "suites": "libero_object_env",
+          "task_ids": "0-9",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 2,
+          "base_seed": 3200000,
+          "target_decision_states": 12
+        },
+        {
+          "name": "position_h32_x0p3",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "pro_object__position__h32",
+          "suites": "libero_object_temp",
+          "position_level": "x0.3",
+          "task_ids": "0-9",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 2,
+          "base_seed": 3300000,
+          "phase_cap_fraction": 1.0,
+          "terminal_continuation_fraction": 0.0,
+          "target_decision_states": 12
+        },
+        {
+          "name": "position_h32_y0p3",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "pro_object__position__h32",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0-9",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 2,
+          "base_seed": 3310000,
+          "target_decision_states": 12
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5",
+    "max_timesteps": 280,
+    "phase_cap_fraction": 0.5,
+    "consequence_horizon_steps": 32,
+    "terminal_continuation_fraction": 0.10,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "screen",
+    "environment_num_init_states": 10,
+    "environment_seed": 20260827
+  }
+}

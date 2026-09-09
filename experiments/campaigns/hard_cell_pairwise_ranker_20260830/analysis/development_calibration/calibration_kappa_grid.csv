@@ -1,0 +1,9 @@
+factor,kappa,states,switches,rescues,harms,net_rescues,utility_delta,adverse_delta,selected
+Object,0.0,5,5,2,0,2,1.2,0.0,False
+Object,0.5,5,5,2,0,2,1.2,0.0,False
+Object,1.0,5,5,2,0,2,1.2,0.0,True
+Object,1.5,5,2,0,0,0,0.0,0.0,False
+Position,0.0,5,4,0,0,0,0.0,0.0,False
+Position,0.5,5,4,0,0,0,0.0,0.0,False
+Position,1.0,5,4,0,0,0,0.0,0.0,False
+Position,1.5,5,4,0,0,0,0.0,0.0,True

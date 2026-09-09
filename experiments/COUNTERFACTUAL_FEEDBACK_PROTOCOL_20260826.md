@@ -1,8 +1,15 @@
 # Counterfactual feedback and grounded candidate protocol
 
-Статус: **implementation frozen, smoke passed, launch waits for P0 gate**.
+Статус: **H16 event target failed; dense relabel passed mechanism screening;
+matched H32 pilot completed; H32 no-go, factor-specific H16 P2 promoted to
+held-out validation**.
 
 Дата фиксации: 26 августа 2026 года.
+
+Фактические результаты и ограничения опубликованы в
+[`GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md`](GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md).
+Продолжение с dense geometry, strict OOF controls и H32 находится в
+[`DENSE_CONSEQUENCE_FEEDBACK_RESULTS_20260827.md`](DENSE_CONSEQUENCE_FEEDBACK_RESULTS_20260827.md).
 
 ## Цель
 
@@ -86,6 +93,24 @@ $$
 Y_{VoF}=G(\tau_{feedback})-G(\tau_{open})-c_{query}.
 $$
 
+После обнаружения 272/272 ties event-only target был дополнен frozen dense
+geometry. Он использует нормированные изменения target-to-goal,
+target-to-EEF и target lift с phase-aware weights. Полная формула и результаты
+зафиксированы в отдельном отчёте; исходные event/safety компоненты не
+перезаписываются.
+
+Matched H32 extension выполняет после H16 одну frozen `max(value)` continuation
+для каждой open/feedback branch. Это позволяет сравнить $G_{16}$ и $G_{32}$
+на одном snapshot и одних candidate actions, не смешивая эффект горизонта с
+изменением основной policy.
+
+Фактический H32 pilot использует шесть samples. На 48 matched states H32
+уменьшил non-tied candidate support с 48 до 35 и средний utility range с
+0.00963 до 0.00727, поэтому horizon gate не пройден. Factor-specific OOF
+candidate ranker, напротив, снизил factor-macro regret относительно Cosmos
+value на 45.7% для H16 и 21.1% для H32. Это screening result: следующий этап
+требует frozen holdout на новых `task/init`, а не немедленного closed-loop.
+
 Скаляр не скрывает safety: task success и violation публикуются раздельно.
 
 ## Sampling design
@@ -129,6 +154,9 @@ Cosmos value на каждом OOD factor.
 - Collector: `scripts/collect_counterfactual_feedback.py`.
 - Runtime snapshot: `scripts/libero_runtime_snapshot.py`.
 - Analysis: `scripts/analyze_counterfactual_feedback.py`.
+- Dense relabeler: `scripts/relabel_counterfactual_dense.py`.
+- H32 campaign config:
+  `experiments/configs/libero_campaign_counterfactual_feedback_h32_pilot.json`.
 - Simulator integrity test: `scripts/verify_libero_snapshot_branching.py`.
 
 После P0 gate запуск выполняется manifest runner, а не вручную:

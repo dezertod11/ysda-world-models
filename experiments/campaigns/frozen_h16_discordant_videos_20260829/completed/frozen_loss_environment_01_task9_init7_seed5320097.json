@@ -1,0 +1,8 @@
+{
+  "job": "frozen_loss_environment_01_task9_init7_seed5320097",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-08-29T04:53:38",
+  "finished_at": "2026-08-29T04:56:16",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/frozen_h16_discordant_videos_20260829/logs/frozen_loss_environment_01_task9_init7_seed5320097.log"
+}

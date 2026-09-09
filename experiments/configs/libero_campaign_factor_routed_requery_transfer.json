@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "factor_routed_requery_transfer": {
+      "description": "Independent task transfer for frozen factor-routed real-observation re-query",
+      "jobs": [
+        {
+          "name": "object_h16_transfer",
+          "kind": "pro_planning_grid",
+          "case_id": "route_transfer_object",
+          "suites": "libero_object_object",
+          "task_ids": "1-3",
+          "init_state_ids": "40-49",
+          "base_seed": 8100000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_adaptive_transfer",
+          "kind": "pro_planning_grid",
+          "case_id": "route_transfer_object",
+          "suites": "libero_object_object",
+          "task_ids": "1-3",
+          "init_state_ids": "40-49",
+          "base_seed": 8100000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "gpu_slot": 1
+        },
+        {
+          "name": "position_h16_transfer",
+          "kind": "pro_position_planning_grid",
+          "case_id": "route_transfer_position_y0p3",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "1-3",
+          "init_state_ids": "40-49",
+          "base_seed": 8300000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "gpu_slot": 2
+        },
+        {
+          "name": "position_adaptive_transfer",
+          "kind": "pro_position_planning_grid",
+          "case_id": "route_transfer_position_y0p3",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "1-3",
+          "init_state_ids": "40-49",
+          "base_seed": 8300000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "gpu_slot": 0
+        },
+        {
+          "name": "environment_h16_transfer",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "route_transfer_environment",
+          "suites": "libero_object_env",
+          "task_ids": "1,3,4",
+          "init_state_ids": "40-49",
+          "base_seed": 8200000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value:0",
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 1
+        },
+        {
+          "name": "environment_adaptive_transfer",
+          "kind": "pro_environment_planning_grid",
+          "case_id": "route_transfer_environment",
+          "suites": "libero_object_env",
+          "task_ids": "1,3,4",
+          "init_state_ids": "40-49",
+          "base_seed": 8200000,
+          "num_open_loop_steps": 16,
+          "strategy_lambdas": "max_value_gripper_requery:0",
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 2
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "max_rollouts": 1,
+    "min_success": 999,
+    "min_failed": 999,
+    "save_videos": false,
+    "collect_prediction_errors": true,
+    "collect_safety_signals": true,
+    "record_denoising_trace": false,
+    "terminate_on_safety_violation": false,
+    "rollout_seed_step": 97,
+    "max_timesteps": 280,
+    "uncertainty_seeds": "0,1,2,3",
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "generalization",
+    "planning_short_open_loop_steps": 8
+  }
+}

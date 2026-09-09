@@ -1,0 +1,19 @@
+{
+  "stage": "untouched_holdout",
+  "candidate_rows": 160,
+  "states": 20,
+  "mixed_states": 12,
+  "frozen_payload_sha256": "c9ae031cd3b4e1cf7f8c9acc1e191b99601ab585d17033e588b86c19f1db6168",
+  "maxv_sr": 0.45,
+  "autoregressive_sr": 0.4,
+  "ranker_sr": 0.15,
+  "selected_sr": 0.3,
+  "oracle_sr": 0.6,
+  "mixed_selected_delta_states": -3,
+  "switches": 6,
+  "rescues": 0,
+  "harms": 3,
+  "paired_sign_pvalue": 0.25,
+  "adverse_delta_events": 0.0,
+  "gate": "FAIL"
+}

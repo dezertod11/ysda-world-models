@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "profile": "development80",
+  "description": "Full 80-state development evaluation after the twenty-state gate.",
+  "run_prefix": "perception_regrasp_heatmap_orientationfix_20260904__development80",
+  "created_at": "2026-09-04T16:21:27",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_perception_regrasp_20260904.json",
+  "jobs": [
+    {
+      "name": "x0p2_task5",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/x0p2_task5",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__x0p2_task5",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "x0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "5",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "x0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/x0p2_task5.json"
+    },
+    {
+      "name": "x0p2_task6",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/x0p2_task6",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__x0p2_task6",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "x0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "6",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "x0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/x0p2_task6.json"
+    },
+    {
+      "name": "x0p2_task9",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/x0p2_task9",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__x0p2_task9",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "x0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "9",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "x0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/x0p2_task9.json"
+    },
+    {
+      "name": "y0p2_task4",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/y0p2_task4",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__y0p2_task4",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "y0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "4",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "y0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/y0p2_task4.json"
+    },
+    {
+      "name": "y0p2_task6",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/y0p2_task6",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__y0p2_task6",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "y0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "6",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "y0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/y0p2_task6.json"
+    },
+    {
+      "name": "y0p2_task9",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/y0p2_task9",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__y0p2_task9",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "y0.2",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "9",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "y0.2"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/y0p2_task9.json"
+    },
+    {
+      "name": "y0p3_task1",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.3"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/y0p3_task1",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__y0p3_task1",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "y0.3",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "1",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.3/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.3/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "y0.3"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/y0p3_task1.json"
+    },
+    {
+      "name": "y0p3_task5",
+      "kind": "pro_position_recovery_proposals",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.3"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_recovery_proposals.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/configs/y0p3_task5",
+        "LIBERO_PRO_RECOVERY_RUN_NAME": "perception_regrasp_heatmap_orientationfix_20260904__development80__y0p3_task5",
+        "LIBERO_PRO_RECOVERY_MANIFEST": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+        "LIBERO_PRO_RECOVERY_POSITION_LEVEL": "y0.3",
+        "LIBERO_PRO_RECOVERY_TASK_ID": "5",
+        "LIBERO_PRO_RECOVERY_PROPOSALS": "perception_regrasp_h8",
+        "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_RECOVERY_BASE_SEED": "20260904",
+        "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_RECOVERY_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": "4",
+        "LIBERO_PRO_RECOVERY_LIFT_DZ": "0.35",
+        "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": "1e-09",
+        "LIBERO_PRO_RECOVERY_VIDEO_FPS": "20",
+        "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": "0",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": "cuda",
+        "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": "0.0",
+        "LIBERO_PRO_RECOVERY_MAX_STATES": "0",
+        "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "10",
+        "LIBERO_PRO_RECOVERY_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/runs",
+        "LIBERO_PRO_RECOVERY_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.3/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.3/init_files",
+        "LIBERO_PRO_POSITION_LEVEL": "y0.3"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/completed/y0p3_task5.json"
+    }
+  ],
+  "status": "completed",
+  "finished_at": "2026-09-04T16:48:51",
+  "results": [
+    {
+      "job": "x0p2_task5",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-09-04T16:21:27",
+      "finished_at": "2026-09-04T16:28:30",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/x0p2_task5.log"
+    },
+    {
+      "job": "x0p2_task6",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-09-04T16:21:27",
+      "finished_at": "2026-09-04T16:30:31",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/x0p2_task6.log"
+    },
+    {
+      "job": "x0p2_task9",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-09-04T16:21:27",
+      "finished_at": "2026-09-04T16:33:28",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/x0p2_task9.log"
+    },
+    {
+      "job": "y0p2_task4",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-09-04T16:28:30",
+      "finished_at": "2026-09-04T16:40:15",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/y0p2_task4.log"
+    },
+    {
+      "job": "y0p2_task6",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-09-04T16:30:31",
+      "finished_at": "2026-09-04T16:37:45",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/y0p2_task6.log"
+    },
+    {
+      "job": "y0p2_task9",
+      "gpu": "7",
+      "status": "completed",
+      "started_at": "2026-09-04T16:33:28",
+      "finished_at": "2026-09-04T16:40:53",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/y0p2_task9.log"
+    },
+    {
+      "job": "y0p3_task1",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-09-04T16:40:15",
+      "finished_at": "2026-09-04T16:47:58",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/y0p3_task1.log"
+    },
+    {
+      "job": "y0p3_task5",
+      "gpu": "6",
+      "status": "completed",
+      "started_at": "2026-09-04T16:37:45",
+      "finished_at": "2026-09-04T16:48:51",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__development80/logs/y0p3_task5.log"
+    }
+  ]
+}

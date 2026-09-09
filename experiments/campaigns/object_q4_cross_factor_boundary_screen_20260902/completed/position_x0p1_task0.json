@@ -1,0 +1,8 @@
+{
+  "job": "position_x0p1_task0",
+  "gpu": "2",
+  "status": "completed",
+  "started_at": "2026-09-02T12:57:22",
+  "finished_at": "2026-09-02T13:20:45",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_cross_factor_boundary_screen_20260902/logs/position_x0p1_task0.log"
+}

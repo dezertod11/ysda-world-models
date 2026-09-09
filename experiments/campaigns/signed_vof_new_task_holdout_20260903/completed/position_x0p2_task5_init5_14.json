@@ -1,0 +1,8 @@
+{
+  "job": "position_x0p2_task5_init5_14",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-09-03T01:16:53",
+  "finished_at": "2026-09-03T01:56:20",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/signed_vof_new_task_holdout_20260903/logs/position_x0p2_task5_init5_14.log"
+}

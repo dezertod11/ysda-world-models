@@ -1,0 +1,37 @@
+position_level,direction,task_id,task_description,attempted_states,strict_states,successes,failures,commit_success_rate,commit_success_ci_low,commit_success_ci_high,boundary_distance,eligible_boundary
+y0.1,y,4,pick the ketchup and place it in the basket,5,5,2,3,0.4,0.11762077423264783,0.769275718723987,0.09999999999999998,True
+x0.2,x,5,pick the tomato sauce and place it in the basket,5,5,2,3,0.4,0.11762077423264783,0.769275718723987,0.09999999999999998,True
+y0.1,y,5,pick the tomato sauce and place it in the basket,5,5,3,2,0.6,0.2307242812760128,0.882379225767352,0.09999999999999998,True
+y0.3,y,5,pick the tomato sauce and place it in the basket,5,5,3,2,0.6,0.2307242812760128,0.882379225767352,0.09999999999999998,True
+x0.2,x,6,pick the butter and place it in the basket,5,5,3,2,0.6,0.2307242812760128,0.882379225767352,0.09999999999999998,True
+y0.2,y,8,pick the chocolate pudding and place it in the basket,5,5,3,2,0.6,0.2307242812760128,0.882379225767352,0.09999999999999998,True
+x0.2,x,9,pick the orange juice and place it in the basket,5,5,3,2,0.6,0.2307242812760128,0.882379225767352,0.09999999999999998,True
+y0.3,y,1,pick the cream cheese and place it in the basket,5,5,1,4,0.2,0.03622410863243014,0.6244653702374747,0.3,True
+y0.2,y,4,pick the ketchup and place it in the basket,5,5,1,4,0.2,0.03622410863243014,0.6244653702374747,0.3,True
+y0.2,y,6,pick the butter and place it in the basket,5,5,1,4,0.2,0.03622410863243014,0.6244653702374747,0.3,True
+y0.2,y,9,pick the orange juice and place it in the basket,5,5,1,4,0.2,0.03622410863243014,0.6244653702374747,0.3,True
+x0.2,x,2,pick the salad dressing and place it in the basket,5,5,4,1,0.8,0.37553462976252533,0.9637758913675698,0.30000000000000004,True
+y0.1,y,6,pick the butter and place it in the basket,5,5,4,1,0.8,0.37553462976252533,0.9637758913675698,0.30000000000000004,True
+y0.2,y,7,pick the milk and place it in the basket,5,5,4,1,0.8,0.37553462976252533,0.9637758913675698,0.30000000000000004,True
+y0.1,y,8,pick the chocolate pudding and place it in the basket,5,5,4,1,0.8,0.37553462976252533,0.9637758913675698,0.30000000000000004,True
+y0.1,y,9,pick the orange juice and place it in the basket,5,5,4,1,0.8,0.37553462976252533,0.9637758913675698,0.30000000000000004,True
+x0.2,x,1,pick the cream cheese and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.1,y,1,pick the cream cheese and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.2,y,1,pick the cream cheese and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.1,y,2,pick the salad dressing and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.2,y,2,pick the salad dressing and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.3,y,2,pick the salad dressing and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+x0.2,x,3,pick the bbq sauce and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.1,y,3,pick the bbq sauce and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.2,y,3,pick the bbq sauce and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.3,y,3,pick the bbq sauce and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+x0.2,x,4,pick the ketchup and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.3,y,4,pick the ketchup and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.2,y,5,pick the tomato sauce and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.3,y,6,pick the butter and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+x0.2,x,7,pick the milk and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.1,y,7,pick the milk and place it in the basket,5,5,5,0,1.0,0.5655175352168251,1.0,0.5,False
+y0.3,y,7,pick the milk and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+x0.2,x,8,pick the chocolate pudding and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.3,y,8,pick the chocolate pudding and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False
+y0.3,y,9,pick the orange juice and place it in the basket,5,5,0,5,0.0,0.0,0.43448246478317476,0.5,False

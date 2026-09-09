@@ -1,0 +1,4 @@
+phase_at_snapshot,states,independent_groups,open_success_rate,feedback_success_rate,success_delta,success_delta_ci_low,success_delta_ci_high,rescues,harms,net_rescues,discordance_rate,both_success,both_fail,mean_query_cost,always_requery_adjusted_delta,discordance_pvalue,strict_integrity_states
+approach,2,1,1.0,1.0,0.0,0.0,0.0,0,0,0,0.0,2,0,0.025,-0.025,,2
+grasp,71,37,1.0,1.0,0.0,0.0,0.0,0,0,0,0.0,71,0,0.02499999999999999,-0.02499999999999999,,71
+transport,107,55,1.0,1.0,0.0,0.0,0.0,0,0,0,0.0,107,0,0.024999999999999998,-0.024999999999999998,,104

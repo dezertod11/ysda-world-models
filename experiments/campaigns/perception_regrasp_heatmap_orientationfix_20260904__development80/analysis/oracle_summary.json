@@ -1,0 +1,15 @@
+{
+  "n_states": 80,
+  "all_proposal_oracle_successes": 49,
+  "all_proposal_oracle_success_rate": 0.6125,
+  "all_proposal_oracle_ci_low": 0.5,
+  "all_proposal_oracle_ci_high": 0.7195121951219512,
+  "deployable_oracle_successes": 49,
+  "deployable_oracle_success_rate": 0.6125,
+  "deployable_oracle_ci_low": 0.5060185185185186,
+  "deployable_oracle_ci_high": 0.7160893246187358,
+  "passing_deployable_proposals": [
+    "perception_regrasp_h8"
+  ],
+  "decision": "advance_fixed_proposal_to_untouched_reserve"
+}

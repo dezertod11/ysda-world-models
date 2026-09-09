@@ -1,0 +1,8 @@
+{
+  "run_base": "recovery_outcome_router_holdout_20260906",
+  "status": "completed_pass",
+  "stage": "finished",
+  "gpus": "2,3,4,5",
+  "exit_code": 0,
+  "updated_at": "2026-09-06T15:31:18+03:00"
+}

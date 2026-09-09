@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "frozen_before_transfer": true,
+  "campaign_config_sha256": "28743a53835fb88cb6f1aecd0221b20e8edb98235fd192358793b20688079f49",
+  "protocol_sha256": "891515aed966601fc211eae049401ab556ef554401b14b4a90575683c447ce2b",
+  "suite": "libero_object_object",
+  "development_task_ids": [0],
+  "task_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "init_state_ids": [40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+  "snapshot_query_indices": [4],
+  "executed_step": 64,
+  "rollouts_per_task_init": 2,
+  "target_pairs": 180,
+  "commit_steps": 16,
+  "feedback_prefix_steps": 8,
+  "query_cost": 0.025,
+  "primary_endpoint": "feedback_terminal_success - open_terminal_success",
+  "cluster_unit": "task_id/init_state_id",
+  "practical_gate": {
+    "raw_success_delta_gt": 0.0,
+    "adjusted_terminal_delta_gt": 0.0
+  },
+  "confirmatory_gate": {
+    "cluster_bootstrap_ci_low_gt": 0.0,
+    "mcnemar_two_sided_p_lt": 0.05
+  },
+  "replay_integrity_threshold": 1e-9
+}

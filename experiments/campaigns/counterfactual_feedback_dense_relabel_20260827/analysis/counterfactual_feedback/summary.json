@@ -1,0 +1,9 @@
+{
+  "snapshots": 272,
+  "unique_analysis_snapshots": 272,
+  "candidate_outcomes": 1088,
+  "terminal_snapshots": 52,
+  "replay_integrity_failures_1e_9": 7,
+  "strict_integrity_snapshots": 265,
+  "output_dir": "experiments/campaigns/counterfactual_feedback_dense_relabel_20260827/analysis/counterfactual_feedback"
+}

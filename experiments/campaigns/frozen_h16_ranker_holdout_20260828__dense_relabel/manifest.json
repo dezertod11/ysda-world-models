@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-28T14:40:40",
+  "source_campaign": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/frozen_h16_ranker_holdout_20260828",
+  "status": "completed",
+  "jobs": [
+    {
+      "name": "object_holdout",
+      "run_name": "frozen_h16_ranker_holdout_20260828__object_holdout",
+      "returncode": 0
+    },
+    {
+      "name": "environment_holdout",
+      "run_name": "frozen_h16_ranker_holdout_20260828__environment_holdout",
+      "returncode": 0
+    },
+    {
+      "name": "position_holdout_x0p3",
+      "run_name": "frozen_h16_ranker_holdout_20260828__position_holdout_x0p3",
+      "returncode": 0
+    },
+    {
+      "name": "position_holdout_y0p3",
+      "run_name": "frozen_h16_ranker_holdout_20260828__position_holdout_y0p3",
+      "returncode": 0
+    }
+  ]
+}

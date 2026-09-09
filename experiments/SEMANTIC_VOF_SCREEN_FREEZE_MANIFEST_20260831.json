@@ -1,0 +1,29 @@
+{
+  "experiment": "semantic_vof_screen_20260831",
+  "frozen_at": "2026-08-31T19:04:32+03:00",
+  "protocol_status": "exploratory development screen frozen before full feature extraction",
+  "data": {
+    "source": "counterfactual_feedback_dense_relabel_20260827 strict subset",
+    "states": 265,
+    "groups": 54,
+    "factors": ["Object", "Position", "Environment"],
+    "target": "dense_vof_v2"
+  },
+  "model": {
+    "encoder": "openai/clip-vit-base-patch32",
+    "ridge_alpha": 10.0,
+    "query_cost": 0.025,
+    "feature_families": ["scalar", "semantic", "combined"]
+  },
+  "files": {
+    "experiments/SEMANTIC_VOF_SCREEN_PROTOCOL_20260831.md": "0d059e04c148d62bc931a02a04ebef440a33ad167fe2b0e31ce41ea3baa7dece",
+    "scripts/analyze_semantic_vof.py": "1b21b0d04b7b95f688f3eaf57ca948cd8d947652770cc7fe91e8b6f950892561",
+    "tests/test_semantic_vof.py": "154017d92091df0d96f309d95628d7bce2915fe0c62f41623950e60927000fc9"
+  },
+  "validation": {
+    "local_tests": "4 passed",
+    "server_tests": "4 passed",
+    "server_clip_smoke": "2/2 states, 16/16 features finite",
+    "gpu": 6
+  }
+}

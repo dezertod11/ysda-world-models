@@ -1,0 +1,8 @@
+{
+  "job": "environment_snapshots",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-08-26T23:24:37",
+  "finished_at": "2026-08-27T02:13:26",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/counterfactual_feedback_p1_p2_20260826/logs/environment_snapshots.log"
+}

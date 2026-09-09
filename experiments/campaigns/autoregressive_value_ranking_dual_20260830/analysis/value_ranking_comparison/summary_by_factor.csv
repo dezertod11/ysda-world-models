@@ -1,0 +1,4 @@
+factor,states,mixed_states,oracle_success_rate,parallel_all_state_success_rate,autoregressive_all_state_success_rate,parallel_mixed_top1_success_rate,autoregressive_mixed_top1_success_rate,mixed_top1_delta_states,parallel_pairwise_accuracy,autoregressive_pairwise_accuracy,switches,rescues,harms,paired_sign_pvalue,parallel_autoregressive_value_spearman_mean,future_proprio_l2_mean
+Object,5,3,0.8,0.6,0.6,0.6666666666666666,0.6666666666666666,0,0.6041666666666666,0.4583333333333333,3,1,1,1.0,0.3380952380952381,0.015549233291421813
+Position,5,2,0.4,0.0,0.0,0.0,0.0,0,0.16666666666666666,0.08333333333333333,2,0,0,1.0,0.5761904761904764,0.011613371322838342
+All,10,5,0.6,0.3,0.3,0.4,0.4,0,0.4291666666666667,0.30833333333333335,5,1,1,1.0,0.4571428571428572,0.013581302307130078

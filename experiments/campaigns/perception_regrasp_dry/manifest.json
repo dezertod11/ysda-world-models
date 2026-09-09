@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "profile": "calibration",
+  "description": "Observable RGB localization calibration, explicitly excluding the frozen P3 reserve.",
+  "run_prefix": "perception_regrasp_dry",
+  "created_at": "2026-09-04T13:53:49",
+  "config": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/configs/libero_campaign_perception_regrasp_20260904.json",
+  "jobs": [
+    {
+      "name": "x0p2_task2",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/x0p2_task2",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__x0p2_task2",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "x0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "2",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/x0p2_task2.json"
+    },
+    {
+      "name": "x0p2_task5",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/x0p2_task5",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__x0p2_task5",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "x0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "5",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/x0p2_task5.json"
+    },
+    {
+      "name": "x0p2_task6",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/x0p2_task6",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__x0p2_task6",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "x0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "6",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/x0p2_task6.json"
+    },
+    {
+      "name": "x0p2_task9",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "x0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/x0p2_task9",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__x0p2_task9",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "x0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "9",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/x0p2_task9.json"
+    },
+    {
+      "name": "y0p1_task4",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.1"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p1_task4",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p1_task4",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.1",
+        "PERCEPTION_CALIBRATION_TASK_ID": "4",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p1_task4.json"
+    },
+    {
+      "name": "y0p1_task5",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.1"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p1_task5",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p1_task5",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.1",
+        "PERCEPTION_CALIBRATION_TASK_ID": "5",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p1_task5.json"
+    },
+    {
+      "name": "y0p1_task6",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.1"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p1_task6",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p1_task6",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.1",
+        "PERCEPTION_CALIBRATION_TASK_ID": "6",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p1_task6.json"
+    },
+    {
+      "name": "y0p1_task8",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.1"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p1_task8",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p1_task8",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.1",
+        "PERCEPTION_CALIBRATION_TASK_ID": "8",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p1_task8.json"
+    },
+    {
+      "name": "y0p1_task9",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.1"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p1_task9",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p1_task9",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.1",
+        "PERCEPTION_CALIBRATION_TASK_ID": "9",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.1/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p1_task9.json"
+    },
+    {
+      "name": "y0p2_task4",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p2_task4",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p2_task4",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "4",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p2_task4.json"
+    },
+    {
+      "name": "y0p2_task6",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p2_task6",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p2_task6",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "6",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p2_task6.json"
+    },
+    {
+      "name": "y0p2_task7",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p2_task7",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p2_task7",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "7",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p2_task7.json"
+    },
+    {
+      "name": "y0p2_task8",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p2_task8",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p2_task8",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "8",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p2_task8.json"
+    },
+    {
+      "name": "y0p2_task9",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "6",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.2"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p2_task9",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p2_task9",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.2",
+        "PERCEPTION_CALIBRATION_TASK_ID": "9",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p2_task9.json"
+    },
+    {
+      "name": "y0p3_task1",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.3"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p3_task1",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p3_task1",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.3",
+        "PERCEPTION_CALIBRATION_TASK_ID": "1",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.3/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.3/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p3_task1.json"
+    },
+    {
+      "name": "y0p3_task5",
+      "kind": "pro_position_perception_calibration",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/prepare_libero_pro_position_variant.sh",
+          "y0.3"
+        ],
+        [
+          "bash",
+          "/mnt/d/projects/ysda/ysda_word_models_pp/scripts/run_perception_regrasp_calibration_shard.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/configs/y0p3_task5",
+        "PERCEPTION_CALIBRATION_RUN_NAME": "perception_regrasp_dry__y0p3_task5",
+        "PERCEPTION_CALIBRATION_MANIFEST": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet",
+        "PERCEPTION_CALIBRATION_POSITION_LEVEL": "y0.3",
+        "PERCEPTION_CALIBRATION_TASK_ID": "5",
+        "PERCEPTION_CALIBRATION_OUTPUT_DIR": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/runs",
+        "PERCEPTION_CALIBRATION_MAX_STATES": "0",
+        "PERCEPTION_CALIBRATION_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.3/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/mnt/d/projects/ysda/ysda_word_models_pp/.runtime/libero_pro_position/y0.3/init_files"
+      },
+      "completion_marker": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/campaigns/perception_regrasp_dry/completed/y0p3_task5.json"
+    }
+  ],
+  "status": "planned"
+}

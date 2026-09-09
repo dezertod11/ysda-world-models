@@ -1,0 +1,117 @@
+{
+  "campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/real_observation_requery_20260830",
+  "integrity": {
+    "expected_episode_counts": {
+      "maxV-H16": 40,
+      "maxV-H8": 40,
+      "maxV-gripper-H8/H16": 40
+    },
+    "observed_episode_counts": {
+      "maxV-H16": 40,
+      "maxV-H8": 40,
+      "maxV-gripper-H8/H16": 40
+    },
+    "paired_state_count": 40,
+    "all_methods_have_40_states": true,
+    "identical_state_sets": true,
+    "adaptive_always_selected_max_value": true,
+    "adaptive_trigger_matches_diagnostic": true,
+    "split_values": [
+      "holdout"
+    ],
+    "passed": true
+  },
+  "gates": {
+    "adaptive_checks": {
+      "at_least_two_rescues": true,
+      "rescues_exceed_harms": true,
+      "pooled_sr_not_lower": true,
+      "no_factor_loses_more_than_one": false,
+      "query_multiplier_20pct_below_fixed_h8": true,
+      "utility_0025_above_h16": true
+    },
+    "adaptive_gate_passed": false,
+    "fixed_h8_mechanism_checks": {
+      "rescues_exceed_harms": false,
+      "positive_pooled_sr_delta": false
+    },
+    "fixed_h8_mechanism_supported": false
+  },
+  "method_summary": [
+    {
+      "method": "maxV-H16",
+      "states": 40,
+      "successes": 8,
+      "success_rate": 0.2,
+      "success_ci_low": 0.125,
+      "success_ci_high": 0.275,
+      "mean_queries": 17.1,
+      "mean_query_multiplier": 1.0,
+      "mean_final_t": 265.3,
+      "timeout_rate": 0.8,
+      "drop_rate": 0.0,
+      "wrong_object_rate": 0.15,
+      "safety_violation_rate": 0.0,
+      "requery_count": 0
+    },
+    {
+      "method": "maxV-H8",
+      "states": 40,
+      "successes": 8,
+      "success_rate": 0.2,
+      "success_ci_low": 0.125,
+      "success_ci_high": 0.275,
+      "mean_queries": 33.15,
+      "mean_query_multiplier": 1.9477976190476192,
+      "mean_final_t": 264.45,
+      "timeout_rate": 0.8,
+      "drop_rate": 0.025,
+      "wrong_object_rate": 0.125,
+      "safety_violation_rate": 0.0,
+      "requery_count": 0
+    },
+    {
+      "method": "maxV-gripper-H8/H16",
+      "states": 40,
+      "successes": 9,
+      "success_rate": 0.225,
+      "success_ci_low": 0.125,
+      "success_ci_high": 0.35,
+      "mean_queries": 24.1,
+      "mean_query_multiplier": 1.4371878529966764,
+      "mean_final_t": 258.175,
+      "timeout_rate": 0.775,
+      "drop_rate": 0.0,
+      "wrong_object_rate": 0.25,
+      "safety_violation_rate": 0.0,
+      "requery_count": 626
+    }
+  ],
+  "paired_contrasts": [
+    {
+      "method": "maxV-H8",
+      "paired_states": 40,
+      "delta_success_rate": 0.0,
+      "delta_ci_low": -0.125,
+      "delta_ci_high": 0.125,
+      "rescues": 3,
+      "harms": 3,
+      "mcnemar_exact_p": 1.0
+    },
+    {
+      "method": "maxV-gripper-H8/H16",
+      "paired_states": 40,
+      "delta_success_rate": 0.025,
+      "delta_ci_low": -0.125,
+      "delta_ci_high": 0.175,
+      "rescues": 6,
+      "harms": 5,
+      "mcnemar_exact_p": 1.0
+    }
+  ],
+  "report": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/RESULTS.md",
+  "plots": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/success_compute_comparison.png",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/paired_outcome_matrix.png"
+  ]
+}

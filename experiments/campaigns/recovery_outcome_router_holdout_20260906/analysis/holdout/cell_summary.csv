@@ -1,0 +1,16 @@
+position_level,task_id,evaluation_cohort,n_cases,baseline_sr,full_sr,retreat_sr,router_sr,selected_baseline,selected_retreat,selected_full
+x0.2,2,novel_cell,5,0.6,0.4,0.6,0.8,1,2,2
+x0.2,5,replication,5,0.4,0.6,0.4,0.6,2,0,3
+x0.2,6,replication,5,0.2,0.2,0.2,0.2,5,0,0
+x0.2,9,replication,5,0.2,0.2,0.2,0.2,5,0,0
+y0.1,4,novel_cell,5,1.0,1.0,1.0,1.0,5,0,0
+y0.1,6,novel_cell,5,1.0,1.0,1.0,1.0,1,0,4
+y0.1,8,novel_cell,5,1.0,1.0,1.0,1.0,0,0,5
+y0.1,9,novel_cell,5,0.2,1.0,1.0,1.0,1,0,4
+y0.2,4,replication,5,0.0,0.0,0.0,0.0,5,0,0
+y0.2,6,replication,5,0.0,1.0,0.0,1.0,0,0,5
+y0.2,7,novel_cell,5,0.8,0.8,0.4,0.8,0,0,5
+y0.2,8,novel_cell,5,1.0,1.0,0.2,1.0,0,0,5
+y0.2,9,replication,5,0.2,0.8,0.2,0.8,0,0,5
+y0.3,1,replication,5,0.2,1.0,0.6,1.0,0,0,5
+y0.3,5,replication,5,0.0,0.6,0.2,0.6,0,0,5

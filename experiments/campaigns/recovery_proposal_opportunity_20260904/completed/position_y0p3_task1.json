@@ -1,0 +1,8 @@
+{
+  "job": "position_y0p3_task1",
+  "gpu": "2",
+  "status": "completed",
+  "started_at": "2026-09-04T01:12:37",
+  "finished_at": "2026-09-04T01:51:30",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_proposal_opportunity_20260904/logs/position_y0p3_task1.log"
+}

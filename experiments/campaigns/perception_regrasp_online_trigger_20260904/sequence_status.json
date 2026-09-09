@@ -1,0 +1,8 @@
+{
+  "run_base": "perception_regrasp_online_trigger_20260904",
+  "status": "completed",
+  "stage": "finished",
+  "gpu": "6",
+  "exit_code": 0,
+  "updated_at": "2026-09-04T23:57:34+03:00"
+}

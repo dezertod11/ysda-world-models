@@ -1,0 +1,2 @@
+planning_strategy,planning_risk_lambda,episodes,successes,success_rate,mean_final_t,mean_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+max_value_gripper_requery,0.0,10,4,0.4,257.3,21.2,0.0,0.4547178954539154,0.4547178954539154,0.0

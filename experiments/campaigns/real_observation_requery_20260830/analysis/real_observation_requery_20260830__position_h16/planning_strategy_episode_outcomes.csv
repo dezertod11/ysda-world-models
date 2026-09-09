@@ -1,0 +1,11 @@
+suite,task_id,init_state_id,pair_id,rollout_id,rollout_seed,run_name,planning_strategy,planning_risk_lambda,success,final_t,num_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+libero_object_temp,0,40,0,0,7300000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3411825994650523,0.3411825994650523,0.0
+libero_object_temp,0,41,1,0,7310000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.33942517472638023,0.33942517472638023,0.0
+libero_object_temp,0,42,2,0,7320000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3429510113265779,0.3429510113265779,0.0
+libero_object_temp,0,43,3,0,7330000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.35480312671926284,0.35480312671926284,0.0
+libero_object_temp,0,44,4,0,7340000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,True,260,17,0.0,0.5190054125645581,0.5190054125645581,0.0
+libero_object_temp,0,45,5,0,7350000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3386990444527732,0.3386990444527732,0.0
+libero_object_temp,0,46,6,0,7360000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3400648236274719,0.3400648236274719,0.0
+libero_object_temp,0,47,7,0,7370000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3400043414698707,0.3400043414698707,0.0
+libero_object_temp,0,48,8,0,7380000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.35101713405715096,0.35101713405715096,0.0
+libero_object_temp,0,49,9,0,7390000,real_observation_requery_20260830__position_h16__libero_object_temp__task0__init40-49__max_value__l0,max_value,0.0,False,280,18,0.0,0.3370153655608495,0.3370153655608495,0.0

@@ -1,0 +1,7 @@
+factor,method,states,delta_success_states,delta_success_rate,rescues,harms
+Object,maxV-H8,10,0,0.0,2,2
+Object,maxV-gripper-H8/H16,10,-3,-0.3,2,5
+Position,maxV-H8,10,-1,-0.1,0,1
+Position,maxV-gripper-H8/H16,10,3,0.3,3,0
+Environment,maxV-H8,20,1,0.05,1,0
+Environment,maxV-gripper-H8/H16,20,1,0.05,1,0

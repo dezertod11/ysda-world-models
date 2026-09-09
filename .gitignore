@@ -47,6 +47,14 @@ experiments/campaigns/**/all_query_traces.parquet
 experiments/campaigns/**/temporal_conformal_detector_sweep.csv
 experiments/campaigns/**/time_aligned_features.csv
 
+# Regenerable training arrays and local launcher state (not research results).
+experiments/campaigns/**/*.npz
+experiments/campaigns/**/*.pid
+experiments/campaigns/**/*.lock
+experiments/campaigns/**/heartbeat.txt
+experiments/campaigns/*dryrun*/
+experiments/campaigns/LATEST_8H_RUN
+
 # Per-job reports are reproducible; keep the consolidated benchmark report.
 experiments/campaigns/pro_object_baselines_pilot_20260825/analysis/pro_object_baselines_pilot_20260825__*/
 

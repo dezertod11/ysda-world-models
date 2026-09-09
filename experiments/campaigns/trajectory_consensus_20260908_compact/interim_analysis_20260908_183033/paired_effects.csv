@@ -1,0 +1,13 @@
+reference,method,scope,n,macro_delta,ci95,rescues,harms,q0_pool_exact_rate
+max_value,winner,All,179,-0.01021097046413502,"[-0.03687763713080169,0.016455696202531647]",3,6,0.4692737430167598
+max_value,winner,Environment,50,0,"[-0.06,0.06]",1,1,0.4
+max_value,winner,Object,50,0.02,"[0,0.06]",1,0,0.6
+max_value,winner,Position,79,-0.05063291139240506,"[-0.08974358974358974,-0.0125]",1,5,0.43037974683544306
+first,winner,All,179,0.00489451476793249,"[-0.0275,0.038657903278156325]",5,5,0
+first,winner,Environment,50,0.02,"[0,0.06]",1,0,0
+first,winner,Object,50,0.02,"[-0.04,0.1]",2,1,0
+first,winner,Position,79,-0.02531645569620253,"[-0.0875,0.0375]",2,4,0
+first,max_value,All,179,0.015105485232067511,"[-0.023333333333333334,0.054632034632034636]",8,5,0
+first,max_value,Environment,50,0.02,"[-0.04,0.1]",2,1,0
+first,max_value,Object,50,0,"[-0.06,0.06]",1,1,0
+first,max_value,Position,79,0.02531645569620253,"[-0.05063291139240506,0.10126582278481013]",5,3,0

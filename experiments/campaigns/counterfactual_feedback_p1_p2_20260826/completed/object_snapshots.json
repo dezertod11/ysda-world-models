@@ -1,0 +1,8 @@
+{
+  "job": "object_snapshots",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-08-26T23:24:37",
+  "finished_at": "2026-08-27T01:08:49",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/counterfactual_feedback_p1_p2_20260826/logs/object_snapshots.log"
+}

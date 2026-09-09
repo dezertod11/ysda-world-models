@@ -1,0 +1,7 @@
+factor,planning_strategy,episodes,success_rate,mean_final_t,mean_queries,selected_not_max_value_rate,mean_value_sacrifice
+Environment,frozen_factor_ridge,120,0.3416666666666667,229.65,14.825,0.732460529666412,0.0054339173785299495
+Environment,max_value,120,0.375,222.8,14.383333333333333,0.0,0.0
+Object,frozen_factor_ridge,120,1.0,133.11666666666667,8.775,0.674537037037037,0.0007606174141444542
+Object,max_value,120,1.0,133.975,8.866666666666667,0.0,0.0
+Position,frozen_factor_ridge,120,0.025,279.01666666666665,17.941666666666666,0.9374727668845316,0.004794062468383567
+Position,max_value,120,0.0,280.0,18.0,0.0,0.0

@@ -1,6 +1,504 @@
 # Research roadmap: robust world-model planning
 
-Дата обновления: 26 августа 2026 года.
+Дата обновления: 9 сентября 2026 года.
+
+**Решение по recovery timing, 9 сентября:** `t=72` сохраняем как фиксированный
+контроль, а не универсальный момент ошибки. P3c не закрываем: положительный
+эффект на известных cells подтверждён, перенос P3d и добавочный gain P3e
+пока недостаточны. Следующая проверка этой ветки: development timing sweep
+-> отделение requery/retreat/regrasp -> state-conditioned выбор полезного
+вмешательства -> новые целые cells и fixed/random controls. Не доказано,
+что причина слабого переноса именно timing. Не меняем текущую ночную очередь
+и не открываем новый holdout автоматически.
+[Зафиксированное решение, гипотезы и критерии проверки](RECOVERY_TIMING_DECISION_20260909.md).
+
+**Ресурсная поправка 9 сентября, 01:18 MSK:** текущая ночная очередь и её
+последующие стадии используют свободные GPU **1-7**, не GPU0. Общий dispatch
+не закрепляет задания за занятой картой. Готовые эпизоды переиспользуются;
+изменение launcher записано отдельно от исходного frozen protocol.
+
+**Ночная очередь 9 сентября:** исходный compact остановился на 597/600:
+у `y0.5/task1` в исходном LIBERO-PRO пустой init asset. Это не policy fail.
+Сохраняем старый failed run; на новом valid-support представлении симметрично
+исключаем один недоступный случай у всех методов. 597 существующих rollout
+переиспользуются, 597 reference rollout ставятся в новую очередь после smoke.
+Итог: 199 сопоставимых конфигураций, 1194 rollout шести стратегий, без
+перенастройки selector. Далее небольшой P5 development pilot: 36 K8 exact
+pools на девяти Object/Position boundary cells, q0/q3, до 288 terminal branches.
+Ранее K16 и terminal ridge critic уже проверялись, их не выдаём за новые методы.
+P5 fit/holdout не открывается автоматически: сначала replay и opportunity gates.
+Valid-support итог: medoid 54.09% macro-SR против max-value 54.77%, 3/6
+rescue/harm, CI разницы [-3.33; +1.99] п.п. Ночная цепочка запущена в 01:01
+MSK; три reference smoke прошли проверку, основная серия стартовала на GPU3
+в 01:08. Остальные занятые GPU ждут.
+[План, обоснование, ресурсы и команды](CONSENSUS_P5_NIGHT_PROTOCOL_20260909.md).
+
+**Историческое дополнение 8 сентября, до поправки выше:** сначала закрываем неизменённый
+compact600; параллельно завершён CPU-анализ общих candidate pools.
+На 194 strict pools medoid 104/194 против max-value 111/194, 5 rescue / 12 harm;
+в Position oracle совпадает с max-value, поэтому возможности reranking нет
+именно в этих pools. Это exploratory, не замена closed-loop теста.
+Запущена очередь `consensus_references_20260908`: после compact выполняются
+3 smoke + 600 matched rollout, K4/H16, raw medoid / KeyStone-style /
+KDPE endpoint adaptation. Настройки не выбираются по текущим test outcomes.
+Общий отчёт сравнит шесть методов на 200 конфигурациях. Затем принимаем
+решение о P5; дальнейший перебор consensus коэффициентов на holdout не делаем.
+[Протокол](CONSENSUS_REFERENCE_PROTOCOL_20260908.md),
+[common-pool результат](CONSENSUS_COMMON_POOL_RESULTS_20260908.md).
+
+**Текущая поправка по ресурсам:** после завершения 392/392 development
+заморожен `trajectory_medoid`. Пользователь сократил последующую проверку:
+**600 вместо 4500 rollout**, K1 / max-value K4 / medoid K4, все 10 задач,
+Object/Environment init2-6 и все Position x/y0.1-0.5 init1. GPU pool **3-7**,
+общая очередь на свободные карты. 35 готовых эпизодов перенесены без отбора
+по outcome. Исходная full-кампания сохранена как незавершённая/superseded;
+выводы будут относиться к compact, не full benchmark. После одного frozen
+сравнения возвращаемся к P5 без настройки по test outcomes.
+[Протокол и команды](TRAJECTORY_CONSENSUS_COMPACT_PROTOCOL_20260908.md).
+
+Исторический план до этой поправки:
+
+Дополнение 8 сентября: по явному запросу выполняем P4c2 перед P5. Это не
+пересмотр прежнего NO-GO: проверяется новая trajectory-density geometry,
+normalized value gate и полный H16 benchmark на всех 10 задачах. 32 offline
+настройки -> 392 development rollout -> frozen winner -> 4500 full rollout
+(K1 / max-value K4 / winner K4). Не подбираем параметры по full outcomes.
+После этого без повторного full-test tuning возвращаемся к P5, если SR/безопасность
+не улучшились. [Протокол](TRAJECTORY_CONSENSUS_PROTOCOL_20260908.md),
+[run card](TRAJECTORY_CONSENSUS_RUN_20260908.md).
+
+## Current decision queue: 7 September 2026
+
+The frozen Object task-0 query-4 holdout produced the first narrow
+feedback-timing result that passed both practical and confirmatory gates. The
+next methods are ordered by information gain per GPU-hour:
+
+| Priority | Hypothesis | Fast gate | Expensive stage |
+|---|---|---|---|
+| P0 complete | Object task0 query-4 intervention survives exact shared-prefix terminal evaluation | 100/100 strict pairs; 46% -> 64%; confirmatory PASS | retain as positive control |
+| P1 closed | The fixed controller transfers to the Position `y0.2` boundary but not `x0.2` | holdout 120/120 strict; `y0.2` +1.7 pp, interaction 0 pp | efficacy and interaction gates FAIL; do not promote |
+| P2 closed | Task-0 absolute-feature signed-VoF ridge transfers to new tasks | prospective 240-pair test: AUROC 0.398, adjusted CI crosses zero | gate FAIL; do not promote |
+| P2b closed | A support-aware invariant CATE model predicts both commit and feedback outcomes | development OOF passed, prospective 400/400 reserve test gave adjusted -2.24 pp, CI crosses zero | efficacy FAIL; retain diagnostics only |
+| P2c closed | Frozen-CLIP object/contact VoF captures task x perturbation x phase sign changes | 640 paired states; best object worst-split adjusted uplift -1.28 pp | all frozen gates FAIL; do not collect holdout |
+| P2d closed | Privileged context can upper-bound task x perturbation x phase VoF interaction | within-cell +2.78 pp/AUROC 0.812, but worst transfer -0.19 pp and transfer AUROC <0.5 | gate FAIL; close re-query CATE branch |
+| P3 complete | All-fail Position cells need contact recovery, not reranking | deployable H4/lift rescued 7/80 and 8/80; privileged regrasp rescued 62/80 | build perception-backed regrasp, then test once on untouched 109-state reserve |
+| P3b complete, PASS | Dense RGB localization recovers most of the privileged regrasp opportunity | development 49/80; strict new-group reserve 43/72, CI [45.2%; 73.9%], 11 cells/8 tasks, no drop/safety increase | freeze result; P3c observable trigger + workspace/contact shield on new full episodes |
+| P3c complete, PASS | Frozen RGB trigger turns regrasp into an online full-episode controller | untouched 40-case holdout: 32.5% -> 60.0%, CI [+12.5; +42.5] pp, 12/1 rescue/harm | freeze method; test new-cell transfer and retreat-only mechanism control |
+| P3d complete, NO-GO | Full target-conditioned regrasp transfers beyond P3c cells and beats simple retreat/requery | 75/75 development: replication +47.5 pp; novel cells +14.3 pp, CI [-2.9, +31.4]; full beats retreat overall but novel-cell contrast is inconclusive | holdout remained closed; keep P3c as narrow positive result |
+| P3e complete, PASS | Separate terminal-outcome heads route between continue, retreat and full regrasp | frozen 75-case holdout: full 70.7% -> router 73.3%, CI [0.0, +6.7] pp, 2/0 rescue/harm, drops 5 -> 3 | freeze as preliminary narrow selector; no tuning on holdout; test only on a new distribution split |
+| P4 complete, NO-GO | Independently trained dynamics heads provide calibrated epistemic routing through quadratic JRD | 5,668 rows; JRD=0 throughout, pooled balanced AP 0.308, residual rho NaN | close this exact JRD formulation; no closed-loop filter |
+| P4b complete, NO-GO | Independent residual-risk can select safer candidates than `max(value)` | frozen score reduced realized residual 2.14% on prospective data | terminal SR 58.5% -> 56.5%, 4/8 rescue/harm; close direct residual penalty, retain state alarm |
+| P4c complete, development NO-GO | Training-free action-mode consensus can suppress stochastic outlier chunks before learned P5 | K3 medoid 7/40 vs max-value 8/40 vs K1 12/40; K5 guarded 6/20 vs max-value 5/20, CI [-15; +25] pp, 3 rescue / 2 harm | no confirmatory rollout; reuse saved terminal candidate pools for offline consensus ablations |
+| P5 next | Task-critical pairwise outcome heads can rank actions within one exact-state pool | group-centered OOF on Object/Environment heterogeneous pools; conservative switch gate | fresh all-candidate terminal split only after within-pool/replay gates; audit generated/executed horizons |
+| P6 | Tail-risk sampling catches rare plausible drops | fixed-action stress test at matched WM forward budget | CVaR/StressDream planner |
+| P7 | Safety constraints require a separate shield | LIBERO-Safety offline/physical replay | constraint-conditioned fallback |
+
+P3 completed on 4 September with 240/240 strict exact-state branches. The
+deployable frequent H4 and lift/hold proposals rescued only 7/80 and 8/80
+states and failed their frozen gates. A scripted regrasp using true simulator
+object pose rescued 62/80 and strictly covered every deployable rescue. The
+result identifies target/contact repair as the next mechanism, but the 77.5%
+number is a privileged recovery upper bound rather than benchmark SR. Result,
+protocol and run card:
+[`RECOVERY_PROPOSAL_OPPORTUNITY_RESULTS_20260904.md`](RECOVERY_PROPOSAL_OPPORTUNITY_RESULTS_20260904.md),
+[`RECOVERY_PROPOSAL_OPPORTUNITY_PROTOCOL_20260904.md`](RECOVERY_PROPOSAL_OPPORTUNITY_PROTOCOL_20260904.md),
+[`RECOVERY_PROPOSAL_OPPORTUNITY_RUN_20260904.md`](RECOVERY_PROPOSAL_OPPORTUNITY_RUN_20260904.md).
+
+P3b uses a sequential, compute-gated perception funnel. Calibration has 388
+RGB states / 194 groups and excludes whole groups from downstream development
+and reserve. A CLIP patch-ridge localizer failed decisively. The DeepLab
+object-conditioned heatmap reduced grouped-OOF pixel p90 from 41.65 to 4.12 px;
+its first global-depth fit reached 1.85 cm median world-XY but missed the frozen
+5.5 cm p90 gate by 0.074 cm. Object-routed depth passed at 1.64/3.33 cm
+median/p90 XY. After a raw-camera orientation integration fix, screen and full
+development rescued 11/20 and 49/80. The original 109-row reserve shares 37
+task/init groups with development, so its 72-row / 47-group disjoint subset was
+frozen before outcomes; this one-shot set confirmed 43/72, cluster CI
+[45.2%, 73.9%], across 11 cells and eight tasks with 100% replay integrity.
+Formal P3b gate passed. Current protocol and result:
+[`PERCEPTION_REGRASP_ACCELERATED_PROTOCOL_20260904.md`](PERCEPTION_REGRASP_ACCELERATED_PROTOCOL_20260904.md),
+[`PERCEPTION_REGRASP_DEVELOPMENT_RESULTS_20260904.md`](PERCEPTION_REGRASP_DEVELOPMENT_RESULTS_20260904.md).
+
+P3c is complete. Its sequential screen and development gates opened a frozen
+40-case holdout with no group overlap. `baseline_h8`/RGB-regrasp success was
+13/40 versus 24/40, paired delta `+27.5 pp`, 95% CI `[+12.5; +42.5]`, with
+12 rescues, one harm and exact McNemar `p=0.00342`. All snapshots replayed
+exactly, drop/safety did not increase and wrong-object rate decreased by
+7.5 pp. The result establishes online efficacy on new initial states of the
+selected cells; it does not yet establish unseen-cell transfer or isolate the
+full regrasp primitive from retreat/requery. Full result:
+[`PERCEPTION_REGRASP_ONLINE_TRIGGER_RESULTS_20260905.md`](PERCEPTION_REGRASP_ONLINE_TRIGGER_RESULTS_20260905.md).
+Frozen P3d design:
+[`PERCEPTION_REGRASP_TRANSFER_ABLATION_PROTOCOL_20260905.md`](PERCEPTION_REGRASP_TRANSFER_ABLATION_PROTOCOL_20260905.md).
+
+P3d completed all 75 development cases and 225 branches with exact replay and
+fallback integrity. Full RGB regrasp again improved the eight replication
+cells from 15.0% to 62.5%, but the seven-new-cell cohort improved from 74.3%
+to 88.6% with CI `[-2.9%; +31.4%]`, 7 rescues / 2 harms and McNemar
+`p=0.180`. The lower confidence bound failed the frozen gate, so init 45--49
+holdout was never opened. Retreat-only was much weaker overall; nevertheless,
+opposite harms in `x0.2/task2` and `y0.2/task8` show that a future recovery
+method must route between continue, retreat and full regrasp using observable
+contact/phase state. Per preregistration, the main queue now moves to P4 rather
+than tuning P3d on observed outcomes. Full result:
+[`PERCEPTION_REGRASP_TRANSFER_ABLATION_RESULTS_20260905.md`](PERCEPTION_REGRASP_TRANSFER_ABLATION_RESULTS_20260905.md).
+
+P3e then froze three independent logistic terminal-success heads over seven
+RGB/localization features and opened the previously untouched init 45--49
+holdout. All 75 cases and 225 branches completed with exact replay, feature and
+fallback integrity. The router improved full regrasp from 53/75 to 55/75,
+`+2.7 pp`, group CI `[0.0; +6.7]`, with 2 rescues / 0 harms, lower primitive
+cost and two fewer drop proxies. Both rescues repeat the development
+`x0.2/task2` sign reversal on new initial states. However, the router never
+voluntarily selected continue and missed two continue-only oracle rescues;
+McNemar `p=0.5`, and cells were not new. P3e is frozen as a preliminary narrow
+safe-routing result and is not tuned further on this holdout. Full result:
+[`P3E_RECOVERY_OUTCOME_ROUTER_RESULTS_20260906.md`](P3E_RECOVERY_OUTCOME_ROUTER_RESULTS_20260906.md).
+
+P4 completed on 6 September. It trained five independently initialized,
+trajectory-bootstrap Gaussian heads for the residual between Cosmos' predicted
+H16 endpoint and the exact MuJoCo endpoint. The full 5,668-row dataset and all
+artifacts passed integrity checks. Nevertheless, the preregistered quadratic JRD
+was exactly zero after clamping for every row. Pooled balanced OOD AP was 0.308,
+its residual correlation was undefined, and the frozen gate returned NO-GO.
+Closed-loop hard filtering therefore remained closed. Independent mean
+disagreement was a useful post-hoc error signal (trajectory rho 0.609), but its
+OOD ranking was factor-specific: Environment 0.795, Object 0.558 and Position
+0.387 balanced AP. P4b may compare non-degenerate ensemble divergences, but it
+must use a fresh candidate-outcome split for any confirmatory claim. Protocol,
+result and autonomous run card:
+[`P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md`](P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md),
+[`P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md`](P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md),
+[`P4_RESIDUAL_DYNAMICS_RUN_20260906.md`](P4_RESIDUAL_DYNAMICS_RUN_20260906.md).
+
+P4b был заморожен 7 сентября до сбора новых terminal outcomes. Реализация
+сравнивает early stopping, log-variance regularization и shared-variance mean
+ensemble с исходным P4 artifact. Candidate risk измеряется independent mean
+disagreement, predicted/expected residual, common-covariance JRD и Monte Carlo
+predictive MI. Одна формула выбирается на открытом P4 development corpus и
+защищается SHA256. Единственная confirmatory проверка содержит 200 свежих
+query-3 snapshots по Object, Environment и четырём новым Position cells; все
+четыре candidates продолжаются до terminal outcome из одного captured state с
+общей K1 continuation policy. Promotion требует положительного paired
+terminal-SR delta с неотрицательной нижней границей trajectory-cluster
+bootstrap CI, больше rescues, чем harms, не менее 20 heterogeneous snapshots в
+двух factors и отсутствия роста drop/official safety. Протокол и run card:
+[`P4B_RESIDUAL_RISK_PROTOCOL_20260907.md`](P4B_RESIDUAL_RISK_PROTOCOL_20260907.md),
+[`P4B_RESIDUAL_RISK_RUN_20260907.md`](P4B_RESIDUAL_RISK_RUN_20260907.md).
+
+P4b затем завершил 200/200 prospective snapshots и 800/800 terminal branches.
+Frozen score уменьшил realized H16 residual на 2.14%, но terminal SR изменился
+с 117/200 до 113/200: `-2.0 п.п.`, group CI `[-5.5; +1.5]`, 4 rescues / 8
+harms. Candidate failure AUROC 0.650 оказался в основном state/cell difficulty
+signal: внутри 33 heterogeneous snapshots failure ranking равен 0.509. На
+Position oracle K4 совпал с max-value, поэтому reranking не имел rescue
+opportunity и создал три harm. Exact replay прошёл 194/200; strict-only effect
+остался `-2.06 п.п.`, следовательно integrity deviations не объясняют NO-GO.
+Direct residual penalty закрыт. Residual uncertainty сохраняется для
+state-level OOD/compute routing, а P5 переносит target на pairwise
+task-critical terminal advantage. Полный анализ:
+[`P4B_RESIDUAL_RISK_RESULTS_20260907.md`](P4B_RESIDUAL_RISK_RESULTS_20260907.md).
+
+Перед P5 завершён короткий training-free этап P4c. Присланная формула pure
+consensus-medoid не совпадает со старым H3: H3 смешивал first-action L2 с
+value, тогда как P4c выбирает global medoid по discounted H5
+position/SO(3)/gripper distance и полностью игнорирует value. Прямой
+литературный аналог, KeyStone (arXiv:2605.08638), использует guarded medoid
+крупнейшего action cluster. Поэтому P4c разделён на exact K3 reproduction и
+отдельную K5 ablation `max_value` / KeyStone / Cosmos-aware guarded selector.
+Последний использует совместно сгенерированные future-proprio/value только как
+consistency evidence и сохраняет fallback к max-value. На 40 init pure medoid
+дал 17.5% против max-value 20% и K1 30%. На отдельном K5 этапе guarded дал
+30% против max-value 25%, но CI `[-15; +25]` п.п., 3 rescue / 2 harm и
+рост drop-прокси с 1 до 2 не прошли development gate. Gate переключался в
+56.9% queries, то есть редким вмешательство не стало. Следующий приоритет P5;
+consensus можно проверить offline на уже открытых all-candidate pools P4b.
+Результаты и графики:
+[`CONSENSUS_MEDOID_PRE_P5_RESULTS_20260907.md`](CONSENSUS_MEDOID_PRE_P5_RESULTS_20260907.md).
+Протокол:
+[`CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md`](CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md).
+
+The frozen Object task-0 query-4 test completed on 60 unseen-init exact-state
+pairs: commit-H16 SR was 38.3%, real-observation re-query SR was 60.0%, delta
+`+21.7 pp`, init-cluster 95% CI `[+5.0; +40.0]`, 16 rescues / 3 harms and exact
+McNemar `p=0.00443`. Integrity, practical and confirmatory gates all passed.
+Full result:
+[`OBJECT_Q4_REQUERY_HOLDOUT_RESULTS_20260901.md`](OBJECT_Q4_REQUERY_HOLDOUT_RESULTS_20260901.md).
+
+The untouched-task transfer is complete and negative as an unconditional rule:
+all 180 commit and re-query branches on Object tasks 1-9 succeeded, giving zero
+raw gain and -2.5 pp after query cost. Exact replay passed 177/180, so integrity
+also missed its frozen all-pair requirement. The new tasks were a terminal
+ceiling rather than useful hard transfer cells. Full result:
+[`OBJECT_Q4_REQUERY_TASK_TRANSFER_RESULTS_20260901.md`](OBJECT_Q4_REQUERY_TASK_TRANSFER_RESULTS_20260901.md).
+
+The first separate-process task-0 deployment and its frozen clean-GPU
+replication are complete. The replication gave the strongest descriptive
+deployment signal so far: 35% -> 54%, +19 pp, init-cluster 95% CI [+9, +29],
+25/6 rescue/harm and p=0.000878. All six shards were directionally positive.
+However, only 34/100 pairs had strict common prefixes; their sensitivity result
+was 41.2% -> 55.9%, +14.7 pp, CI [0, +29.4], p=0.1797. Candidate outputs in
+four shards differed already at query 0 despite identical simulator state and
+clean-GPU preflight. Integrity, practical and confirmatory gates therefore
+failed. This motivated the now-completed shared-prefix P0 below. Results and
+first-run diagnosis:
+[`OBJECT_Q4_SCHEDULED_CONTROLLER_CLEAN_REPLICATION_RESULTS_20260902.md`](OBJECT_Q4_SCHEDULED_CONTROLLER_CLEAN_REPLICATION_RESULTS_20260902.md),
+[`OBJECT_Q4_SCHEDULED_CONTROLLER_RESULTS_20260901.md`](OBJECT_Q4_SCHEDULED_CONTROLLER_RESULTS_20260901.md).
+
+The follow-up identical-query diagnostic isolated the reproducibility issue:
+two repeated calls within each process were exact, while two fresh processes
+differed by up to 0.00745 in actions and 0.000433 in values. Candidate argmax
+still matched on all three diagnostic states. Deterministic `warn` mode did not
+remove the drift, and strict mode had no compatible CUDA attention kernel.
+Therefore shared-prefix branching was selected as the P0 design. Diagnostic:
+[`COSMOS_QUERY_REPRODUCIBILITY_RESULTS_20260902.md`](COSMOS_QUERY_REPRODUCIBILITY_RESULTS_20260902.md).
+
+That P0 is now complete and confirmatory. On 100/100 strict exact-state pairs,
+commit-H16 achieved 46% SR and `H8 -> real observation -> requery H8` achieved
+64%: +18 pp, init-cluster 95% CI [+4, +32], 31/13 rescue/harm, McNemar
+`p=0.00956`, and +15.5 pp after the frozen query cost. Full result:
+[`OBJECT_Q4_SHARED_PREFIX_REPLICATION_RESULTS_20260902.md`](OBJECT_Q4_SHARED_PREFIX_REPLICATION_RESULTS_20260902.md).
+
+The subsequent frozen cross-factor development screen is also complete. It
+collected 100 pairs across Position `x0.1`, `x0.2`, `y0.2`, `y0.3` and
+Environment task 0; 97 passed strict replay, so integrity PASS. Position `y0.2`
+gave the only strong signal: 40% -> 80%, +40 pp, CI [+10, +65], 10/2
+rescue/harm and p=0.0386. Position `x0.2` gave -5 pp, Environment was a 0%
+floor and `x0.1` a 100% ceiling. No cell met bidirectional effect-support. At
+that stage this authorized only the frozen new-seed `y0.2` efficacy holdout,
+with `x0.2` retained as a negative interaction control; its completed result
+is recorded below. Full development result:
+[`OBJECT_Q4_CROSS_FACTOR_BOUNDARY_SCREEN_RESULTS_20260902.md`](OBJECT_Q4_CROSS_FACTOR_BOUNDARY_SCREEN_RESULTS_20260902.md).
+
+The P1 new-seed Position-direction holdout is complete. All 120/120 pairs
+passed strict replay. On primary `y0.2`, commit/feedback SR was 53.3%/55.0%:
++1.7 pp, init-cluster CI [-13.3, +16.7], 10/9 rescue/harm, p=1.0 and -0.8 pp
+after query cost. Control `x0.2` also gave +1.7 pp, so the direction interaction
+was 0 pp, CI [-13.3, +13.3]. Both frozen gates failed and fixed cross-factor
+feedback is closed. The balanced `y0.2` outcomes can now be used only as
+development labels for P2; a selector requires a new untouched evaluation
+split. Full result:
+[`OBJECT_Q4_POSITION_DIRECTION_HOLDOUT_RESULTS_20260902.md`](OBJECT_Q4_POSITION_DIRECTION_HOLDOUT_RESULTS_20260902.md).
+
+The subsequent P2 development analysis is complete. A leakage-safe ridge using
+only current proprio, the old action chunk and its predicted future proprio
+ranked signed terminal VoF with rescue-vs-harm AUROC 0.922. The screen-selected
+40% router transferred descriptively to the former holdout with 9 rescues / 1
+harm and +12.3 pp query-cost-adjusted gain, CI `[+2.5; +22.3]`; the fixed-mask
+randomization p-value was 0.00050. This remains exploratory because the feature
+family was designed after the former holdout. The model, `beta=0`, and absolute
+threshold 0.1401658544 are now frozen. The outcome-blind 180-state atlas on new
+Object tasks 1-9 finished with 180/180 usable states and 16 mixed cells out of
+36; all atlas gates passed. Six cells at 40-60% baseline SR, covering four tasks
+and both directions, were frozen. The prospective evaluation then completed
+all 240/240 strict pairs on disjoint init 5-24. Commit/router SR was
+59.6%/61.7%, but adjusted gain was only +0.8 pp with cluster CI
+`[-5.4, +7.0]`; the router selected 24 rescues and 19 harms and its
+rescue-vs-harm AUROC fell to 0.398. The gate failed. Always-requery gave
+descriptive +7.1 pp, while the oracle gave +17.5 pp at a 17.5% query rate.
+Transfer diagnostics show every state outside task-0 support at `|z|>5`, with
+median row maximum 61.3 and maximum 654.9. The unbounded ridge used absolute
+action/proprio coordinates as task/phase identifiers and is closed. P2b now
+uses bounded potential-outcome heads, relative state/action features,
+event-aligned phase and an explicit support gate. Full development, atlas and
+prospective results:
+[`SIGNED_VOF_ROUTER_DEVELOPMENT_RESULTS_20260903.md`](SIGNED_VOF_ROUTER_DEVELOPMENT_RESULTS_20260903.md),
+[`SIGNED_VOF_NEW_TASK_BASELINE_ATLAS_RESULTS_20260903.md`](SIGNED_VOF_NEW_TASK_BASELINE_ATLAS_RESULTS_20260903.md),
+[`SIGNED_VOF_NEW_TASK_HOLDOUT_RESULTS_20260903.md`](SIGNED_VOF_NEW_TASK_HOLDOUT_RESULTS_20260903.md),
+[`SIGNED_VOF_NEW_TASK_HOLDOUT_PROTOCOL_20260903.md`](SIGNED_VOF_NEW_TASK_HOLDOUT_PROTOCOL_20260903.md).
+
+P2b is now also complete and negative. Its support-aware relative-feature CATE
+model passed the development OOF gate, then was frozen before any reserve
+feedback outcomes. The prospective reserve collected 400/400 strict pairs over
+ten Object Position cells. Commit/router SR was 57.0%/55.75%; raw gain was
+-1.25 pp and cost-adjusted gain -2.24 pp with cluster 95% CI
+`[-5.52, +1.13]`. The router selected 18 rescues and 23 harms, AUROC was 0.544,
+so the primary efficacy gate failed. It did beat always re-query by +8.01
+adjusted pp, CI `[+3.66, +12.59]`, but that comparator itself was harmful
+relative to commit. The decisive failure was a causal sign reversal:
+`y0.1/task4` had +25 pp feedback effect in development, whereas
+`y0.2/task4` had -22.5 pp in holdout and the router queried 39/40 states. A
+q99 KNN support gate accepted 98% of holdout states and therefore did not
+represent causal support. Post-hoc epistemic penalties gave small positive
+point estimates only at much lower query rates, with every CI crossing zero;
+they are diagnostics, not a promoted variant. P2b is closed. Full result:
+[`INVARIANT_CATE_RESERVE_HOLDOUT_RESULTS_20260903.md`](INVARIANT_CATE_RESERVE_HOLDOUT_RESULTS_20260903.md).
+
+P2c is complete and negative as well. Frozen CLIP ViT-B/32 object/basket patch
+statistics were extracted from current and K=4 Cosmos-predicted agent/wrist
+views for all 640 strict paired states. The overall selector remained the old
+`relative` control: its worst-split adjusted uplift was -0.50 pp. The best
+object-conditioned candidate was worse at -1.28 pp and had leave-level AUROC
+0.406. All policy, worst-cell, monotonicity and auxiliary grounding gates
+failed; every cluster-bootstrap efficacy interval crossed zero. Object features
+did contain partial contact information (best feedback-contact AUROC 0.741 and
+feedback-deadlock AUROC 0.683), but this did not identify the causal sign of
+feedback value. No new holdout is authorized. Full result:
+[`OBJECT_CONTACT_VOF_DEVELOPMENT_RESULTS_20260903.md`](OBJECT_CONTACT_VOF_DEVELOPMENT_RESULTS_20260903.md).
+
+The privileged grasp/transport phase oracle completed with integrity PASS but
+efficacy FAIL and is closed. Full result:
+[`PHASE_VOF_TERMINAL_TRANSFER_RESULTS_20260831.md`](PHASE_VOF_TERMINAL_TRANSFER_RESULTS_20260831.md).
+
+The independent initial-feedback holdout is complete. Its frozen integrity
+gate failed because 3/60 separately launched query-0 argmax candidates differed,
+but both nominal and selector-matched sensitivity were strongly negative. The
+fixed schedule is closed. Full result:
+[`INITIAL_REQUERY_HOLDOUT_RESULTS_20260831.md`](INITIAL_REQUERY_HOLDOUT_RESULTS_20260831.md).
+
+The global CLIP semantic screen and Environment task transfer also failed.
+Scalar metrics remained stronger, and semantic routing had negative uplift on
+the transfer tasks. Full result:
+[`SEMANTIC_VOF_RESULTS_20260831.md`](SEMANTIC_VOF_RESULTS_20260831.md).
+
+Research is accelerated by six rules:
+
+1. reuse saved exact-state sidecars before collecting new closed-loop rollout;
+2. require a causal opportunity gate before training or planner integration;
+3. branch causal horizon policies from one generated candidate pool in one
+   process; separately launched GPU inference is not bitwise paired;
+4. use cheap grouped/factor transfer screens before any new online planner;
+5. terminally continue only branches needed by the frozen contrast;
+6. parallelize independent tasks, but never tune from partial outcomes.
+
+Scalar internal-copy penalties, H32, linear candidate rankers, fixed H8,
+query-0 H8, gripper-transition H8/H16, coarse factor/phase routing and global
+CLIP embeddings remain closed. They are controls, not active research branches.
+
+### Confirmed P0: Object task-0 query-4 feedback
+
+The causal positive control is frozen as:
+
+$$
+\pi_{q=4}: A_{64:72}^{old}\;\rightarrow\;o_{72}^{real}
+\;\rightarrow\;A_{72:80}^{new}.
+$$
+
+The reset-to-terminal clean-GPU replication produced a strong positive nominal
+effect but failed prefix integrity. The subsequent single-process shared-prefix
+replication fixed that problem and confirmed end-to-end efficacy: 46% -> 64%,
++18 pp, CI [+4, +32], p=0.00956, with all 100 replay pairs strict. The broad
+untouched-task transfer is already closed by a 100% ceiling; later deployment
+must target non-ceiling cross-factor cases and become selective based on
+task/contact progress rather than a universal query clock.
+
+Generic uncertainty scores are not accepted as the trigger: the best frozen
+latent score found only 1 of 16 holdout rescues at 5-10% budgets. The confirmed
+mechanism is task/query-specific real-observation feedback.
+
+### Completed P2c: object/contact-conditioned VoF
+
+The next model predicts explicit task relations from current and
+Cosmos-predicted future observations:
+
+$$
+h_m(o_t,\hat o_{t+H},p_t,a)
+\rightarrow
+(\widehat{\Delta d}_{target,goal},
+ \hat p_{contact\ loss},
+ \hat p_{drop},
+ \hat p_{wrong},
+ \hat p_{no\ progress}).
+$$
+
+Privileged object poses, target/receptacle identities and contacts are used to
+create labels only. Deployment inputs remain RGB, wrist RGB, proprio, task text
+and candidate action. Five independently initialized heads provide epistemic
+dispersion; bootstrap replicas of one linear fit are not accepted as an
+ensemble.
+
+The 240-state P2 development cohort and 400-state P2b reserve are now consumed
+as a 640-state **development-only** corpus. The staged experiment is:
+
+1. use the already materialized target/receptacle and critical-event labels,
+   together with object identity and perturbation direction/magnitude;
+2. exclude the degenerate query-4 local goal-progress label and the two-event
+   successful-release label; train auxiliary heads for target lift/contact and
+   terminal drop/wrong-object/deadlock;
+3. train a small frozen-vision relation head with grouped task/level/cell
+   splits;
+4. predict dense signed VoF and evaluate grouped/factor OOF uplift at fixed
+   10/20/30% query budgets;
+5. collect a new blinded exact-state split only if relation transfer and
+   compute-adjusted VoF uplift pass;
+6. compare `commit`, learned selective feedback and oracle feedback with
+   single-process shared candidate generation;
+7. move to closed-loop only after the blinded causal gate passes.
+
+The label audit found 398 approach, 200 grasp and 42 transport snapshots. Both
+branches have all 640 terminal labels. Commit/feedback positives are 247/245
+for local target lift, 141/126 for target contact, 29/16 for terminal drop,
+21/39 for wrong-object and 35/83 for deadlock. Local goal-progress delta is
+zero in every row and successful release occurs only once per branch, so these
+two targets must not drive model selection.
+
+Minimum screen requirements are task-transfer Spearman $\ge 0.4$ for continuous
+target-EEF distance/lift targets, critical-event AUROC $\ge 0.75$ where labels
+have support, positive compute-adjusted VoF uplift@20%, monotone observed
+effect over score quantiles, and nonnegative worst-cell adjusted gain under
+leave-one-task, leave-one-level and leave-one-cell evaluation. Position
+all-fail cells remain outside selector evaluation until a retreat/regrasp
+proposal gives non-zero oracle coverage.
+
+The screen did not meet these requirements. The selected deployable model did
+not contain object features, and the best object model had adjusted uplift
+-0.34/-0.97/-1.28 pp under leave-one-task/level/cell. Worst-cell gains and
+score-quintile monotonicity also failed. Therefore the specific frozen-CLIP
+linear P2c branch is closed without an untouched holdout.
+
+### Completed P2d: causal-interaction upper bound
+
+The next experiment is a cheap, development-only upper bound on the same 640
+opened pairs. It explicitly represents task semantics, perturbation
+direction/magnitude and privileged grasp phase, including their interactions.
+Privileged phase makes this model non-deployable; its purpose is to distinguish
+two explanations of P2c failure:
+
+1. the visual representation omits the context needed to infer the sign of VoF;
+2. the causal target is not stable enough across perturbation levels for this
+   selector family, even with nearly perfect context.
+
+Evaluation remains grouped leave-one-task, leave-one-level and leave-one-cell,
+with top-20% adjusted uplift, worst-cell gain and score-quintile monotonicity.
+No new GPU collection and no confirmatory claim are allowed from this reused
+corpus. A failed upper bound stops the re-query CATE branch and promotes P3
+recovery/abstention. A passed upper bound authorizes an observable replacement
+based on higher-resolution segmentation/detection, wrist contact geometry and
+action-conditioned temporal features, followed by a newly frozen holdout.
+
+P2d is now complete and failed its transfer gate. The best 172-feature
+interaction model gave adjusted gain -0.19/-0.19/+0.13 pp under
+leave-one-task/level/cell, with AUROC 0.463/0.438/0.486 and every cluster CI
+crossing zero. The same score worked within known cells: +2.78 pp, CI
+[+0.71, +4.89], AUROC 0.812 and monotonic quintiles. This interpolation-transfer
+gap is the result: feedback value can be calibrated locally but is not
+OOD-invariant even with privileged phase and perturbation context. P2d closes
+the current CATE route and promotes P3. Full result:
+[`CONTEXT_INTERACTION_UPPER_BOUND_RESULTS_20260903.md`](CONTEXT_INTERACTION_UPPER_BOUND_RESULTS_20260903.md).
+
+### P3b: deployable perception-backed recovery
+
+P3 changes the intervention set instead of fitting another selector over the
+same commit/feedback pair. It starts from exact states where both branches fail
+and tests `retreat + open-gripper + requery` and task-aware regrasp proposals.
+The first gate is oracle terminal coverage on unseen `task/init`, with drop,
+wrong-object and safety endpoints reported separately. No learned selector or
+closed-loop campaign is allowed until a new proposal family creates genuine
+rescues beyond ordinary re-query.
+
+The privileged opportunity gate passed, so P3b replaces simulator target pose
+with an RGB heatmap and metric-depth estimate while keeping the same H8 recovery
+controller. Expensive rollouts stay locked behind grouped OOF, 20-state
+terminal and 80-state development gates. P3b passed its strict 72-state
+new-group confirmatory reserve at 43/72. P3c then froze the primitive, trigger
+and workspace shield and passed complete full-episode evaluation at 24/40
+versus 13/40. P3d failed its unseen-cell development gate despite a positive
+point estimate. Its untouched holdout was later opened only for the new,
+separately frozen P3e hypothesis. P3e passed its practical new-init gate by
+preventing two repeated `x0.2/task2` harms, but did not test unseen cells and
+did not learn active continue selection. P3 is retained as a narrow
+cell-specific controller and the main queue moves to P4. Thresholds and P3e
+heads will not be retuned on P3c/P3d/P3e outcomes.
 
 Этот документ является текущим планом. Frozen-протоколы
 `ADAPTIVE_PLANNING_HYPOTHESES_20260813.md` и
@@ -49,6 +547,32 @@ Task failure и safety violation считаются разными endpoints. Р
 | LIBERO-PRO Object broad pilot | `max(value)` 54.5%, no planning 52.8%, risk-aware requery 52.1% | Выигрыш на selected boundary cases не переносится как universal policy |
 | Частота текущего adaptive trigger | 42.9-43.4% query во всех трёх OOD factors | Trigger почти не адаптируется к сложности и вмешивается слишком часто |
 | Broad paired ours vs `max(value)` | -2.4 п.п., 95% CI [-5.4; +0.3], McNemar `p=0.167` | Следующий тест обязан отдельно проверить selection и feedback timing |
+| Dense exact-state VoF H16 | 127 positive / 143 negative / 2 zero; strict 265/272 states | Continuous consequence target устраняет event-label ties |
+| Dense routing transfer | Environment AUROC 0.980, Object 0.717; новый H32 uncertainty AUROC 0.541 | H32 не подтвердил router; нужен frozen low-dimensional holdout |
+| Matched H16/H32 consequence | H32 non-tied support 35/48 против 48/48 у H16; range -24.5% | Закрыть H32 как основной горизонт, сохранить H16 |
+| Factor-specific candidate ranker screen | H16 macro regret -45.7%, H32 -21.1% против Cosmos; strict -42.6%/-14.1% | Заморозить H16 ranker и проверить на новых независимых `task/init` |
+| Frozen H16 ranker holdout | 230 strict states, 69 groups; macro regret -43.1%, CI [-0.00577; -0.00230], gate PASS | Разрешил отдельную terminal closed-loop проверку |
+| Frozen H16 ranker closed-loop | 360 pairs; macro -0.28 п.п., CI [-2.22; +1.39], gate FAIL | Локальный H16 regret не переносится; нужен conservative terminally aligned critic |
+| Terminal-grounded critic development | 80 states, 8 heterogeneous pools, 5 rescues; maxV 92.5%, oracle 98.75% | Механизм существует, но все rescues сосредоточены в task 0 |
+| Terminal-grounded critic holdout | tasks 8-9: 160/160 candidate branches successful; 0 switches, offline gate FAIL | Ceiling split не проверяет selector; сначала нужен proposal-opportunity atlas |
+| K16 proposal opportunity | 50 states / 800 branches; Object gap +30 п.п., Position +10 п.п., Environment 0; K16 не расширил K8 oracle | Proposal diversity не bottleneck после K8; проверять value ranking |
+| Action-conditioned AR value | 10 states / 80 same-pass branches; SR 30%/30%, 1 rescue/1 harm, pairwise 0.429 -> 0.308 | Простая `action -> future -> value` декомпозиция gate не прошла; перейти к grounded within-state advantage |
+| Hard-cell pairwise ranker | 60 states / 480 branches; untouched maxV/raw/gated/oracle 45/15/30/60%, 0 rescue / 3 harm | Linear value/latent family не переносится; bootstrap не ловит init shift, вернуться к re-query или semantic grounded critic |
+| Real-observation re-query pilot | H16/adaptive 20.0/22.5%; Position +30 п.п., Environment +5 п.п., Object -30 п.п. | Universal trigger закрыт; post-hoc factor router разрешён только для independent transfer |
+| Frozen factor-router transfer | 90 pairs; route/maxV 52.2/58.9%, -6.7 п.п., CI [-13.3; 0.0], 2 rescue / 8 harm | Factor interaction не перенёсся; закрыть coarse routing и gripper-transition trigger |
+| Privileged phase-VoF transfer | 67 strict states; phase route 58/67, delta 0, 1 rescue / 1 harm | Approach/grasp/transport clock не предсказывает знак feedback value; phase routing закрыт |
+| Fixed query-0 H8 holdout | nominal 23/60 против 35/60, -20.0 п.п.; selector-matched 57-pair sensitivity -19.3 п.п. | Integrity failed on 3 near-tied argmax pairs, but negative direction robust; fixed initial re-query закрыт |
+| CLIP semantic VoF development | 265 strict states; scalar/semantic/combined grouped rho 0.471/0.131/0.434 | Global image-text similarity weaker scalar signals; Position transfer remains negative |
+| CLIP Environment task transfer | train tasks 0-3, test tasks 5/8/9; scalar/semantic2 rho 0.245/0.200, both uplift@20 negative | Global CLIP router закрыт; перейти к explicit target/receptacle/contact representation |
+| Frozen Object task0 query-4 re-query | 60 unseen-init pairs; 38.3% -> 60.0%, +21.7 п.п., CI [+5.0; +40.0], 16/3, p=0.00443 | Narrow feedback schedule подтверждён; перейти к end-to-end deployment и отдельному task transfer |
+| Object query-4 untouched-task transfer | 180 pairs on tasks 1-9; 100% -> 100%, adjusted -2.5 п.п.; 177/180 strict | Unconditional transfer закрыт: новый split оказался ceiling, нужен selective task/contact VoF |
+| Object query-4 first full deployment | 100 pairs; nominal 46% -> 57%, strict clean-GPU 37.5% -> 52.5%; only 40/100 strict | Integrity FAIL из-за GPU 2-4 prefix divergence; запустить new-seed replication только на clean GPU 5-7 |
+| Object query-4 clean replication | 100 pairs; nominal 35% -> 54%, +19 п.п., CI [+9; +29], 25/6, p=0.000878; strict 34 pairs, +14.7 п.п. | Strong descriptive replication, but integrity FAIL; перейти к deterministic shared/cached prefix |
+| Object query-4 shared-prefix replication | 100 strict pairs; 46% -> 64%, +18 п.п., CI [+4; +32], 31/13, p=0.00956; adjusted +15.5 п.п. | Integrity/practical/confirmatory PASS; механизм real-observation feedback подтверждён, следующий шаг selective cross-factor transfer |
+| Position direction holdout | 120/120 strict; `y0.2` 53.3% -> 55.0%, +1.7 п.п., CI [-13.3; +16.7], 10/9; `y-x` interaction 0 п.п. | Fixed cross-factor transfer не воспроизвёлся; P1 закрыт, balanced effects переходят в P2 development only |
+| Signed-VoF new-task holdout | 240/240 strict; commit/router 59.6/61.7%, adjusted +0.8 п.п., CI [-5.4; +7.0], AUROC 0.398 | Task-0 absolute-feature ridge не переносится; P2 закрыт, перейти к invariant CATE + support gate |
+| Object/contact VoF development | 640 strict paired states; best relative/object worst-split adjusted uplift -0.50/-1.28 п.п.; all CIs cross zero | Frozen-CLIP linear P2c закрыт; сначала проверить privileged interaction upper bound, не собирать holdout |
+| Privileged context-interaction upper bound | within-cell +2.78 п.п., AUROC 0.812; task/level/cell -0.19/-0.19/+0.13 п.п., transfer AUROC <0.5 | Локальная calibration возможна, OOD transfer нет; P2d закрыт, перейти к recovery proposals |
 
 Новый matched 2x2 разделил reranking и более раннее observation. Прямой
 reranking не подтвердился, а feedback-horizon effect положителен. Добавочный
@@ -382,14 +906,75 @@ drop, timeout, query latency и search regret.
 **Гипотеза.** Transition-conditioned JRD переносится между OOD families лучше
 internal-copy std и даёт контролируемый ID false-positive rate.
 
-1. Из Cosmos latent traces собрать \((z_t,a_t,z_{t+1})\).
-2. Обучить 5 small Gaussian heads bootstrap/resampled trajectories.
-3. Сравнить empirical mean variance, total uncertainty, max aleatoric и JRD.
-4. Калибровать threshold trajectory-level CP на standard LIBERO ID.
-5. Проверить OOD detection на PRO `Obj/Env/Pos/Sem/Task` отдельно.
+1. Для каждого H16 candidate сохранить current observation, Cosmos predicted
+   endpoint и exact-replay endpoint.
+2. Кодировать agent/wrist RGB frozen CLIP и строить visual/proprio residual
+   фактического endpoint относительно Cosmos prediction.
+3. Обучить на standard `libero_object` пять independently initialized
+   diagonal-Gaussian MLP heads с bootstrap по целым trajectory groups.
+4. Сравнить variance of means, predicted aleatoric/total variance и analytic
+   quadratic JRD с прежними value/action/future/latent disagreement metrics.
+5. Калибровать trajectory-max JRD conformal threshold на отдельном ID
+   calibration split и один раз открыть ID test.
+6. Провести query-support-matched development transfer на LIBERO-PRO Object,
+   Environment и Position. Semantic/Task остаются для будущего свежего
+   confirmatory набора и не входят в текущий atlas.
 
-Primary metrics: ID recall at fixed \(\alpha\), OOD AUPRC, lead time, overhead.
-Closed-loop endpoint появляется только после успешной calibration.
+Primary metrics: ID false-positive rate при $\alpha=0.1$, class-balanced OOD
+AUPRC, корреляция с realized Cosmos residual и offline hard-filter utility.
+Frozen gate не пройден: quadratic JRD сколлапсировал в ноль, pooled balanced
+AP равен 0.308, residual correlation NaN. Closed-loop endpoint не открывался.
+Post-hoc mean disagreement имеет residual rho 0.609, но противоположный
+factor-specific transfer не позволяет заменить primary score без новой
+проверки. Точный контракт и результат находятся в
+[`P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md`](P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md) и
+[`P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md`](P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md).
+
+### P4b. Robust ensemble divergence
+
+**Гипотеза.** Независимое disagreement голов является полезным model-error
+signal, но quadratic JRD с разными covariance является неподходящей
+агрегацией. На development сравниваются mean disagreement,
+common-covariance JRD и Monte Carlo Jensen-Shannon / predictive mutual
+information. Параллельно проверяются early stopping, shared aleatoric variance
+и variance regularization.
+
+Stage завершён с **NO-GO**. Development formula была записана в
+SHA256-protected artifact до открытия 200-snapshot all-candidate terminal
+holdout. На новом split score снизил realized residual на 2.14%, но ухудшил SR
+на 2 п.п.; within-pool failure ranking равен 0.509. Поэтому direct residual
+hard-filter закрыт и paired closed-loop не запускается. Score можно применять
+только как state-level difficulty/OOD alarm. Точный контракт и результат:
+[`P4B_RESIDUAL_RISK_PROTOCOL_20260907.md`](P4B_RESIDUAL_RISK_PROTOCOL_20260907.md),
+[`P4B_RESIDUAL_RISK_RESULTS_20260907.md`](P4B_RESIDUAL_RISK_RESULTS_20260907.md).
+
+### P4c. Geometry-guided consensus medoid
+
+**Статус: completed, development NO-GO (7 сентября).** Завершено 180 rollout;
+pure medoid не улучшил baseline, guarded дал недоказанные +5 п.п. на 20 init.
+Selector воспроизводится на 9287 queries; initial states совпадают, но часть
+initial diffusion pools различается между процессами. Future-error H16/H5
+не согласован и исключён из efficacy-выводов. Нового confirmatory прогона для
+этих параметров нет; полные
+[результаты](CONSENSUS_MEDOID_PRE_P5_RESULTS_20260907.md).
+
+**Гипотеза.** Успешные stochastic action chunks образуют более плотный mode,
+тогда как отдельные failure chunks являются геометрическими выбросами.
+
+Stage A строго проверяет присланный pure selector на LIBERO-PRO Object task 0:
+$K=3$, executed/scored prefix $H=5$, $\gamma=0.9$, веса
+position/rotation/gripper $1/0.5/0.25$, без value и регуляризаторов. Контроли —
+single sample и `max_value` при тех же initial states/seeds.
+
+Stage B сравнивает при $K=5$ опубликованный KeyStone cluster-medoid и нашу
+Cosmos-aware модификацию. Geometry предлагает dominant-mode chunk, joint
+future-proprio/value agreement уточняет medoid внутри mode, а conservative
+value/consensus gate решает, можно ли отойти от `max(value)`. Это сохраняет
+урок P4b: state-level model-error signal нельзя безусловно превращать в
+candidate penalty.
+
+Точный контракт, формулы и statistical gates:
+[`CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md`](CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md).
 
 ### P5. Task-critical outcome heads
 
@@ -473,12 +1058,11 @@ thresholds замораживаются и переносятся на целы�
 остаётся `max(value)` во всех новых controls. Это отделяет пользу свежего
 observation от качества uncertainty-reranking и от простого роста compute.
 
-Статус 26 августа: frozen campaign
-`pro_object_horizon_controls_p0_20260826` запущена на MLSpace GPU 6. План:
-24 jobs, 897 новых strategy episodes и matched merge с 598 сохранёнными
-`maxV-H16`/`risk-H8` episodes. P1 реализуется параллельно как код, но не
-запускается до завершения P0. Последовательный launcher уже поставлен в
-очередь: после P0 он строит causal report и только затем начинает P1/P2.
+Статус 27 августа: campaign завершила 24/24 jobs. `maxV-H16` остался лучшим
+с factor-macro SR 54.5%; `maxV-H8`, `horizon-only`, `random-H8` и `risk-H8`
+получили 52.8%, 52.5%, 52.1% и 52.1%. Текущий horizon-controller не переносится
+на broad benchmark. Полный разбор:
+[`GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md`](GROUNDED_SELECTIVE_PLANNING_RESULTS_20260827.md).
 
 ### P1. Counterfactual Value of Feedback
 
@@ -498,9 +1082,23 @@ Gate проверяется при intervention budgets 10%, 20% и 30% прот
 Реализация P1/P2 snapshot collector завершена 26 августа. Simulator replay
 после ненулевого prefix имеет max state error `1.06e-15`, полный Cosmos smoke
 собрал четыре candidate branches и feedback branch с replay error `8.12e-16`.
-Dry-run manifest проверен: 12 jobs и 300 targets, по 100 на Object,
-Environment и Position. Запуск pilot остаётся заблокирован только порядком
-экспериментов до завершения P0. Подробности:
+Фактический pilot собрал 272/300 states. Local VoF равен нулю для всех states;
+terminal support содержит только 3 positive и 3 negative labels. Семь states
+не прошли preregistered replay threshold `1e-9`.
+
+Обновление 27 августа: offline dense geometry relabel дал 127 positive и 143
+negative H16 VoF; strict subset содержит 265 states. Factor-wise OOF routing
+перспективен для Environment (AUROC 0.980) и Object (0.717), но pooled model
+проигрывает простому `factor x phase` baseline, а Position имеет только две
+независимые `task/init` группы. Поэтому P1 прошёл mechanism-screening, но ещё
+не confirmatory gate.
+
+Matched H16/H32 pilot с шестью candidates завершён: 48 states и 288 branches.
+H32 уменьшил non-tied support с 48 до 35, дал 13 zero VoF и uncertainty AUROC
+0.541, поэтому более длинный consequence horizon и текущий P1 router закрыты.
+Сильный `factor x phase` H32 baseline (AUROC 0.736) рассматривается только как
+гипотеза расписания requery из-за малого и адаптивно сбалансированного sample.
+Подробности:
 [`COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md`](COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md).
 
 ### P2. Grounded candidate critic и QWM-lite
@@ -509,6 +1107,78 @@ Environment и Position. Запуск pilot остаётся заблокиро�
 utility включает BDDL progress и отдельные penalties `drop`, `wrong_object`,
 `no_progress`, `constraint`. Critic обучается только на real transitions;
 world-model rollout используется только для короткого depth-1/2 search.
+
+На большом four-candidate H16 наборе fixed penalty и OOF rankers не проходили
+gate. Новый six-candidate screen дал первый положительный результат:
+factor-specific grouped OOF ridge уменьшил H16 regret относительно Cosmos на
+Environment, Object и Position, factor-macro `0.003889 -> 0.002112` (-45.7%,
+strict -42.6%). H32 тоже улучшен, но слабее (-21.1%, strict -14.1%).
+
+Confirmatory holdout теперь завершён. На 230 strict states из 69 новых groups
+тот же frozen ranker уменьшил factor-macro regret `0.008998 -> 0.005124`
+(-43.1%), macro 95% CI для delta равен `[-0.005768; -0.002298]`. Point estimate
+улучшился на каждом factor, train/holdout overlap отсутствует, formal gate
+PASS. Individual CI отделён от нуля только на Position; Environment и Object
+пока остаются suggestive. Полный разбор:
+[`FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_RESULTS_20260828.md`](FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_RESULTS_20260828.md).
+
+Paired closed-loop проверка теперь завершена на 360 pairs / 720 episodes.
+Offline regret gain не перенёсся в terminal success: factor-macro delta равна
+-0.28 п.п., grouped 95% CI `[-2.22; +1.39]`, formal gate FAIL. Environment
+ухудшился на 3.33 п.п., Object оказался на 100% ceiling, Position дал три
+редких rescue (+2.50 п.п.). Ranker отклонялся от maxV на 67-94% query и в
+Position выбирал value в среднем на 2.08 within-pool sigma ниже. Полный разбор:
+[`FROZEN_H16_CLOSED_LOOP_RESULTS_20260829.md`](FROZEN_H16_CLOSED_LOOP_RESULTS_20260829.md).
+
+Conservative action-conditioned grounded critic теперь реализован и проверен.
+Он предсказывает residual advantage к maxV, отдельный safety risk и меняет
+candidate только при положительной calibrated lower confidence bound. На
+development oracle gap равен +6.25 п.п., но все пять rescues принадлежат task 0.
+Untouched tasks 8-9 дали 160/160 successful branches, нулевой oracle gap и
+нулевой switch rate. Offline gate FAIL, closed-loop корректно пропущен. Полный
+разбор:
+[`TERMINAL_GROUNDED_CRITIC_RESULTS_20260830.md`](TERMINAL_GROUNDED_CRITIC_RESULTS_20260830.md).
+
+Этап был зафиксирован 29 августа до нового сбора в
+[`TERMINAL_GROUNDED_CRITIC_PROTOCOL_20260829.md`](TERMINAL_GROUNDED_CRITIC_PROTOCOL_20260829.md).
+Старый outcome-independent terminal audit содержит 52 states: лишь 6 имеют
+разные success/fail outcomes между четырьмя candidates, а oracle может спасти
+только 2 fail `max(value)` (SR 71.15% против 67.31%). Поэтому он не используется
+как достаточный train set. Запущен targeted Object collection: восемь initial
+candidates, q=0/3, common best-of-2 H16 continuation, 60 development и 20
+calibration states. Opportunity gate прошёл ровно на пороге, ensemble был
+заморожен до holdout, но offline gate остановил sequence из-за ceiling.
+
+Frozen proposal-opportunity этап завершён. K16 screen собрал 50 states и 800
+terminal branches. Object имеет `maxV/oracle = 50/80%`, Position `0/10%`, а
+Environment `0/0%`. Nested comparison показал, что K16 не добавляет oracle
+coverage к K8; на mixed pools обычный value ранжирует success против failure с
+accuracy 0.476. Поэтому следующий приоритет P2 разделён по factor:
+
+1. **Object и Position-y:** controlled K8 test action-conditioned
+   `action -> future -> value` завершён. Same-pass integrity прошла, но
+   evaluator не улучшил terminal ranking: 1 rescue / 1 harm, общий SR 30%
+   против 30%, mixed pairwise accuracy 0.308 против 0.429 у parallel value.
+2. **Environment:** selector запрещён, пока pool all-fail. Проверяется ранний
+   re-query/recovery после нового real observation либо другой proposal family.
+3. Learned within-state terminal-advantage ranker завершён на непересекающихся
+   init 10-39. Opportunity gate прошёл, но untouched holdout дал 0 rescue / 3
+   harm и снизил SR с 45% до 30%. Linear value/latent feature family закрыта.
+   Init 40-49 остаются untouched reserve для нового механизма.
+
+Протокол текущего evaluator screen:
+[`AUTOREGRESSIVE_VALUE_RANKING_PROTOCOL_20260830.md`](AUTOREGRESSIVE_VALUE_RANKING_PROTOCOL_20260830.md).
+Результат evaluator screen:
+[`AUTOREGRESSIVE_VALUE_RANKING_RESULTS_20260830.md`](AUTOREGRESSIVE_VALUE_RANKING_RESULTS_20260830.md).
+Frozen fallback protocol:
+[`HARD_CELL_PAIRWISE_RANKER_PROTOCOL_20260830.md`](HARD_CELL_PAIRWISE_RANKER_PROTOCOL_20260830.md).
+Fallback result:
+[`HARD_CELL_PAIRWISE_RANKER_RESULTS_20260830.md`](HARD_CELL_PAIRWISE_RANKER_RESULTS_20260830.md).
+K16 результат:
+[`PROPOSAL_OPPORTUNITY_K16_RESULTS_20260830.md`](PROPOSAL_OPPORTUNITY_K16_RESULTS_20260830.md).
+
+Ceiling tasks остаются обязательными fallback/safety controls, но больше не
+могут быть единственным calibration или holdout набором для selector.
 
 ### P3. Semantic action-conditioned consequence model
 
@@ -522,6 +1192,10 @@ pixel MSE. Privileged simulator state разрешён для labels/evaluation,
 Пять independently trained probabilistic transition heads дают epistemic
 disagreement. Он управляет `B`, execution horizon и expensive evaluator;
 trajectory-level conformal calibration задаёт ID false-positive rate.
+
+Статус: exact quadratic-JRD version завершена с **NO-GO**. Все clamped JRD
+scores равны нулю. Mean disagreement сохранился как post-hoc P4b lead благодаря
+rho 0.609 с realized residual, но пока не является frozen planner score.
 
 ### P5. RCS coarse-to-fine baseline
 
@@ -543,15 +1217,56 @@ official safety violation.
 
 ### Порядок принятия решений
 
-1. Завершить P0 и выбрать не более одного horizon controller.
-2. Одним snapshot-branching collector собрать targets одновременно для P1-P4.
-3. Сначала проверить offline uplift/ranking; closed-loop разрешается только
-   после held-out gate.
-4. Заморозить один VoF gate и один grounded ranker.
-5. Проверить `maxV`, `VoF`, `grounded-Q`, `grounded-Q+VoF` на целых unseen
-   tasks/OOD families.
-6. Только затем добавлять ensemble, tail risk и safety filter отдельными
-   ablations.
+1. Сохранить `maxV-H16` как broad baseline, а fixed H8 re-query - как
+   положительный causal feedback-control: он ранее дал +12.5 п.п. на matched
+   2x2, но ещё не считается универсальным planner.
+2. Закрыть H32, текущий uncertainty router и линейное reranking family. H16
+   proxy ranker, terminal ridge, AR value и hard-cell pairwise ranker не дали
+   terminal holdout gain.
+3. Следующий confirmatory test направить на **execution/recovery**, а не
+   подбирать новый scalar score по уже открытому atlas: `maxV-H16` против
+   compute-accounted H8 re-query и critical-phase H8/H16 на hard
+   Object/Position/Environment cells.
+4. P4b direct residual penalty закрыт после prospective terminal NO-GO.
+   Residual risk использовать только для state-level OOD, compute allocation и
+   trigger re-query/recovery; не интерпретировать как action utility.
+5. Следующий candidate selector обучать на group-centered pairwise/listwise
+   terminal advantage и task-critical events. Переключение с max-value
+   разрешать только при положительной calibrated lower confidence bound.
+6. Для Object/Environment сначала увеличить число heterogeneous exact-state
+   pools. Для all-fail Position добиться oracle coverage новой proposal family
+   или recovery; при нулевом oracle gap selector запрещён.
+7. Init 40-49 сохранить untouched для следующего механизма; новые thresholds
+   не выбирать по pairwise holdout 30-39.
+8. Tail risk и LIBERO-Safety shield добавлять после подтверждения causal
+   consequence/recovery механизма.
+
+### Обновление: real-observation transfer 30 августа
+
+После pairwise-ranker failure был проведён новый causal тест execution timing.
+Сначала на 40 hard states `maxV-gripper-H8/H16` дал 9/40 против 8/40 у H16,
+но нарушил Object sentinel. Post-hoc router `Object -> H16`,
+`Position/Environment -> adaptive` выглядел перспективно: 12/40 против 8/40.
+
+Router был заморожен и перенесён на 90 новых `task/init` групп. Confirmatory
+результат отрицательный: 47/90 против 53/90, delta -6.7 п.п., grouped CI
+`[-13.3; 0.0]`, 2 rescue / 8 harm. Position дал -6.7 п.п., Environment
+-13.3 п.п.; query multiplier 1.20x, $J_{0.025}$ также хуже H16. Integrity и
+100% max-value fidelity прошли. Подробный результат:
+[`FACTOR_ROUTED_REQUERY_TRANSFER_RESULTS_20260830.md`](FACTOR_ROUTED_REQUERY_TRANSFER_RESULTS_20260830.md).
+
+Новое решение по приоритетам:
+
+1. `maxV-H16` остаётся broad closed-loop baseline.
+2. Fixed H8, raw gripper-transition H8/H16 и coarse factor router закрыты как
+   универсальные политики.
+3. Не строить новые task/factor exception tables на transfer split.
+4. Следующий execution method должен предсказывать **знак state-level VoF**:
+   продолжить текущий contact plan или получить новое observation/recovery.
+5. Offline gate должен использовать exact-state H16 против H8->requery
+   branches, grouped task/init holdout и отдельно штрафовать drop/wrong-object.
+6. Semantic consequence и real contact/proprio имеют приоритет над ещё одним
+   scalar internal-copy uncertainty score.
 
 Ближайший сильный результат должен отвечать не «uncertainty коррелирует с
 ошибкой», а одному из двух утверждений:
@@ -559,3 +1274,26 @@ official safety violation.
 - более ранний feedback причинно повышает success при контролируемой цене; или
 - action-conditioned robust evaluator выбирает лучший candidate на held-out
   OOD cases и уменьшает task-critical failures.
+
+### Завершённый confirmatory этап P2
+
+28 августа formula/features/$\alpha$ factor-specific H16 ridge были заморожены
+до просмотра новых labels. Campaign собрала 240 exact-state states: 80 Object,
+80 Environment и 80 Position. Query indices фиксированы как `0,3,6,9`; phase
+не управляла sampling.
+
+Primary gate использует strict replay subset, не менее 20 независимых
+`task/init` на factor и 5000-resample grouped bootstrap. Требуется отрицательный
+regret delta на каждом factor и factor-macro CI целиком ниже нуля. Полный
+preregistered протокол:
+[`FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_PROTOCOL_20260828.md`](FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_PROTOCOL_20260828.md).
+
+Итог offline holdout: 230 strict states, 69 groups, macro regret -43.1%, gate
+PASS. Position дал сильный отдельный эффект (-66.6%, CI ниже нуля), Environment
+и Object -- положительные point estimates с individual CI через ноль. Следующий
+closed-loop тест использовал Environment 7-9, Object 8-9, Position x 4-5 / y
+8-9. Его terminal-SR gate не пройден: macro -0.28 п.п., CI
+`[-2.22; +1.39]`. Offline holdout:
+[`FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_RESULTS_20260828.md`](FROZEN_H16_CANDIDATE_RANKER_HOLDOUT_RESULTS_20260828.md).
+Closed-loop result:
+[`FROZEN_H16_CLOSED_LOOP_RESULTS_20260829.md`](FROZEN_H16_CLOSED_LOOP_RESULTS_20260829.md).

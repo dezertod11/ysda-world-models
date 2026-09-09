@@ -1,0 +1,11 @@
+factor,case_id,query_idx,states,heterogeneous_states,all_candidates_fail,top1_success_on_heterogeneous,within_state_pairwise_accuracy,misranked_rescues,misranking_margin_mean,misranking_margin_max,k4_to_k8_oracle_gains,k8_to_k16_oracle_gains,k4_to_k8_greedy_harms,k4_to_k8_greedy_rescues,k8_to_k16_greedy_harms,k8_to_k16_greedy_rescues
+Environment,proposal_k16_environment_task0,0,5,0,5,,,0,,,0,0,0,0,0,0
+Environment,proposal_k16_environment_task0,3,5,0,5,,,0,,,0,0,0,0,0,0
+Environment,proposal_k16_environment_task2,0,5,0,5,,,0,,,0,0,0,0,0,0
+Environment,proposal_k16_environment_task2,3,5,0,5,,,0,,,0,0,0,0,0,0
+Object,proposal_k16_object_task0,0,5,4,1,0.75,0.49793019480519474,1,0.002857774496078491,0.002857774496078491,0,0,0,1,0,1
+Object,proposal_k16_object_task0,3,5,3,1,0.3333333333333333,0.42367077367077366,2,0.00017282366752624512,0.00023052096366882324,0,0,1,0,1,1
+Position,proposal_k16_position_x0p3_task0,0,5,0,5,,,0,,,0,0,0,0,0,0
+Position,proposal_k16_position_x0p3_task0,3,5,0,5,,,0,,,0,0,0,0,0,0
+Position,proposal_k16_position_y0p3_task0,0,5,2,3,0.0,0.5083333333333333,2,0.0019872337579727173,0.0038079917430877686,1,0,1,0,0,0
+Position,proposal_k16_position_y0p3_task0,3,5,0,5,,,0,,,0,0,0,0,0,0

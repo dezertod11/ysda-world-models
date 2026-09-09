@@ -1,0 +1,26 @@
+[
+  {
+    "label": "first",
+    "strategy": "first",
+    "density_weight": 0.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 1
+  },
+  {
+    "label": "max_value",
+    "strategy": "max_value",
+    "density_weight": 0.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  {
+    "label": "winner",
+    "strategy": "trajectory_medoid",
+    "density_weight": 1.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  }
+]

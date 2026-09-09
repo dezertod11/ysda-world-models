@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "terminal_critic_development": {
+      "description": "Outcome-independent q0/q3 terminal branches for terminal-grounded critic fit and calibration",
+      "jobs": [
+        {
+          "name": "object_development_tasks0_2",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_development",
+          "experiment_split": "development",
+          "suites": "libero_object_object",
+          "task_ids": "0-2",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 1,
+          "base_seed": 4100000,
+          "target_decision_states": 30
+        },
+        {
+          "name": "object_development_tasks3_5",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_development",
+          "experiment_split": "development",
+          "suites": "libero_object_object",
+          "task_ids": "3-5",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 1,
+          "base_seed": 4200000,
+          "target_decision_states": 30
+        },
+        {
+          "name": "object_calibration_task6",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_calibration",
+          "experiment_split": "calibration",
+          "suites": "libero_object_object",
+          "task_ids": "6",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 1,
+          "base_seed": 4300000,
+          "target_decision_states": 10
+        },
+        {
+          "name": "object_calibration_task7",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_calibration",
+          "experiment_split": "calibration",
+          "suites": "libero_object_object",
+          "task_ids": "7",
+          "init_state_ids": "0-4",
+          "rollouts_per_init": 1,
+          "base_seed": 4400000,
+          "target_decision_states": 10
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5,6,7",
+    "max_timesteps": 280,
+    "sampling_mode": "fixed_queries",
+    "snapshot_query_indices": "0,3",
+    "phase_cap_fraction": 1.0,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "continuation_num_candidates": 2,
+    "skip_feedback_branch": true,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average"
+  }
+}

@@ -1,0 +1,7 @@
+factor,metric,groups,point,ci_low,ci_high
+Object,success_delta,10,0.0,0.0,0.0
+Object,utility_delta,10,0.0,0.0,0.0
+Object,risk_delta,10,0.0,0.0,0.0
+All,success_delta,10,0.0,0.0,0.0
+All,utility_delta,10,0.0,0.0,0.0
+All,risk_delta,10,0.0,0.0,0.0

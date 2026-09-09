@@ -1,0 +1,9 @@
+{
+  "snapshots": 240,
+  "unique_analysis_snapshots": 240,
+  "candidate_outcomes": 1440,
+  "terminal_snapshots": 0,
+  "replay_integrity_failures_1e_9": 10,
+  "strict_integrity_snapshots": 230,
+  "output_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/frozen_h16_ranker_holdout_20260828__dense_relabel/analysis/counterfactual_feedback"
+}

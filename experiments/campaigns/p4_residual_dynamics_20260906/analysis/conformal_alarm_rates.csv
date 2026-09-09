@@ -1,0 +1,9 @@
+scope,factor,groups,threshold,alarm_rate
+matched_query,ID test,56,0.0,0.0
+matched_query,Environment,139,0.0,0.0
+matched_query,Object,37,0.0,0.0
+matched_query,Position,75,0.0,0.0
+all_queries,ID test,56,0.0,0.0
+all_queries,Environment,148,0.0,0.0
+all_queries,Object,45,0.0,0.0
+all_queries,Position,96,0.0,0.0

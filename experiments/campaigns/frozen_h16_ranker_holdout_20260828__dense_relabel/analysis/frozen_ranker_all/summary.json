@@ -1,0 +1,19 @@
+{
+  "model_name": "factor_h16_dense_ridge_v1",
+  "model_frozen_payload_sha256": "086dfebd71040c3b8512d9e9cc25151dd95fdc19d68b60a3a990f563924cfbbb",
+  "target": "dense_utility_v2",
+  "candidate_rows": 1440,
+  "snapshots": 240,
+  "independent_groups": 69,
+  "bootstrap_draws": 5000,
+  "bootstrap_seed": 20260828,
+  "gate": {
+    "passed": true,
+    "required_groups_per_factor": 20,
+    "enough_independent_groups": true,
+    "every_factor_regret_improves": true,
+    "macro_ci95_upper_below_zero": true,
+    "no_train_holdout_group_overlap": true,
+    "overlapping_groups": []
+  }
+}

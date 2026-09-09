@@ -1,0 +1,10 @@
+campaign,factor,snapshots,independent_groups,candidates_min,candidates_max,heterogeneous_snapshots,success_rescues,utility_rescues,all_candidates_fail,all_candidates_succeed,maxv_sr,oracle_sr,maxv_utility,oracle_utility,oracle_gap_pp,rescue_rate
+proposal_opportunity_k16_20260830,Object,10,5,16,16,7,3,3,2,1,0.5,0.8,1.4,2.4,30.000000000000004,0.3
+counterfactual_feedback_dense_relabel_20260827,Object,19,12,4,4,5,2,2,0,14,0.8947368421052632,1.0,2.6842105263157894,3.0,10.526315789473683,0.10526315789473684
+proposal_opportunity_k16_20260830,Position,20,5,16,16,2,2,5,18,0,0.0,0.1,-0.075,0.3,10.0,0.1
+terminal_grounded_critic_20260829__development,Object,80,40,8,8,8,5,5,1,71,0.925,0.9875,2.75,2.9625,6.25,0.0625
+counterfactual_feedback_dense_relabel_20260827,Environment,20,18,4,4,0,0,2,11,9,0.45,0.45,1.275,1.325,0.0,0.0
+proposal_opportunity_k16_20260830,Environment,20,10,16,16,0,0,1,20,0,0.0,0.0,-0.025,0.0,0.0,0.0
+terminal_grounded_critic_20260829__holdout,Object,20,10,8,8,0,0,0,0,20,1.0,1.0,3.0,3.0,0.0,0.0
+counterfactual_feedback_dense_relabel_20260827,Position,13,2,4,4,1,0,1,4,8,0.6923076923076923,0.6923076923076923,2.0,2.0384615384615383,0.0,0.0
+counterfactual_feedback_h32_dense_relabel_20260827,Object,1,1,6,6,1,0,0,0,0,1.0,1.0,3.0,3.0,0.0,0.0

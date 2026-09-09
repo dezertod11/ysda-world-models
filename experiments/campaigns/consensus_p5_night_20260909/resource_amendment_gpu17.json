@@ -1,0 +1,10 @@
+{
+  "reason": "User explicitly expanded permitted physical GPUs from 3-7 to 1-7 on 2026-09-09; GPU0 remains reserved.",
+  "original_freeze_sha256": "8c6665496fb3416832ef8fd08f9dcd196ed87aeba8dc9618ba7ea4d5901f5c6b",
+  "old_launcher_sha256": "1d5a9af7c80c63d1519056a11fa6882eacbda539a27e2ca274f105597594b6f8",
+  "new_launcher_sha256": "8eeec255a3998b7dad3fdf317e84a2b81cd628daf8cc192346ca85023802088c",
+  "gpu_ids": [1, 2, 3, 4, 5, 6, 7],
+  "paired_episode_resume": true,
+  "method_configuration_changed": false,
+  "original_launcher_backup": "resource_gpu17_backup/run_consensus_valid_support_night.py"
+}

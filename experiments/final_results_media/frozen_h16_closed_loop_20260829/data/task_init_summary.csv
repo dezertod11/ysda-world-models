@@ -1,0 +1,46 @@
+factor,case_id,suite,task_id,task_description,init_state_id,paired_rollouts,max_value_sr,frozen_ranker_sr,sr_delta,frozen_gains,frozen_losses
+Environment,frozen_closed_loop__Environment,libero_object_env,7,pick up the milk and place it in the basket,5,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,7,pick up the milk and place it in the basket,6,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,7,pick up the milk and place it in the basket,7,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,7,pick up the milk and place it in the basket,8,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,7,pick up the milk and place it in the basket,9,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,8,pick up the chocolate pudding and place it in the basket,5,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,8,pick up the chocolate pudding and place it in the basket,6,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,8,pick up the chocolate pudding and place it in the basket,7,8,0.875,0.875,0.0,1,1
+Environment,frozen_closed_loop__Environment,libero_object_env,8,pick up the chocolate pudding and place it in the basket,8,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,8,pick up the chocolate pudding and place it in the basket,9,8,0.0,0.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,9,pick up the orange juice and place it in the basket,5,8,1.0,1.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,9,pick up the orange juice and place it in the basket,6,8,1.0,1.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,9,pick up the orange juice and place it in the basket,7,8,1.0,0.875,-0.125,0,1
+Environment,frozen_closed_loop__Environment,libero_object_env,9,pick up the orange juice and place it in the basket,8,8,1.0,1.0,0.0,0,0
+Environment,frozen_closed_loop__Environment,libero_object_env,9,pick up the orange juice and place it in the basket,9,8,0.75,0.375,-0.375,0,3
+Object,frozen_closed_loop__Object,libero_object_object,8,pick up the chocolate pudding and place it in the basket,5,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,8,pick up the chocolate pudding and place it in the basket,6,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,8,pick up the chocolate pudding and place it in the basket,7,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,8,pick up the chocolate pudding and place it in the basket,8,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,8,pick up the chocolate pudding and place it in the basket,9,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,9,pick up the orange juice and place it in the basket,5,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,9,pick up the orange juice and place it in the basket,6,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,9,pick up the orange juice and place it in the basket,7,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,9,pick up the orange juice and place it in the basket,8,12,1.0,1.0,0.0,0,0
+Object,frozen_closed_loop__Object,libero_object_object,9,pick up the orange juice and place it in the basket,9,12,1.0,1.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,4,pick up the ketchup and place it in the basket,5,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,4,pick up the ketchup and place it in the basket,6,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,4,pick up the ketchup and place it in the basket,7,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,4,pick up the ketchup and place it in the basket,8,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,4,pick up the ketchup and place it in the basket,9,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,5,pick up the tomato sauce and place it in the basket,5,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,5,pick up the tomato sauce and place it in the basket,6,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,5,pick up the tomato sauce and place it in the basket,7,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,5,pick up the tomato sauce and place it in the basket,8,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_x0p3,libero_object_temp,5,pick up the tomato sauce and place it in the basket,9,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,8,pick up the chocolate pudding and place it in the basket,5,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,8,pick up the chocolate pudding and place it in the basket,6,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,8,pick up the chocolate pudding and place it in the basket,7,6,0.0,0.16666666666666666,0.16666666666666666,1,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,8,pick up the chocolate pudding and place it in the basket,8,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,8,pick up the chocolate pudding and place it in the basket,9,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,9,pick up the orange juice and place it in the basket,5,6,0.0,0.16666666666666666,0.16666666666666666,1,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,9,pick up the orange juice and place it in the basket,6,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,9,pick up the orange juice and place it in the basket,7,6,0.0,0.16666666666666666,0.16666666666666666,1,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,9,pick up the orange juice and place it in the basket,8,6,0.0,0.0,0.0,0,0
+Position,frozen_closed_loop__Position_y0p3,libero_object_temp,9,pick up the orange juice and place it in the basket,9,6,0.0,0.0,0.0,0,0

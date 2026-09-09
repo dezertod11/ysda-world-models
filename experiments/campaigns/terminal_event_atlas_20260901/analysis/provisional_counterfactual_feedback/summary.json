@@ -1,0 +1,9 @@
+{
+  "snapshots": 571,
+  "unique_analysis_snapshots": 571,
+  "candidate_outcomes": 2284,
+  "terminal_snapshots": 571,
+  "replay_integrity_failures_1e_9": 17,
+  "strict_integrity_snapshots": 554,
+  "output_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/terminal_event_atlas_20260901/analysis/provisional_counterfactual_feedback"
+}

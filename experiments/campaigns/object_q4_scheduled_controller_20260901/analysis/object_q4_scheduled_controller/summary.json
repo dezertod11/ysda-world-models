@@ -1,0 +1,61 @@
+{
+  "integrity": {
+    "trace_files": 10,
+    "episode_counts": {
+      "maxV-H16": 100,
+      "maxV-Q4-H8-requery-H8": 100
+    },
+    "paired_state_count": 100,
+    "identical_state_sets": true,
+    "suite_matches": true,
+    "task_ids_match": true,
+    "init_state_ids_match": true,
+    "split_values": [
+      "generalization"
+    ],
+    "all_max_value_selected": true,
+    "schedule_valid": true,
+    "strict_prefix_pairs": 40,
+    "minimum_strict_prefix_pairs": 95,
+    "max_sim_state_difference": 2.553464134235127,
+    "max_candidate_value_difference": 0.240545392036438,
+    "max_candidate_first_action_difference": 2.0140424966812134,
+    "valid": false
+  },
+  "gates": {
+    "integrity_pass": false,
+    "practical_gate_pass": false,
+    "confirmatory_gate_pass": false
+  },
+  "nominal": {
+    "subset": "nominal",
+    "pairs": 100,
+    "baseline_success_rate": 0.46,
+    "method_success_rate": 0.57,
+    "success_delta": 0.11,
+    "success_delta_ci_low": -0.01,
+    "success_delta_ci_high": 0.23,
+    "rescues": 24,
+    "harms": 13,
+    "mcnemar_pvalue": 0.09887174959294498,
+    "adjusted_delta": 0.08500000000000002,
+    "baseline_mean_queries": 14.66,
+    "method_mean_queries": 14.84
+  },
+  "strict": {
+    "subset": "strict",
+    "pairs": 40,
+    "baseline_success_rate": 0.375,
+    "method_success_rate": 0.525,
+    "success_delta": 0.15,
+    "success_delta_ci_low": -0.05,
+    "success_delta_ci_high": 0.35,
+    "rescues": 12,
+    "harms": 6,
+    "mcnemar_pvalue": 0.237884521484375,
+    "adjusted_delta": 0.12500000000000003,
+    "baseline_mean_queries": 15.6,
+    "method_mean_queries": 15.65
+  },
+  "report": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_scheduled_controller_20260901/analysis/object_q4_scheduled_controller/RESULTS.md"
+}

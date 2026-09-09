@@ -1,0 +1,4 @@
+phase,states,independent_groups,mean_dense_vof,positive_dense_rate,terminal_rescues,terminal_harms
+approach,29,14,-0.01387050696424461,0.20689655172413793,3,0
+grasp,17,11,-0.039704853882506955,0.35294117647058826,1,1
+transport,21,12,0.021524034610675893,0.6190476190476191,0,0

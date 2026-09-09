@@ -1,0 +1,15 @@
+{
+  "candidate_tables": 10,
+  "candidate_count": 16,
+  "states": 50,
+  "heterogeneous_states": 9,
+  "misranked_rescues": 5,
+  "top1_success_on_heterogeneous": 0.4444444444444444,
+  "within_state_pairwise_accuracy": 0.47548886298886306,
+  "misranking_margin_median": 0.00023052096366882324,
+  "misranking_margin_max": 0.0038079917430877686,
+  "k4_to_k8_oracle_gains": 1,
+  "k8_to_k16_oracle_gains": 0,
+  "k4_to_k8_greedy_harms": 2,
+  "k8_to_k16_greedy_harms": 1
+}

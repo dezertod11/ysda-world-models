@@ -1,0 +1,12 @@
+{
+  "pre_holdout_payload_sha256": "3187672846409cd5b3d59628b32058bc883512deae348833d716f52cb51e87b7",
+  "pre_holdout_frozen_at": "2026-08-30T01:21:22",
+  "postholdout_refit_payload_sha256": "900451c0517e727cca6359c7f6c441bbd5eae2626a0e0f2a75ed1e92c40051a9",
+  "postholdout_refit_frozen_at": "2026-08-30T01:40:48",
+  "differing_fields": [
+    "frozen_at",
+    "frozen_payload_sha256"
+  ],
+  "functional_parameters_exactly_equal": true,
+  "final_evaluation_uses_pre_holdout_artifact": true
+}

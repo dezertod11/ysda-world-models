@@ -1,0 +1,17 @@
+{
+  "states": 180,
+  "tasks": 9,
+  "task_init_clusters": 90,
+  "rescues": 0,
+  "harms": 0,
+  "raw_success_delta": 0.0,
+  "task_macro_success_delta": 0.0,
+  "adjusted_terminal_delta": -0.024999999999999994,
+  "success_delta_ci_low": 0.0,
+  "success_delta_ci_high": 0.0,
+  "mcnemar_pvalue": NaN,
+  "integrity_pass": false,
+  "practical_gate_pass": false,
+  "confirmatory_gate_pass": false,
+  "output_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/object_q4_requery_task_transfer_20260901/analysis/object_q4_task_transfer"
+}

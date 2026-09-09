@@ -1,0 +1,12 @@
+{
+  "suite_matches": true,
+  "task_matches": true,
+  "query_matches": true,
+  "development_overlap": [],
+  "unexpected_init_states": [],
+  "missing_init_states": [],
+  "duplicate_analysis_states": 0,
+  "observed_pairs": 60,
+  "target_pairs": 60,
+  "valid": true
+}

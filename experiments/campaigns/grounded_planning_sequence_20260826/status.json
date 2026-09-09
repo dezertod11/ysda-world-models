@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-27T20:49:23",
+  "pid": null,
+  "stage": "P1-P2-analysis",
+  "state": "partial",
+  "message": "P0 complete; P1/P2 analyzed with 272/300 snapshots; five extreme-position jobs missed phase-balanced targets"
+}

@@ -1,0 +1,4 @@
+task_id,states,commit_successes,route_successes,delta_success_states,rescues,harms,trigger_rate,mean_route_dense_delta
+5,26,26,26,0,0,0,0.5,0.004411926257359975
+8,13,8,9,1,1,0,0.5384615384615384,0.017790722742413428
+9,28,24,23,-1,0,1,0.6428571428571429,-0.020320259554327088

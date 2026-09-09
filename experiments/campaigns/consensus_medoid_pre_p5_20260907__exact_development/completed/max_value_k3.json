@@ -1,0 +1,8 @@
+{
+  "job": "max_value_k3",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-09-07T12:36:07",
+  "finished_at": "2026-09-07T13:58:40",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_medoid_pre_p5_20260907__exact_development/logs/max_value_k3.log"
+}

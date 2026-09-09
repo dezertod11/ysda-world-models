@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-04T17:05:15+00:00",
+  "source_oof_predictions": "/mnt/d/projects/ysda/ysda_word_models_pp/experiments/frozen_models/perception_regrasp_20260904/heatmap_localization_oof_predictions.csv",
+  "source_oof_sha256": "19fa60feaf95a4a04270fa4f58ae0d99ef8f5d6497f42e8708942e39d08ea5e0",
+  "calibration_policy": {
+    "confidence_lower_quantile": 0.05,
+    "workspace_lower_quantile": 0.01,
+    "workspace_upper_quantile": 0.99,
+    "workspace_margin_m": 0.06
+  },
+  "global_conservative_score_range": 39.579209327697754,
+  "global_threshold_provenance": "smallest P3b development threshold with >=10% coverage and zero wrong-object outcomes; prospectively tested only in P3c",
+  "minimum_miss_distance_m": 0.08,
+  "maximum_reach_distance_m": 0.5,
+  "objects": {
+    "butter": {
+      "n_oof": 60,
+      "score_range_lower": 15.786628246307373,
+      "workspace_lower_xyz": [
+        -0.19087279483675954,
+        -0.3090028715133666,
+        -0.0513045223802329
+      ],
+      "workspace_upper_xyz": [
+        0.0954627170041203,
+        -0.0409589061141014,
+        0.27067152634263036
+      ]
+    },
+    "chocolate pudding": {
+      "n_oof": 74,
+      "score_range_lower": 28.814918518066406,
+      "workspace_lower_xyz": [
+        -0.18281498990952966,
+        -0.23318612620234486,
+        -0.046934522166848194
+      ],
+      "workspace_upper_xyz": [
+        -0.059889218509197165,
+        -0.04000000149011611,
+        0.0730654778331518
+      ]
+    },
+    "cream cheese": {
+      "n_oof": 14,
+      "score_range_lower": 19.613383197784422,
+      "workspace_lower_xyz": [
+        -0.0144605202972889,
+        0.0464540073275566,
+        -0.0510785229876638
+      ],
+      "workspace_upper_xyz": [
+        0.113155705332756,
+        0.1739915660023689,
+        0.0689214770123362
+      ]
+    },
+    "ketchup": {
+      "n_oof": 38,
+      "score_range_lower": 7.541533684730529,
+      "workspace_lower_xyz": [
+        -0.18816681876778596,
+        -0.23905565366148948,
+        0.012405437603592806
+      ],
+      "workspace_upper_xyz": [
+        -0.03631081059575078,
+        -0.039997587502002704,
+        0.32933012694120406
+      ]
+    },
+    "milk": {
+      "n_oof": 38,
+      "score_range_lower": 33.46657390594483,
+      "workspace_lower_xyz": [
+        -0.18440910123288626,
+        -0.17744183875620362,
+        0.009735474884510001
+      ],
+      "workspace_upper_xyz": [
+        -0.05120388142764565,
+        -0.034956866577267584,
+        0.12973547488450998
+      ]
+    },
+    "orange juice": {
+      "n_oof": 56,
+      "score_range_lower": 25.13310718536377,
+      "workspace_lower_xyz": [
+        -0.15078680202364916,
+        -0.09302775416523214,
+        0.009731029123067836
+      ],
+      "workspace_upper_xyz": [
+        0.11321452375501388,
+        0.12339437011629338,
+        0.3595465964078903
+      ]
+    },
+    "salad dressing": {
+      "n_oof": 32,
+      "score_range_lower": 18.343602180480957,
+      "workspace_lower_xyz": [
+        -0.2028812317550182,
+        -0.20289715059101573,
+        0.005941327214241024
+      ],
+      "workspace_upper_xyz": [
+        -0.023353669643402034,
+        0.01425866641104228,
+        0.3428807565569878
+      ]
+    },
+    "tomato sauce": {
+      "n_oof": 76,
+      "score_range_lower": 14.163268327713011,
+      "workspace_lower_xyz": [
+        -0.16299219936132425,
+        -0.1599392047524452,
+        -0.021607442237436852
+      ],
+      "workspace_upper_xyz": [
+        0.11299036484211675,
+        0.1700607961416244,
+        0.24887959048151964
+      ]
+    }
+  }
+}

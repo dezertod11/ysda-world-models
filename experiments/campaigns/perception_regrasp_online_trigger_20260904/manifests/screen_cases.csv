@@ -1,0 +1,13 @@
+case_id,split,suite,position_level,task_id,init_state_id,rollout_id,rollout_seed,independent_group
+p3c_screen__x0p2__task5__init25__rollout0,screen,libero_object_temp,x0.2,5,25,0,48189255,x0.2|task5|init25
+p3c_screen__x0p2__task5__init25__rollout1,screen,libero_object_temp,x0.2,5,25,1,40673457,x0.2|task5|init25
+p3c_screen__x0p2__task5__init26__rollout0,screen,libero_object_temp,x0.2,5,26,0,48956610,x0.2|task5|init26
+p3c_screen__x0p2__task5__init26__rollout1,screen,libero_object_temp,x0.2,5,26,1,45424364,x0.2|task5|init26
+p3c_screen__y0p2__task4__init25__rollout0,screen,libero_object_temp,y0.2,4,25,0,48607947,y0.2|task4|init25
+p3c_screen__y0p2__task4__init25__rollout1,screen,libero_object_temp,y0.2,4,25,1,45546812,y0.2|task4|init25
+p3c_screen__y0p2__task4__init26__rollout0,screen,libero_object_temp,y0.2,4,26,0,42495526,y0.2|task4|init26
+p3c_screen__y0p2__task4__init26__rollout1,screen,libero_object_temp,y0.2,4,26,1,47044038,y0.2|task4|init26
+p3c_screen__y0p2__task6__init25__rollout0,screen,libero_object_temp,y0.2,6,25,0,49178531,y0.2|task6|init25
+p3c_screen__y0p2__task6__init25__rollout1,screen,libero_object_temp,y0.2,6,25,1,48493720,y0.2|task6|init25
+p3c_screen__y0p2__task6__init26__rollout0,screen,libero_object_temp,y0.2,6,26,0,43918232,y0.2|task6|init26
+p3c_screen__y0p2__task6__init26__rollout1,screen,libero_object_temp,y0.2,6,26,1,48365299,y0.2|task6|init26

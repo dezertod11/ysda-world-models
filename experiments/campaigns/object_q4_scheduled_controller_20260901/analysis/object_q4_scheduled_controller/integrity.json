@@ -1,0 +1,23 @@
+{
+  "trace_files": 10,
+  "episode_counts": {
+    "maxV-H16": 100,
+    "maxV-Q4-H8-requery-H8": 100
+  },
+  "paired_state_count": 100,
+  "identical_state_sets": true,
+  "suite_matches": true,
+  "task_ids_match": true,
+  "init_state_ids_match": true,
+  "split_values": [
+    "generalization"
+  ],
+  "all_max_value_selected": true,
+  "schedule_valid": true,
+  "strict_prefix_pairs": 40,
+  "minimum_strict_prefix_pairs": 95,
+  "max_sim_state_difference": 2.553464134235127,
+  "max_candidate_value_difference": 0.240545392036438,
+  "max_candidate_first_action_difference": 2.0140424966812134,
+  "valid": false
+}

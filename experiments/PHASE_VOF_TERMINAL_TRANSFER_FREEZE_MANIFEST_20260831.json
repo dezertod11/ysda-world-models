@@ -1,0 +1,24 @@
+{
+  "experiment": "phase_vof_terminal_transfer_20260831",
+  "frozen_at": "2026-08-31T16:24:18+03:00",
+  "protocol_status": "preregistered_before GPU launch",
+  "files": {
+    "experiments/PHASE_VOF_TERMINAL_TRANSFER_PROTOCOL_20260831.md": "06738936941a40b0f5f70db14237c268b2697e2fbcbe50a237b07ff86a963e97",
+    "experiments/configs/libero_campaign_phase_vof_terminal_transfer.json": "692344d9aa4bf1411492a192b5cdd1c4f2917ce59eda9d7b21401b02c5064d7e",
+    "scripts/counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "scripts/collect_counterfactual_feedback.py": "a00ae9ddebb98914577208cdedec012008cbd8185501a7ff39dc6a5e13692012",
+    "scripts/run_libero_experiment_campaign.py": "51c6521dc57b1ab2f5f049ec862b4fc3fc7f59c96ac86251257997ca357e7450",
+    "scripts/run_libero_pro_counterfactual_feedback_collect.sh": "1d2f5d42e592ec188eef5accb65921a88114a12c579dedda2595ece699878ce7",
+    "scripts/relabel_counterfactual_dense.py": "55658669cb61ec26ce5fe21102a2441c997669afd8856026e0d59fd5ec62fc15",
+    "scripts/relabel_counterfactual_dense_campaign.py": "84bd91120a3b116b85af4ba0e2c7092209dc30c39f82c48e2e7fdee5fb10c43d",
+    "scripts/analyze_phase_vof_terminal_transfer.py": "ccdf0393e89fce0f693b8659f3950e0003c91546367b9f09ff4c3290b024a071",
+    "scripts/run_phase_vof_terminal_transfer_sequence.sh": "96533c3373976c82d11b1298684a3fa52608af9e1d80fc46b8b86178ad04eedf",
+    "tests/test_counterfactual_feedback_utils.py": "47c1bc22583533ff30dd1a375126ebd988ab5d9c6d717c798643ada8507a4d3e",
+    "tests/test_phase_vof_terminal_transfer.py": "87ad58bc503fd00b76961570624cc3a3c11d36fdfb70e0c91e1a832688f38365"
+  },
+  "validation": {
+    "targeted_tests": "20 passed",
+    "campaign_dry_run": "passed",
+    "gpu_assignment": [2, 3, 7]
+  }
+}

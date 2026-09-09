@@ -1,0 +1,9 @@
+{
+  "repetitions": 10000,
+  "seed": 20260904,
+  "observed_adjusted_gain": 0.12333333333333332,
+  "null_mean_adjusted_gain": 0.0024866666666666644,
+  "null_p95_adjusted_gain": 0.056666666666666664,
+  "exceedances": 4,
+  "randomization_pvalue": 0.0004999500049995
+}

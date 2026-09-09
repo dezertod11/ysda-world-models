@@ -1,0 +1,8 @@
+{
+  "job": "position_x0p2_task9_init15_24",
+  "gpu": "2",
+  "status": "completed",
+  "started_at": "2026-09-03T14:39:40",
+  "finished_at": "2026-09-03T15:19:37",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/invariant_cate_reserve_holdout_20260903/logs/position_x0p2_task9_init15_24.log"
+}

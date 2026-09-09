@@ -8,9 +8,12 @@ import concurrent.futures
 import copy
 import json
 import os
+import queue
 import shlex
 import subprocess
 import sys
+import threading
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
@@ -38,7 +41,9 @@ def load_campaign(path: Path) -> Dict[str, Any]:
     return data
 
 
-def expand_jobs(profile: Mapping[str, Any], defaults: Mapping[str, Any]) -> List[Dict[str, Any]]:
+def expand_jobs(
+    profile: Mapping[str, Any], defaults: Mapping[str, Any]
+) -> List[Dict[str, Any]]:
     jobs: List[Dict[str, Any]] = []
     for raw_job in profile.get("jobs", []):
         job = dict(defaults)
@@ -91,7 +96,14 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
     if any(task_id < 0 for task_id in task_ids):
         raise ValueError(f"{job['name']}: task ids must be non-negative")
     experiment_split = str(job.get("experiment_split", "unspecified"))
-    valid_splits = {"unspecified", "screen", "calibration", "holdout", "generalization"}
+    valid_splits = {
+        "unspecified",
+        "screen",
+        "development",
+        "calibration",
+        "holdout",
+        "generalization",
+    }
     if experiment_split not in valid_splits:
         raise ValueError(
             f"{job['name']}: invalid experiment_split={experiment_split!r}; "
@@ -110,7 +122,9 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
                 "LIBERO-Safety is not set up. Run scripts/setup_mlspace_libero_safety.sh first."
             )
         if any(task_id >= 15 for task_id in task_ids):
-            raise ValueError(f"{job['name']}: LIBERO-Safety flattened task ids are 0..14")
+            raise ValueError(
+                f"{job['name']}: LIBERO-Safety flattened task ids are 0..14"
+            )
         for suite in str(job["suites"]).split(","):
             suite = suite.strip()
             if not suite:
@@ -132,8 +146,55 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
         "pro_counterfactual_feedback",
         "pro_position_counterfactual_feedback",
         "pro_environment_counterfactual_feedback",
+        "pro_position_recovery_proposals",
+        "pro_position_perception_calibration",
     }:
         raise ValueError(f"{job['name']}: unsupported kind {kind}")
+
+    strategy_items = str(job.get("strategy_lambdas", "")).split()
+    uses_frozen_ranker = any(
+        item.split(":", 1)[0] == "frozen_factor_ridge" for item in strategy_items
+    )
+    if uses_frozen_ranker:
+        model_path = Path(str(job.get("planning_frozen_ranker_model", "")))
+        if not model_path.is_absolute():
+            model_path = PROJECT_ROOT / model_path
+        if not model_path.is_file():
+            raise FileNotFoundError(
+                f"{job['name']}: frozen ranker model does not exist: {model_path}"
+            )
+        factor = str(job.get("planning_frozen_ranker_factor", ""))
+        if factor not in {"Environment", "Object", "Position"}:
+            raise ValueError(
+                f"{job['name']}: invalid planning_frozen_ranker_factor={factor!r}"
+            )
+    uses_terminal_critic = any(
+        item.split(":", 1)[0] == "terminal_grounded_critic" for item in strategy_items
+    )
+    if uses_terminal_critic:
+        model_path = Path(str(job.get("planning_terminal_critic_model", "")))
+        if not model_path.is_absolute():
+            model_path = PROJECT_ROOT / model_path
+        if not model_path.is_file():
+            raise FileNotFoundError(
+                f"{job['name']}: terminal critic model does not exist: {model_path}"
+            )
+        factor = str(job.get("planning_terminal_critic_factor", ""))
+        if factor not in {"Environment", "Object", "Position"}:
+            raise ValueError(
+                f"{job['name']}: invalid planning_terminal_critic_factor={factor!r}"
+            )
+
+    if kind == "pro_position_recovery_proposals" and "perception_regrasp" in str(
+        job.get("recovery_proposals", "")
+    ):
+        perception_path = Path(str(job.get("recovery_perception_model", "")))
+        if not perception_path.is_absolute():
+            perception_path = PROJECT_ROOT / perception_path
+        if not perception_path.is_file():
+            raise FileNotFoundError(
+                f"{job['name']}: perception regrasp model does not exist: {perception_path}"
+            )
 
     libero_root = PROJECT_ROOT / "LIBERO-PRO/libero/libero"
     for suite in str(job["suites"]).split(","):
@@ -144,6 +205,8 @@ def validate_job_inputs(job: Mapping[str, Any]) -> None:
             "pro_position_paired",
             "pro_position_planning_grid",
             "pro_position_counterfactual_feedback",
+            "pro_position_recovery_proposals",
+            "pro_position_perception_calibration",
         }:
             source_name = f"libero_object_temp_{job['position_level']}"
         elif kind in {
@@ -173,6 +236,12 @@ def _common_pro_paired_env(
     config_dir: Path,
 ) -> Dict[str, str]:
     prefix = "LIBERO_PRO_PAIRED_"
+    frozen_model = str(job.get("planning_frozen_ranker_model", ""))
+    if frozen_model and not Path(frozen_model).is_absolute():
+        frozen_model = str(PROJECT_ROOT / frozen_model)
+    terminal_model = str(job.get("planning_terminal_critic_model", ""))
+    if terminal_model and not Path(terminal_model).is_absolute():
+        terminal_model = str(PROJECT_ROOT / terminal_model)
     return {
         "LIBERO_CONFIG_PATH": str(config_dir),
         f"{prefix}RUN_NAME": run_name,
@@ -233,12 +302,25 @@ def _common_pro_paired_env(
         f"{prefix}PLANNING_UNCERTAINTY_MARGIN": str(
             job.get("planning_uncertainty_margin", 0.0)
         ),
-        f"{prefix}PLANNING_PHASE_FRACTION": str(job.get("planning_phase_fraction", 0.5)),
+        f"{prefix}PLANNING_PHASE_FRACTION": str(
+            job.get("planning_phase_fraction", 0.5)
+        ),
         f"{prefix}PLANNING_SHORT_OPEN_LOOP_STEPS": str(
             job.get("planning_short_open_loop_steps", 8)
         ),
+        f"{prefix}PLANNING_SCHEDULED_REQUERY_QUERY_IDX": str(
+            job.get("planning_scheduled_requery_query_idx", 4)
+        ),
         f"{prefix}PLANNING_SURROGATE_ERROR_THRESHOLD": str(
             job.get("planning_surrogate_error_threshold", 0.08841767562905925)
+        ),
+        f"{prefix}PLANNING_FROZEN_RANKER_MODEL": frozen_model,
+        f"{prefix}PLANNING_FROZEN_RANKER_FACTOR": str(
+            job.get("planning_frozen_ranker_factor", "")
+        ),
+        f"{prefix}PLANNING_TERMINAL_CRITIC_MODEL": terminal_model,
+        f"{prefix}PLANNING_TERMINAL_CRITIC_FACTOR": str(
+            job.get("planning_terminal_critic_factor", "")
         ),
     }
 
@@ -262,7 +344,9 @@ def build_job(
             commands.append(
                 [
                     "bash",
-                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                    str(
+                        PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"
+                    ),
                     level,
                 ]
             )
@@ -270,7 +354,12 @@ def build_job(
             env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
             env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
         commands.append(
-            ["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_paired_prediction_collect.sh")]
+            [
+                "bash",
+                str(
+                    PROJECT_ROOT / "scripts/run_libero_pro_paired_prediction_collect.sh"
+                ),
+            ]
         )
         commands.append(
             [
@@ -284,11 +373,160 @@ def build_job(
         )
         return commands, env, completion_marker
 
+    if kind == "pro_position_perception_calibration":
+        level = str(job["position_level"])
+        manifest_path = Path(str(job["perception_calibration_manifest"]))
+        if not manifest_path.is_absolute():
+            manifest_path = PROJECT_ROOT / manifest_path
+        if not manifest_path.is_file():
+            raise FileNotFoundError(
+                f"{job['name']}: perception calibration manifest does not exist: {manifest_path}"
+            )
+        env = {
+            "LIBERO_CONFIG_PATH": str(config_dir),
+            "PERCEPTION_CALIBRATION_RUN_NAME": run_name,
+            "PERCEPTION_CALIBRATION_MANIFEST": str(manifest_path),
+            "PERCEPTION_CALIBRATION_POSITION_LEVEL": level,
+            "PERCEPTION_CALIBRATION_TASK_ID": str(job["task_ids"]),
+            "PERCEPTION_CALIBRATION_OUTPUT_DIR": str(run_dir / "runs"),
+            "PERCEPTION_CALIBRATION_MAX_STATES": str(
+                job.get("perception_calibration_max_states", 0)
+            ),
+            "PERCEPTION_CALIBRATION_RESUME": "1",
+        }
+        commands = [
+            [
+                "bash",
+                str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                level,
+            ]
+        ]
+        variant_root = PROJECT_ROOT / ".runtime/libero_pro_position" / level
+        env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+        env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+        commands.append(
+            [
+                "bash",
+                str(
+                    PROJECT_ROOT / "scripts/run_perception_regrasp_calibration_shard.sh"
+                ),
+            ]
+        )
+        return commands, env, completion_marker
+
+    if kind == "pro_position_recovery_proposals":
+        level = str(job["position_level"])
+        manifest_path = Path(str(job["recovery_manifest"]))
+        if not manifest_path.is_absolute():
+            manifest_path = PROJECT_ROOT / manifest_path
+        if not manifest_path.is_file():
+            raise FileNotFoundError(
+                f"{job['name']}: frozen recovery manifest does not exist: {manifest_path}"
+            )
+        perception_model = Path(str(job.get("recovery_perception_model", "")))
+        if str(perception_model) and not perception_model.is_absolute():
+            perception_model = PROJECT_ROOT / perception_model
+        env = {
+            "LIBERO_CONFIG_PATH": str(config_dir),
+            "LIBERO_PRO_RECOVERY_RUN_NAME": run_name,
+            "LIBERO_PRO_RECOVERY_MANIFEST": str(manifest_path),
+            "LIBERO_PRO_RECOVERY_POSITION_LEVEL": level,
+            "LIBERO_PRO_RECOVERY_TASK_ID": str(job["task_ids"]),
+            "LIBERO_PRO_RECOVERY_PROPOSALS": str(
+                job.get(
+                    "recovery_proposals",
+                    "frequent_requery_h4,lift_hold_h8,privileged_regrasp_h8",
+                )
+            ),
+            "LIBERO_PRO_RECOVERY_UNCERTAINTY_SEEDS": str(job["uncertainty_seeds"]),
+            "LIBERO_PRO_RECOVERY_BASE_SEED": str(job["base_seed"]),
+            "LIBERO_PRO_RECOVERY_MAX_TIMESTEPS": str(job["max_timesteps"]),
+            "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_ACTION": str(
+                job.get("num_denoising_steps_action", 5)
+            ),
+            "LIBERO_PRO_RECOVERY_PREDICTION_MODE": str(
+                job.get("prediction_mode", "parallel")
+            ),
+            "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_FUTURE_STATE": str(
+                job.get("num_denoising_steps_future_state", 1)
+            ),
+            "LIBERO_PRO_RECOVERY_NUM_DENOISING_STEPS_VALUE": str(
+                job.get("num_denoising_steps_value", 1)
+            ),
+            "LIBERO_PRO_RECOVERY_NUM_FUTURE_STATE_SAMPLES": str(
+                job.get("num_future_state_samples", 1)
+            ),
+            "LIBERO_PRO_RECOVERY_NUM_VALUE_SAMPLES": str(
+                job.get("num_value_samples", 1)
+            ),
+            "LIBERO_PRO_RECOVERY_PRIMITIVE_STEPS": str(
+                job.get("recovery_primitive_steps", 4)
+            ),
+            "LIBERO_PRO_RECOVERY_LIFT_DZ": str(job.get("recovery_lift_dz", 0.35)),
+            "LIBERO_PRO_RECOVERY_REPLAY_THRESHOLD": str(
+                job.get("recovery_replay_threshold", 1e-9)
+            ),
+            "LIBERO_PRO_RECOVERY_VIDEO_FPS": str(job.get("video_fps", 20)),
+            "LIBERO_PRO_RECOVERY_SAVE_VIDEOS": _as_bool_env(
+                job.get("save_videos", True)
+            ),
+            "LIBERO_PRO_RECOVERY_PERCEPTION_MODEL": (
+                str(perception_model)
+                if str(job.get("recovery_perception_model", ""))
+                else ""
+            ),
+            "LIBERO_PRO_RECOVERY_PERCEPTION_DEVICE": str(
+                job.get("recovery_perception_device", "cuda")
+            ),
+            "LIBERO_PRO_RECOVERY_PERCEPTION_MIN_CONFIDENCE": str(
+                job.get("recovery_perception_min_confidence", 0.0)
+            ),
+            "LIBERO_PRO_RECOVERY_MAX_STATES": str(job.get("recovery_max_states", 0)),
+            "LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": str(
+                int(job.get("recovery_expected_states", 10))
+                * len(
+                    [
+                        item
+                        for item in str(
+                            job.get(
+                                "recovery_proposals",
+                                "frequent_requery_h4,lift_hold_h8,privileged_regrasp_h8",
+                            )
+                        ).split(",")
+                        if item.strip()
+                    ]
+                )
+            ),
+            "LIBERO_PRO_RECOVERY_OUTPUT_DIR": str(run_dir / "runs"),
+            "LIBERO_PRO_RECOVERY_RESUME": "1",
+        }
+        commands = [
+            [
+                "bash",
+                str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                level,
+            ]
+        ]
+        variant_root = PROJECT_ROOT / ".runtime/libero_pro_position" / level
+        env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
+        env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
+        env["LIBERO_PRO_POSITION_LEVEL"] = level
+        commands.append(
+            ["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_recovery_proposals.sh")]
+        )
+        return commands, env, completion_marker
+
     if kind in {
         "pro_planning_grid",
         "pro_position_planning_grid",
         "pro_environment_planning_grid",
     }:
+        frozen_model = str(job.get("planning_frozen_ranker_model", ""))
+        if frozen_model and not Path(frozen_model).is_absolute():
+            frozen_model = str(PROJECT_ROOT / frozen_model)
+        terminal_model = str(job.get("planning_terminal_critic_model", ""))
+        if terminal_model and not Path(terminal_model).is_absolute():
+            terminal_model = str(PROJECT_ROOT / terminal_model)
         env = {
             "LIBERO_CONFIG_PATH": str(config_dir),
             "LIBERO_PRO_PLANNING_GRID_PREFIX": run_name,
@@ -303,7 +541,9 @@ def build_job(
             ),
             "LIBERO_PRO_PLANNING_GRID_MAX_TIMESTEPS": str(job["max_timesteps"]),
             "LIBERO_PRO_PLANNING_GRID_OUTPUT_DIR": str(run_dir / "runs"),
-            "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": str(run_dir / "analysis" / run_name),
+            "LIBERO_PRO_PLANNING_GRID_ANALYSIS_DIR": str(
+                run_dir / "analysis" / run_name
+            ),
             "LIBERO_PRO_PLANNING_GRID_STRATEGY_LAMBDAS": str(job["strategy_lambdas"]),
             "LIBERO_PRO_PLANNING_GRID_NUM_OPEN_LOOP_STEPS": str(
                 job.get("num_open_loop_steps", 16)
@@ -363,8 +603,19 @@ def build_job(
             "LIBERO_PRO_PLANNING_GRID_SHORT_OPEN_LOOP_STEPS": str(
                 job.get("planning_short_open_loop_steps", 8)
             ),
+            "LIBERO_PRO_PLANNING_GRID_SCHEDULED_REQUERY_QUERY_IDX": str(
+                job.get("planning_scheduled_requery_query_idx", 4)
+            ),
             "LIBERO_PRO_PLANNING_GRID_SURROGATE_ERROR_THRESHOLD": str(
                 job.get("planning_surrogate_error_threshold", 0.08841767562905925)
+            ),
+            "LIBERO_PRO_PLANNING_GRID_FROZEN_RANKER_MODEL": frozen_model,
+            "LIBERO_PRO_PLANNING_GRID_FROZEN_RANKER_FACTOR": str(
+                job.get("planning_frozen_ranker_factor", "")
+            ),
+            "LIBERO_PRO_PLANNING_GRID_TERMINAL_CRITIC_MODEL": terminal_model,
+            "LIBERO_PRO_PLANNING_GRID_TERMINAL_CRITIC_FACTOR": str(
+                job.get("planning_terminal_critic_factor", "")
             ),
             "LIBERO_PRO_PAIRED_SAVE_VIDEOS": _as_bool_env(job["save_videos"]),
             "LIBERO_PRO_PAIRED_VIDEO_DIR": str(run_dir / "videos" / run_name),
@@ -381,7 +632,9 @@ def build_job(
             commands.append(
                 [
                     "bash",
-                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                    str(
+                        PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"
+                    ),
                     level,
                 ]
             )
@@ -393,16 +646,25 @@ def build_job(
             commands.append(
                 [
                     "bash",
-                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_environment_variant.sh"),
+                    str(
+                        PROJECT_ROOT
+                        / "scripts/prepare_libero_pro_environment_variant.sh"
+                    ),
                     str(job.get("environment_num_init_states", 50)),
                     str(job.get("environment_seed", 20260825)),
                 ]
             )
-            variant_root = PROJECT_ROOT / ".runtime/libero_pro_environment"
+            variant_root = Path(job.get("environment_root", PROJECT_ROOT / ".runtime/libero_pro_environment"))
+            if not variant_root.is_absolute():
+                variant_root = PROJECT_ROOT / variant_root
+            env["LIBERO_PRO_ENVIRONMENT_ROOT"] = str(variant_root)
             env["LIBERO_BDDL_FILES_PATH"] = str(variant_root / "bddl_files")
             env["LIBERO_INIT_STATES_PATH"] = str(variant_root / "init_files")
         commands.append(
-            ["bash", str(PROJECT_ROOT / "scripts/run_libero_pro_planning_strategy_grid.sh")]
+            [
+                "bash",
+                str(PROJECT_ROOT / "scripts/run_libero_pro_planning_strategy_grid.sh"),
+            ]
         )
         return commands, env, completion_marker
 
@@ -423,15 +685,41 @@ def build_job(
             "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": str(job["uncertainty_seeds"]),
             "LIBERO_PRO_VOF_MAX_TIMESTEPS": str(job["max_timesteps"]),
             "LIBERO_PRO_VOF_TARGET_DECISION_STATES": str(job["target_decision_states"]),
-            "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": str(job.get("phase_cap_fraction", 0.4)),
+            "LIBERO_PRO_VOF_SAMPLING_MODE": str(
+                job.get("sampling_mode", "phase_balanced")
+            ),
+            "LIBERO_PRO_VOF_SNAPSHOT_QUERY_INDICES": str(
+                job.get("snapshot_query_indices", "0,3,6,9")
+            ),
+            "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": str(
+                job.get("phase_cap_fraction", 0.4)
+            ),
+            "LIBERO_PRO_VOF_OPEN_LOOP_STEPS": str(job.get("open_loop_steps", 16)),
+            "LIBERO_PRO_VOF_CONSEQUENCE_HORIZON_STEPS": str(
+                job.get("consequence_horizon_steps", 16)
+            ),
             "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": str(
                 job.get("terminal_continuation_fraction", 0.2)
+            ),
+            "LIBERO_PRO_VOF_TERMINAL_SELECTED_FEEDBACK_ONLY": _as_bool_env(
+                job.get("terminal_selected_feedback_only", False)
+            ),
+            "LIBERO_PRO_VOF_CONTINUATION_NUM_CANDIDATES": str(
+                job.get("continuation_num_candidates", 0)
+            ),
+            "LIBERO_PRO_VOF_SKIP_FEEDBACK_BRANCH": _as_bool_env(
+                job.get("skip_feedback_branch", False)
             ),
             "LIBERO_PRO_VOF_QUERY_COST": str(job.get("query_cost", 0.0)),
             "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": str(
                 job.get("num_denoising_steps_action", 5)
             ),
-            "LIBERO_PRO_VOF_PREDICTION_MODE": str(job.get("prediction_mode", "parallel")),
+            "LIBERO_PRO_VOF_PREDICTION_MODE": str(
+                job.get("prediction_mode", "parallel")
+            ),
+            "LIBERO_PRO_VOF_CONTINUATION_PREDICTION_MODE": str(
+                job.get("continuation_prediction_mode", "inherit")
+            ),
             "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": str(
                 job.get("num_denoising_steps_future_state", 1)
             ),
@@ -458,7 +746,9 @@ def build_job(
             commands.append(
                 [
                     "bash",
-                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"),
+                    str(
+                        PROJECT_ROOT / "scripts/prepare_libero_pro_position_variant.sh"
+                    ),
                     level,
                 ]
             )
@@ -470,7 +760,10 @@ def build_job(
             commands.append(
                 [
                     "bash",
-                    str(PROJECT_ROOT / "scripts/prepare_libero_pro_environment_variant.sh"),
+                    str(
+                        PROJECT_ROOT
+                        / "scripts/prepare_libero_pro_environment_variant.sh"
+                    ),
                     str(job.get("environment_num_init_states", 10)),
                     str(job.get("environment_seed", 20260825)),
                 ]
@@ -481,7 +774,10 @@ def build_job(
         commands.append(
             [
                 "bash",
-                str(PROJECT_ROOT / "scripts/run_libero_pro_counterfactual_feedback_collect.sh"),
+                str(
+                    PROJECT_ROOT
+                    / "scripts/run_libero_pro_counterfactual_feedback_collect.sh"
+                ),
             ]
         )
         return commands, env, completion_marker
@@ -504,13 +800,21 @@ def build_job(
             f"{prefix}OUTPUT_DIR": str(run_dir / "runs"),
             f"{prefix}SAVE_VIDEOS": _as_bool_env(job["save_videos"]),
             f"{prefix}VIDEO_DIR": str(run_dir / "videos" / run_name),
-            f"{prefix}RECORD_DENOISING_TRACE": _as_bool_env(job["record_denoising_trace"]),
+            f"{prefix}RECORD_DENOISING_TRACE": _as_bool_env(
+                job["record_denoising_trace"]
+            ),
             f"{prefix}TERMINATE_ON_VIOLATION": _as_bool_env(
                 job.get("terminate_on_safety_violation", True)
             ),
         }
         commands = [
-            ["bash", str(PROJECT_ROOT / "scripts/run_libero_safety_paired_prediction_collect.sh")],
+            [
+                "bash",
+                str(
+                    PROJECT_ROOT
+                    / "scripts/run_libero_safety_paired_prediction_collect.sh"
+                ),
+            ],
             [
                 str(PROJECT_ROOT / ".venv-cosmos-safety/bin/python"),
                 str(PROJECT_ROOT / "scripts/analyze_libero_failure_modes.py"),
@@ -525,9 +829,13 @@ def build_job(
     raise ValueError(f"Unknown job kind: {kind}")
 
 
-def format_job_command(commands: Sequence[Sequence[str]], env: Mapping[str, str], gpu: str) -> str:
+def format_job_command(
+    commands: Sequence[Sequence[str]], env: Mapping[str, str], gpu: str
+) -> str:
     env_items = {"CUDA_VISIBLE_DEVICES": gpu, **env}
-    prefix = " ".join(f"{key}={shlex.quote(value)}" for key, value in sorted(env_items.items()))
+    prefix = " ".join(
+        f"{key}={shlex.quote(value)}" for key, value in sorted(env_items.items())
+    )
     rendered = [prefix + " " + shlex.join(list(command)) for command in commands]
     return "\n".join(rendered)
 
@@ -556,10 +864,12 @@ def run_job(
     started = datetime.now().isoformat(timespec="seconds")
     with log_path.open("a", encoding="utf-8") as log_file:
         log_file.write(f"\n[{started}] GPU={gpu} job={job_name}\n")
+        log_file.flush()
         for command in commands:
             rendered = shlex.join(command)
             print(f"[campaign] gpu={gpu} job={job_name}: {rendered}")
             log_file.write(f"$ {rendered}\n")
+            log_file.flush()
             process = subprocess.Popen(
                 command,
                 cwd=PROJECT_ROOT,
@@ -572,7 +882,10 @@ def run_job(
             assert process.stdout is not None
             for line in process.stdout:
                 log_file.write(line)
-                if line.startswith(("[collect]", "[paired]", "[grid]", "Saved traces:")):
+                log_file.flush()
+                if line.startswith(
+                    ("[collect]", "[paired]", "[grid]", "[recovery]", "Saved traces:")
+                ):
                     print(f"[{job_name}] {line.rstrip()}")
             return_code = process.wait()
             if return_code != 0:
@@ -608,7 +921,42 @@ def run_gpu_queue(
     return [run_job(job, run_prefix, run_dir, gpu, force) for job in jobs]
 
 
-def partition_jobs(jobs: Sequence[Mapping[str, Any]], gpus: Sequence[str]) -> List[List[Mapping[str, Any]]]:
+def gpu_is_free(gpu: str) -> bool:
+    output = subprocess.check_output(
+        ["nvidia-smi", "--id", gpu, "--query-gpu=memory.used,utilization.gpu",
+         "--format=csv,noheader,nounits"], text=True,
+    )
+    used, utilization = map(int, output.strip().split(","))
+    return used < 256 and utilization < 5
+
+
+def run_shared_gpu_queue(pending, run_prefix, run_dir, gpu, force, on_dispatch):
+    """Take work only when this GPU is free; busy GPUs do not reserve jobs."""
+    results = []
+    waiting = False
+    while not pending.empty():
+        if not gpu_is_free(gpu):
+            if not waiting:
+                print(f"[campaign] waiting for free GPU={gpu}; other workers may take its work", flush=True)
+                waiting = True
+            time.sleep(10)
+            continue
+        waiting = False
+        try:
+            job = pending.get_nowait()
+        except queue.Empty:
+            break
+        on_dispatch(job, gpu)
+        try:
+            results.append(run_job(job, run_prefix, run_dir, gpu, force))
+        finally:
+            pending.task_done()
+    return results
+
+
+def partition_jobs(
+    jobs: Sequence[Mapping[str, Any]], gpus: Sequence[str]
+) -> List[List[Mapping[str, Any]]]:
     buckets: List[List[Mapping[str, Any]]] = [[] for _ in gpus]
     for index, job in enumerate(jobs):
         slot = int(job.get("gpu_slot", index % len(gpus)))
@@ -625,7 +973,9 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--profile", default="")
     parser.add_argument("--list", action="store_true", help="List available profiles")
-    parser.add_argument("--execute", action="store_true", help="Run jobs; otherwise only print commands")
+    parser.add_argument(
+        "--execute", action="store_true", help="Run jobs; otherwise only print commands"
+    )
     parser.add_argument("--run-prefix", default="")
     parser.add_argument("--gpus", default="2", help="Physical GPU ids, e.g. 2,3,4,5")
     parser.add_argument("--max-parallel", type=int, default=0)
@@ -710,14 +1060,39 @@ def main(argv: Iterable[str] | None = None) -> int:
         print("[campaign] dry run only; add --execute to launch")
         return 0
 
+    dynamic = bool(campaign.get("defaults", {}).get("dynamic_gpu_queue", False))
+    if dynamic and any("gpu_slot" in job for job in jobs):
+        raise ValueError("Dynamic dispatch cannot honor fixed gpu_slot assignments")
     buckets = partition_jobs(jobs, gpus)
     results: List[Dict[str, Any]] = []
+    manifest_lock = threading.Lock()
+
+    def on_dispatch(job, gpu):
+        with manifest_lock:
+            entry = next(item for item in manifest["jobs"] if item["name"] == job["name"])
+            entry["gpu"] = gpu
+            entry["dispatched_at"] = datetime.now().isoformat(timespec="seconds")
+            temporary = manifest_path.with_suffix(".json.tmp")
+            temporary.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+            temporary.replace(manifest_path)
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(gpus)) as executor:
-        futures = [
-            executor.submit(run_gpu_queue, bucket, run_prefix, run_dir, gpu, args.force)
-            for gpu, bucket in zip(gpus, buckets)
-            if bucket
-        ]
+        if dynamic:
+            pending = queue.Queue()
+            for job in jobs:
+                _, _, marker = build_job(job, run_prefix, run_dir)
+                if marker.exists() and not args.force:
+                    results.append({"job": job["name"], "status": "skipped", "marker": str(marker)})
+                else:
+                    pending.put(job)
+            futures = [executor.submit(run_shared_gpu_queue, pending, run_prefix, run_dir,
+                                       gpu, args.force, on_dispatch) for gpu in gpus]
+        else:
+            futures = [
+                executor.submit(run_gpu_queue, bucket, run_prefix, run_dir, gpu, args.force)
+                for gpu, bucket in zip(gpus, buckets)
+                if bucket
+            ]
         for future in concurrent.futures.as_completed(futures):
             results.extend(future.result())
 

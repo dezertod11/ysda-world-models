@@ -1,0 +1,16 @@
+{
+  "run_base": "consensus_p5_night_20260909",
+  "status": "running",
+  "stage": "reference_references",
+  "started_at": "2026-09-08T22:01:19.711779+00:00",
+  "updated_at": "2026-09-08T22:18:12.217419+00:00",
+  "pid": 2172058,
+  "gpus": [
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "child_pid": 2177195
+}

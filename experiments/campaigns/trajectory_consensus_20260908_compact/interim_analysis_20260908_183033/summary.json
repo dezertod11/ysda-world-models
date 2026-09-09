@@ -1,0 +1,3217 @@
+{
+  "as_of": "2026-09-08T18:30:33.008486+03:00",
+  "status": "interim_not_final",
+  "campaign_status": "running",
+  "completed_jobs": 299,
+  "total_jobs": 360,
+  "completed_rollouts": 539,
+  "expected_rollouts": 600,
+  "complete_matched_cases": 179,
+  "unmatched_rollouts": 2,
+  "factor_scores_all_completed": [
+    {
+      "factor": "Environment",
+      "method": "first",
+      "episodes": 50,
+      "successes": 19,
+      "sr": 0.38,
+      "drops": 0,
+      "mean_queries": 14.54
+    },
+    {
+      "factor": "Environment",
+      "method": "max_value",
+      "episodes": 50,
+      "successes": 20,
+      "sr": 0.4,
+      "drops": 1,
+      "mean_queries": 14.46
+    },
+    {
+      "factor": "Environment",
+      "method": "winner",
+      "episodes": 50,
+      "successes": 20,
+      "sr": 0.4,
+      "drops": 1,
+      "mean_queries": 14.36
+    },
+    {
+      "factor": "Object",
+      "method": "first",
+      "episodes": 50,
+      "successes": 47,
+      "sr": 0.94,
+      "drops": 2,
+      "mean_queries": 9.36
+    },
+    {
+      "factor": "Object",
+      "method": "max_value",
+      "episodes": 50,
+      "successes": 47,
+      "sr": 0.94,
+      "drops": 0,
+      "mean_queries": 9.2
+    },
+    {
+      "factor": "Object",
+      "method": "winner",
+      "episodes": 50,
+      "successes": 48,
+      "sr": 0.96,
+      "drops": 1,
+      "mean_queries": 9.12
+    },
+    {
+      "factor": "Position",
+      "method": "first",
+      "episodes": 80,
+      "successes": 27,
+      "sr": 0.3375,
+      "drops": 2,
+      "mean_queries": 15.4875
+    },
+    {
+      "factor": "Position",
+      "method": "max_value",
+      "episodes": 80,
+      "successes": 29,
+      "sr": 0.3625,
+      "drops": 2,
+      "mean_queries": 15.25
+    },
+    {
+      "factor": "Position",
+      "method": "winner",
+      "episodes": 79,
+      "successes": 25,
+      "sr": 0.31645569620253167,
+      "drops": 0,
+      "mean_queries": 15.468354430379748
+    }
+  ],
+  "factor_scores_matched": [
+    {
+      "factor": "Environment",
+      "method": "first",
+      "episodes": 50,
+      "successes": 19,
+      "sr": 0.38,
+      "drops": 0,
+      "mean_queries": 14.54
+    },
+    {
+      "factor": "Environment",
+      "method": "max_value",
+      "episodes": 50,
+      "successes": 20,
+      "sr": 0.4,
+      "drops": 1,
+      "mean_queries": 14.46
+    },
+    {
+      "factor": "Environment",
+      "method": "winner",
+      "episodes": 50,
+      "successes": 20,
+      "sr": 0.4,
+      "drops": 1,
+      "mean_queries": 14.36
+    },
+    {
+      "factor": "Object",
+      "method": "first",
+      "episodes": 50,
+      "successes": 47,
+      "sr": 0.94,
+      "drops": 2,
+      "mean_queries": 9.36
+    },
+    {
+      "factor": "Object",
+      "method": "max_value",
+      "episodes": 50,
+      "successes": 47,
+      "sr": 0.94,
+      "drops": 0,
+      "mean_queries": 9.2
+    },
+    {
+      "factor": "Object",
+      "method": "winner",
+      "episodes": 50,
+      "successes": 48,
+      "sr": 0.96,
+      "drops": 1,
+      "mean_queries": 9.12
+    },
+    {
+      "factor": "Position",
+      "method": "first",
+      "episodes": 79,
+      "successes": 27,
+      "sr": 0.34177215189873417,
+      "drops": 2,
+      "mean_queries": 15.455696202531646
+    },
+    {
+      "factor": "Position",
+      "method": "max_value",
+      "episodes": 79,
+      "successes": 29,
+      "sr": 0.3670886075949367,
+      "drops": 2,
+      "mean_queries": 15.215189873417721
+    },
+    {
+      "factor": "Position",
+      "method": "winner",
+      "episodes": 79,
+      "successes": 25,
+      "sr": 0.31645569620253167,
+      "drops": 0,
+      "mean_queries": 15.468354430379748
+    }
+  ],
+  "paired_effects": [
+    {
+      "reference": "max_value",
+      "method": "winner",
+      "scope": "All",
+      "n": 179,
+      "macro_delta": -0.01021097046413502,
+      "ci95": [
+        -0.03687763713080169,
+        0.016455696202531647
+      ],
+      "rescues": 3,
+      "harms": 6,
+      "q0_pool_exact_rate": 0.4692737430167598
+    },
+    {
+      "reference": "max_value",
+      "method": "winner",
+      "scope": "Environment",
+      "n": 50,
+      "macro_delta": 0,
+      "ci95": [
+        -0.06,
+        0.06
+      ],
+      "rescues": 1,
+      "harms": 1,
+      "q0_pool_exact_rate": 0.4
+    },
+    {
+      "reference": "max_value",
+      "method": "winner",
+      "scope": "Object",
+      "n": 50,
+      "macro_delta": 0.02,
+      "ci95": [
+        0,
+        0.06
+      ],
+      "rescues": 1,
+      "harms": 0,
+      "q0_pool_exact_rate": 0.6
+    },
+    {
+      "reference": "max_value",
+      "method": "winner",
+      "scope": "Position",
+      "n": 79,
+      "macro_delta": -0.05063291139240506,
+      "ci95": [
+        -0.08974358974358974,
+        -0.0125
+      ],
+      "rescues": 1,
+      "harms": 5,
+      "q0_pool_exact_rate": 0.43037974683544306
+    },
+    {
+      "reference": "first",
+      "method": "winner",
+      "scope": "All",
+      "n": 179,
+      "macro_delta": 0.00489451476793249,
+      "ci95": [
+        -0.0275,
+        0.038657903278156325
+      ],
+      "rescues": 5,
+      "harms": 5,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "winner",
+      "scope": "Environment",
+      "n": 50,
+      "macro_delta": 0.02,
+      "ci95": [
+        0,
+        0.06
+      ],
+      "rescues": 1,
+      "harms": 0,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "winner",
+      "scope": "Object",
+      "n": 50,
+      "macro_delta": 0.02,
+      "ci95": [
+        -0.04,
+        0.1
+      ],
+      "rescues": 2,
+      "harms": 1,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "winner",
+      "scope": "Position",
+      "n": 79,
+      "macro_delta": -0.02531645569620253,
+      "ci95": [
+        -0.0875,
+        0.0375
+      ],
+      "rescues": 2,
+      "harms": 4,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "max_value",
+      "scope": "All",
+      "n": 179,
+      "macro_delta": 0.015105485232067511,
+      "ci95": [
+        -0.023333333333333334,
+        0.054632034632034636
+      ],
+      "rescues": 8,
+      "harms": 5,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "max_value",
+      "scope": "Environment",
+      "n": 50,
+      "macro_delta": 0.02,
+      "ci95": [
+        -0.04,
+        0.1
+      ],
+      "rescues": 2,
+      "harms": 1,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "max_value",
+      "scope": "Object",
+      "n": 50,
+      "macro_delta": 0,
+      "ci95": [
+        -0.06,
+        0.06
+      ],
+      "rescues": 1,
+      "harms": 1,
+      "q0_pool_exact_rate": 0
+    },
+    {
+      "reference": "first",
+      "method": "max_value",
+      "scope": "Position",
+      "n": 79,
+      "macro_delta": 0.02531645569620253,
+      "ci95": [
+        -0.05063291139240506,
+        0.10126582278481013
+      ],
+      "rescues": 5,
+      "harms": 3,
+      "q0_pool_exact_rate": 0
+    }
+  ],
+  "task_scores": [
+    {
+      "factor": "Environment",
+      "task_id": 0,
+      "method": "first",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 0,
+      "method": "max_value",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 0,
+      "method": "winner",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 1,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 1,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 1,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 2,
+      "method": "first",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 2,
+      "method": "max_value",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 2,
+      "method": "winner",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 3,
+      "method": "first",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Environment",
+      "task_id": 3,
+      "method": "max_value",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Environment",
+      "task_id": 3,
+      "method": "winner",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Environment",
+      "task_id": 4,
+      "method": "first",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 4,
+      "method": "max_value",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 4,
+      "method": "winner",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 5,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 5,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 5,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Environment",
+      "task_id": 6,
+      "method": "first",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 6,
+      "method": "max_value",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 6,
+      "method": "winner",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 7,
+      "method": "first",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 7,
+      "method": "max_value",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 7,
+      "method": "winner",
+      "size": 5,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "factor": "Environment",
+      "task_id": 8,
+      "method": "first",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 8,
+      "method": "max_value",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 8,
+      "method": "winner",
+      "size": 5,
+      "sum": 1,
+      "mean": 0.2
+    },
+    {
+      "factor": "Environment",
+      "task_id": 9,
+      "method": "first",
+      "size": 5,
+      "sum": 3,
+      "mean": 0.6
+    },
+    {
+      "factor": "Environment",
+      "task_id": 9,
+      "method": "max_value",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Environment",
+      "task_id": 9,
+      "method": "winner",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Object",
+      "task_id": 0,
+      "method": "first",
+      "size": 5,
+      "sum": 3,
+      "mean": 0.6
+    },
+    {
+      "factor": "Object",
+      "task_id": 0,
+      "method": "max_value",
+      "size": 5,
+      "sum": 3,
+      "mean": 0.6
+    },
+    {
+      "factor": "Object",
+      "task_id": 0,
+      "method": "winner",
+      "size": 5,
+      "sum": 3,
+      "mean": 0.6
+    },
+    {
+      "factor": "Object",
+      "task_id": 1,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 1,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 1,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 2,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 2,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 2,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 3,
+      "method": "first",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Object",
+      "task_id": 3,
+      "method": "max_value",
+      "size": 5,
+      "sum": 4,
+      "mean": 0.8
+    },
+    {
+      "factor": "Object",
+      "task_id": 3,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 4,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 4,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 4,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 5,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 5,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 5,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 6,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 6,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 6,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 7,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 7,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 7,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 8,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 8,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 8,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 9,
+      "method": "first",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 9,
+      "method": "max_value",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Object",
+      "task_id": 9,
+      "method": "winner",
+      "size": 5,
+      "sum": 5,
+      "mean": 1
+    },
+    {
+      "factor": "Position",
+      "task_id": 0,
+      "method": "first",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 0,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 0,
+      "method": "winner",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 1,
+      "method": "first",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 1,
+      "method": "max_value",
+      "size": 8,
+      "sum": 4,
+      "mean": 0.5
+    },
+    {
+      "factor": "Position",
+      "task_id": 1,
+      "method": "winner",
+      "size": 8,
+      "sum": 4,
+      "mean": 0.5
+    },
+    {
+      "factor": "Position",
+      "task_id": 2,
+      "method": "first",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 2,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 2,
+      "method": "winner",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 3,
+      "method": "first",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 3,
+      "method": "max_value",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 3,
+      "method": "winner",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 4,
+      "method": "first",
+      "size": 8,
+      "sum": 1,
+      "mean": 0.125
+    },
+    {
+      "factor": "Position",
+      "task_id": 4,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 4,
+      "method": "winner",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 5,
+      "method": "first",
+      "size": 8,
+      "sum": 4,
+      "mean": 0.5
+    },
+    {
+      "factor": "Position",
+      "task_id": 5,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 5,
+      "method": "winner",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 6,
+      "method": "first",
+      "size": 8,
+      "sum": 4,
+      "mean": 0.5
+    },
+    {
+      "factor": "Position",
+      "task_id": 6,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 6,
+      "method": "winner",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 7,
+      "method": "first",
+      "size": 8,
+      "sum": 4,
+      "mean": 0.5
+    },
+    {
+      "factor": "Position",
+      "task_id": 7,
+      "method": "max_value",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 7,
+      "method": "winner",
+      "size": 8,
+      "sum": 3,
+      "mean": 0.375
+    },
+    {
+      "factor": "Position",
+      "task_id": 8,
+      "method": "first",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 8,
+      "method": "max_value",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 8,
+      "method": "winner",
+      "size": 8,
+      "sum": 2,
+      "mean": 0.25
+    },
+    {
+      "factor": "Position",
+      "task_id": 9,
+      "method": "first",
+      "size": 7,
+      "sum": 2,
+      "mean": 0.2857142857142857
+    },
+    {
+      "factor": "Position",
+      "task_id": 9,
+      "method": "max_value",
+      "size": 7,
+      "sum": 3,
+      "mean": 0.42857142857142855
+    },
+    {
+      "factor": "Position",
+      "task_id": 9,
+      "method": "winner",
+      "size": 7,
+      "sum": 2,
+      "mean": 0.2857142857142857
+    }
+  ],
+  "failure_types": [
+    {
+      "method": "first",
+      "success": false,
+      "failure_type": "kinematic_deadlock_candidate",
+      "n": 11
+    },
+    {
+      "method": "first",
+      "success": false,
+      "failure_type": "target_drop_candidate",
+      "n": 3
+    },
+    {
+      "method": "first",
+      "success": false,
+      "failure_type": "timeout_no_goal",
+      "n": 48
+    },
+    {
+      "method": "first",
+      "success": false,
+      "failure_type": "wrong_object_interaction_candidate",
+      "n": 24
+    },
+    {
+      "method": "first",
+      "success": true,
+      "failure_type": "success",
+      "n": 93
+    },
+    {
+      "method": "max_value",
+      "success": false,
+      "failure_type": "kinematic_deadlock_candidate",
+      "n": 9
+    },
+    {
+      "method": "max_value",
+      "success": false,
+      "failure_type": "target_drop_candidate",
+      "n": 3
+    },
+    {
+      "method": "max_value",
+      "success": false,
+      "failure_type": "timeout_no_goal",
+      "n": 45
+    },
+    {
+      "method": "max_value",
+      "success": false,
+      "failure_type": "wrong_object_interaction_candidate",
+      "n": 26
+    },
+    {
+      "method": "max_value",
+      "success": true,
+      "failure_type": "success",
+      "n": 96
+    },
+    {
+      "method": "winner",
+      "success": false,
+      "failure_type": "kinematic_deadlock_candidate",
+      "n": 10
+    },
+    {
+      "method": "winner",
+      "success": false,
+      "failure_type": "target_drop_candidate",
+      "n": 2
+    },
+    {
+      "method": "winner",
+      "success": false,
+      "failure_type": "timeout_no_goal",
+      "n": 47
+    },
+    {
+      "method": "winner",
+      "success": false,
+      "failure_type": "wrong_object_interaction_candidate",
+      "n": 27
+    },
+    {
+      "method": "winner",
+      "success": true,
+      "failure_type": "success",
+      "n": 93
+    }
+  ],
+  "failed_final_steps": [
+    {
+      "method": "first",
+      "final_t": 280,
+      "n": 86
+    },
+    {
+      "method": "max_value",
+      "final_t": 280,
+      "n": 83
+    },
+    {
+      "method": "winner",
+      "final_t": 280,
+      "n": 86
+    }
+  ],
+  "position_cells": [
+    {
+      "case_id": "tc2_position_x0.1",
+      "method": "first",
+      "size": 10,
+      "sum": 10,
+      "mean": 1
+    },
+    {
+      "case_id": "tc2_position_x0.1",
+      "method": "max_value",
+      "size": 10,
+      "sum": 10,
+      "mean": 1
+    },
+    {
+      "case_id": "tc2_position_x0.1",
+      "method": "winner",
+      "size": 10,
+      "sum": 10,
+      "mean": 1
+    },
+    {
+      "case_id": "tc2_position_x0.2",
+      "method": "first",
+      "size": 10,
+      "sum": 3,
+      "mean": 0.3
+    },
+    {
+      "case_id": "tc2_position_x0.2",
+      "method": "max_value",
+      "size": 10,
+      "sum": 3,
+      "mean": 0.3
+    },
+    {
+      "case_id": "tc2_position_x0.2",
+      "method": "winner",
+      "size": 10,
+      "sum": 2,
+      "mean": 0.2
+    },
+    {
+      "case_id": "tc2_position_x0.3",
+      "method": "first",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.3",
+      "method": "max_value",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.3",
+      "method": "winner",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.4",
+      "method": "first",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.4",
+      "method": "max_value",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.4",
+      "method": "winner",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.5",
+      "method": "first",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.5",
+      "method": "max_value",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_x0.5",
+      "method": "winner",
+      "size": 10,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_y0.1",
+      "method": "first",
+      "size": 10,
+      "sum": 8,
+      "mean": 0.8
+    },
+    {
+      "case_id": "tc2_position_y0.1",
+      "method": "max_value",
+      "size": 10,
+      "sum": 10,
+      "mean": 1
+    },
+    {
+      "case_id": "tc2_position_y0.1",
+      "method": "winner",
+      "size": 10,
+      "sum": 10,
+      "mean": 1
+    },
+    {
+      "case_id": "tc2_position_y0.2",
+      "method": "first",
+      "size": 10,
+      "sum": 4,
+      "mean": 0.4
+    },
+    {
+      "case_id": "tc2_position_y0.2",
+      "method": "max_value",
+      "size": 10,
+      "sum": 6,
+      "mean": 0.6
+    },
+    {
+      "case_id": "tc2_position_y0.2",
+      "method": "winner",
+      "size": 10,
+      "sum": 3,
+      "mean": 0.3
+    },
+    {
+      "case_id": "tc2_position_y0.3",
+      "method": "first",
+      "size": 9,
+      "sum": 2,
+      "mean": 0.2222222222222222
+    },
+    {
+      "case_id": "tc2_position_y0.3",
+      "method": "max_value",
+      "size": 9,
+      "sum": 0,
+      "mean": 0
+    },
+    {
+      "case_id": "tc2_position_y0.3",
+      "method": "winner",
+      "size": 9,
+      "sum": 0,
+      "mean": 0
+    }
+  ],
+  "query_counts": [
+    {
+      "factor": "Environment",
+      "method": "first",
+      "queries": 727,
+      "switched": 0
+    },
+    {
+      "factor": "Environment",
+      "method": "max_value",
+      "queries": 723,
+      "switched": 0
+    },
+    {
+      "factor": "Environment",
+      "method": "winner",
+      "queries": 718,
+      "switched": 564
+    },
+    {
+      "factor": "Object",
+      "method": "first",
+      "queries": 468,
+      "switched": 0
+    },
+    {
+      "factor": "Object",
+      "method": "max_value",
+      "queries": 460,
+      "switched": 0
+    },
+    {
+      "factor": "Object",
+      "method": "winner",
+      "queries": 456,
+      "switched": 349
+    },
+    {
+      "factor": "Position",
+      "method": "first",
+      "queries": 1239,
+      "switched": 0
+    },
+    {
+      "factor": "Position",
+      "method": "max_value",
+      "queries": 1220,
+      "switched": 0
+    },
+    {
+      "factor": "Position",
+      "method": "winner",
+      "queries": 1222,
+      "switched": 939
+    }
+  ],
+  "reference_sequence": {
+    "run_base": "consensus_references_20260908",
+    "status": "waiting",
+    "stage": "waiting_for_compact",
+    "started_at": "2026-09-08T11:32:00.435143+00:00",
+    "updated_at": "2026-09-08T15:30:21.306918+00:00",
+    "pid": 1549270,
+    "gpus": [
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "expected_rollouts": 600,
+    "dependency": "trajectory_consensus_20260908_compact"
+  },
+  "trace_audit": [
+    {
+      "job": "environment_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t0_first__libero_object_env__task0__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "720f43c62b21cfd711e6efda169ae2419d02968ba4e04f45d920fec0db6d058a",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t0_max_value__libero_object_env__task0__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "8ef6f07ff4a143091a0cf1123e39bd43ecc96d5c94eca39bc4e411c657f269dd",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t0_winner__libero_object_env__task0__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "2c04d245e73a24471e4066003cba6395673ec6ea5a0354ea6fc136b24364b2bd",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t1_first__libero_object_env__task1__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "3d69942f25d947ca400b5b1fde7aefc21f4b46864c5dc4f575afd65b64ec45f1",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t1_max_value__libero_object_env__task1__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "9df60ca64c78ae41c8b186cad18ea4070566b225db33068ac833e2c1eaeecd08",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t1_winner__libero_object_env__task1__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "dc76eb3a6ff6038c0839663ae193e32fd2e585028a92019ba805cd2f80d6ee35",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t2_first__libero_object_env__task2__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "0d8e3e9a0697065ebd837cafe9879dff87ca7077dcf8db017b757bdefa7e9a97",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t2_max_value__libero_object_env__task2__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "d5011cfb69e6be7cd82957e64f73dcf54aa7eaec638cefdb9018b22866dee7be",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t2_winner__libero_object_env__task2__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "314a3d10cfd0dce0265b788d5b1c7afa833e0188fdf765b43838ec14d1b08f17",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t3_first__libero_object_env__task3__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "6aff92b703d45323820a2c4500260accb72fbc3a26db1a9a324fdbf53e266bc5",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t3_max_value__libero_object_env__task3__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "174120c49b7b5af9040a3bcbef7227b13ffa35269fcc3bf72388dc44f6992014",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t3_winner__libero_object_env__task3__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "26c12c5a0dfeb0032a505c1f5a0d07da4c7da81f6630611ec08fcce22f8c05f9",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t4_first__libero_object_env__task4__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "af334fe093f0f9155013ddf12817b8d08444d07486044324006af80842ac5fe9",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t4_max_value__libero_object_env__task4__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "507e4e68940096fe7d60afa86f020be7436af718f571ce1985e7cc20498d1872",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t4_winner__libero_object_env__task4__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "0566e5e0e0c8d4ca7c470377207832b4665d77593e1a7c920084354f1be80882",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t5_first__libero_object_env__task5__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "fc1c93b39ffd8b17e05cc2322472eb674cec50c673a4a7acea6f72fef776c1bf",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t5_max_value__libero_object_env__task5__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "00ff41c777ffbb52a43df3664621471c05b38492572773b3adbc6de4994cbec2",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t5_winner__libero_object_env__task5__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "0b925ced1b0c38b3dd12b860cfd69ac3449e94b5829e0c4ed8f51afbf62c19c2",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t6_first__libero_object_env__task6__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "26e4686c80cea5cddbd08dbde5f744cac27b046c15e49c3ee61e5149631eaffa",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t6_max_value__libero_object_env__task6__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "14c909a1bc18c3b459a86c06a55eb39811d4be4a691d5c2eef9043082b739747",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t6_winner__libero_object_env__task6__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "93241ad03739c5c44435df27fd1a5e593c6eb4e9246fbcb0c7993994505d59a4",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t7_first__libero_object_env__task7__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "4e68a2528a002285026cdb22d9447a73b7994fafda2219e178fe8fb468facb74",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t7_max_value__libero_object_env__task7__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "758f3e79acbe8d0e538922540f8b9d08787ec369dd0acd84690d7f0f2bf3cd13",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t7_winner__libero_object_env__task7__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "7b4ecf71268e135e68a808fce672c4ae8b16acd54c2b24e337e16df0d64183c3",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t8_first__libero_object_env__task8__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "99067da346d793fa19edffad273df9cca4aa37bb12c37b47813ecd387810c4d7",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t8_max_value__libero_object_env__task8__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "f58d34c55065f68d4a5cae00bb8919936734cb0c57d8c7f05d8fb9931585c615",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t8_winner__libero_object_env__task8__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d8ea51bcf51d748bc424025835afda66a460d8255c507f25c905bdf513eeafee",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t9_first__libero_object_env__task9__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "8e4747528b818ae180cf74cc5af1d477f935f4f10fd6b51c477c1dcb09365860",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t9_max_value__libero_object_env__task9__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "f2e262942359de423e3b61f5cfdfc5d762dbf16ef44e1ba11e252c40f528301d",
+      "episodes": 5
+    },
+    {
+      "job": "environment_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__environment_t9_winner__libero_object_env__task9__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "2d64075a9ed5ea760351c27e62e5477ef4a3347815204906749bedcd07559b54",
+      "episodes": 5
+    },
+    {
+      "job": "object_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t0_first__libero_object_object__task0__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "6147b178cec46d09c891eb0c13e63ec2548a95b748c84f797537364bc69b75e9",
+      "episodes": 5
+    },
+    {
+      "job": "object_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t0_max_value__libero_object_object__task0__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "93490a6a300909f992c0c792ba995f2871c3a26823e89d9f722385d3acf368d0",
+      "episodes": 5
+    },
+    {
+      "job": "object_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t0_winner__libero_object_object__task0__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "74ff8bca611893f743a75884ca5b078977c27a9a773eead5b1e297e9ccf80ec5",
+      "episodes": 5
+    },
+    {
+      "job": "object_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t1_first__libero_object_object__task1__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "9bff51ebb6118bc950c572d4ace671169c46c7d924d25c1d4ad778e59eaec2fe",
+      "episodes": 5
+    },
+    {
+      "job": "object_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t1_max_value__libero_object_object__task1__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "d28f1e082fac15066023fa3294837798c0bc2c2f04451f973dd6503aa9960892",
+      "episodes": 5
+    },
+    {
+      "job": "object_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t1_winner__libero_object_object__task1__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d56d6cd28b0a43c61d6042c668f727220a7ecd81bd43e728cf386985ea8bb175",
+      "episodes": 5
+    },
+    {
+      "job": "object_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t2_first__libero_object_object__task2__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "84a6c257625f424c438f5927d64bb555f919d33b3b98a652ab203da8fff15683",
+      "episodes": 5
+    },
+    {
+      "job": "object_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t2_max_value__libero_object_object__task2__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "4697e189e4f53ac8395a1396d034543ff907713ac6afb0f6701e852b295240ff",
+      "episodes": 5
+    },
+    {
+      "job": "object_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t2_winner__libero_object_object__task2__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "698fa4f0c3a17096dc3d1c91c72c8369c37257336a8d956ab4e418e009b38cf4",
+      "episodes": 5
+    },
+    {
+      "job": "object_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t3_first__libero_object_object__task3__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "4f6435dc9b5a1b0e6fae8cc1bc161219159d6a4d984e1dcfebc89eae0ae2fce0",
+      "episodes": 5
+    },
+    {
+      "job": "object_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t3_max_value__libero_object_object__task3__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "231804405f30d1e2cbe6c972dcd200a0188241403b5ead2b0eb098504e6942b0",
+      "episodes": 5
+    },
+    {
+      "job": "object_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t3_winner__libero_object_object__task3__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "59f2eaf28cd5e4adbd2b0c4a7afb9145af8b961804bad8a62c8790db01c18bdc",
+      "episodes": 5
+    },
+    {
+      "job": "object_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t4_first__libero_object_object__task4__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "fab7a8e6f35d570e20795a8cb18751162d8a2c5255b54fa8766319be4b2b0327",
+      "episodes": 5
+    },
+    {
+      "job": "object_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t4_max_value__libero_object_object__task4__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "c527da8901b48a8bfa9ac54aa6f67ef7795722254f768cb2f6332e790763f917",
+      "episodes": 5
+    },
+    {
+      "job": "object_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t4_winner__libero_object_object__task4__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "063332dec381b2e2ab0cf457be4b07e7f045b37d7f95c188280646aa6b9719b3",
+      "episodes": 5
+    },
+    {
+      "job": "object_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t5_first__libero_object_object__task5__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "938b0f009002dcdac51357ccb908dbf53021fa252225a0a4b07db3025547feea",
+      "episodes": 5
+    },
+    {
+      "job": "object_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t5_max_value__libero_object_object__task5__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "3c2faf2727691b8308d47b4394bf7d5ae1979aa6891a3f9aeff66ffd36759167",
+      "episodes": 5
+    },
+    {
+      "job": "object_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t5_winner__libero_object_object__task5__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "c91f08a69a8413c42c450fc7ad3a4b56a50c305d10a47568b3dec6b9307a1b54",
+      "episodes": 5
+    },
+    {
+      "job": "object_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t6_first__libero_object_object__task6__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "a9342c5573e485b12073069614e25b563e6e1a3170888723b38a0cb02b63d955",
+      "episodes": 5
+    },
+    {
+      "job": "object_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t6_max_value__libero_object_object__task6__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "0a0c2422154f83dd841dacfb3729a6c5aa2e1147e8e66dd1693304e34812df72",
+      "episodes": 5
+    },
+    {
+      "job": "object_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t6_winner__libero_object_object__task6__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "93ad618590b3db20fd9f1b53fe694dc48415537c4a0492f5a8120455501a6ed9",
+      "episodes": 5
+    },
+    {
+      "job": "object_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t7_first__libero_object_object__task7__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "3b3f74eb2a38b6e4db615cf1d25d7ec7edf5fdf93156704ff7f45dbb5549b60c",
+      "episodes": 5
+    },
+    {
+      "job": "object_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t7_max_value__libero_object_object__task7__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "930a1e35c003b3c10295d0e018a071e0a5a3d91687a76e3f73566982c801ea25",
+      "episodes": 5
+    },
+    {
+      "job": "object_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t7_winner__libero_object_object__task7__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1e3873c667f298a1b70d88a9d660f9c26b7dec9da052857a619971d1fa7fa11e",
+      "episodes": 5
+    },
+    {
+      "job": "object_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t8_first__libero_object_object__task8__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "e1532f9af273efea6abaf4a3205e0913d5f67e12bc6f5669c4a67f4032cba5c1",
+      "episodes": 5
+    },
+    {
+      "job": "object_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t8_max_value__libero_object_object__task8__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "dcc4bd822188fefbbdc0d1697568b87474328f67b6fd524455f226a941811f85",
+      "episodes": 5
+    },
+    {
+      "job": "object_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t8_winner__libero_object_object__task8__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "99318a0dea734329523f44a0e06bf786fecacced87f972817230f3c5dd3e08fb",
+      "episodes": 5
+    },
+    {
+      "job": "object_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t9_first__libero_object_object__task9__init2-6__first__l0p0__query_traces.parquet",
+      "sha256": "94de809b7eaf5ffbbbb44115df8eceba3a24f6d0deeb38345c717bb116578288",
+      "episodes": 5
+    },
+    {
+      "job": "object_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t9_max_value__libero_object_object__task9__init2-6__max_value__l0p0__query_traces.parquet",
+      "sha256": "edc845825e27b4e9f94d175cf3727b8172afe84843e89303dc5eba45f5995884",
+      "episodes": 5
+    },
+    {
+      "job": "object_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__object_t9_winner__libero_object_object__task9__init2-6__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "cbe71c2a78242312e768e7a8312646f182fe09df27af3811cd36b3e6efd72c66",
+      "episodes": 5
+    },
+    {
+      "job": "position_x0_1_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7ccaa4deeeb36530c4ea1ca849fbb4b1560e3c91fef060e81f0ae325101fa804",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "20e86313b01e774116c48db174a3e277a41e7753a73efe442113a5933064f604",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "516158bb1bbefad615bb26a4fe057c99d2e70a74f56001f9f90ee3f52081dec9",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7d2e5d45bdfdefae538e00f2d3ebf2fe834f8956d567a68f326a64e2708cef2e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "3c2685b608920315755e0a4c9cea0febc394efe74eec64b7845f6d47d01d8899",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "94f70539000ecb4bdccf4e967028dcfaa463f9ea06836024b62fceb150945ce5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "1fde5f4ad62e49b89048d5dab1e6e223fff2d2135a87858563d2bbc5448be836",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "a129720d225ecd80db6d901105b1a159886bc37354b1f139aa06c5ad61bcb58c",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "9a49c5c222aa14ece9c10ca161d34c21a9b58aae18fbb6946b8538f54dc25c42",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "ec37c2f3930a011254d9382ad48af9abb842c906049f841554441ebb39290173",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "d93811f4f22daafc8518d41d5c037ab3a3d01276cddb748414fb53053763f805",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "9926bb4121f38f59dcb38b80b0de22a1f711004dfd24a46b2e6af27ffcb2d587",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "17295fdf28ec9fc59e9b65c2f3dcc0c499f271695f2e03604934231bf72c4252",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "93bb5b6cd458cd80ef04f357c599b1127932a3c4cd2cc1e181fa89aaae968d66",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "fd039d9658ce48165f22c343e8ec9a9ed2f05240091daa20fabef900f598d322",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "99ffdc6601adfb6e409affa395b9250ddbaa7c314913d24b479bf98462027f41",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "d7f5c73246940a4909a5f5ad6cfdeb6875c28dddc11f6dd37db43db48354713a",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d363aaa89c752aa2cabe4ef9cbf8ac8b29d7387b2019a7a9e9ec68e012c5d1cd",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "1d21367c5d38b8a7885fc87e9d046b900c162ec155f785b8e93074b08fed3552",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "3998c7c58a9f04c87e92925efd7bbfa05750b794f7cc4c04eb0fabb3b8330cc1",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "214974c86cd96eddba7369ab9d3d852129717f59df7a1080661fa0f42746e215",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "53df77411b240455dbd09b9759587df1f1ab8cad51556401494733a25ebef71d",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "4fe68e82522248a48bc254482d074588da22096e95e231e77f3e9f8191c3a094",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "6abf817719064b69abf30173abd9968c0c6e0cd1bec7271eb9006bffa8f98bf6",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "9db85e7e353731a5079ba3a575655062f311eafdbd0338634df7a99b17bac838",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "87d40e2bdb5aa6cbe2d6df08bc62c14a944c264190bddf2b7b441dce11bc96f8",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "bedd9c2e881b52bb22816b5532d50ffea36981da3ff01ccd72cd3048e5f27910",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "8480af0ac2a5eb974b5ec20a9f45559f831ce28bd065e18a14559259f5de9545",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "740864f9b60ff6397da9257c5fe5e04434ce619f99fc08ff863965f0308de6ed",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_1_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_1_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "9dfb527fa17aed7cff9e90a2bcf2b2629c730cd9ad20c94a5ea73b6ab5837075",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "b3b04a3d125b0ff2383d1423448ab81cdc7ef01ef0dbfcfad2b6fceead3616fa",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "92a4bb1c254739737ff7d099e061e8674dd14c1478215b082bea5e7cda0ecaa9",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "ccc067cd265e938ef4ad78b77e10ac2fd42cc685e83d975b75924ea5db74f5d9",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "507fc8166b09e091e7f93037b258c59c00446994854a1470648ed8d672eda690",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "b319295dd5eca7a8101eef9c01ba039da886855bd1a81dd35aa801acd474ccd3",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1938547aa12972f7ca334d9ffbc66874797193221966973d6a6b58c251f9dccb",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "906946fc797234ebb3c3dc4b92025e6d9f3eb8295e7c6dd5d716cf72368fe651",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "7904f10d6334e6d5d53038973137df582d845cc556e80e4ef37473f079365c79",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "e57688397969876b94c25e7168d09fdd43594cd755fd04a53423bf6bf31c5c89",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "61f73e7c4482b9165aa40641166308a0300d5c9f2d58ea0289dd115395e94262",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "8de4c62e711f59dd7c52b41480fb2ca523c8a9c62aac6699fccc6c949b78da11",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "927cb02a4edd50311453cd540befa812b7361f4f642f1171f953d6d776b54987",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7793f25bf332e6621af9f6a47f7dfa1314c47d1977e7d3090d2c0286c44a90bb",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "79427d4b5bb88d4ef9eec9aee464a6b8f70ceab71ad61341708a1a941b828d06",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "7ad1fe2edee03c0f6ae79c4e84ebadbae575b03f650887d83b8c507245d25d6d",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "19db035afbae444131afe0d17a5bb7a383a5c3d91ce13e24166fdd7705d15aea",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "8ab7cd57deb04c621eafbdb63a88281add9b78824fc42998451160182e88dbf7",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "235af9f414199464f1b9ede1347a8afce51b08ce802c74983e2869f4760d241f",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "eb0bdf6c3cc688a4d5d42a24a73201c8bef83c3da28d4d5ed8c2e8a6b8a0a91b",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "bc00b996ae6a8a634b73aa28340dc328eff9f8e2cdc222b724c4a80241bf62da",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "5ab852901a72cc7af15b291ca78b85b12c4988676480858a9b06bded4efdad54",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "2efc08abf41a67e2fe46f80a58ca60792d9e8210cb0c57377eaa31a9f049046a",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "c52c1cbe526f5524c5ad50ea000edb6cc35a781fa439a9767210543d99f20125",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "cc356569d075a3642a55ca0f1977ac6c2d6eb5dc4cd71a1ac15f3fa389bdbafe",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "457a0a23e52eac349fe4a727aa691409378c93d3392ab8cc0f7f8b14ce4d6287",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "92b4199725a7e73b40e9b9693f49b6a9e5d020ecb7cc6470aa04d2fbfab0f04a",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "a03078304c9d14b44f272d15652ab56d56ebcc9ffa25e3473df18fe4db79aa69",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "9844bd72bafdf30a17f4783c9614026daeaf7c37b599dabdcd489102d3dec86b",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "efa66ba39c917dfd04efc9088c38a52f22d164470ec036dd38e2e0c15c7c2360",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_2_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_2_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "5553ebc8fc4f1217a15bc695a9bd1f9492defc328bab4c5f82fc4cdc47c85fe6",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "d2ae5f64afa20f18633e68a1c690fc41738703bd752a95e434d55ec6fec44913",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "fccf8e21ef4a9ecd3dc0ae74e5eb45278ac32ef1aaf9b0bc85bfbbf2832e94c3",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "f1e9f0a06513d3a67f05a6bdaf4748768c5a97cd975841b7f0422e35a2aabb4b",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "3f44b29400bb88525fd3725d089c650a51f7e9f24d8d2369abc6bb24ff744072",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "c0f580ecc2cc221b925fdf7028c7740461aa4cb6a43602c7e0d5538bed3bee33",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "a85006b8293b85c63a73605e9ca0b7661f8f898bdcd5233d888036bbfd5e020d",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "050f6a8d228d70bf0abe8ef5853eeb814c0ad5fb58ebaa722c6b64cad3ec7aeb",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "0ed54980f4a479ab30de4de6e098bdca94f4153e3de8e42d29a7f0e533b98634",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d728a6e9c03dd57b05ead3d149641bca5c57450480fbfac25aa64aa5900b4702",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "2edd382e9e42737cc82c2d3085af261b1b74cc3f543cb8ad8878290cb1ca0df5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "2687f8de2e36056adeb0609a366b8a838d328f11e467cc8af4fe07614f88d018",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "b7f4e2f371132fdeccf7ad0085873da96292b72f542e378d26000f61959ec6e0",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "6a184028b627511925efe4a06742190ec103b556c35d1ff2e9b16e088d64e9f4",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "830772f2f8bd83fe20f810be843f81782ac166043f12cfe0f6beb8d070fd9659",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "c4c9551bebb5b8fb5324661fb955150988447cd6e42055e092d846e48b6184a9",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "ac9b22a05f0bfe31923ace1056d758b85b06aa2dc3c28a527626f1fba13ff1d5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "07ee825377eb9cd1482dc10323957c67484627c762fd8c62442bf0e4bf5c7f09",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "390dc512c3d000e0a7eef77e9114e994dc914beacb68d2a7abfb81f640b8d4ed",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "1e031bf3e76d24f9f56855ae94c71269f9dba6b269f9b2c312d97748cc696533",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "dd303db240af42f310c83c58db420532a169696d198163f42a4adc00e4b9a624",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "05234b89f2fb0d23d5f41047e5fccb01c0d24d599b10051cb6d1a2751b46ecb0",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "17599f3bf833d0a4b9d735bb87997f5fad7a4875d708b06e394ca555671bd124",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "50095e0bd06ac6cea3d3bf872cdfc115a71d96535ac6c72ee7ed7857374970b4",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1796b7c11a1eb3ae6151e40ea12593e84da20799f4d264fce6c15456f72051b0",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "1957ad87ac147aee7d45ad0df6c4c6f66dc3ef61683856592742f932da65f258",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "c32f40a46aef71d682f43198efe9d7dd6e70f5b534b291340340a005c4192296",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "bac068e908914314ed03cec5adafafa2ce342998a1adbeb21822400c7c4c6d29",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "b57bc2c1d0a52adddf8b35b5df947ad38d899f7a9297b7c642efb129495acbca",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "e8bda29b914d07307c7344a9de1df8a2853f1e1841562af884f55434318487a5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_3_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_3_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "91f34c64f3f0769e7dde29a67f63a5588e9301d83dd7aa24cc169f3f11b76313",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "71935c57597f4cb007201e3f90abf9563e21b7009177157af06a445fbd3ec945",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "4081a5750b263906a5e68d40355129f32f1be5373f7304071c6847311737946c",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "458b24dba5d8c883d213e9990223dbd0ed32926738862cda6d367f16982442c1",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "638f4dcd29baabfdf14c37d79a7316296f154f94116b28e7ca8e2fe01e4cc312",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "5270c8307a90e19c2f51a0d858b70e3e33f25cff48ba1f8003beee674f888f3c",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d24ab0c7ba8e9bd878b79ca96e4e8d494c860f8913babbb5cf85c5d049f60a23",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "dfa35b0eb3e22abb0a3c1755cbe5f364b90416d7b01999fe73e60301bb628d4d",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "2640238bcfcdd506e32956788d2443cc41e3660f64666e731f23c615636d6def",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "2760836173b44e7cce707ccb23f404365c1dd7b26199db4e88c9c6a06e41ab2f",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "995b71678d1253c05d82bccee4e17c77df6689895cfd49dfb99952e0742cf13f",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1fcd4ccdae4e2148fe74f57d2797cd3b4e0acff8dd5bfd9b703231bddf1f3aab",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "dc5b3ba7fa09c3210703c67edc8fec816ff503a597e80e7fa44dbc1162a3a40a",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "076787e96b25ecdcd5ccc551db03baec26105d616815cd1a4423fc275916fb37",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1144622e0620a65914f325af757fa9993397e272134d3214c3853edb9ad64d25",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "45aff8e67927a6f200e80426d4fbdcea05c21792d3ba7f7497be8fa57755d6ed",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "428e8714e50c94dfc9942276421ea8ada8e0937ad88058aab1c206c8276eb998",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "a96d7665aa72a1ec7605cab752a26d1149fffd284f275e00a3b76eac3ec3e03e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "f408f9c4de4a14da71dbc47e8aab86cea7a5a46f1875135c762808fffa9f8856",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "5fef5215bd26488d646f96c6c68a3482565d702057feac7d3f258bc39a156052",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "0501be26f286e9c8845d2c9d3da0d023c4da1ac1de527037f61421a7cc9310d4",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "e02ff814fb58428c9c348dae22808b4f4895501bf7fda456eb1c6a0bf9edd0b2",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "4a2e0f33cd26cf2f66db8c5b82b0c38bf8b2cd8c87a21df0ca88418dc796edbe",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "3558738e5d79224a0ff530db1000b524eb3232c5b887e44ac7e776504c7dcf45",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "31d75487598e0cd09aa67fd65d7e7024ebdff0fdd625e1ff3229b36cdec84d7e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "afbba234e00a73e521b59b2f4b416bd088bd043ff1e9a6a5925841d690971030",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "2cc99b4dbb4a86db21b73af9401b6382aa50fe9e17b55179a02e4998be1f07fd",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "04592dadb9ac35b55330d8f1c2c0976021b602360c9ae45c9c3709c793d7930c",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "04ad1e12b4d95eac4314959fc654a408ac6c20dce57204489a62cab53c067620",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "de2edcee6f4fd62170786fb8b7897ed5b55f9f40c405fe899ccdf64956f9a3c3",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_4_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_4_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "c65571d0710e313f66494215f860be3c2f652e4b8ef7ab833cc0f26f3f1a9664",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "32429b6e8ea8e448bd81c62d3c96b142028979044fce7cd79bbd776f6c7ea8c1",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "ad2e997779abfa85e619a5a26da6b03df091dff4cf0b2a6aa9532e81d0cce830",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "3e3034cebb124d3834b78673483829c7cd6ae07417c872bebf85ee7c0ad9aed5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "51f254925a620fec27fb9fb77cf1d002d8cdf7dd96e9991fdbe06bb2d834371f",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "7a0238c206b8379e4073d583e5d61e7afc561ab823bf0c9fda3d92b3b95db357",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "dd6f8be821dc354434eaa2f80a2ac1ad937be23f1c92cae6e780cabbfe98321e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "f4a79961aac29b2ef332795fcb0498397852b6b019f4977505fa948adf2de30a",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "fbabfe350a96ce8b40046576647c03bafb057b7e11ae34f01fca07681b919d0e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "985201ea0ee8c4741d3e174fb981dad427da49c58fe071f2dfb57e8e82ff7886",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "40762b04207841ebd4877e74315031bac40533be1237a913b713e763178de69e",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "b28305f7cf85ffb37c05f1c01f08c663363593d26f7a3bd979660bb24c69421b",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "da542dc5c48369c68a84080a40b911f2f0e504d590f42f347332da0d45073e2c",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "9681a1e081b0a8d20b7d138c38e97016221b7d75a6aa051c2ef9e560ced869d7",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1978b194c49837f074c508521b3c792d73a7137ed5851916eed3d222a4288e79",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "a16bda66f3df62511662a45d6d48cf5045ea07c8bbec91fe8f5cf57010cb2345",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "2cb1157826305c865fc61380fdc5a92ae87c109079db3b53c2d50c6c1a61a673",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "d97a1c050a96c3e99001d2cd7b70059c2c29f0748848948595f371233d2cb446",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "b4753c2004256e137bba4a3fea4674765c0154b0832db29225781a4f0360d4c8",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "12e54d106da453da8b58e86c3fbfcc6981564474c6dd0edd33df5e757f705136",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "62326ac568dd1cf9a6db2089d8142bdbc59effcfd4cbb9a6d28ab5a67448c2a5",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1e3152b9ec794751dcd132fe6e0953a271b52bbe3044f588f8b3b736b1dd7f22",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "cd9c061268f2b77b48a68d3a674f732422f719ec95a499ffcbad297efbc87dbc",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "72e67740881542176253a05cf443f75329ef9ec4d2ee52aeba8f429967232eb0",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "19bbc280f883ef9338e9ecedfe7e26b29bedecb7085e96c36a2a5173c0423b62",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7ccf921f9e0696933d90ee6d2e2143bfea83e57469d49cfdb34edcb0d15a0d19",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "d56719fa1a8def9fd4398cd0e81ce71e6ef8cae33fa55b975ace045bf4c8bb65",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "cac7df86407f59e93e16fa28ccbfc0a1fa5d358567d6a361bb7c787c4a585eca",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "2dd6f7dcee772b51abdd904803a16c4801919250d81293dac115e44758318aca",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "2627b61a1fa6e02e2e35837d6447c68ab91659537d4e966d984a9c7777254103",
+      "episodes": 1
+    },
+    {
+      "job": "position_x0_5_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_x0_5_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "77f26b82eafffa4504bd22cf220a355ef2ffab50f3780b879ab0c2a3264869c7",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7c7a00c7ea140a71c31134f63d598c393d7e7e29040c828d08911fc0b739da4b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "4deb058dcc451ac4c45c500a632c3ca952e59c6f92e70605d7041c8d5c651ec1",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "88f592916c1e67cea91dc8aed16e3be47eac609c19448f74bb2d9f5f272711e0",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "6acbc379306f0769a57a7bb6dc36cba9388f46ace97beee9b3dd6439c9c76d17",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "f172a0fecc4ff96afa0a1268ad68cb212c84a1884bf03f7bd48349508183cf35",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "212488166357f76911fc0fb8886927ab3f461b98c4957285ec9c8130d35fdc4c",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "6377e0dc9bfea5c77ae7cfbbf88fdb07fafa0a3902b26e2ecdf08a6e71e07aa7",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "7248311194f788ff1c58602b96e9566e2e0045cd504e890327b44e0b0e3c7e61",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "e742b126f16959941942a260673d5df431fa63fb9c729093a75771e9d387afaf",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "b127839009caffabb0d1eb3e308ead3eee3ef7aedc26cb602e2ee565047b5963",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "bd9fbc8d4ed5939126ee4652c7be18e3b0d78fdcca0579535c684ad4617d886e",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d760ce1aa9143fe246d5decdcb3075f6f8da1b6f3a6057dda71fd46215e87b3e",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "9bb0f1decd6c7fa5c38fca19e233262df6e279ae816bb18fc43f83ff38947874",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "e72600366082092640ed1318b041f479c192a7980b39217e7bd1227d592476ed",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "8afc95608e326a714fd1fc67a2274050a16a8d15452638843039cdd74c6c6da2",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "8d7a768ae7bde8a941fdfabbf9c4064fa83b21250a8956274095cd7e76cbd526",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "6de239db819129cbd76a6d72e2ab339865610bfbda3942309f7605bd1051d359",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "3f53227ee9d2d6d39ddc541f6e64b7c1d180b50ce6bb1099cb85ce0d62fe737b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "0f68e709c0c8da980df8c384fd196e207a48ef332db0bc5299cabb257f9edcda",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "e2eb3c957d1387f1cdbd24418277d6c41a51f4a09ee86d6476cab77e61b18022",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "239e9d98b8823298e6d30b060a87881fe02cde6adef1b718c91a0979ed7aad6c",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "e05cade574acdb2d68cd52a2346bc5f1de3b66068a01cb02bfc1e5031a31e86d",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "e6b4b72639b61315e1cb47e7b508f00c0af523912cd3533d459c623dea36d955",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "107e4e83076eb7ce33e690dc8c839db3c4bbec59784c23e54330fd7faea287ee",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "113150cc287ca7d62488bd5495bfcae346765d6fb11f49d8a03d1adca04bbc8e",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "dfdc0e0ca04ae34c9dbdd90bf712ab4b3b352eb00710e8181b4d4865ea2d8da8",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "5de6ae41071ffc5faf73224bb2af74f41ce6c115f8a744cde782d67bb8056a6d",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "893af86adf24cd5796f87ea01a4c2b0a86bbc5dc85c15b9f162ef48f8ae18c99",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1eb0e372cdaf1638ce9878967b5fb96ed28c77a0f7bf7bb3292b1af942bc6a16",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_1_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_1_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "57c67fd7cea4846af5d358660b1b287b09083ad03ed7e9d3281f11e7d909f91c",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "c4c0b4ad057615baa14a8854b4f13e7753408932bc9577ef8be4b08fa702e0d1",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "ad2102f809ece66ba161a218d6281d6a0bb015c500a168c88c599f791ac9c82f",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d77529f7721567841b3ac989ab28fcaf0e2ebdd5ce1dc926b5763c236176d648",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "b4eec780e2443bd3ac62dc91e45aa715adce1ce60dba22f0da6ba5e024c2f812",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "d799ebee8642fc3246b1b607b0e7420cccee6621ec7c713aa72a73d28af63972",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "918ac7a12b205be6c52407fcc4e41835b3c62e42ba1de02a85dd1e4da86d8b75",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "27b733b2e8b4f8a7b44506dab10b0700b0f051233bccd7ad0695247f42ba6139",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1938c088225ea5c832c09813cde1252fa21a8f72171be6a6dfd5bb454a342771",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1f5bdf2ae6f62fc650ebb7b2594d60bc76a9989805604851ad69d6fa08ea1961",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "802df2e603711b3c3330dd0bda0e6dc1867f9fc4a065bb7cfd3fbad071666405",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "a9957d51e4e35dbcd7054de0353489b0548bcf66fd6fd6f3cffa260aa0da9b91",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "d8c564a1e98c3977a6a29682c7bcd04367b28ceb087fdf551d351f1325d3636d",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7a470eabf0c64630965c487e28643673514fb9d50558284a75a60e4ba88aad97",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "2458c39e1aecc8b87688568261b4b5b2f39869b73aa6ace61532148f4bd1f2e3",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "142b5a4548aefa9c1806b9f1999cc819a69eb285360ac2601afc713cea6de814",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "38016fdc7fb1d1efd6ea150734eee70271414e68d2c6a8729d0598cd75fe02c3",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "ba09b659139e92bb8db505dba426446ceea21f7957d5fecf92a1e333adfc164c",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "2a52f3c9d883ffe637b6199997d0d558537b33ec44acd5316b784e743aba8bea",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "c74d24eec231ecf7ce8fc703615645899240ba7c4cc85b04193181199e17ffdc",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "ad4b42a06a1fec4055ff8e27b2f7adfa88d9b86e7611f223963febfb3b4598b7",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "b2612a5b4b0ce86e4c5de4c3dffd5e59135ae6b47ce5fe7c0738248bd511338b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "d992322f28520cd344039a31f9a183cfc5ae4e08300ffb17fc0711dba6604303",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "05c30c5ed91c30d221ad246c96a809bfe18f3816b947b80b6bff31a34f6f21e0",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "5fa2f7fdb0700469f463e400576b396bcb1e88a7f8d168b735276c950f8de3aa",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "4cea8e803177b2582b5eaf0ebe8c40b8c04e2d7021549089134edd4affab02c1",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "0d949cb1038b0145629b96bbfa025381223dc144512033f525b699644df17c40",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "cbef75f7ff2143f35dafd5cd8f2f8a441c4d5572afb4facec64ddc170a87b8f8",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "e7aeb4bb5982b44229fe57760b65ba6c2ee9217f2bd0e78284efafebbd3f85f3",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "ecd116ca8d2f3fbcd2e1139e83c077af12c1506388f49de97fd426fb3eea9511",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_2_t9_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_2_t9_winner__libero_object_temp__task9__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "a5e9223e3fb22080ad0c33c7e7c1fd8b3398eb08b719e01cfb515a94b9428c8e",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t0_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t0_first__libero_object_temp__task0__init1__first__l0p0__query_traces.parquet",
+      "sha256": "1bef196ce9ece797847a6fa1f46645e1935bf6cef13b2e2c71f7a1ffa03f15ce",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t0_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t0_max_value__libero_object_temp__task0__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "317891cf19eddbf41a984d6a15e4a7ed02e0fa701eb2796ef5991317067df34a",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t0_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t0_winner__libero_object_temp__task0__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "ae83034ffe07fcdd2bc61ebe681c52dfdd80a240837d211810eb75d1ce9bb535",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t1_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t1_first__libero_object_temp__task1__init1__first__l0p0__query_traces.parquet",
+      "sha256": "7f03fb7c6b2ad4c333bc2aaf255d7ff13f19f76d45d63bf9fbaacf656ad9b01b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t1_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t1_max_value__libero_object_temp__task1__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1b110467709463f184443ca76aff37cec9184d86cf4fbed1f0bf5462592a33a6",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t1_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t1_winner__libero_object_temp__task1__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "bf6ce26c98d7384eff5362323a38129567733faf90c9854ab498f6c5d20b7b55",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t2_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t2_first__libero_object_temp__task2__init1__first__l0p0__query_traces.parquet",
+      "sha256": "218550d76706c2e638d23423fca05074189660ab55d764b5f142717260f6e7bb",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t2_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t2_max_value__libero_object_temp__task2__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "413b0ae35a079cd17ae56fe93accd9c4d6b31c97e1ad378e6ad563dfaf0e1ffe",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t2_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t2_winner__libero_object_temp__task2__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "57a04fde027cbddaf5e675e7f2d6d8732e7f101880846ebc5eb0f417122b0909",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t3_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t3_first__libero_object_temp__task3__init1__first__l0p0__query_traces.parquet",
+      "sha256": "e1a4290ea0020b0c48d0d05ef54614f47c77b5bd12a22a03d500236bee770a4b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t3_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t3_max_value__libero_object_temp__task3__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "950431fd8ef879402ad8ea6e21aeb77e1b673c9092d0c0f81e9bc629fd52301e",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t3_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t3_winner__libero_object_temp__task3__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "2446e0ba0f0738601416800c54478fac3a128e8dee02b3feefc381bf755b7c12",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t4_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t4_first__libero_object_temp__task4__init1__first__l0p0__query_traces.parquet",
+      "sha256": "aa784c74a0cb2aacc03cbd49c9ef04e0589640d97c0588d62c588f3daa3f5b85",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t4_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t4_max_value__libero_object_temp__task4__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "6b3a958a2c8bee1f8f7ccadcf4867d7caefa0ccec2daf83d786b55e5a4c405a7",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t4_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t4_winner__libero_object_temp__task4__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "09fd416420834acdc3714139326bf49d489282786a11d4b2b24d7290e2be2d70",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t5_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t5_first__libero_object_temp__task5__init1__first__l0p0__query_traces.parquet",
+      "sha256": "ace516bc720feea2d788c9393fb77f13d5096e91c6123b298ed70c75d03c26aa",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t5_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t5_max_value__libero_object_temp__task5__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "9eca10a51488718fa309123b6a2a1031ee6dc4cad8c1b7be603eb7789e5ecc1a",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t5_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t5_winner__libero_object_temp__task5__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "af619c89f3258a5ee3a6388952c584290e7676ed261e7b20277afed222b0f275",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t6_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t6_first__libero_object_temp__task6__init1__first__l0p0__query_traces.parquet",
+      "sha256": "3954ebfc23cc5441059fd8ff6408cf0461eb54e904e43baebe96c32a0e47f7d8",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t6_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t6_max_value__libero_object_temp__task6__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "1d79b18f3f5dbcf5382a1919f898ab8a615545a5cf8e6eb4b67ec771646413b6",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t6_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t6_winner__libero_object_temp__task6__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "1f17af79c6788f1d1c1479e2cd59c0ee192cb9485e279f0877373c12feab4933",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t7_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t7_first__libero_object_temp__task7__init1__first__l0p0__query_traces.parquet",
+      "sha256": "12dde25302729fad9829aa5eda8b21a93f016e64409e0bdd508985b6ebdcfe36",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t7_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t7_max_value__libero_object_temp__task7__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "7aa7209077f8eb34cff0688a7f18841e84b2b3af601c360e4ea27c91a22a2ec0",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t7_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t7_winner__libero_object_temp__task7__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "93156b727c3f34293b573bdce70b01559087c1226d4059143c0ca177d901d7f0",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t8_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t8_first__libero_object_temp__task8__init1__first__l0p0__query_traces.parquet",
+      "sha256": "a4d118314fee0b48f55ccf26c9ae1c34c45cfc33b9db1ead88e7dd518138dd2c",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t8_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t8_max_value__libero_object_temp__task8__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "5923cc141e6864feef233164cff0b1280d527cc01071926ce32f38aabbf3dbf6",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t8_winner",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t8_winner__libero_object_temp__task8__init1__trajectory_medoid__l1p0__query_traces.parquet",
+      "sha256": "49a596acdef946a5cc50038ae6f8a3b7e4be0c5aa83bbdcdc693d901e44ba23b",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t9_first",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t9_first__libero_object_temp__task9__init1__first__l0p0__query_traces.parquet",
+      "sha256": "bfcb235b2e198c85b6c648f9abd87849a73ec6c066d8872313f1455492c57d82",
+      "episodes": 1
+    },
+    {
+      "job": "position_y0_3_t9_max_value",
+      "trace": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_compact/runs/trajectory_consensus_20260908_compact__position_y0_3_t9_max_value__libero_object_temp__task9__init1__max_value__l0p0__query_traces.parquet",
+      "sha256": "da308b73bf8e81bc0b12e72a0588fe3eb3b88fccf1da2481ac45e49908413fc4",
+      "episodes": 1
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+{
+  "gate": {
+    "checks": {
+      "exact_train_test_coverage": true,
+      "task_sets_frozen_and_disjoint": true,
+      "primary_spearman_gain_at_least_0p05": false,
+      "primary_auc_not_below_scalar": false,
+      "primary_uplift20_positive": false,
+      "primary_uplift20_above_scalar": true,
+      "primary_compute_adjusted_uplift20_positive": false,
+      "primary_uplift20_nonnegative_each_task": false,
+      "no_privileged_features": true
+    },
+    "forbidden_features": [],
+    "gate_passed": false
+  },
+  "model_summary": [
+    {
+      "family": "scalar",
+      "spearman": 0.24475217495410648,
+      "sign_auc": 0.62,
+      "balanced_accuracy": 0.5771428571428572,
+      "rmse": 0.09596868114106641
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "spearman": 0.24335541543618805,
+      "sign_auc": 0.6190476190476191,
+      "balanced_accuracy": 0.5771428571428572,
+      "rmse": 0.09588351700189539
+    },
+    {
+      "family": "scalar+crossview",
+      "spearman": 0.19893846276638202,
+      "sign_auc": 0.6123809523809524,
+      "balanced_accuracy": 0.6171428571428572,
+      "rmse": 0.09579212399846361
+    },
+    {
+      "family": "scalar+semantic2",
+      "spearman": 0.20009577779551443,
+      "sign_auc": 0.6133333333333333,
+      "balanced_accuracy": 0.6171428571428572,
+      "rmse": 0.09578184754112792
+    }
+  ],
+  "uplift_summary": [
+    {
+      "family": "scalar",
+      "budget": 0.1,
+      "selected_count": 7,
+      "uplift_per_state": -0.0003166020792091582,
+      "mean_selected_vof": -0.0030303341867162284,
+      "compute_adjusted_uplift": -0.002928542377716621,
+      "oracle_uplift_per_state": 0.016910710329843925,
+      "random_expected_uplift": -0.0009749515344153758
+    },
+    {
+      "family": "scalar",
+      "budget": 0.2,
+      "selected_count": 14,
+      "uplift_per_state": -0.00039681883965669406,
+      "mean_selected_vof": -0.0018990615897856074,
+      "compute_adjusted_uplift": -0.00562069943667162,
+      "oracle_uplift_per_state": 0.017731151720023278,
+      "random_expected_uplift": -0.0019499030688307517
+    },
+    {
+      "family": "scalar",
+      "budget": 0.3,
+      "selected_count": 21,
+      "uplift_per_state": -0.0032084532727884468,
+      "mean_selected_vof": -0.010236493775086949,
+      "compute_adjusted_uplift": -0.011044274168310836,
+      "oracle_uplift_per_state": 0.018115152803871507,
+      "random_expected_uplift": -0.0029248546032461277
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "budget": 0.1,
+      "selected_count": 7,
+      "uplift_per_state": -0.0003166020792091582,
+      "mean_selected_vof": -0.0030303341867162284,
+      "compute_adjusted_uplift": -0.002928542377716621,
+      "oracle_uplift_per_state": 0.016910710329843925,
+      "random_expected_uplift": -0.0009749515344153758
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "budget": 0.2,
+      "selected_count": 14,
+      "uplift_per_state": -0.00039681883965669406,
+      "mean_selected_vof": -0.0018990615897856074,
+      "compute_adjusted_uplift": -0.00562069943667162,
+      "oracle_uplift_per_state": 0.017731151720023278,
+      "random_expected_uplift": -0.0019499030688307517
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "budget": 0.3,
+      "selected_count": 21,
+      "uplift_per_state": -0.003208453272788447,
+      "mean_selected_vof": -0.01023649377508695,
+      "compute_adjusted_uplift": -0.011044274168310837,
+      "oracle_uplift_per_state": 0.018115152803871507,
+      "random_expected_uplift": -0.0029248546032461277
+    },
+    {
+      "family": "scalar+crossview",
+      "budget": 0.1,
+      "selected_count": 7,
+      "uplift_per_state": -0.0007800479814346313,
+      "mean_selected_vof": -0.007466173536588614,
+      "compute_adjusted_uplift": -0.003391988279942094,
+      "oracle_uplift_per_state": 0.016910710329843925,
+      "random_expected_uplift": -0.0009749515344153758
+    },
+    {
+      "family": "scalar+crossview",
+      "budget": 0.2,
+      "selected_count": 14,
+      "uplift_per_state": -0.0003455552867645446,
+      "mean_selected_vof": -0.0016537288723731777,
+      "compute_adjusted_uplift": -0.00556943588377947,
+      "oracle_uplift_per_state": 0.017731151720023278,
+      "random_expected_uplift": -0.0019499030688307517
+    },
+    {
+      "family": "scalar+crossview",
+      "budget": 0.3,
+      "selected_count": 21,
+      "uplift_per_state": -0.0032411896853522595,
+      "mean_selected_vof": -0.0103409385199334,
+      "compute_adjusted_uplift": -0.011077010580874649,
+      "oracle_uplift_per_state": 0.018115152803871507,
+      "random_expected_uplift": -0.0029248546032461277
+    },
+    {
+      "family": "scalar+semantic2",
+      "budget": 0.1,
+      "selected_count": 7,
+      "uplift_per_state": -0.0007800479814346313,
+      "mean_selected_vof": -0.007466173536588614,
+      "compute_adjusted_uplift": -0.003391988279942094,
+      "oracle_uplift_per_state": 0.016910710329843925,
+      "random_expected_uplift": -0.0009749515344153758
+    },
+    {
+      "family": "scalar+semantic2",
+      "budget": 0.2,
+      "selected_count": 14,
+      "uplift_per_state": -0.0003455552867645446,
+      "mean_selected_vof": -0.0016537288723731777,
+      "compute_adjusted_uplift": -0.00556943588377947,
+      "oracle_uplift_per_state": 0.017731151720023278,
+      "random_expected_uplift": -0.0019499030688307517
+    },
+    {
+      "family": "scalar+semantic2",
+      "budget": 0.3,
+      "selected_count": 21,
+      "uplift_per_state": 0.0035981839563609657,
+      "mean_selected_vof": 0.011479920241723082,
+      "compute_adjusted_uplift": -0.0042376369391614235,
+      "oracle_uplift_per_state": 0.018115152803871507,
+      "random_expected_uplift": -0.0029248546032461277
+    }
+  ],
+  "task_summary": [
+    {
+      "family": "scalar",
+      "task_id": 5,
+      "states": 26,
+      "spearman": 0.19931623931623932,
+      "sign_auc": 0.5972222222222222,
+      "balanced_accuracy": 0.5555555555555556,
+      "rmse": 0.03122131191620892,
+      "uplift20_uplift_per_state": -0.0008566022695450694,
+      "uplift20_compute_adjusted_uplift": -0.0066258330387758396
+    },
+    {
+      "family": "scalar",
+      "task_id": 8,
+      "states": 13,
+      "spearman": 0.42857142857142855,
+      "sign_auc": 0.7272727272727273,
+      "balanced_accuracy": 0.6136363636363636,
+      "rmse": 0.13257809877195004,
+      "uplift20_uplift_per_state": -0.003584553237334008,
+      "uplift20_compute_adjusted_uplift": -0.009353784006564779
+    },
+    {
+      "family": "scalar",
+      "task_id": 9,
+      "states": 28,
+      "spearman": 0.2824302134646962,
+      "sign_auc": 0.6923076923076923,
+      "balanced_accuracy": 0.6230769230769231,
+      "rmse": 0.11389606353620743,
+      "uplift20_uplift_per_state": -0.008300109088711002,
+      "uplift20_compute_adjusted_uplift": -0.01365725194585386
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "task_id": 5,
+      "states": 26,
+      "spearman": 0.19931623931623932,
+      "sign_auc": 0.5972222222222222,
+      "balanced_accuracy": 0.5555555555555556,
+      "rmse": 0.03110963029599928,
+      "uplift20_uplift_per_state": -0.0008566022695450694,
+      "uplift20_compute_adjusted_uplift": -0.0066258330387758396
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "task_id": 8,
+      "states": 13,
+      "spearman": 0.42857142857142855,
+      "sign_auc": 0.7272727272727273,
+      "balanced_accuracy": 0.6136363636363636,
+      "rmse": 0.13229984906141604,
+      "uplift20_uplift_per_state": -0.003584553237334008,
+      "uplift20_compute_adjusted_uplift": -0.009353784006564779
+    },
+    {
+      "family": "scalar+agent-disagreement",
+      "task_id": 9,
+      "states": 28,
+      "spearman": 0.27367268746579093,
+      "sign_auc": 0.6871794871794872,
+      "balanced_accuracy": 0.6230769230769231,
+      "rmse": 0.11390302649622343,
+      "uplift20_uplift_per_state": -0.008300109088711,
+      "uplift20_compute_adjusted_uplift": -0.01365725194585386
+    },
+    {
+      "family": "scalar+crossview",
+      "task_id": 5,
+      "states": 26,
+      "spearman": 0.174017094017094,
+      "sign_auc": 0.5694444444444444,
+      "balanced_accuracy": 0.5555555555555556,
+      "rmse": 0.033212365670538806,
+      "uplift20_uplift_per_state": -0.0017507026188203615,
+      "uplift20_compute_adjusted_uplift": -0.007519933388051132
+    },
+    {
+      "family": "scalar+crossview",
+      "task_id": 8,
+      "states": 13,
+      "spearman": 0.4340659340659341,
+      "sign_auc": 0.7272727272727273,
+      "balanced_accuracy": 0.8636363636363636,
+      "rmse": 0.12893653687244225,
+      "uplift20_uplift_per_state": -0.007348394111993208,
+      "uplift20_compute_adjusted_uplift": -0.013117624881223979
+    },
+    {
+      "family": "scalar+crossview",
+      "task_id": 9,
+      "states": 28,
+      "spearman": 0.21620142309797483,
+      "sign_auc": 0.6666666666666666,
+      "balanced_accuracy": 0.6564102564102564,
+      "rmse": 0.1149535603828385,
+      "uplift20_uplift_per_state": -0.008403766284153487,
+      "uplift20_compute_adjusted_uplift": -0.013760909141296344
+    },
+    {
+      "family": "scalar+semantic2",
+      "task_id": 5,
+      "states": 26,
+      "spearman": 0.174017094017094,
+      "sign_auc": 0.5694444444444444,
+      "balanced_accuracy": 0.5555555555555556,
+      "rmse": 0.03319559848612799,
+      "uplift20_uplift_per_state": -0.0017507026188203615,
+      "uplift20_compute_adjusted_uplift": -0.007519933388051132
+    },
+    {
+      "family": "scalar+semantic2",
+      "task_id": 8,
+      "states": 13,
+      "spearman": 0.40659340659340654,
+      "sign_auc": 0.7272727272727273,
+      "balanced_accuracy": 0.8636363636363636,
+      "rmse": 0.12890557435708105,
+      "uplift20_uplift_per_state": -0.007348394111993208,
+      "uplift20_compute_adjusted_uplift": -0.013117624881223979
+    },
+    {
+      "family": "scalar+semantic2",
+      "task_id": 9,
+      "states": 28,
+      "spearman": 0.21620142309797483,
+      "sign_auc": 0.6666666666666666,
+      "balanced_accuracy": 0.6564102564102564,
+      "rmse": 0.11495368963472412,
+      "uplift20_uplift_per_state": -0.008403766284153487,
+      "uplift20_compute_adjusted_uplift": -0.013760909141296344
+    }
+  ],
+  "report": "experiments/campaigns/semantic_vof_task_transfer_20260831/analysis/RESULTS.md",
+  "plot": "experiments/campaigns/semantic_vof_task_transfer_20260831/analysis/semantic_vof_task_transfer.png"
+}

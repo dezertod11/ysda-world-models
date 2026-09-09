@@ -1,0 +1,8 @@
+{
+  "job": "object_holdout_task8_init3",
+  "gpu": "6",
+  "status": "completed",
+  "started_at": "2026-08-30T01:21:23",
+  "finished_at": "2026-08-30T01:28:04",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/terminal_grounded_critic_20260829__holdout/logs/object_holdout_task8_init3.log"
+}

@@ -1,0 +1,16 @@
+factor,planning_strategy,failure_type,episodes,target_drops
+Environment,frozen_factor_ridge,wrong_object_interaction_candidate,48,0
+Environment,frozen_factor_ridge,timeout_no_goal,24,0
+Environment,frozen_factor_ridge,kinematic_deadlock_candidate,6,0
+Environment,frozen_factor_ridge,target_drop_candidate,1,1
+Environment,max_value,wrong_object_interaction_candidate,46,0
+Environment,max_value,timeout_no_goal,26,0
+Environment,max_value,kinematic_deadlock_candidate,3,0
+Position,frozen_factor_ridge,timeout_no_goal,64,0
+Position,frozen_factor_ridge,wrong_object_interaction_candidate,31,0
+Position,frozen_factor_ridge,target_drop_candidate,14,14
+Position,frozen_factor_ridge,kinematic_deadlock_candidate,8,0
+Position,max_value,timeout_no_goal,75,0
+Position,max_value,wrong_object_interaction_candidate,27,0
+Position,max_value,kinematic_deadlock_candidate,11,0
+Position,max_value,target_drop_candidate,7,7

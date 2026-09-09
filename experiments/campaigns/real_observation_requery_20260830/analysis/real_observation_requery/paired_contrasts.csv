@@ -1,0 +1,3 @@
+method,paired_states,delta_success_rate,delta_ci_low,delta_ci_high,rescues,harms,mcnemar_exact_p
+maxV-H8,40,0.0,-0.125,0.125,3,3,1.0
+maxV-gripper-H8/H16,40,0.025,-0.125,0.175,6,5,1.0

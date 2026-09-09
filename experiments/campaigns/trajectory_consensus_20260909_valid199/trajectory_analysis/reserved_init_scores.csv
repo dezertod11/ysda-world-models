@@ -1,0 +1,10 @@
+factor,method,size,sum,mean
+Environment,first,50,19,0.38
+Environment,max_value,50,20,0.4
+Environment,winner,50,20,0.4
+Object,first,50,47,0.94
+Object,max_value,50,47,0.94
+Object,winner,50,48,0.96
+Position,first,99,28,0.2828282828282828
+Position,max_value,99,30,0.30303030303030304
+Position,winner,99,26,0.26262626262626265

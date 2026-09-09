@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "phase_vof_terminal_transfer": {
+      "description": "Exact-state terminal transfer of the frozen Environment grasp/transport feedback rule on interaction-supported tasks",
+      "jobs": [
+        {
+          "name": "environment_task5_phase_vof",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "phase_vof_environment_task5",
+          "suites": "libero_object_env",
+          "task_ids": "5",
+          "init_state_ids": "10-19",
+          "rollouts_per_init": 2,
+          "base_seed": 9100000,
+          "target_decision_states": 34,
+          "gpu_slot": 0
+        },
+        {
+          "name": "environment_task8_phase_vof",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "phase_vof_environment_task8",
+          "suites": "libero_object_env",
+          "task_ids": "8",
+          "init_state_ids": "10-14",
+          "rollouts_per_init": 2,
+          "base_seed": 9400000,
+          "target_decision_states": 14,
+          "gpu_slot": 1
+        },
+        {
+          "name": "environment_task9_phase_vof",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "phase_vof_environment_task9",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "10-14",
+          "rollouts_per_init": 2,
+          "base_seed": 9500000,
+          "target_decision_states": 15,
+          "gpu_slot": 4
+        },
+        {
+          "name": "environment_task9_phase_vof_b",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "phase_vof_environment_task9_b",
+          "suites": "libero_object_env",
+          "task_ids": "9",
+          "init_state_ids": "15-19",
+          "rollouts_per_init": 2,
+          "base_seed": 9500970,
+          "target_decision_states": 15,
+          "gpu_slot": 3
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "sampling_mode": "phase_balanced",
+    "snapshot_query_indices": "0,3,6,9",
+    "phase_cap_fraction": 0.4,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "terminal_selected_feedback_only": true,
+    "continuation_num_candidates": 0,
+    "skip_feedback_branch": false,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "continuation_prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "generalization",
+    "environment_num_init_states": 50,
+    "environment_seed": 20260825
+  }
+}

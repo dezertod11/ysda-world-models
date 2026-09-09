@@ -1,0 +1,113 @@
+variant,metric,factor,roc_auc,balanced_average_precision,id_groups,ood_groups
+p4_original,epistemic_mean,Environment,0.8769270298047277,0.79539411404657,56,139
+p4_original,epistemic_mean,Object,0.5883204633204633,0.5581235716403139,56,37
+p4_original,epistemic_mean,Position,0.28095238095238095,0.3866318178051791,56,75
+p4_original,epistemic_mean,All OOD,0.6563033579965851,0.6483645968759296,56,251
+p4_original,predicted_mean_residual_rms,Environment,0.4723792394655704,0.4735473545072855,56,139
+p4_original,predicted_mean_residual_rms,Object,0.222007722007722,0.3595537006506752,56,37
+p4_original,predicted_mean_residual_rms,Position,0.1438095238095238,0.3327317062293018,56,75
+p4_original,predicted_mean_residual_rms,All OOD,0.33729368241320434,0.4031590108225842,56,251
+p4_original,mean_plus_epistemic_rms,Environment,0.618191161356629,0.5906544171310095,56,139
+p4_original,mean_plus_epistemic_rms,Object,0.2446911196911197,0.3650575321640233,56,37
+p4_original,mean_plus_epistemic_rms,Position,0.15119047619047618,0.33522367577649126,56,75
+p4_original,mean_plus_epistemic_rms,All OOD,0.42359134889015365,0.46865768128340135,56,251
+p4_original,expected_residual_rms,Environment,0.2209660842754368,0.3527499767060178,56,139
+p4_original,expected_residual_rms,Object,0.2668918918918919,0.3744708074795121,56,37
+p4_original,expected_residual_rms,Position,0.604047619047619,0.6693965428017451,56,75
+p4_original,expected_residual_rms,All OOD,0.34220261809903246,0.45645428641023533,56,251
+p4_original,epistemic_snr,Environment,0.8408273381294964,0.8165165054098522,56,139
+p4_original,epistemic_snr,Object,0.5767374517374517,0.6046346707096151,56,37
+p4_original,epistemic_snr,Position,0.10976190476190475,0.3259522353842963,56,75
+p4_original,epistemic_snr,All OOD,0.583451906659078,0.6502412180526355,56,251
+p4_original,common_covariance_jrd,Environment,0.8933067831449126,0.6746899491382122,56,139
+p4_original,common_covariance_jrd,Object,0.7166988416988417,0.5992055849745576,56,37
+p4_original,common_covariance_jrd,Position,0.22976190476190475,0.3601915877056814,56,75
+p4_original,common_covariance_jrd,All OOD,0.669002561183836,0.5731288340265801,56,251
+p4_original,mc_predictive_mi,Environment,0.6344424460431655,0.5276365411045625,56,139
+p4_original,mc_predictive_mi,Object,0.49903474903474904,0.4650360629417963,56,37
+p4_original,mc_predictive_mi,Position,0.09619047619047619,0.3208102761423069,56,75
+p4_original,mc_predictive_mi,All OOD,0.45364968696642005,0.4437107718043589,56,251
+hetero_earlystop,epistemic_mean,Environment,0.1211459403905447,0.325414175921965,56,139
+hetero_earlystop,epistemic_mean,Object,0.1443050193050193,0.3390284829411743,56,37
+hetero_earlystop,epistemic_mean,Position,0.1269047619047619,0.3305805818119686,56,75
+hetero_earlystop,epistemic_mean,All OOD,0.1262805919180421,0.3253875703211335,56,251
+hetero_earlystop,predicted_mean_residual_rms,Environment,0.047918807810894144,0.31288823881720196,56,139
+hetero_earlystop,predicted_mean_residual_rms,Object,0.07673745173745174,0.32543305635812636,56,37
+hetero_earlystop,predicted_mean_residual_rms,Position,0.12976190476190477,0.3328035778089349,56,75
+hetero_earlystop,predicted_mean_residual_rms,All OOD,0.07662208309618668,0.31583209607512586,56,251
+hetero_earlystop,mean_plus_epistemic_rms,Environment,0.05549845837615622,0.31418174461346204,56,139
+hetero_earlystop,mean_plus_epistemic_rms,Object,0.052606177606177605,0.3226926810819683,56,37
+hetero_earlystop,mean_plus_epistemic_rms,Position,0.12714285714285714,0.3311816606417528,56,75
+hetero_earlystop,mean_plus_epistemic_rms,All OOD,0.07647979510529311,0.31576380639360757,56,251
+hetero_earlystop,expected_residual_rms,Environment,0.08787255909558069,0.3185119154880293,56,139
+hetero_earlystop,expected_residual_rms,Object,0.11003861003861004,0.3312197392922335,56,37
+hetero_earlystop,expected_residual_rms,Position,0.16785714285714284,0.33879435295583327,56,75
+hetero_earlystop,expected_residual_rms,All OOD,0.1150398406374502,0.32313068939883965,56,251
+hetero_earlystop,epistemic_snr,Environment,0.27800616649537513,0.3737326446456347,56,139
+hetero_earlystop,epistemic_snr,Object,0.2133204633204633,0.3561437260556662,56,37
+hetero_earlystop,epistemic_snr,Position,0.1261904761904762,0.33058395662976975,56,75
+hetero_earlystop,epistemic_snr,All OOD,0.22310756972111553,0.3536344952102387,56,251
+hetero_earlystop,common_covariance_jrd,Environment,0.24293422404933196,0.35993422801848,56,139
+hetero_earlystop,common_covariance_jrd,Object,0.23696911196911197,0.36341904690109916,56,37
+hetero_earlystop,common_covariance_jrd,Position,0.13,0.33194876395319317,56,75
+hetero_earlystop,common_covariance_jrd,All OOD,0.2083096186681844,0.34826702971780943,56,251
+hetero_earlystop,mc_predictive_mi,Environment,0.3716598150051387,0.42869407647593016,56,139
+hetero_earlystop,mc_predictive_mi,Object,0.2750965250965251,0.3770986500515492,56,37
+hetero_earlystop,mc_predictive_mi,Position,0.14666666666666667,0.335243705870252,56,75
+hetero_earlystop,mc_predictive_mi,All OOD,0.2901963574274331,0.3859775137040022,56,251
+hetero_regularized,epistemic_mean,Environment,0.13848920863309352,0.3294590543650439,56,139
+hetero_regularized,epistemic_mean,Object,0.1694015444015444,0.344769820969399,56,37
+hetero_regularized,epistemic_mean,Position,0.13214285714285715,0.3326235101371122,56,75
+hetero_regularized,epistemic_mean,All OOD,0.14114968696642002,0.32893826234828893,56,251
+hetero_regularized,predicted_mean_residual_rms,Environment,0.05575539568345324,0.3140448181046206,56,139
+hetero_regularized,predicted_mean_residual_rms,Object,0.08108108108108109,0.3262467930894306,56,37
+hetero_regularized,predicted_mean_residual_rms,Position,0.13857142857142857,0.33580198406419015,56,75
+hetero_regularized,predicted_mean_residual_rms,All OOD,0.0842344906089926,0.3172119870907753,56,251
+hetero_regularized,mean_plus_epistemic_rms,Environment,0.065775950668037,0.3156337304687562,56,139
+hetero_regularized,mean_plus_epistemic_rms,Object,0.05936293436293436,0.3237116137610283,56,37
+hetero_regularized,mean_plus_epistemic_rms,Position,0.1361904761904762,0.3344185215020212,56,75
+hetero_regularized,mean_plus_epistemic_rms,All OOD,0.08587080250426864,0.3173966260215156,56,251
+hetero_regularized,expected_residual_rms,Environment,0.10996916752312436,0.3229043277041843,56,139
+hetero_regularized,expected_residual_rms,Object,0.07915057915057915,0.3247084163358717,56,37
+hetero_regularized,expected_residual_rms,Position,0.16238095238095238,0.33787602614859713,56,75
+hetero_regularized,expected_residual_rms,All OOD,0.12108708025042686,0.3243020785683324,56,251
+hetero_regularized,epistemic_snr,Environment,0.2789054470709147,0.3728515502914281,56,139
+hetero_regularized,epistemic_snr,Object,0.23793436293436293,0.3640418130932398,56,37
+hetero_regularized,epistemic_snr,Position,0.12642857142857142,0.33070416651031675,56,75
+hetero_regularized,epistemic_snr,All OOD,0.2273050654524758,0.3547085153707865,56,251
+hetero_regularized,common_covariance_jrd,Environment,0.2529547790339157,0.36331226411256,56,139
+hetero_regularized,common_covariance_jrd,Object,0.2548262548262548,0.3699003668669272,56,37
+hetero_regularized,common_covariance_jrd,Position,0.12714285714285714,0.3311837886696602,56,75
+hetero_regularized,common_covariance_jrd,All OOD,0.2156374501992032,0.3508657769878909,56,251
+hetero_regularized,mc_predictive_mi,Environment,0.2647738951695786,0.37129972194009175,56,139
+hetero_regularized,mc_predictive_mi,Object,0.4251930501930502,0.4374658202706071,56,37
+hetero_regularized,mc_predictive_mi,Position,0.15523809523809523,0.33819052824155077,56,75
+hetero_regularized,mc_predictive_mi,All OOD,0.25569151963574277,0.366096719982165,56,251
+mean_mse_shared,epistemic_mean,Environment,0.7816032887975334,0.6577785068260578,56,139
+mean_mse_shared,epistemic_mean,Object,0.5511583011583011,0.500382219403937,56,37
+mean_mse_shared,epistemic_mean,Position,0.34,0.3985363740310935,56,75
+mean_mse_shared,epistemic_mean,All OOD,0.6156801365964713,0.5555138456556615,56,251
+mean_mse_shared,predicted_mean_residual_rms,Environment,0.46557040082219936,0.45847116669725285,56,139
+mean_mse_shared,predicted_mean_residual_rms,Object,0.32915057915057916,0.39944835935909995,56,37
+mean_mse_shared,predicted_mean_residual_rms,Position,0.19857142857142857,0.3482744563039122,56,75
+mean_mse_shared,predicted_mean_residual_rms,All OOD,0.36568013659647125,0.41060314023228034,56,251
+mean_mse_shared,mean_plus_epistemic_rms,Environment,0.5565262076053443,0.5088164827663388,56,139
+mean_mse_shared,mean_plus_epistemic_rms,Object,0.2948841698841699,0.3863816191429096,56,37
+mean_mse_shared,mean_plus_epistemic_rms,Position,0.2169047619047619,0.35438833663509317,56,75
+mean_mse_shared,mean_plus_epistemic_rms,All OOD,0.41647694934547524,0.4372387320703987,56,251
+mean_mse_shared,expected_residual_rms,Environment,0.5565262076053443,0.5088164827663388,56,139
+mean_mse_shared,expected_residual_rms,Object,0.2948841698841699,0.3863816191429096,56,37
+mean_mse_shared,expected_residual_rms,Position,0.2169047619047619,0.35438833663509317,56,75
+mean_mse_shared,expected_residual_rms,All OOD,0.41647694934547524,0.4372387320703987,56,251
+mean_mse_shared,epistemic_snr,Environment,0.8061408016443987,0.6900568258168474,56,139
+mean_mse_shared,epistemic_snr,Object,0.5333011583011583,0.487673787356239,56,37
+mean_mse_shared,epistemic_snr,Position,0.3330952380952381,0.39922561462911677,56,75
+mean_mse_shared,epistemic_snr,All OOD,0.6245731360273193,0.5731868083286442,56,251
+mean_mse_shared,common_covariance_jrd,Environment,0.9346094552929085,0.7932721639194331,56,139
+mean_mse_shared,common_covariance_jrd,Object,0.7948841698841699,0.6970363161851554,56,37
+mean_mse_shared,common_covariance_jrd,Position,0.545952380952381,0.5312546883537942,56,75
+mean_mse_shared,common_covariance_jrd,All OOD,0.7978799089356858,0.7094251572607956,56,251
+mean_mse_shared,mc_predictive_mi,Environment,0.9006294964028777,0.7369924025741075,56,139
+mean_mse_shared,mc_predictive_mi,Object,0.7367277992277992,0.6314530704662688,56,37
+mean_mse_shared,mc_predictive_mi,Position,0.4744047619047619,0.4823439692073418,56,75
+mean_mse_shared,mc_predictive_mi,All OOD,0.7491107000569152,0.6519157348098423,56,251

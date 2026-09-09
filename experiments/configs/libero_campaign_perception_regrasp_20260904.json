@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "defaults": {
+    "suites": "libero_object_temp",
+    "task_ids": "0",
+    "experiment_split": "development",
+    "uncertainty_seeds": "0,1,2,3",
+    "base_seed": 20260904,
+    "max_timesteps": 280,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+    "recovery_proposals": "perception_regrasp_h8",
+    "recovery_perception_model": "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+    "recovery_perception_min_confidence": 0.0,
+    "save_videos": false
+  },
+  "profiles": {
+    "calibration": {
+      "description": "Observable RGB localization calibration, explicitly excluding the frozen P3 reserve.",
+      "jobs": [
+        {"kind": "pro_position_perception_calibration", "name": "x0p2_task2", "position_level": "x0.2", "task_ids": "2", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0},
+        {"kind": "pro_position_perception_calibration", "name": "x0p2_task5", "position_level": "x0.2", "task_ids": "5", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 1},
+        {"kind": "pro_position_perception_calibration", "name": "x0p2_task6", "position_level": "x0.2", "task_ids": "6", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 2},
+        {"kind": "pro_position_perception_calibration", "name": "x0p2_task9", "position_level": "x0.2", "task_ids": "9", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0},
+        {"kind": "pro_position_perception_calibration", "name": "y0p1_task4", "position_level": "y0.1", "task_ids": "4", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 1},
+        {"kind": "pro_position_perception_calibration", "name": "y0p1_task5", "position_level": "y0.1", "task_ids": "5", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 2},
+        {"kind": "pro_position_perception_calibration", "name": "y0p1_task6", "position_level": "y0.1", "task_ids": "6", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0},
+        {"kind": "pro_position_perception_calibration", "name": "y0p1_task8", "position_level": "y0.1", "task_ids": "8", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 1},
+        {"kind": "pro_position_perception_calibration", "name": "y0p1_task9", "position_level": "y0.1", "task_ids": "9", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 2},
+        {"kind": "pro_position_perception_calibration", "name": "y0p2_task4", "position_level": "y0.2", "task_ids": "4", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0},
+        {"kind": "pro_position_perception_calibration", "name": "y0p2_task6", "position_level": "y0.2", "task_ids": "6", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 1},
+        {"kind": "pro_position_perception_calibration", "name": "y0p2_task7", "position_level": "y0.2", "task_ids": "7", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 2},
+        {"kind": "pro_position_perception_calibration", "name": "y0p2_task8", "position_level": "y0.2", "task_ids": "8", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0},
+        {"kind": "pro_position_perception_calibration", "name": "y0p2_task9", "position_level": "y0.2", "task_ids": "9", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 1},
+        {"kind": "pro_position_perception_calibration", "name": "y0p3_task1", "position_level": "y0.3", "task_ids": "1", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 2},
+        {"kind": "pro_position_perception_calibration", "name": "y0p3_task5", "position_level": "y0.3", "task_ids": "5", "perception_calibration_manifest": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.parquet", "gpu_slot": 0}
+      ]
+    },
+    "screen20": {
+      "description": "Twenty-state terminal development screen for observable perception regrasp; no videos.",
+      "jobs": [
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task5", "position_level": "x0.2", "task_ids": "5", "recovery_max_states": 3, "recovery_expected_states": 3, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task6", "position_level": "x0.2", "task_ids": "6", "recovery_max_states": 3, "recovery_expected_states": 3, "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task9", "position_level": "x0.2", "task_ids": "9", "recovery_max_states": 3, "recovery_expected_states": 3, "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task4", "position_level": "y0.2", "task_ids": "4", "recovery_max_states": 3, "recovery_expected_states": 3, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task6", "position_level": "y0.2", "task_ids": "6", "recovery_max_states": 2, "recovery_expected_states": 2, "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task9", "position_level": "y0.2", "task_ids": "9", "recovery_max_states": 2, "recovery_expected_states": 2, "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task1", "position_level": "y0.3", "task_ids": "1", "recovery_max_states": 2, "recovery_expected_states": 2, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task5", "position_level": "y0.3", "task_ids": "5", "recovery_max_states": 2, "recovery_expected_states": 2, "gpu_slot": 1}
+      ]
+    },
+    "development80": {
+      "description": "Full 80-state development evaluation after the twenty-state gate.",
+      "jobs": [
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task5", "position_level": "x0.2", "task_ids": "5", "recovery_expected_states": 10, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task6", "position_level": "x0.2", "task_ids": "6", "recovery_expected_states": 10, "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task9", "position_level": "x0.2", "task_ids": "9", "recovery_expected_states": 10, "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task4", "position_level": "y0.2", "task_ids": "4", "recovery_expected_states": 10, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task6", "position_level": "y0.2", "task_ids": "6", "recovery_expected_states": 10, "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task9", "position_level": "y0.2", "task_ids": "9", "recovery_expected_states": 10, "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task1", "position_level": "y0.3", "task_ids": "1", "recovery_expected_states": 10, "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task5", "position_level": "y0.3", "task_ids": "5", "recovery_expected_states": 10, "gpu_slot": 1}
+      ]
+    },
+    "reserve109": {
+      "description": "One-shot untouched 109-state confirmatory reserve for the frozen perception regrasp.",
+      "jobs": [
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task2", "position_level": "x0.2", "task_ids": "2", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 5, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task5", "position_level": "x0.2", "task_ids": "5", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 2, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task6", "position_level": "x0.2", "task_ids": "6", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 7, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task9", "position_level": "x0.2", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 9, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task4", "position_level": "y0.1", "task_ids": "4", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 3, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task6", "position_level": "y0.1", "task_ids": "6", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 1, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task8", "position_level": "y0.1", "task_ids": "8", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 2, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task9", "position_level": "y0.1", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 5, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task4", "position_level": "y0.2", "task_ids": "4", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 20, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task6", "position_level": "y0.2", "task_ids": "6", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 20, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task7", "position_level": "y0.2", "task_ids": "7", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 1, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task8", "position_level": "y0.2", "task_ids": "8", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 3, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task9", "position_level": "y0.2", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 12, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task1", "position_level": "y0.3", "task_ids": "1", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 9, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task5", "position_level": "y0.3", "task_ids": "5", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_untouched_reserve_manifest.parquet", "recovery_expected_states": 10, "experiment_split": "holdout", "gpu_slot": 2}
+      ]
+    },
+    "reserve72": {
+      "description": "Primary confirmatory reserve: 72 rows from 47 task/init groups absent from development.",
+      "jobs": [
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task2", "position_level": "x0.2", "task_ids": "2", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 5, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "x0p2_task9", "position_level": "x0.2", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 4, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task4", "position_level": "y0.1", "task_ids": "4", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 3, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task6", "position_level": "y0.1", "task_ids": "6", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 1, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task8", "position_level": "y0.1", "task_ids": "8", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 2, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p1_task9", "position_level": "y0.1", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 5, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task4", "position_level": "y0.2", "task_ids": "4", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 14, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task6", "position_level": "y0.2", "task_ids": "6", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 15, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task7", "position_level": "y0.2", "task_ids": "7", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 1, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task8", "position_level": "y0.2", "task_ids": "8", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 3, "experiment_split": "holdout", "gpu_slot": 0},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p2_task9", "position_level": "y0.2", "task_ids": "9", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 8, "experiment_split": "holdout", "gpu_slot": 1},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task1", "position_level": "y0.3", "task_ids": "1", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 5, "experiment_split": "holdout", "gpu_slot": 2},
+        {"kind": "pro_position_recovery_proposals", "name": "y0p3_task5", "position_level": "y0.3", "task_ids": "5", "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_strict_group_reserve_manifest.parquet", "recovery_expected_states": 6, "experiment_split": "holdout", "gpu_slot": 0}
+      ]
+    }
+  }
+}

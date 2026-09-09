@@ -1,0 +1,17 @@
+{
+  "states": 80,
+  "groups": 79,
+  "learned_successes": 49,
+  "learned_success_rate": 0.6125,
+  "privileged_successes": 62,
+  "privileged_success_rate": 0.775,
+  "learned_minus_privileged": -0.16249999999999998,
+  "learned_minus_privileged_cluster_ci_low": -0.25316455696202533,
+  "learned_minus_privileged_cluster_ci_high": -0.08860759493670886,
+  "both_success": 49,
+  "learned_only_success": 0,
+  "privileged_only_success": 13,
+  "neither_success": 18,
+  "privileged_success_coverage": 0.7903225806451613,
+  "mcnemar_exact_p": 0.000244140625
+}

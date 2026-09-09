@@ -1,0 +1,8 @@
+{
+  "run_base": "perception_regrasp_transfer_ablation_20260905",
+  "status": "completed_no_go",
+  "stage": "development_no_go",
+  "gpus": "2,3,4,5",
+  "exit_code": 0,
+  "updated_at": "2026-09-05T02:59:41+03:00"
+}

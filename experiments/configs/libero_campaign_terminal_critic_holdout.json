@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "terminal_critic_holdout": {
+      "description": "Untouched Object tasks 8-9 terminal branches for the frozen conservative critic",
+      "jobs": [
+        {
+          "name": "object_holdout_task8_init0",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "0",
+          "rollouts_per_init": 1,
+          "base_seed": 4500000,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task8_init1",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "1",
+          "rollouts_per_init": 1,
+          "base_seed": 4500097,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task8_init2",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "2",
+          "rollouts_per_init": 1,
+          "base_seed": 4500194,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task8_init3",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "3",
+          "rollouts_per_init": 1,
+          "base_seed": 4500291,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task8_init4",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "8",
+          "init_state_ids": "4",
+          "rollouts_per_init": 1,
+          "base_seed": 4500388,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task9_init0",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "9",
+          "init_state_ids": "0",
+          "rollouts_per_init": 1,
+          "base_seed": 4600000,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task9_init1",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "9",
+          "init_state_ids": "1",
+          "rollouts_per_init": 1,
+          "base_seed": 4600097,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task9_init2",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "9",
+          "init_state_ids": "2",
+          "rollouts_per_init": 1,
+          "base_seed": 4600194,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task9_init3",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "9",
+          "init_state_ids": "3",
+          "rollouts_per_init": 1,
+          "base_seed": 4600291,
+          "target_decision_states": 2
+        },
+        {
+          "name": "object_holdout_task9_init4",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "terminal_critic_object_holdout",
+          "experiment_split": "holdout",
+          "suites": "libero_object_object",
+          "task_ids": "9",
+          "init_state_ids": "4",
+          "rollouts_per_init": 1,
+          "base_seed": 4600388,
+          "target_decision_states": 2
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5,6,7",
+    "max_timesteps": 280,
+    "sampling_mode": "fixed_queries",
+    "snapshot_query_indices": "0,3",
+    "phase_cap_fraction": 1.0,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "continuation_num_candidates": 2,
+    "skip_feedback_branch": true,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average"
+  }
+}

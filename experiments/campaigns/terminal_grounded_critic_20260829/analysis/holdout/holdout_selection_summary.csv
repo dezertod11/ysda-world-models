@@ -1,0 +1,3 @@
+factor,snapshots,independent_groups,maxv_sr,critic_sr,oracle_sr,success_delta_pp,maxv_utility,critic_utility,oracle_utility,utility_delta,switches,switch_rate,switch_precision,rescues,harms,maxv_adverse_rate,critic_adverse_rate
+Object,20,10,1.0,1.0,1.0,0.0,3.0,3.0,3.0,0.0,0,0.0,,0,0,0.0,0.0
+All,20,10,1.0,1.0,1.0,0.0,3.0,3.0,3.0,0.0,0,0.0,,0,0,0.0,0.0

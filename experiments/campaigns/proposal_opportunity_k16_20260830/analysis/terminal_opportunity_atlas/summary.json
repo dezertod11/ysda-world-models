@@ -1,0 +1,9 @@
+{
+  "candidate_tables": 35,
+  "snapshots": 203,
+  "independent_groups": 88,
+  "heterogeneous_snapshots": 24,
+  "success_rescues": 12,
+  "all_candidates_fail": 56,
+  "all_candidates_succeed": 123
+}

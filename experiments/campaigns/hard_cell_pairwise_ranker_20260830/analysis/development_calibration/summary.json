@@ -1,0 +1,16 @@
+{
+  "stage": "development_calibration",
+  "opportunity_gate": "PASS",
+  "candidate_rows": 320,
+  "development_states": 30,
+  "calibration_states": 10,
+  "frozen_payload_sha256": "c9ae031cd3b4e1cf7f8c9acc1e191b99601ab585d17033e588b86c19f1db6168",
+  "selected_alpha": {
+    "Object": 100.0,
+    "Position": 1.0
+  },
+  "selected_kappa": {
+    "Object": 1.0,
+    "Position": 1.5
+  }
+}

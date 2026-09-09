@@ -1,0 +1,4 @@
+planning_strategy,query_rows,selected_not_max_value_rate,guarded_switch_rate
+consensus_medoid_only,2064,0.7005813953488372,0.0
+first,2032,0.0,0.0
+max_value,2109,0.0,0.0

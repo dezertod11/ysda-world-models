@@ -1,0 +1,31 @@
+{
+  "experiment": "phase_vof_terminal_transfer_20260831",
+  "frozen_at": "2026-08-31T16:39:31+03:00",
+  "supersedes": "PHASE_VOF_TERMINAL_TRANSFER_FREEZE_MANIFEST_20260831.json",
+  "protocol_status": "compute-only sharding amendment before outcome inspection",
+  "amendment": {
+    "observed_before_refreeze": "integrity only: snapshot counts 3/1/1 and phase/replay fields",
+    "outcomes_observed": false,
+    "scientific_changes": false,
+    "compute_change": "tasks 6 and 7 split into disjoint 15-state shards; original rollout seed sequence preserved"
+  },
+  "files": {
+    "experiments/PHASE_VOF_TERMINAL_TRANSFER_PROTOCOL_20260831.md": "65884f5baf3902a6469b63e1e718482e3bcdd686efedd3604c1e29d5253152d2",
+    "experiments/configs/libero_campaign_phase_vof_terminal_transfer.json": "8a440b01d4defb12efa21a01e52caaedf54d69d40c9bd70cc49f3a02d52288de",
+    "scripts/counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "scripts/collect_counterfactual_feedback.py": "a00ae9ddebb98914577208cdedec012008cbd8185501a7ff39dc6a5e13692012",
+    "scripts/run_libero_experiment_campaign.py": "51c6521dc57b1ab2f5f049ec862b4fc3fc7f59c96ac86251257997ca357e7450",
+    "scripts/run_libero_pro_counterfactual_feedback_collect.sh": "1d2f5d42e592ec188eef5accb65921a88114a12c579dedda2595ece699878ce7",
+    "scripts/relabel_counterfactual_dense.py": "55658669cb61ec26ce5fe21102a2441c997669afd8856026e0d59fd5ec62fc15",
+    "scripts/relabel_counterfactual_dense_campaign.py": "84bd91120a3b116b85af4ba0e2c7092209dc30c39f82c48e2e7fdee5fb10c43d",
+    "scripts/analyze_phase_vof_terminal_transfer.py": "03eeff47663d8e54bba8cac0310aeb0c8780eeaded0d077849afda6b5513e20a",
+    "scripts/run_phase_vof_terminal_transfer_sequence.sh": "e258baf7272e621445e19745c7cf1f4c95487bb47c2e761c64614f1600187a7a",
+    "tests/test_counterfactual_feedback_utils.py": "47c1bc22583533ff30dd1a375126ebd988ab5d9c6d717c798643ada8507a4d3e",
+    "tests/test_phase_vof_terminal_transfer.py": "2fa2e0acf502c1c97b7dadac886d6903ffc0eb54c49d29a2c4d97f84efab3f2a"
+  },
+  "validation": {
+    "targeted_tests": "20 passed",
+    "campaign_dry_run": "passed",
+    "gpu_assignment": [2, 3, 4, 5, 7]
+  }
+}

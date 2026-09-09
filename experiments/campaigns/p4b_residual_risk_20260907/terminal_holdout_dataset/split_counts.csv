@@ -1,0 +1,4 @@
+split,factor,rows,groups,snapshots
+ood_test,Environment,160,40,40
+ood_test,Object,160,40,40
+ood_test,Position,480,120,120

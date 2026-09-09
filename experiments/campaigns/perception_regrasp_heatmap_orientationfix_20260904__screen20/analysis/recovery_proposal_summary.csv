@@ -1,0 +1,2 @@
+proposal,deployable,n_states,n_groups,strict_replay_rate,successes,success_rate,success_ci_low,success_ci_high,rescued_cells,rescued_tasks,drop_rate,baseline_drop_rate,wrong_rate,baseline_wrong_rate,safety_rate,baseline_safety_rate,mean_final_t,mean_queries,mean_executed_steps,drop_rate_delta,wrong_rate_delta,safety_rate_delta,gate_passed,failed_gate_checks
+perception_regrasp_h8,True,20,20,1.0,11,0.55,0.35,0.75,6,4,0.0,0.05,0.2,0.25,0.0,0.0,227.95,16.6,163.95,-0.05,-0.04999999999999999,0.0,False,complete_80_states

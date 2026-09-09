@@ -1,0 +1,108 @@
+{
+  "integrity": {
+    "episode_counts": {
+      "maxV-H16": 60,
+      "maxV-Q0-H8-then-H16": 60
+    },
+    "paired_state_count": 60,
+    "identical_state_sets": true,
+    "task_counts": {
+      "maxV-H16|8": 30,
+      "maxV-H16|9": 30,
+      "maxV-Q0-H8-then-H16|8": 30,
+      "maxV-Q0-H8-then-H16|9": 30
+    },
+    "tasks_exact": true,
+    "init_states_20_49": true,
+    "split_values": [
+      "generalization"
+    ],
+    "all_max_value_selected": true,
+    "baseline_all_h16": true,
+    "method_q0_h8": true,
+    "method_later_h16": true,
+    "one_requery_per_method_episode": true,
+    "q0_pairs": 60,
+    "q0_candidate_indices_match": false,
+    "q0_candidate_value_max_abs_diff": 0.0013017058372497559,
+    "passed": false
+  },
+  "gate": {
+    "checks": {
+      "at_least_three_rescues": true,
+      "rescues_exceed_harms": false,
+      "delta_at_least_5pp": false,
+      "paired_ci_nonnegative": false,
+      "no_task_net_loss": false,
+      "compute_adjusted_utility_above_baseline": false,
+      "drop_rate_not_increased": true,
+      "wrong_object_rate_not_increased": true,
+      "no_added_safety_violation": true,
+      "integrity_passed": false
+    },
+    "gate_passed": false
+  },
+  "method_summary": [
+    {
+      "method": "maxV-H16",
+      "episodes": 60,
+      "successes": 35,
+      "success_rate": 0.5833333333333334,
+      "mean_queries": 12.55,
+      "mean_final_t": 192.36666666666667,
+      "timeout_rate": 0.4166666666666667,
+      "drop_rate": 0.03333333333333333,
+      "wrong_object_rate": 0.35,
+      "safety_violation_rate": 0.0,
+      "scheduled_feedback_cost": 0.0,
+      "utility_c0025": 0.5833333333333334
+    },
+    {
+      "method": "maxV-Q0-H8-then-H16",
+      "episodes": 60,
+      "successes": 23,
+      "success_rate": 0.38333333333333336,
+      "mean_queries": 14.95,
+      "mean_final_t": 227.25,
+      "timeout_rate": 0.6166666666666667,
+      "drop_rate": 0.0,
+      "wrong_object_rate": 0.35,
+      "safety_violation_rate": 0.0,
+      "scheduled_feedback_cost": 0.025,
+      "utility_c0025": 0.35833333333333334
+    }
+  ],
+  "paired_contrast": {
+    "paired_episodes": 60,
+    "delta_success_rate": -0.2,
+    "delta_ci_low": -0.31666666666666665,
+    "delta_ci_high": -0.06666666666666668,
+    "rescues": 4,
+    "harms": 16,
+    "mcnemar_exact_p": 0.01181793212890625
+  },
+  "task_contrasts": [
+    {
+      "task_id": 8,
+      "pairs": 30,
+      "baseline_successes": 8,
+      "method_successes": 9,
+      "delta_success_states": 1,
+      "delta_success_rate": 0.03333333333333333,
+      "rescues": 2,
+      "harms": 1
+    },
+    {
+      "task_id": 9,
+      "pairs": 30,
+      "baseline_successes": 27,
+      "method_successes": 14,
+      "delta_success_states": -13,
+      "delta_success_rate": -0.43333333333333335,
+      "rescues": 2,
+      "harms": 15
+    }
+  ],
+  "report": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/initial_requery_holdout_20260831/analysis/initial_requery_holdout/RESULTS.md",
+  "plot": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/initial_requery_holdout_20260831/analysis/initial_requery_holdout/initial_requery_holdout.png"
+}

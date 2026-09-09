@@ -1,0 +1,51 @@
+[
+  {
+    "job": "object_t0_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t0_first__libero_object_object__task0__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "8cefd783d6b814d7955a01355a99e5a898f5014d2155ee8d205977c06637ccfa",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t1_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t1_first__libero_object_object__task1__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "22706796957392a587a89ff62d5eefa6081d38b2fa09b6e54e448780ac2a67af",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t2_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t2_first__libero_object_object__task2__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "e199f28e9ff6d0362ed56190266e92b868456af0e5d412df28c8f535d1723c21",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t3_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t3_first__libero_object_object__task3__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "9929ffa9f073cbbee77c356aa8cfc60f291c315f907d1f1f6f796716479afc7c",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t4_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t4_first__libero_object_object__task4__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "c47f852c304121c2de3e125d5fe62910a1c461fb1fcd2e2498f1d3d57817a86c",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t5_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t5_first__libero_object_object__task5__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "963b65d305d08906b14a6f25b0b00f8ac0f6ffbddc5a62045a4636c410878cff",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  },
+  {
+    "job": "object_t7_first",
+    "source": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/trajectory_consensus_20260908_full/runs/trajectory_consensus_20260908_full__object_t7_first__libero_object_object__task7__init0-49__first__l0p0__query_traces.parquet",
+    "sha256": "033f1d9727babe1e5c92ca7f2d1ca609201141b1b2e1d2f2aa193cc359123ce5",
+    "init_state_ids": "2-6",
+    "episodes": 5
+  }
+]

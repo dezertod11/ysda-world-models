@@ -1,0 +1,41 @@
+{
+  "frozen_at": "2026-09-08T05:36:17.944168+00:00",
+  "development_campaign": "trajectory_consensus_20260908_development",
+  "development_label": "physical_medoid",
+  "method": {
+    "label": "winner",
+    "strategy": "trajectory_medoid",
+    "density_weight": 1.0,
+    "value_margin": 0.5,
+    "minimum_density_gain": 0.1,
+    "candidates": 4
+  },
+  "ranking": [
+    {
+      "method": "physical_medoid",
+      "macro_sr": 0.5916666666666667,
+      "macro_drop": 0.0,
+      "objective": 0.5916666666666667
+    },
+    {
+      "method": "physical_density",
+      "macro_sr": 0.5916666666666667,
+      "macro_drop": 0.016666666666666666,
+      "objective": 0.5916666666666667
+    },
+    {
+      "method": "v2_1",
+      "macro_sr": 0.5583333333333333,
+      "macro_drop": 0.020833333333333332,
+      "objective": 0.5541666666666667
+    },
+    {
+      "method": "v2_0",
+      "macro_sr": 0.5375,
+      "macro_drop": 0.020833333333333332,
+      "objective": 0.5333333333333333
+    }
+  ],
+  "development_beats_max_value": true,
+  "results_sha256": "f9fc84e1a33e59b4a8a7515241739eef056bbcf5f7bc3e7393b10706e733e02f"
+}

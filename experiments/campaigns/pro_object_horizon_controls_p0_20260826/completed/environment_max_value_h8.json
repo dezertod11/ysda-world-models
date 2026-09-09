@@ -1,0 +1,8 @@
+{
+  "job": "environment_max_value_h8",
+  "gpu": "6",
+  "status": "completed",
+  "started_at": "2026-08-26T17:18:54",
+  "finished_at": "2026-08-26T19:39:22",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/pro_object_horizon_controls_p0_20260826/logs/environment_max_value_h8.log"
+}

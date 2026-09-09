@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "heterogeneous_snapshots": 8,
+  "required_heterogeneous_snapshots": 8,
+  "success_rescues": 5,
+  "required_success_rescues": 4,
+  "snapshots": 80,
+  "independent_groups": 40
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-30T17:52:33+03:00",
+  "run_prefix": "factor_routed_requery_transfer_20260830",
+  "untouched_init_state_ids": "40-49",
+  "files": {
+    "experiments/FACTOR_ROUTED_REQUERY_TRANSFER_PROTOCOL_20260830.md": "6b893e854a9eb7ed9e38d65f279e916ca790f256bf31be7c4079858aaf15d308",
+    "experiments/configs/libero_campaign_factor_routed_requery_transfer.json": "775869b12430ca774af1b5b55cef1286e1ea36387f11e9ade8730cf14b65bc80",
+    "cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "a3b16362bdf618c3ed85ec64a9a9b8bb8de8009499f2d48d6de4fb2478f53b61",
+    "scripts/analyze_factor_routed_requery_transfer.py": "7223bf0a4de2d658351d1468ebfe47c2d8f8db8af4d62a2224912e64bd51c948",
+    "scripts/run_factor_routed_requery_transfer_sequence.sh": "9a288ab856b77263d8ea21a3c3c3c99cb8b5ccf227140930d2b89adcc6580647"
+  }
+}

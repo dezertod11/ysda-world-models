@@ -1,0 +1,25 @@
+{
+  "pairs": 120,
+  "target_pairs": 120,
+  "expected_keys_match": true,
+  "missing_keys": 0,
+  "unexpected_keys": 0,
+  "duplicate_decision_keys": 0,
+  "cases_match": true,
+  "query_matches": true,
+  "split_matches": true,
+  "terminal_labels_complete": true,
+  "feedback_paths_valid": 120,
+  "candidate_pool_size_valid": true,
+  "one_max_value_candidate_per_pool": true,
+  "strict_replay_pairs": 120,
+  "minimum_strict_replay_pairs": 114,
+  "max_replay_state_abs_error": 1.4666512547246125e-14,
+  "valid": true,
+  "strict_pairs_by_condition": {
+    "position_x0p2_task0": 60,
+    "position_y0p2_task0": 60
+  },
+  "minimum_strict_pairs_per_condition": 57,
+  "condition_strict_valid": true
+}

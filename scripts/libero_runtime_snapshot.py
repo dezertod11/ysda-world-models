@@ -91,8 +91,15 @@ def _restore_attributes(owner: Any, values: Mapping[str, Any]) -> None:
         setattr(owner, name, copy.deepcopy(value))
 
 
-def restore_libero_runtime_state(env: Any, snapshot: Mapping[str, Any]) -> Mapping[str, Any]:
-    env.reset()
+def restore_libero_runtime_state(
+    env: Any,
+    snapshot: Mapping[str, Any],
+    *,
+    reset_env: bool = True,
+    update_observables: bool = True,
+) -> Mapping[str, Any]:
+    if reset_env:
+        env.reset()
     inner = _inner_env(env)
     sim = inner.sim
     for name, value in snapshot.get("model", {}).items():
@@ -111,6 +118,8 @@ def restore_libero_runtime_state(env: Any, snapshot: Mapping[str, Any]) -> Mappi
                 robot_state.get("gripper_current_action", robot.gripper.current_action)
             ).copy()
         robot.torques = copy.deepcopy(robot_state.get("torques"))
+    if not update_observables:
+        return {}
     inner._post_process()
     inner._update_observables(force=True)
     return inner._get_observations()
@@ -134,3 +143,52 @@ def runtime_snapshot_arrays(snapshot: Mapping[str, Any]) -> dict[str, np.ndarray
             if value is not None:
                 result[f"sim_robot{index}__controller__{name}"] = np.asarray(value)
     return result
+
+
+def runtime_snapshot_from_arrays(values: Mapping[str, Any]) -> dict[str, Any]:
+    """Reconstruct a runtime snapshot from an NPZ sidecar mapping."""
+    model = {
+        key.removeprefix("sim_model__"): np.asarray(values[key]).copy()
+        for key in values
+        if key.startswith("sim_model__")
+    }
+    environment = {
+        key.removeprefix("sim_env__"): np.asarray(values[key]).item()
+        for key in values
+        if key.startswith("sim_env__")
+    }
+    robot_indices = sorted(
+        {
+            int(key.split("__", 1)[0].removeprefix("sim_robot"))
+            for key in values
+            if key.startswith("sim_robot") and "__" in key
+        }
+    )
+    robots = []
+    for index in robot_indices:
+        prefix = f"sim_robot{index}__"
+        controller_prefix = f"{prefix}controller__"
+        controller = {
+            key.removeprefix(controller_prefix): np.asarray(values[key]).copy()
+            for key in values
+            if key.startswith(controller_prefix)
+        }
+        gripper_key = f"{prefix}gripper_current_action"
+        robots.append(
+            {
+                "controller": controller,
+                "gripper_current_action": (
+                    np.asarray(values[gripper_key]).copy()
+                    if gripper_key in values
+                    else np.empty((0,), dtype=np.float64)
+                ),
+                "torques": None,
+            }
+        )
+    return {
+        "sim_state": np.asarray(values["sim_state"], dtype=np.float64).copy(),
+        "sim_ctrl": np.asarray(values.get("sim_ctrl", []), dtype=np.float64).copy(),
+        "model": model,
+        "environment": environment,
+        "robots": robots,
+    }

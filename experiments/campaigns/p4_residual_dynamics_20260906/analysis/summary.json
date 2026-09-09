@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-06T20:13:18+00:00",
+  "complete": true,
+  "rows": 5668,
+  "trajectory_groups_matched_query": 503,
+  "trajectory_groups_all_queries": 541,
+  "id_query_support": [
+    0,
+    3,
+    6,
+    9
+  ],
+  "matched_query_ood_rows": 1564,
+  "split_rows": {
+    "calibration": 616,
+    "id_test": 708,
+    "ood_test": 2468,
+    "train": 1876
+  },
+  "factor_rows": {
+    "Environment": 1240,
+    "ID": 3200,
+    "Object": 480,
+    "Position": 748
+  },
+  "alpha": 0.1,
+  "conformal_level": 0.9375,
+  "calibration_groups": 48,
+  "global_jrd_threshold": 0.0,
+  "id_test_fpr": 0.0,
+  "jrd_all_ood_balanced_average_precision": 0.30784784333053233,
+  "best_baseline_all_ood_balanced_average_precision": 0.7499285166200913,
+  "best_baseline_metric": "latent_value_across_seed_std_mean",
+  "jrd_trajectory_prediction_error_spearman": NaN,
+  "gate_components": {
+    "id_fpr_pass": true,
+    "ood_ap_pass": false,
+    "prediction_error_rho_pass": false
+  },
+  "offline_gate_pass": false,
+  "offline_hard_filter": {
+    "snapshots": 391,
+    "selection_change_rate": 0.0,
+    "all_rejected_rate": 0.0,
+    "mean_local_utility_delta": 0.0,
+    "local_success_delta": 0.0
+  }
+}

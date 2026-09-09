@@ -1,0 +1,12 @@
+{
+  "router_minus_always_requery_raw": -0.05,
+  "router_minus_always_requery_raw_ci": [
+    -0.09583333333333334,
+    -0.008333333333333333
+  ],
+  "router_minus_always_requery_adjusted": -0.038125000000000006,
+  "router_minus_always_requery_adjusted_ci": [
+    -0.0834375,
+    0.0044791666666666565
+  ]
+}

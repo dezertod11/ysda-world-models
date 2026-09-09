@@ -72,8 +72,23 @@ fi
 if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS:-}" ]]; then
   EXTRA_ARGS+=(--planning-short-open-loop-steps "${LIBERO_PRO_PAIRED_PLANNING_SHORT_OPEN_LOOP_STEPS}")
 fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SCHEDULED_REQUERY_QUERY_IDX:-}" ]]; then
+  EXTRA_ARGS+=(--planning-scheduled-requery-query-idx "${LIBERO_PRO_PAIRED_PLANNING_SCHEDULED_REQUERY_QUERY_IDX}")
+fi
 if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_SURROGATE_ERROR_THRESHOLD:-}" ]]; then
   EXTRA_ARGS+=(--planning-surrogate-error-threshold "${LIBERO_PRO_PAIRED_PLANNING_SURROGATE_ERROR_THRESHOLD}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_FROZEN_RANKER_MODEL:-}" ]]; then
+  EXTRA_ARGS+=(--planning-frozen-ranker-model "${LIBERO_PRO_PAIRED_PLANNING_FROZEN_RANKER_MODEL}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_FROZEN_RANKER_FACTOR:-}" ]]; then
+  EXTRA_ARGS+=(--planning-frozen-ranker-factor "${LIBERO_PRO_PAIRED_PLANNING_FROZEN_RANKER_FACTOR}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_TERMINAL_CRITIC_MODEL:-}" ]]; then
+  EXTRA_ARGS+=(--planning-terminal-critic-model "${LIBERO_PRO_PAIRED_PLANNING_TERMINAL_CRITIC_MODEL}")
+fi
+if [[ -n "${LIBERO_PRO_PAIRED_PLANNING_TERMINAL_CRITIC_FACTOR:-}" ]]; then
+  EXTRA_ARGS+=(--planning-terminal-critic-factor "${LIBERO_PRO_PAIRED_PLANNING_TERMINAL_CRITIC_FACTOR}")
 fi
 if [[ "${LIBERO_PRO_PAIRED_RECORD_DENOISING_TRACE:-0}" == "1" ]]; then
   EXTRA_ARGS+=(--record-denoising-trace)
@@ -119,15 +134,15 @@ if [[ -n "${LIBERO_PRO_PAIRED_CASE_ID:-}" ]]; then
 fi
 if [[ "${LIBERO_PRO_PAIRED_RECORD_TEMPORAL_OVERLAP:-0}" == "1" ]]; then
   EXTRA_ARGS+=(--record-temporal-overlap)
-fi
-if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR:-}" ]]; then
-  EXTRA_ARGS+=(--temporal-overlap-dir "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR}")
-fi
-if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE:-}" ]]; then
-  EXTRA_ARGS+=(--temporal-overlap-seed-mode "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE}")
-fi
-if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW:-}" ]]; then
-  EXTRA_ARGS+=(--temporal-overlap-max-window "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW}")
+  if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR:-}" ]]; then
+    EXTRA_ARGS+=(--temporal-overlap-dir "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_DIR}")
+  fi
+  if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE:-}" ]]; then
+    EXTRA_ARGS+=(--temporal-overlap-seed-mode "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_SEED_MODE}")
+  fi
+  if [[ -n "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW:-}" ]]; then
+    EXTRA_ARGS+=(--temporal-overlap-max-window "${LIBERO_PRO_PAIRED_TEMPORAL_OVERLAP_MAX_WINDOW}")
+  fi
 fi
 
 python -m cosmos_policy.experiments.robot.libero.uncertainty_comparison collect-paired \

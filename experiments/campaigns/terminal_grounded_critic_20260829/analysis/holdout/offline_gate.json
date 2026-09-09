@@ -1,0 +1,35 @@
+{
+  "passed": false,
+  "checks": {
+    "zero_group_overlap": true,
+    "switch_rate_in_2_to_30_percent": false,
+    "positive_net_rescues": false,
+    "nonnegative_terminal_utility": true,
+    "safety_regression_at_most_one_event": true,
+    "utility_ci_lower_nonnegative": true
+  },
+  "group_overlap": [],
+  "summary": {
+    "snapshots": 20.0,
+    "independent_groups": 10.0,
+    "maxv_sr": 1.0,
+    "critic_sr": 1.0,
+    "oracle_sr": 1.0,
+    "success_delta_pp": 0.0,
+    "maxv_utility": 3.0,
+    "critic_utility": 3.0,
+    "oracle_utility": 3.0,
+    "utility_delta": 0.0,
+    "switches": 0.0,
+    "switch_rate": 0.0,
+    "switch_precision": null,
+    "rescues": 0.0,
+    "harms": 0.0,
+    "maxv_adverse_rate": 0.0,
+    "critic_adverse_rate": 0.0
+  },
+  "utility_delta_ci": {
+    "low": 0.0,
+    "high": 0.0
+  }
+}

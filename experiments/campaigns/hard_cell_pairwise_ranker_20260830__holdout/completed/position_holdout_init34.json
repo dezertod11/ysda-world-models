@@ -1,0 +1,8 @@
+{
+  "job": "position_holdout_init34",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-08-30T06:09:33",
+  "finished_at": "2026-08-30T06:16:35",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/hard_cell_pairwise_ranker_20260830__holdout/logs/position_holdout_init34.log"
+}

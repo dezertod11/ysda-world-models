@@ -1,0 +1,11 @@
+factor,case_id,suite,task_id,task_description,query_idx,states,independent_groups,candidates_min,candidates_max,heterogeneous_states,success_rescues,all_candidates_fail,all_candidates_succeed,maxv_sr,oracle_sr,oracle_gap_pp,maxv_utility,oracle_utility,maxv_sr_ci_low,maxv_sr_ci_high,oracle_sr_ci_low,oracle_sr_ci_high,oracle_gap_pp_ci_low,oracle_gap_pp_ci_high,selector_gate_pass
+Environment,proposal_k16_environment_task0,libero_object_env,0,pick the alphabet soup and place it in the basket,0,5,5,16,16,0,0,5,0,0.0,0.0,0.0,-0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Environment,proposal_k16_environment_task0,libero_object_env,0,pick the alphabet soup and place it in the basket,3,5,5,16,16,0,0,5,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Environment,proposal_k16_environment_task2,libero_object_env,2,pick the salad dressing and place it in the basket,0,5,5,16,16,0,0,5,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Environment,proposal_k16_environment_task2,libero_object_env,2,pick the salad dressing and place it in the basket,3,5,5,16,16,0,0,5,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Object,proposal_k16_object_task0,libero_object_object,0,pick the alphabet soup and place it in the basket,0,5,5,16,16,4,1,1,0,0.6,0.8,20.000000000000007,1.8,2.4,0.2,1.0,0.4,1.0,0.0,60.00000000000001,True
+Object,proposal_k16_object_task0,libero_object_object,0,pick the alphabet soup and place it in the basket,3,5,5,16,16,3,2,1,1,0.4,0.8,40.0,1.0,2.4,0.0,0.8,0.4,1.0,0.0,80.0,True
+Position,proposal_k16_position_x0p3_task0,libero_object_temp,0,pick the alphabet soup and place it in the basket,0,5,5,16,16,0,0,5,0,0.0,0.0,0.0,-0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Position,proposal_k16_position_x0p3_task0,libero_object_temp,0,pick the alphabet soup and place it in the basket,3,5,5,16,16,0,0,5,0,0.0,0.0,0.0,-0.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False
+Position,proposal_k16_position_y0p3_task0,libero_object_temp,0,pick the alphabet soup and place it in the basket,0,5,5,16,16,2,2,3,0,0.0,0.4,40.0,0.0,1.2,0.0,0.0,0.0,0.8,0.0,80.0,True
+Position,proposal_k16_position_y0p3_task0,libero_object_temp,0,pick the alphabet soup and place it in the basket,3,5,5,16,16,0,0,5,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,False

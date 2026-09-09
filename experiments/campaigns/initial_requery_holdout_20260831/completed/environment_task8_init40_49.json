@@ -1,0 +1,8 @@
+{
+  "job": "environment_task8_init40_49",
+  "gpu": "4",
+  "status": "completed",
+  "started_at": "2026-08-31T18:23:12",
+  "finished_at": "2026-08-31T18:43:29",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/initial_requery_holdout_20260831/logs/environment_task8_init40_49.log"
+}

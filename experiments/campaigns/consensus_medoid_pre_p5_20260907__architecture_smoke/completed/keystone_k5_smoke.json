@@ -1,0 +1,8 @@
+{
+  "job": "keystone_k5_smoke",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-09-07T13:58:49",
+  "finished_at": "2026-09-07T14:02:09",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_medoid_pre_p5_20260907__architecture_smoke/logs/keystone_k5_smoke.log"
+}

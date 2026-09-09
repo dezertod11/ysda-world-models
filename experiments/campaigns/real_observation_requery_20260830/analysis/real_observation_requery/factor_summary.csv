@@ -1,0 +1,10 @@
+factor,method,states,successes,success_rate,success_ci_low,success_ci_high,mean_queries,mean_query_multiplier,requery_count
+Object,maxV-H16,10,7,0.7,0.4,1.0,14.5,1.0,0
+Object,maxV-H8,10,7,0.7,0.4,1.0,28.5,1.9523015873015872,0
+Object,maxV-gripper-H8/H16,10,4,0.4,0.1,0.7,20.2,1.3591269841269842,119
+Position,maxV-H16,10,1,0.1,0.0,0.3,17.9,1.0,0
+Position,maxV-H8,10,0,0.0,0.0,0.0,35.0,1.9444444444444442,0
+Position,maxV-gripper-H8/H16,10,4,0.4,0.1,0.7,21.2,1.2810385692738633,97
+Environment,maxV-H16,20,0,0.0,0.0,0.0,18.0,1.0,0
+Environment,maxV-H8,20,1,0.05,0.0,0.15,34.55,1.9472222222222217,0
+Environment,maxV-gripper-H8/H16,20,1,0.05,0.0,0.15,27.5,1.5542929292929293,410

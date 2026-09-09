@@ -1,0 +1,4 @@
+method,states,successes,success_rate,success_ci_low,success_ci_high,mean_queries,mean_query_multiplier,mean_final_t,timeout_rate,drop_rate,wrong_object_rate,safety_violation_rate,requery_count
+maxV-H16,40,8,0.2,0.125,0.275,17.1,1.0,265.3,0.8,0.0,0.15,0.0,0
+maxV-H8,40,8,0.2,0.125,0.275,33.15,1.9477976190476192,264.45,0.8,0.025,0.125,0.0,0
+maxV-gripper-H8/H16,40,9,0.225,0.125,0.35,24.1,1.4371878529966764,258.175,0.775,0.0,0.25,0.0,626

@@ -1,0 +1,10 @@
+factor,method,episodes,successes,sr,drops
+Environment,first_k1,50,19,0.38,0
+Environment,max_value,50,20,0.4,1
+Environment,osc_medoid,50,20,0.4,1
+Object,first_k1,50,47,0.94,2
+Object,max_value,50,47,0.94,0
+Object,osc_medoid,50,48,0.96,1
+Position,first_k1,99,28,0.2828282828282828,2
+Position,max_value,99,30,0.30303030303030304,2
+Position,osc_medoid,99,26,0.26262626262626265,0

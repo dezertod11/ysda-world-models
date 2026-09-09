@@ -1,0 +1,17 @@
+factor,task_id,task_description,query_idx,snapshots,heterogeneous_snapshots,success_rescues,maxv_sr,oracle_sr
+Object,0,pick the alphabet soup and place it in the basket,0,5,3,3,0.4,1.0
+Object,0,pick the alphabet soup and place it in the basket,3,5,3,2,0.4,0.8
+Object,1,pick the cream cheese and place it in the basket,0,5,0,0,1.0,1.0
+Object,1,pick the cream cheese and place it in the basket,3,5,0,0,1.0,1.0
+Object,2,pick the salad dressing and place it in the basket,0,5,0,0,1.0,1.0
+Object,2,pick the salad dressing and place it in the basket,3,5,0,0,1.0,1.0
+Object,3,pick the bbq sauce and place it in the basket,0,5,1,0,1.0,1.0
+Object,3,pick the bbq sauce and place it in the basket,3,5,0,0,1.0,1.0
+Object,4,pick the ketchup and place it in the basket,0,5,0,0,1.0,1.0
+Object,4,pick the ketchup and place it in the basket,3,5,0,0,1.0,1.0
+Object,5,pick the tomato sauce and place it in the basket,0,5,0,0,1.0,1.0
+Object,5,pick the tomato sauce and place it in the basket,3,5,0,0,1.0,1.0
+Object,6,pick the butter and place it in the basket,0,5,0,0,1.0,1.0
+Object,6,pick the butter and place it in the basket,3,5,0,0,1.0,1.0
+Object,7,pick the milk and place it in the basket,0,5,1,0,1.0,1.0
+Object,7,pick the milk and place it in the basket,3,5,0,0,1.0,1.0

@@ -42,3 +42,11 @@ the four official `checkcontact` violations from the 144-rollout physical
 Safety campaign. Unlike the matched-seed pilot above, these videos terminate
 at the exact official constraint event and support the reported violation
 count.
+
+## Frozen H16 closed-loop
+
+[`frozen_h16_closed_loop_20260829`](frozen_h16_closed_loop_20260829/README.md)
+contains the final plots and 18 full-length MP4 replays for all nine discordant
+primary seeds from the 360-pair maxV versus frozen-ranker test. Its HTML index
+shows primary and replay outcomes separately; 5/9 complete pairs reproduced
+exactly, so the videos are mechanism diagnostics rather than statistical data.

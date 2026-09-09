@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "autoregressive_value_ranking": {
+      "description": "Same-pass K8 parallel versus action-conditioned value screen",
+      "jobs": [
+        {
+          "name": "object_task0_init5_q0_k8_dual",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "dual_value_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "5",
+          "rollouts_per_init": 1,
+          "base_seed": 5100000,
+          "target_decision_states": 1,
+          "gpu_slot": 0
+        },
+        {
+          "name": "object_task0_init6_q0_k8_dual",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "dual_value_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "6",
+          "rollouts_per_init": 1,
+          "base_seed": 5100097,
+          "target_decision_states": 1,
+          "gpu_slot": 1
+        },
+        {
+          "name": "object_task0_init7_q0_k8_dual",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "dual_value_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "7",
+          "rollouts_per_init": 1,
+          "base_seed": 5100194,
+          "target_decision_states": 1,
+          "gpu_slot": 2
+        },
+        {
+          "name": "object_task0_init8_q0_k8_dual",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "dual_value_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "8",
+          "rollouts_per_init": 1,
+          "base_seed": 5100291,
+          "target_decision_states": 1,
+          "gpu_slot": 3
+        },
+        {
+          "name": "object_task0_init9_q0_k8_dual",
+          "kind": "pro_counterfactual_feedback",
+          "case_id": "dual_value_object_task0",
+          "suites": "libero_object_object",
+          "task_ids": "0",
+          "init_state_ids": "9",
+          "rollouts_per_init": 1,
+          "base_seed": 5100388,
+          "target_decision_states": 1,
+          "gpu_slot": 4
+        },
+        {
+          "name": "position_y0p3_task0_init5_q0_k8_dual",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "dual_value_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "5",
+          "rollouts_per_init": 1,
+          "base_seed": 5310000,
+          "target_decision_states": 1,
+          "gpu_slot": 5
+        },
+        {
+          "name": "position_y0p3_task0_init6_q0_k8_dual",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "dual_value_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "6",
+          "rollouts_per_init": 1,
+          "base_seed": 5310097,
+          "target_decision_states": 1,
+          "gpu_slot": 6
+        },
+        {
+          "name": "position_y0p3_task0_init7_q0_k8_dual",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "dual_value_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "7",
+          "rollouts_per_init": 1,
+          "base_seed": 5310194,
+          "target_decision_states": 1,
+          "gpu_slot": 7
+        },
+        {
+          "name": "position_y0p3_task0_init8_q0_k8_dual",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "dual_value_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "8",
+          "rollouts_per_init": 1,
+          "base_seed": 5310291,
+          "target_decision_states": 1,
+          "gpu_slot": 0
+        },
+        {
+          "name": "position_y0p3_task0_init9_q0_k8_dual",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "dual_value_position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "9",
+          "rollouts_per_init": 1,
+          "base_seed": 5310388,
+          "target_decision_states": 1,
+          "gpu_slot": 1
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3,4,5,6,7",
+    "max_timesteps": 280,
+    "sampling_mode": "fixed_queries",
+    "snapshot_query_indices": "0",
+    "phase_cap_fraction": 1.0,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "continuation_num_candidates": 2,
+    "skip_feedback_branch": true,
+    "query_cost": 0.0,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "dual",
+    "continuation_prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "screen"
+  }
+}

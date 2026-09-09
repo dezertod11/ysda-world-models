@@ -1,0 +1,4 @@
+reference,method,paired_episodes,reference_success_rate,method_success_rate,delta_success_rate,ci95_low,ci95_high,rescues,harms,mcnemar_exact_p
+cosmos_consensus_guarded,keystone_cluster_medoid,20,0.3,0.15,-0.15,-0.4,0.1,2,5,0.453125
+cosmos_consensus_guarded,max_value,20,0.3,0.25,-0.04999999999999999,-0.25,0.15,2,3,1.0
+keystone_cluster_medoid,max_value,20,0.15,0.25,0.1,-0.1,0.3,3,1,0.625

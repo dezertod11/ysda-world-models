@@ -1,0 +1,43 @@
+{
+  "development_rows": 240,
+  "independent_groups": 120,
+  "available_rescues": 42,
+  "available_harms": 25,
+  "always_requery_adjusted_gain": 0.04583333333333336,
+  "selected": {
+    "family": "relative",
+    "alpha": 0.1,
+    "beta": 0.0,
+    "support_mode": "known_level_knn_q99"
+  },
+  "selected_metrics": {
+    "deployable": true,
+    "alpha": 0.1,
+    "beta": 0.0,
+    "leave_one_cell__query_rate": 0.44583333333333336,
+    "leave_one_cell__support_rate": 0.6541666666666667,
+    "leave_one_cell__raw_gain": 0.07916666666666666,
+    "leave_one_cell__adjusted_gain": 0.06802083333333334,
+    "leave_one_cell__rescues": 22,
+    "leave_one_cell__harms": 3,
+    "leave_one_cell__rescue_vs_harm_auc": 0.7257142857142858,
+    "leave_one_cell__worst_cell_adjusted_gain": -0.046874999999999986,
+    "leave_one_task__query_rate": 0.43333333333333335,
+    "leave_one_task__support_rate": 0.6375,
+    "leave_one_task__raw_gain": 0.07916666666666666,
+    "leave_one_task__adjusted_gain": 0.06833333333333334,
+    "leave_one_task__rescues": 23,
+    "leave_one_task__harms": 4,
+    "leave_one_task__rescue_vs_harm_auc": 0.741904761904762,
+    "leave_one_task__worst_cell_adjusted_gain": -0.04312499999999999,
+    "min_adjusted_gain": 0.06802083333333334,
+    "max_query_rate": 0.44583333333333336,
+    "min_auc": 0.7257142857142858,
+    "min_worst_cell": -0.046874999999999986,
+    "beats_always_requery_both": true,
+    "fast_gate": true
+  },
+  "fast_gate_pass": true,
+  "decision": "freeze_for_untouched_reserve",
+  "warning": "Development model selection only; not confirmatory evidence."
+}

@@ -1,0 +1,6 @@
+case_id,factor,perturbation,states,independent_groups,open_success_rate,feedback_success_rate,success_delta,success_delta_ci_low,success_delta_ci_high,rescues,harms,net_rescues,discordance_rate,both_success,both_fail,mean_query_cost,always_requery_adjusted_delta,discordance_pvalue,strict_integrity_states,pooled_successes,pooled_failures,effect_support,non_ceiling_opportunity,eligible_for_new_seed_holdout
+environment_task0,Environment,environment-seed-20260825,19,19,0.0,0.0,0.0,0.0,0.0,0,0,0,0.0,0,19,0.025000000000000005,-0.025000000000000005,,19,0,38,False,False,False
+position_x0p1_task0,Position,x0.1,18,18,1.0,1.0,0.0,0.0,0.0,0,0,0,0.0,18,0,0.025000000000000005,-0.025000000000000005,,18,36,0,False,False,False
+position_x0p2_task0,Position,x0.2,20,20,0.2,0.15,-0.05,-0.25,0.1,1,2,-1,0.15,2,15,0.025000000000000005,-0.075,1.0,20,7,33,False,True,True
+position_y0p2_task0,Position,y0.2,20,20,0.4,0.8,0.4,0.1,0.65,10,2,8,0.6,6,2,0.025000000000000005,0.3749999999999999,0.03857421875,20,24,16,False,True,True
+position_y0p3_task0,Position,y0.3,20,20,0.0,0.1,0.1,0.0,0.25,2,0,2,0.1,0,18,0.025000000000000005,0.07500000000000001,0.5,20,2,38,False,False,False

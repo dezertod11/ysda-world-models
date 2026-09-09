@@ -8,7 +8,7 @@ counterfactual Value of Feedback и hard safety filtering; старые composit
 uncertainty formulas ниже сохраняются как проверенные baselines, а не как
 рекомендованный итоговый planner.
 
-Актуальность обзора: 20 августа 2026 года.
+Актуальность обзора: 7 сентября 2026 года.
 
 Этот файл отвечает на четыре практических вопроса:
 
@@ -1165,6 +1165,53 @@ trajectories. Calibrated thresholds и persistence управляют перед
 Полная постановка, метрики, ablations, collector schema и causal test:
 [`../experiments/TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md`](../experiments/TEMPORAL_OVERLAP_CONSISTENCY_PROTOCOL_20260820.md).
 
+### 4.7. KeyStone: geometry-guided self-consistency
+
+**Статья:** Y. Dai et al., *Geometry Guided Self-Consistency for Physical AI*,
+arXiv:2605.08638, 2026.
+
+- [arXiv](https://arxiv.org/abs/2605.08638)
+- [HTML с алгоритмом и таблицами](https://arxiv.org/html/2605.08638)
+- [Код авторов](https://github.com/dywsjtu/keystone)
+
+Это наиболее прямой литературный аналог нашей новой pre-P5 гипотезы. При
+одном и том же observation/language context stochastic diffusion или
+flow-matching policy генерирует $K$ action chunks:
+
+$$
+a_i=G_\theta(c_t,\epsilon_i),\qquad \epsilon_i\sim\mathcal N(0,I).
+$$
+
+KeyStone flatten-ит chunk в $x_i$, считает
+$\Delta_{ij}=\lVert x_i-x_j\rVert_2$ и global medoid. Если нормированное
+расхождение среднего и medoid меньше $\tau=0.3$, возвращается global medoid.
+Иначе выполняется k-means с $C=2$ и возвращается настоящий sampled medoid
+крупнейшего cluster. Centroid не исполняется, поэтому selector не создаёт
+интерполяцию между несовместимыми modes.
+
+Работа проверяет $\pi_{0.5}$ и SmolVLA на standard LIBERO, а также GR00T,
+X-VLA, StarVLA и Fast-WAM на SimplerEnv/RoboTwin. Авторы выбирают наибольший
+$K$, не увеличивающий measured latency: $K=4$ для GR00T/X-VLA и $K=16$ для
+остальных моделей. На LIBERO reported SR изменился с 96.8% до 97.8% для
+$\pi_{0.5}$ и с 50.4% до 57.2% для SmolVLA. Это числа авторов на standard
+LIBERO, не наши результаты и не LIBERO-PRO.
+
+Аblations статьи важны для нашего протокола:
+
+- L2 стабильно лучше cosine, то есть magnitude физических команд важен;
+- удвоение $K$ после выбранной точки даёт небольшой дополнительный эффект;
+- $C=2$ лучше или сопоставим с $C=4$;
+- выигрыш больше при высокой baseline sampling variance;
+- если большинство samples уверенно ошибочно, dominant-cluster medoid может
+  усилить ошибку.
+
+Присланный `Consensus-Medoid Only` похож на global-medoid ablation, но не
+совпадает с default KeyStone: он использует $K=3$, только исполняемый $H=5$
+prefix и structured position/SO(3)/gripper distance. Наша первая проверка
+воспроизводит именно этот вариант. Вторая добавляет published cluster guard и
+Cosmos-aware conservative fallback к `max(value)`. Полный frozen design:
+[`../experiments/CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md`](../experiments/CONSENSUS_MEDOID_PRE_P5_PROTOCOL_20260907.md).
+
 ## 5. Сводные выводы из статей
 
 1. **Standard LIBERO насыщен.** Cosmos Policy получает около 98.5%, поэтому natural failures проще и честнее собирать на boundary configurations LIBERO-PRO или factorized LIBERO-Plus.
@@ -1851,3 +1898,96 @@ Grid автоматически:
 32. [Rewind-IL / TIDE, arXiv:2604.16683](https://arxiv.org/html/2604.16683)
 33. [Hide-and-Seek in Trajectories, arXiv:2605.30834](https://arxiv.org/html/2605.30834)
 34. [AutoIntervene, arXiv:2608.07065](https://arxiv.org/html/2608.07065)
+
+## 10. Trajectory consensus и density selection: 8 сентября 2026
+
+Этот раздел обосновывает P4c2; реализация и экспериментальный freeze описаны в
+[TRAJECTORY_CONSENSUS_PROTOCOL_20260908.md](../experiments/TRAJECTORY_CONSENSUS_PROTOCOL_20260908.md).
+Речь о выборе существующего action sample, не о новом обученном world model.
+
+### 10.1. KeyStone: medoid внутри доминирующей моды
+
+[Статья](https://arxiv.org/html/2605.08638),
+[код авторов](https://github.com/dywsjtu/keystone).
+Метод выбирает representative chunk из нескольких stochastic samples.
+При условии одномодальности используется глобальный medoid; иначе кандидаты
+делятся на две группы и берётся medoid крупнейшей. В опубликованной реализации
+используются flattened chunks и threshold 0.3. Поэтому pure global medoid из
+пользовательского файла и KeyStone не являются одним и тем же алгоритмом.
+
+Для нас полезны сохранение native sampled actions и обработка multimodality.
+Уже проверяли KeyStone-style K5: 3/20 против 5/20 у max-value в узком P4c screen.
+Это не репликация всех benchmarks статьи. Заявления авторов о малой стоимости
+batch sampling нельзя переносить автоматически на Cosmos с video latents.
+В новой проверке меняется метрика расстояния, а не объявляется воспроизведение
+KeyStone. Общий риск: большинство samples может отражать одну ошибочную моду.
+
+### 10.2. KDPE: плотность и геометрия пространства действий
+
+[KDPE: A Kernel Density Estimation Strategy for Diffusion Policy Trajectory Selection](https://arxiv.org/html/2508.10511).
+Авторы учитывают различную геометрию position, rotation и gripper при kernel
+density estimation, выбирая поддержанный sample. Основной selector ориентирован
+на endpoint sampled trajectories. Проверки включают четыре RoboMimic, три
+MimicGen задачи и real-robot manipulation; это не LIBERO-PRO benchmark.
+
+Наш перенос: не усреднять несовместимые движения, разделять translation,
+SO(3)-rotation и binary gripper. В отличие от исходного endpoint-подхода,
+используем весь исполняемый H16 и controller-scaled induced poses. Гауссово
+ядро по нашему составному расстоянию, median bandwidth и value guard являются
+нашей проверяемой модификацией, не точной реализацией KDPE.
+
+### 10.3. A3: induced trajectories и temporal alignment
+
+[Статья о dynamic execution commitment](https://arxiv.org/html/2605.11567).
+Сравнение action chunks связывается с induced trajectories, локальным временным
+alignment и качеством mode, зависящим от её массы и dispersion. Это позволяет
+не считать небольшое различие фаз движения полностью другой стратегией.
+Работа также включает conditional re-decoding / проверку prefix.
+
+В P4c2 используем только геометрическую идею и ablation окна alignment 0/1.
+Verifier, re-decoding и adaptive commitment **не реализованы**. Генерируем и
+исполняем H16 во всех основных arms, чтобы отделить эффект selection от эффекта
+частоты обратной связи. Кумулятивные OSC descriptors не заменяют динамику
+контакта: agreement по ним сам по себе не доказывает безопасность захвата.
+
+### 10.4. AAC: uncertainty для длины исполнения
+
+[Статья](https://arxiv.org/html/2604.04161).
+Авторский сигнал соединяет continuous-action entropy через covariance/logdet
+и gripper entropy, после чего управляет execution horizon. Это другая точка
+приложения uncertainty: не ranking кандидатов, а продолжительность open loop.
+
+В нашем проекте уже были H4/H8/H16 и re-query эксперименты с неодинаковым
+переносом по perturbations. Поэтому AAC не добавляем одновременно с новой
+геометрией: успешный результат тогда нельзя было бы приписать selector.
+Это возможная последующая отдельная factorized ablation, только после freeze.
+
+### 10.5. TACO: support обучающего распределения, не consensus текущего query
+
+[Статья](https://arxiv.org/html/2512.02834).
+TACO использует обучаемую оценку support через pseudo-counts и
+CoinFlippingNetwork на success SFT data. Это не KDE четырёх generated chunks:
+источник информации связан с обучающим набором, а не только согласием policy
+с самой собой.
+
+Для Cosmos это интересное продолжение P5: outcome/support head потенциально
+может отвергнуть согласованно неправильный action mode. Понадобятся отдельные
+training/calibration groups и prospective evaluation; в P4c2 такой head не
+обучался. Нельзя называть текущую density оценкой success-data support.
+
+### 10.6. Связь с локальной статьёй UQ for Flow-Based VLA
+
+Повторно просмотрена локальная `articles/2606.18043v1.pdf`;
+[официальный текст](https://arxiv.org/html/2606.18043).
+VFD относится к disagreement velocity fields ансамбля моделей. В нашей
+кампании используется один фиксированный checkpoint и разные diffusion seeds.
+Поэтому action consensus измеряет variability/support его samples, но не
+воспроизводит авторскую оценку epistemic uncertainty. Failure detection в
+LIBERO и within-state candidate ranking также имеют разные targets.
+
+Практический вывод из статей и наших P4/P4b/P4c: сначала проверить, меняется ли
+**terminal outcome при выборе другого кандидата**, а не только корреляцию
+state-level uncertainty с трудностью сцены. Уже открытые 194 P4b pools дали
+лучшему новому guarded selector 1 rescue / 1 harm; этого недостаточно для
+заявления о прогрессе. Далее следует frozen full deployment comparison,
+включающий и отрицательные результаты, а не подбор формулы на тесте.

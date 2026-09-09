@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-06T20:07:48+00:00",
+  "campaign_dirs": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p4_standard_id_20260906",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/terminal_event_atlas_20260901"
+  ],
+  "source_tables": 16,
+  "rows": 5668,
+  "groups": 541,
+  "snapshots": 1417,
+  "split_salt": "p4-residual-dynamics-v1",
+  "train_fraction": 0.6,
+  "calibration_fraction": 0.2,
+  "required_open_loop_steps": 16,
+  "skipped": {},
+  "manifest_sha256": "7a65da7c09ebd6e5f05216f69378b641946db247f3536c2e03eaa9bf9c525f83"
+}

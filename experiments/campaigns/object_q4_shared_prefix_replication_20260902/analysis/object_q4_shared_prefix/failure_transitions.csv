@@ -1,0 +1,9 @@
+factor,terminal_outcome,open_terminal_failure_type,feedback_terminal_failure_type,states
+Object,rescue,timeout_no_goal,success,21
+Object,harm,success,timeout_no_goal,10
+Object,rescue,kinematic_deadlock_candidate,success,5
+Object,rescue,target_drop_candidate,success,4
+Object,harm,success,wrong_object_interaction_candidate,1
+Object,harm,success,target_drop_candidate,1
+Object,harm,success,kinematic_deadlock_candidate,1
+Object,rescue,wrong_object_interaction_candidate,success,1

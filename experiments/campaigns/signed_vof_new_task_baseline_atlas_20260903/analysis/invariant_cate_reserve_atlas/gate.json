@@ -1,0 +1,21 @@
+{
+  "reserve_cells": 10,
+  "reserve_states": 50,
+  "new_tasks": [
+    1,
+    2,
+    7,
+    9
+  ],
+  "support_rate": 1.0,
+  "query_rate": 0.36,
+  "checks": {
+    "ten_unused_boundary_cells": true,
+    "fifty_outcome_blind_states": true,
+    "contains_new_tasks": true,
+    "sufficient_feature_support": true,
+    "nondegenerate_query_rate": true
+  },
+  "pass": true,
+  "decision": "freeze_full_reserve_holdout"
+}

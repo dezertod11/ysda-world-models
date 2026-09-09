@@ -1,0 +1,8 @@
+{
+  "job": "environment_fresh_seed",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-09-07T04:29:07",
+  "finished_at": "2026-09-07T05:33:56",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p4b_terminal_candidates_20260907/logs/environment_fresh_seed.log"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-09-05T01:45:00+03:00",
+  "campaign": "perception_regrasp_transfer_ablation_20260905",
+  "outcomes_observed_at_freeze": false,
+  "development_init_state_ids": [40, 41, 42, 43, 44],
+  "holdout_init_state_ids": [45, 46, 47, 48, 49],
+  "development_cases": 75,
+  "holdout_cases": 75,
+  "replication_cells": 8,
+  "novel_cells": 7,
+  "development_strategies": [
+    "baseline_h8",
+    "workspace_calibrated",
+    "workspace_retreat_only"
+  ],
+  "holdout_policy": "baseline_h8 plus the development-selected intervention; holdout opens only after the frozen development gate",
+  "sha256": {
+    "experiments/PERCEPTION_REGRASP_TRANSFER_ABLATION_PROTOCOL_20260905.md": "8be01d34006bbec052b236471b9bbaf08bdf8cf86b8b9c93c80aa62290ee2da0",
+    "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz": "2e7851b8a8d084c8e9c29f0a69d1b1efed94cf81f63c9764718fff8692f09333",
+    "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_heatmap_weights.pt": "d0f33c30647a256791303219890930fb990c39fa147928d0b344d063ed337338",
+    "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_trigger_v1.json": "ac3ca6d33c847eb8fe47e69a5234fbe179f819a37e7320ab9cab168796cef0a9",
+    "scripts/collect_online_perception_regrasp.py": "f0aa0c3e89987b9f8b8532dc3b7ec008b2a4bd9634f4a357a59b440d4bc890fb",
+    "scripts/collect_recovery_proposals.py": "156f10c72f12fd91806abd7e67304e551d9e61693c056bd47b3cb4ccc288c2d3",
+    "scripts/perception_regrasp_trigger.py": "f0dd84e7ca08933abca2ba3eb7b55312392832a01fee3228aed4eb284617e65b",
+    "scripts/build_online_regrasp_transfer_cases.py": "82a9e50050012fc69b69e65169e13c7bd92b97e9a30bc4fc1c1a0ece82d4c549",
+    "scripts/analyze_online_regrasp_transfer.py": "34954625f1a9233960b6e04e696ded4e7f303f525568c6f5e0d11145e63c7c11",
+    "scripts/run_online_regrasp_transfer_sequence.sh": "2a7e7b9d87d78ce5804b98b17ede452ca5bd5815134aa01b001e72517b8234b6"
+  }
+}

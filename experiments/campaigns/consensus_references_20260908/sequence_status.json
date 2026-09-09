@@ -1,0 +1,17 @@
+{
+  "run_base": "consensus_references_20260908",
+  "status": "waiting",
+  "stage": "waiting_for_compact",
+  "started_at": "2026-09-08T11:32:00.435143+00:00",
+  "updated_at": "2026-09-08T11:40:31.014406+00:00",
+  "pid": 1549270,
+  "gpus": [
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "expected_rollouts": 600,
+  "dependency": "trajectory_consensus_20260908_compact"
+}

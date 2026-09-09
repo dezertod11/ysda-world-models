@@ -1,0 +1,32 @@
+{
+  "dependency": "trajectory_consensus_20260908_compact",
+  "compact_config_sha256": "8555076a5de5b336f00b4e64672bfda36d3f1e37733f86404726b3cdd6178b6e",
+  "original_source_manifest_sha256": "b90ad4e3d8ce98d08c4e698fd34a34ee98a749aff282e695be5b6342b25c126d",
+  "geometry_sha256": "e930de71133b2b7eaadc03e2192897a1a43c28902acf73bf69205a63332f6c46",
+  "methods": [
+    {
+      "label": "raw_medoid",
+      "strategy": "trajectory_raw_medoid",
+      "candidates": 4
+    },
+    {
+      "label": "keystone",
+      "strategy": "keystone_cluster_medoid",
+      "candidates": 4
+    },
+    {
+      "label": "kdpe_endpoint",
+      "strategy": "trajectory_kdpe_endpoint",
+      "candidates": 4
+    }
+  ],
+  "extra_rollouts": 600,
+  "smoke_rollouts": 3,
+  "selection_uses_terminal_outcomes": false,
+  "script_sha256": {
+    "run_consensus_reference_sequence.py": "09d678d43984ec608f4bba19a19a6edd4bfe9d4afabba48d954b4d12c305ce1e",
+    "analyze_consensus_reference_campaign.py": "cf11ecd9134336e85a222e5139ddb05fb701e90ec352659d40cdc4cb5e0d731e",
+    "run_libero_experiment_campaign.py": "9498f8237585c724a2ff6a26e2d6494d1370e2493825401a872f879d2d59bfc3",
+    "analyze_trajectory_consensus_campaign.py": "58fce43e38511a3c13e9f4ba2f811cb4c7d80c40eefd77baafc12b4e6df6d7c3"
+  }
+}

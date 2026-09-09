@@ -1,0 +1,17 @@
+planning_strategy,planning_risk_lambda,suite,task_id,init_state_id,episodes,successes,success_rate,mean_final_t,selected_not_max_value_rate
+max_value_scheduled_requery,0.0,libero_object_object,0,33,2,2,1.0,187.5,0.0
+max_value,0.0,libero_object_object,0,33,2,1,0.5,226.5,0.0
+max_value,0.0,libero_object_object,0,34,2,2,1.0,168.5,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,34,2,1,0.5,203.5,0.0
+max_value,0.0,libero_object_object,0,35,2,2,1.0,137.5,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,35,2,2,1.0,155.5,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,36,2,1,0.5,242.0,0.0
+max_value,0.0,libero_object_object,0,36,2,0,0.0,280.0,0.0
+max_value,0.0,libero_object_object,0,37,2,2,1.0,171.0,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,37,2,1,0.5,206.5,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,38,2,1,0.5,240.0,0.0
+max_value,0.0,libero_object_object,0,38,2,0,0.0,280.0,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,39,2,1,0.5,275.5,0.0
+max_value,0.0,libero_object_object,0,39,2,0,0.0,280.0,0.0
+max_value,0.0,libero_object_object,0,40,2,2,1.0,118.0,0.0
+max_value_scheduled_requery,0.0,libero_object_object,0,40,2,2,1.0,118.0,0.0

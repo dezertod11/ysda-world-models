@@ -1,0 +1,16 @@
+method,budget,states,selected,selected_rescues,selected_harms,selected_rescue_rate,selected_harm_rate,raw_success_delta,adjusted_terminal_delta
+frozen_high_latent_future_proprio_copy_std_mean_mean_over_samples,0.05,60,3,1,0,0.3333333333333333,0.0,0.016666666666666666,0.015416666666666665
+frozen_high_latent_future_proprio_copy_std_mean_mean_over_samples,0.075,60,5,1,0,0.2,0.0,0.016666666666666666,0.014583333333333332
+frozen_high_latent_future_proprio_copy_std_mean_mean_over_samples,0.1,60,6,1,0,0.16666666666666666,0.0,0.016666666666666666,0.014166666666666666
+frozen_low_candidate_action_consensus_chunk_mean,0.05,60,3,0,0,0.0,0.0,0.0,-0.0012500000000000002
+frozen_low_candidate_action_consensus_chunk_mean,0.075,60,5,0,0,0.0,0.0,0.0,-0.0020833333333333333
+frozen_low_candidate_action_consensus_chunk_mean,0.1,60,6,0,0,0.0,0.0,0.0,-0.0025
+frozen_low_action_std_mean,0.05,60,3,0,0,0.0,0.0,0.0,-0.0012500000000000002
+frozen_low_action_std_mean,0.075,60,5,0,0,0.0,0.0,0.0,-0.0020833333333333333
+frozen_low_action_std_mean,0.1,60,6,0,0,0.0,0.0,0.0,-0.0025
+deterministic_random,0.05,60,3,1,0,0.3333333333333333,0.0,0.016666666666666666,0.015416666666666665
+deterministic_random,0.075,60,5,2,0,0.4,0.0,0.03333333333333333,0.03125
+deterministic_random,0.1,60,6,2,0,0.3333333333333333,0.0,0.03333333333333333,0.030833333333333334
+oracle_reference,0.05,60,3,3,0,1.0,0.0,0.05,0.048749999999999995
+oracle_reference,0.075,60,5,5,0,1.0,0.0,0.08333333333333333,0.08125
+oracle_reference,0.1,60,6,6,0,1.0,0.0,0.1,0.09749999999999999

@@ -1,0 +1,7 @@
+planning_strategy,query_rows,selector_mismatches,action_shape_errors,distance_matrix_max_abs_error,stage
+consensus_medoid_only,2064,0,0,1.639677178755239e-08,exact_development
+first,2032,0,0,0.0,exact_development
+max_value,2109,0,0,1.672481093548117e-08,exact_development
+cosmos_consensus_guarded,1009,0,0,1.4718578341364752e-08,architecture_development
+keystone_cluster_medoid,1075,0,0,1.6951262393760658e-08,architecture_development
+max_value,998,0,0,1.5237405850965224e-08,architecture_development

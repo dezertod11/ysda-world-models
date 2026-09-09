@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "defaults": {
+    "kind": "pro_position_recovery_proposals",
+    "suites": "libero_object_temp",
+    "init_state_ids": "all",
+    "uncertainty_seeds": "0,1,2,3",
+    "base_seed": 20260904,
+    "max_timesteps": 280,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "recovery_manifest": "experiments/campaigns/recovery_proposal_opportunity_20260904/frozen_development_manifest.parquet",
+    "recovery_proposals": "frequent_requery_h4,lift_hold_h8,privileged_regrasp_h8",
+    "recovery_primitive_steps": 4,
+    "recovery_lift_dz": 0.35,
+    "recovery_replay_threshold": 1e-9,
+    "recovery_expected_states": 10,
+    "recovery_max_states": 0,
+    "video_fps": 20,
+    "experiment_split": "development"
+  },
+  "profiles": {
+    "recovery_proposal_opportunity": {
+      "description": "Frozen P3 exact-state recovery proposal screen on 80 baseline-both-fail LIBERO-PRO Position states.",
+      "jobs": [
+        {"name": "position_y0p2_task4", "position_level": "y0.2", "task_ids": "4", "base_seed": 20260904, "gpu_slot": 0},
+        {"name": "position_y0p2_task6", "position_level": "y0.2", "task_ids": "6", "base_seed": 20261904, "gpu_slot": 1},
+        {"name": "position_y0p2_task9", "position_level": "y0.2", "task_ids": "9", "base_seed": 20262904, "gpu_slot": 2},
+        {"name": "position_y0p3_task5", "position_level": "y0.3", "task_ids": "5", "base_seed": 20263904, "gpu_slot": 3},
+        {"name": "position_x0p2_task9", "position_level": "x0.2", "task_ids": "9", "base_seed": 20264904, "gpu_slot": 4},
+        {"name": "position_y0p3_task1", "position_level": "y0.3", "task_ids": "1", "base_seed": 20265904, "gpu_slot": 0},
+        {"name": "position_x0p2_task6", "position_level": "x0.2", "task_ids": "6", "base_seed": 20266904, "gpu_slot": 1},
+        {"name": "position_x0p2_task5", "position_level": "x0.2", "task_ids": "5", "base_seed": 20267904, "gpu_slot": 2}
+      ]
+    },
+    "recovery_proposal_smoke": {
+      "description": "One-state replay smoke test covering all frozen recovery proposals.",
+      "jobs": [
+        {
+          "name": "smoke_position_y0p2_task4",
+          "position_level": "y0.2",
+          "task_ids": "4",
+          "base_seed": 20260904,
+          "recovery_proposals": "frequent_requery_h4,lift_hold_h8,privileged_regrasp_h8",
+          "recovery_max_states": 1,
+          "recovery_expected_states": 1,
+          "max_timesteps": 96,
+          "gpu_slot": 0
+        }
+      ]
+    }
+  }
+}

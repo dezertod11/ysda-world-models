@@ -1,0 +1,117 @@
+{
+  "dense_campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831__dense_relabel",
+  "integrity": {
+    "source_run_count": 4,
+    "state_count": 78,
+    "task_counts": {
+      "5": 34,
+      "8": 14,
+      "9": 30
+    },
+    "strict_state_count": 67,
+    "strict_task_counts": {
+      "5": 26,
+      "8": 13,
+      "9": 28
+    },
+    "terminal_pairs_complete": true,
+    "tasks_exact": true,
+    "init_states_in_10_19": true,
+    "split_values": [
+      "generalization"
+    ],
+    "candidate_sets_are_k4": true,
+    "selected_terminal_only": true,
+    "triggered_strict_states": 38,
+    "triggered_independent_groups": 12,
+    "strict_replay_threshold": 1e-09,
+    "max_replay_error": 8.236409926977786e-06,
+    "passed": true
+  },
+  "gate": {
+    "checks": {
+      "at_least_three_terminal_rescues": false,
+      "rescues_exceed_harms": false,
+      "terminal_delta_at_least_3pp": false,
+      "no_task_loses_more_than_one": true,
+      "triggered_dense_mean_positive": false,
+      "triggered_dense_ci_nonnegative": false,
+      "route_dense_beats_always_feedback": true,
+      "compute_adjusted_utility_above_commit": false,
+      "no_added_official_safety_violation": true,
+      "integrity_passed": true
+    },
+    "gate_passed": false
+  },
+  "dense_summary": {
+    "triggered_states": 38,
+    "trigger_rate": 0.5671641791044776,
+    "triggered_mean_dense_vof": -0.005867836557326961,
+    "triggered_dense_ci_low": -0.04067412303216848,
+    "triggered_dense_ci_high": 0.04081465765194989,
+    "routed_dense_uplift_per_decision": -0.00332802670415559,
+    "always_feedback_dense_uplift_per_decision": -0.009331678972261469,
+    "matched_random_expected_dense_uplift": -0.0052925940439691906
+  },
+  "method_summary": [
+    {
+      "method": "commit-H16",
+      "states": 67,
+      "successes": 58,
+      "success_rate": 0.8656716417910447,
+      "intervention_rate": 0.0,
+      "utility_c0025": 0.8656716417910447,
+      "drop_rate": 0.04477611940298507,
+      "wrong_object_rate": 0.04477611940298507,
+      "safety_violation_rate": 0.0
+    },
+    {
+      "method": "always-H8-requery",
+      "states": 67,
+      "successes": 61,
+      "success_rate": 0.9104477611940298,
+      "intervention_rate": 1.0,
+      "utility_c0025": 0.8854477611940298,
+      "drop_rate": 0.029850746268656716,
+      "wrong_object_rate": 0.029850746268656716,
+      "safety_violation_rate": 0.0
+    },
+    {
+      "method": "phase-oracle-H16/H8",
+      "states": 67,
+      "successes": 58,
+      "success_rate": 0.8656716417910447,
+      "intervention_rate": 0.5671641791044776,
+      "utility_c0025": 0.8514925373134328,
+      "drop_rate": 0.04477611940298507,
+      "wrong_object_rate": 0.04477611940298507,
+      "safety_violation_rate": 0.0
+    }
+  ],
+  "paired_contrasts": [
+    {
+      "method": "always-H8-requery",
+      "states": 67,
+      "delta_success_rate": 0.04477611940298507,
+      "delta_ci_low": -0.025974025974025976,
+      "delta_ci_high": 0.12307692307692308,
+      "rescues": 4,
+      "harms": 1,
+      "mcnemar_exact_p": 0.375
+    },
+    {
+      "method": "phase-oracle-H16/H8",
+      "states": 67,
+      "delta_success_rate": 0.0,
+      "delta_ci_low": -0.037037037037037035,
+      "delta_ci_high": 0.03571428571428571,
+      "rescues": 1,
+      "harms": 1,
+      "mcnemar_exact_p": 1.0
+    }
+  ],
+  "report": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831__dense_relabel/analysis/phase_vof_terminal_transfer/RESULTS.md",
+  "plots": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831__dense_relabel/analysis/phase_vof_terminal_transfer/phase_vof_terminal_transfer.png"
+  ]
+}

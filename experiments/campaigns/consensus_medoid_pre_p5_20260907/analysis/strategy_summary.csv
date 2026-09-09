@@ -1,0 +1,7 @@
+stage,planning_strategy,candidates,episodes,successes,success_rate,sr_ci95_low,sr_ci95_high,query_rows,mean_queries,candidate_draws,mean_final_t,switch_rate,episodes_with_switch,target_lift_episodes,target_drop_candidate,wrong_object_interaction_candidate,kinematic_deadlock_candidate,official_safety_violation
+exact_development,first,1,40,12,0.3,0.18074845229746528,0.45430018818144935,2032,50.8,2032,253.325,0.0,0,21,3,0,19,0
+exact_development,max_value,3,40,8,0.2,0.104999897254377,0.34757306346399497,2109,52.725,6327,263.125,0.0,0,25,3,0,18,0
+exact_development,consensus_medoid_only,3,40,7,0.175,0.08745413746035918,0.3194999033178771,2064,51.6,6192,257.75,0.7005813953488372,40,21,5,1,15,0
+architecture_development,max_value,5,20,5,0.25,0.11186170140766571,0.468700877618744,998,49.9,4990,249.0,0.0,0,14,1,0,10,0
+architecture_development,keystone_cluster_medoid,5,20,3,0.15,0.05236874589621662,0.3604188647407569,1075,53.75,5375,268.5,0.8297674418604651,20,13,1,0,8,0
+architecture_development,cosmos_consensus_guarded,5,20,6,0.3,0.14547724486760433,0.5189728183535234,1009,50.45,5045,251.75,0.5688800792864221,20,16,2,0,9,0

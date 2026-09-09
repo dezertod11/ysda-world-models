@@ -1,0 +1,3 @@
+method,n_cases,n_groups,baseline_successes,method_successes,baseline_sr,method_sr,paired_sr_delta,paired_sr_delta_ci_low,paired_sr_delta_ci_high,rescues,harms,triggered,interventions,trigger_rate,intervention_rate,mean_final_t_delta,both_success_cases,mean_time_delta_both_success,drop_rate_delta,wrong_rate_delta,safety_rate_delta
+workspace_calibrated,12,6,4,8,0.3333333333333333,0.6666666666666666,0.3333333333333333,0.08333333333333333,0.6666666666666666,4,0,8,8,0.6666666666666666,0.6666666666666666,-62.75,4,-88.25,0.0,0.0,0.0
+global_conservative,12,6,4,4,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0,0,1,1,0.08333333333333333,0.08333333333333333,-8.0,4,-24.0,0.0,0.0,0.0

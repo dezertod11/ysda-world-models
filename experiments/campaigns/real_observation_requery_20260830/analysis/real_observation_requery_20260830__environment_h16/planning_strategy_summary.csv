@@ -1,0 +1,2 @@
+planning_strategy,planning_risk_lambda,episodes,successes,success_rate,mean_final_t,mean_queries,selected_not_max_value_rate,selected_value_mean,max_value_mean,selected_risk_mean
+max_value,0.0,20,0,0.0,280.0,18.0,0.0,0.3619355325897535,0.3619355325897535,0.0

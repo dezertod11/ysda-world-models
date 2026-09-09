@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "rollouts": 597,
+  "matched_cases": 199,
+  "methods": 3,
+  "support_amendment": {
+    "reason": "Original benchmark init asset contains zero states; not policy failure",
+    "original_campaign": "trajectory_consensus_20260908_compact",
+    "original_manifest_sha256": "45091632e082578dacde3d002e50f2abc46d03faa07890fed706b94044ab2d06",
+    "original_asset": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.5/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+    "original_asset_sha256": "3055e941f3d0cbe1af70513a9cfd4bf22b45f6513d2b45fef6612332cff8b5ce",
+    "init_count": 0,
+    "excluded_jobs": [
+      "position_y0_5_t1_first",
+      "position_y0_5_t1_max_value",
+      "position_y0_5_t1_winner"
+    ],
+    "retained_cases": 199,
+    "retained_rollouts": 597,
+    "outcome_based_exclusion": false,
+    "new_rollouts": 0
+  },
+  "original_full600_completed": false,
+  "empty_assets_are_not_policy_failures": true
+}

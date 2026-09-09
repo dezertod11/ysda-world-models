@@ -1,0 +1,32 @@
+{
+  "experiment": "initial_requery_holdout_20260831",
+  "frozen_at": "2026-08-31T18:19:38+03:00",
+  "protocol_status": "independent holdout frozen before outcome inspection",
+  "discovery_source": "phase VoF exploratory query-0 rescues on init states 10-19",
+  "holdout": {
+    "suite": "libero_object_env",
+    "tasks": [8, 9],
+    "init_states": "20-49",
+    "paired_episodes": 60,
+    "baseline": "maxV-H16",
+    "intervention": "maxV-Q0-H8-then-H16"
+  },
+  "files": {
+    "experiments/INITIAL_REQUERY_HOLDOUT_PROTOCOL_20260831.md": "a0eb157937afeae48e816cf287c7554e1f02c85d9116eec2ea657d90686754cd",
+    "experiments/configs/libero_campaign_initial_requery_holdout.json": "f083f48ac1f5278b7b0ec753811afc60cb169d52b730c52de4397ccaba8a35ea",
+    "cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "c776ebf54d8c3095c12171a4ccd54073344a6720e26bbdf5aa09f14eca43e169",
+    "cosmos-policy/tests/test_planning_selection.py": "c5252cca2371ca80fe9d0cf8bc8922c9fb0845e30cd042aa1c6511e47ea9a1ca",
+    "scripts/run_libero_experiment_campaign.py": "51c6521dc57b1ab2f5f049ec862b4fc3fc7f59c96ac86251257997ca357e7450",
+    "scripts/run_libero_pro_planning_strategy_grid.sh": "b2d97be20d52acd3e0ccb0c9af8983a7e19485816b64c5123d00c024876cfe79",
+    "scripts/run_initial_requery_holdout_sequence.sh": "e6d27b483692206b8d6f8566bb5cf4d3869ab90a81f96601d0c402cc906ae327",
+    "scripts/analyze_initial_requery_holdout.py": "1d473750dcf77f6c9af4493a25cf16fd7b2787fffab8f569b3721dd19c3f9b16",
+    "tests/test_initial_requery_holdout.py": "dd071e9d8e5dd2a618a2a4789a4d4f686e8bee2ebc6bf88653e1b3375a79e5e1"
+  },
+  "validation": {
+    "analyzer_tests": "3 passed",
+    "server_runtime_tests": "25 passed",
+    "syntax_and_json": "passed",
+    "campaign_dry_run": "passed",
+    "gpu_assignment": [2, 3, 4, 5, 7]
+  }
+}

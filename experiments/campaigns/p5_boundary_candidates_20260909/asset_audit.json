@@ -1,0 +1,116 @@
+[
+  {
+    "job": "object_object_t0_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "9145aac8410721db67e83d4b6413c8db980fd3145b7f61831cbc99b0ff58788b"
+  },
+  {
+    "job": "object_object_t0_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "9145aac8410721db67e83d4b6413c8db980fd3145b7f61831cbc99b0ff58788b"
+  },
+  {
+    "job": "object_object_t3_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "650b107074818bcd4a3eaf45b90b6fe8f30a9eacf2d1638e85fd538e4d507851"
+  },
+  {
+    "job": "object_object_t3_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "650b107074818bcd4a3eaf45b90b6fe8f30a9eacf2d1638e85fd538e4d507851"
+  },
+  {
+    "job": "position_x0p2_t0_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "e8b900cdf476958f3f969768aacc728d69ed24624e27ee05a8ec62b1336f2dda"
+  },
+  {
+    "job": "position_x0p2_t0_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "e8b900cdf476958f3f969768aacc728d69ed24624e27ee05a8ec62b1336f2dda"
+  },
+  {
+    "job": "position_x0p2_t2_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "8f338b4f017f4003f96cdb4006b10094e5f84db2d59b4fe2d5c6e2033b6e03f1"
+  },
+  {
+    "job": "position_x0p2_t2_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "8f338b4f017f4003f96cdb4006b10094e5f84db2d59b4fe2d5c6e2033b6e03f1"
+  },
+  {
+    "job": "position_x0p2_t9_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "77ccb296c9d2ba2263c4ab18b6610f95fc077d854eaac4997d4b24e7fcc933d6"
+  },
+  {
+    "job": "position_x0p2_t9_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_x0.2/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "77ccb296c9d2ba2263c4ab18b6610f95fc077d854eaac4997d4b24e7fcc933d6"
+  },
+  {
+    "job": "position_y0p2_t0_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "c7fc0718208447e2b520db0c2b8d21f0b3313de9442e3b2a3ba517b79e9131d4"
+  },
+  {
+    "job": "position_y0p2_t0_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "c7fc0718208447e2b520db0c2b8d21f0b3313de9442e3b2a3ba517b79e9131d4"
+  },
+  {
+    "job": "position_y0p2_t2_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "c80b1e6dafd2ea74504339f66e0e7ec025b2f86b111dd6d8e47a5650d33b2256"
+  },
+  {
+    "job": "position_y0p2_t2_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "c80b1e6dafd2ea74504339f66e0e7ec025b2f86b111dd6d8e47a5650d33b2256"
+  },
+  {
+    "job": "position_y0p2_t4_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "b4d9cb5eaed5545c58d99a21d2b700d6015264b16d114ed544200ee0e40393db"
+  },
+  {
+    "job": "position_y0p2_t4_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "b4d9cb5eaed5545c58d99a21d2b700d6015264b16d114ed544200ee0e40393db"
+  },
+  {
+    "job": "position_y0p2_t9_i7",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "796d03be7dd42f693e07d081f59b191940949441dc2eb5a711d7820663fa32cf"
+  },
+  {
+    "job": "position_y0p2_t9_i8",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_temp_y0.2/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "796d03be7dd42f693e07d081f59b191940949441dc2eb5a711d7820663fa32cf"
+  },
+  {
+    "job": "p5_integration",
+    "path": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init",
+    "count": 50,
+    "sha256": "9145aac8410721db67e83d4b6413c8db980fd3145b7f61831cbc99b0ff58788b"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "job": "position_y0p3_tasks7_9",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-09-03T00:51:32",
+  "finished_at": "2026-09-03T01:12:23",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/signed_vof_new_task_baseline_atlas_20260903/logs/position_y0p3_tasks7_9.log"
+}

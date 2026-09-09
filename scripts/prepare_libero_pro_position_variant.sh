@@ -19,11 +19,16 @@ SOURCE_INIT="$LIBERO_PRO_REPO/libero/libero/init_files/libero_object_temp_${LEVE
 TARGET_ROOT="$PROJECT_ROOT/.runtime/libero_pro_position/$LEVEL"
 TARGET_BDDL="$TARGET_ROOT/bddl_files/libero_object_temp"
 TARGET_INIT="$TARGET_ROOT/init_files/libero_object_temp"
+LOCK_PATH="$PROJECT_ROOT/.runtime/libero_pro_position_${LEVEL//./p}.lock"
 
 if [[ ! -d "$SOURCE_BDDL" || ! -d "$SOURCE_INIT" ]]; then
   echo "LIBERO-PRO position variant is missing for level $LEVEL" >&2
   exit 1
 fi
+
+mkdir -p "$PROJECT_ROOT/.runtime"
+exec 9>"$LOCK_PATH"
+flock 9
 
 mkdir -p "$TARGET_BDDL" "$TARGET_INIT"
 cp -a "$SOURCE_BDDL/." "$TARGET_BDDL/"

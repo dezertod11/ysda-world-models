@@ -1,0 +1,2 @@
+paired_episodes,delta_success_rate,delta_ci_low,delta_ci_high,rescues,harms,mcnemar_exact_p
+60,-0.2,-0.31666666666666665,-0.06666666666666668,4,16,0.01181793212890625

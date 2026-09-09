@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-04T14:28:56+00:00",
+  "campaign_dir": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/perception_regrasp_heatmap_orientationfix_20260904__reserve72",
+  "metrics": {
+    "rows": 72,
+    "expected_rows": 72,
+    "strict_replay_rate": 1.0,
+    "successes": 43,
+    "success_rate": 0.5972222222222222,
+    "success_ci_low": 0.45202103029133706,
+    "success_ci_high": 0.7391304347826086,
+    "rescued_cells": 11,
+    "rescued_tasks": 8,
+    "drop_rate_delta": -0.013888888888888888,
+    "safety_rate_delta": 0.0
+  },
+  "checks": {
+    "complete": true,
+    "strict_replay": true,
+    "minimum_success_rate": true,
+    "breadth_cells": true,
+    "breadth_tasks": true,
+    "drop_delta": true,
+    "safety_delta": true,
+    "bootstrap_lower_positive": true
+  },
+  "gate_pass": true,
+  "failed_checks": []
+}

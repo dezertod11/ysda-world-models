@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "frozen_before_outcomes": true,
+  "campaign_config_sha256": "c3f5eff154bcc85f59dfecbc8e18dad70733c3e7f2e86818214b14e5d2717ed5",
+  "protocol_sha256": "76fa46e13749216e06d4642f3124474f01713d75bd4c5627c3cb94c6c59ddf6f",
+  "snapshot_query_idx": 4,
+  "task_ids": [0],
+  "rollouts_per_init": 1,
+  "rollout_seed_step": 97,
+  "target_pairs": 100,
+  "num_candidates": 4,
+  "experiment_split": "screen",
+  "replay_integrity_threshold": 1e-9,
+  "minimum_strict_replay_pairs": 95,
+  "minimum_discordant_pairs": 3,
+  "minimum_effect_direction_pairs": 3,
+  "minimum_pooled_successes": 4,
+  "minimum_pooled_failures": 4,
+  "cells": [
+    {
+      "case_id": "position_x0p1_task0",
+      "factor": "Position",
+      "suite": "libero_object_temp",
+      "position_level": "x0.1",
+      "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "base_seed": 16100000
+    },
+    {
+      "case_id": "position_x0p2_task0",
+      "factor": "Position",
+      "suite": "libero_object_temp",
+      "position_level": "x0.2",
+      "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "base_seed": 16200000
+    },
+    {
+      "case_id": "position_y0p2_task0",
+      "factor": "Position",
+      "suite": "libero_object_temp",
+      "position_level": "y0.2",
+      "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "base_seed": 16300000
+    },
+    {
+      "case_id": "position_y0p3_task0",
+      "factor": "Position",
+      "suite": "libero_object_temp",
+      "position_level": "y0.3",
+      "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "base_seed": 16400000
+    },
+    {
+      "case_id": "environment_task0",
+      "factor": "Environment",
+      "suite": "libero_object_env",
+      "environment_seed": 20260825,
+      "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "base_seed": 16500000
+    }
+  ]
+}

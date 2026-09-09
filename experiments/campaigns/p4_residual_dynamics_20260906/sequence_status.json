@@ -1,0 +1,8 @@
+{
+  "run_base": "p4_residual_dynamics_20260906",
+  "status": "completed_no_go",
+  "stage": "finished",
+  "gpus": "3,4,6,7",
+  "exit_code": 0,
+  "updated_at": "2026-09-06T23:13:20+03:00"
+}

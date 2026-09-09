@@ -1,0 +1,13 @@
+factor,metric,groups,point,ci_low,ci_high,probability_positive
+Object,raw_success_delta,10,-0.4,-0.7,-0.1,0.0
+Object,selected_success_delta,10,-0.3,-0.6,0.0,0.0
+Object,selected_utility_delta,10,-0.9,-1.9,0.0,0.0
+Object,selected_adverse_delta,10,0.0,-0.3,0.3,0.3572
+Position,raw_success_delta,10,-0.2,-0.5,0.0,0.0
+Position,selected_success_delta,10,0.0,0.0,0.0,0.0
+Position,selected_utility_delta,10,0.0,0.0,0.0,0.0
+Position,selected_adverse_delta,10,0.0,0.0,0.0,0.0
+All,raw_success_delta,20,-0.3,-0.5,-0.1,0.0
+All,selected_success_delta,20,-0.15,-0.3,0.0,0.0
+All,selected_utility_delta,20,-0.45,-1.0,0.0,0.0
+All,selected_adverse_delta,20,0.0,-0.15,0.15,0.3406

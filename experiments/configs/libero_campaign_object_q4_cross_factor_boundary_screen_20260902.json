@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "object_q4_cross_factor_boundary_screen": {
+      "description": "Development screen for non-ceiling task-0 Position and Environment cells",
+      "jobs": [
+        {
+          "name": "position_x0p1_task0",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "position_x0p1_task0",
+          "suites": "libero_object_temp",
+          "position_level": "x0.1",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "rollouts_per_init": 1,
+          "base_seed": 16100000,
+          "target_decision_states": 20,
+          "gpu_slot": 0
+        },
+        {
+          "name": "position_x0p2_task0",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "position_x0p2_task0",
+          "suites": "libero_object_temp",
+          "position_level": "x0.2",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "rollouts_per_init": 1,
+          "base_seed": 16200000,
+          "target_decision_states": 20,
+          "gpu_slot": 1
+        },
+        {
+          "name": "position_y0p2_task0",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "position_y0p2_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.2",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "rollouts_per_init": 1,
+          "base_seed": 16300000,
+          "target_decision_states": 20,
+          "gpu_slot": 2
+        },
+        {
+          "name": "position_y0p3_task0",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "position_y0p3_task0",
+          "suites": "libero_object_temp",
+          "position_level": "y0.3",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "rollouts_per_init": 1,
+          "base_seed": 16400000,
+          "target_decision_states": 20,
+          "gpu_slot": 3
+        },
+        {
+          "name": "environment_task0",
+          "kind": "pro_environment_counterfactual_feedback",
+          "case_id": "environment_task0",
+          "suites": "libero_object_env",
+          "task_ids": "0",
+          "init_state_ids": "0-19",
+          "rollouts_per_init": 1,
+          "base_seed": 16500000,
+          "target_decision_states": 20,
+          "environment_num_init_states": 50,
+          "environment_seed": 20260825,
+          "gpu_slot": 4
+        }
+      ]
+    },
+    "object_q4_cross_factor_boundary_smoke": {
+      "description": "One-pair Position x0.2 smoke for the cross-factor screen",
+      "jobs": [
+        {
+          "name": "position_x0p2_smoke",
+          "kind": "pro_position_counterfactual_feedback",
+          "case_id": "position_x0p2_smoke",
+          "suites": "libero_object_temp",
+          "position_level": "x0.2",
+          "task_ids": "0",
+          "init_state_ids": "0",
+          "rollouts_per_init": 1,
+          "base_seed": 16090000,
+          "target_decision_states": 1,
+          "gpu_slot": 0
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "rollout_seed_step": 97,
+    "uncertainty_seeds": "0,1,2,3",
+    "max_timesteps": 280,
+    "sampling_mode": "fixed_queries",
+    "snapshot_query_indices": "4",
+    "phase_cap_fraction": 1.0,
+    "consequence_horizon_steps": 16,
+    "terminal_continuation_fraction": 1.0,
+    "terminal_selected_feedback_only": true,
+    "continuation_num_candidates": 0,
+    "skip_feedback_branch": false,
+    "query_cost": 0.025,
+    "num_denoising_steps_action": 5,
+    "prediction_mode": "parallel",
+    "continuation_prediction_mode": "parallel",
+    "num_denoising_steps_future_state": 1,
+    "num_denoising_steps_value": 1,
+    "num_future_state_samples": 1,
+    "num_value_samples": 1,
+    "value_ensemble_aggregation": "average",
+    "experiment_split": "screen"
+  }
+}

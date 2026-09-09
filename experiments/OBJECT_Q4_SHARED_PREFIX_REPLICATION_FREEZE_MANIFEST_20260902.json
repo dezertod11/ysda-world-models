@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "frozen_before_outcomes": true,
+  "campaign_config_sha256": "c2ea1317a1e45bb201c1c53f1657bcb3091ba821f4604425b59b68ec17c9e747",
+  "protocol_sha256": "51a10b377acc4b85b6beb87aefedcdf332255db8a9415866e33e22e3277205d8",
+  "suite": "libero_object_object",
+  "task_ids": [0],
+  "snapshot_query_idx": 4,
+  "executed_step": 64,
+  "init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+  "rollouts_per_init": 2,
+  "rollout_seed_step": 97,
+  "target_pairs": 100,
+  "num_candidates": 4,
+  "experiment_split": "holdout",
+  "shards": [
+    {"init_state_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "base_seed": 15100000},
+    {"init_state_ids": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "base_seed": 15200000},
+    {"init_state_ids": [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "base_seed": 15300000},
+    {"init_state_ids": [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], "base_seed": 15400000},
+    {"init_state_ids": [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], "base_seed": 15500000}
+  ],
+  "commit_steps": 16,
+  "feedback_prefix_steps": 8,
+  "query_cost": 0.025,
+  "replay_integrity_threshold": 1e-9,
+  "minimum_strict_replay_pairs": 95,
+  "primary_endpoint": "feedback_terminal_success - open_terminal_success on strict replay pairs",
+  "practical_gate": {
+    "raw_success_delta_gt": 0.0,
+    "adjusted_terminal_delta_gt": 0.0
+  },
+  "confirmatory_gate": {
+    "cluster_bootstrap_ci_low_gt": 0.0,
+    "mcnemar_two_sided_p_lt": 0.05
+  }
+}

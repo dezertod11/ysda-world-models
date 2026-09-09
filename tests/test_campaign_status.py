@@ -46,6 +46,15 @@ def test_expected_rollouts_uses_counterfactual_snapshot_target():
     assert status.expected_job_rollouts(job) == 100
 
 
+def test_expected_rollouts_uses_recovery_branch_target():
+    job = {
+        "name": "recovery",
+        "environment": {"LIBERO_PRO_RECOVERY_EXPECTED_BRANCHES": "30"},
+    }
+
+    assert status.expected_job_rollouts(job) == 30
+
+
 def test_completed_campaign_counts_strategy_executions(tmp_path, monkeypatch):
     campaign = tmp_path / "status_test_campaign"
     (campaign / "runs").mkdir(parents=True)
@@ -126,3 +135,62 @@ def test_counterfactual_feedback_rows_are_counted_as_snapshots(tmp_path):
 
     assert len(paths) == 1
     assert stats.rollouts == 3
+
+
+def test_eta_excludes_reused_markers_and_rollouts():
+    now = datetime.fromisoformat("2026-08-21T10:10:00")
+    jobs = [planning_job("reused", rollouts=5), planning_job("active", rollouts=5)]
+    markers = {"reused": dict(reused=True, started_at=now.isoformat(), finished_at=now.isoformat())}
+    stats = {"reused": status.TraceStats(rollouts=10), "active": status.TraceStats(rollouts=2)}
+    starts = {"reused": now, "active": datetime.fromisoformat("2026-08-21T10:08:00")}
+    assert status._estimate_eta(jobs, markers, stats, starts, now) == pytest.approx(480.)
+    stats["active"] = status.TraceStats()
+    assert status._estimate_eta(jobs, markers, stats, starts, now) is None
+
+
+def test_recovery_rows_are_counted_as_state_proposal_branches(tmp_path):
+    campaign = tmp_path / "recovery_campaign"
+    (campaign / "runs").mkdir(parents=True)
+    frame = pd.DataFrame(
+        {
+            "row_uid": ["a", "a", "b", "b"],
+            "proposal": ["p1", "p2", "p1", "p2"],
+            "terminal_success": [True, False, False, False],
+        }
+    )
+    frame.to_parquet(campaign / "runs" / "recovery__recovery_branches.parquet", index=False)
+
+    paths = status._preferred_trace_paths(campaign)
+    stats = status._sum_stats(status.TraceCounter().count(path) for path in paths)
+
+    assert len(paths) == 1
+    assert stats.rollouts == 4
+    assert stats.successes == 1
+    assert stats.failures == 3
+
+
+def test_waiting_sequence_before_manifest_is_not_missing(tmp_path, monkeypatch):
+
+    (tmp_path / "sequence_status.json").write_text(json.dumps({
+        "status": "waiting", "stage": "waiting_for_compact", "expected_rollouts": 600,
+        "started_at": datetime.now().isoformat(), "updated_at": datetime.now().isoformat(),
+    }))
+    result = status.inspect_campaign(tmp_path, status.TraceCounter())
+    assert result.state == "WAITING"
+    assert result.expected_rollouts == 600
+    assert result.eta_seconds is None
+    assert "waiting for prerequisite" in status.render_status(result)
+    monkeypatch.setattr(sys, "argv", ["status_libero_campaign.py", str(tmp_path)])
+    assert status.main() == 3
+
+
+def test_dynamic_eta_counts_actual_workers_not_pending_gpu_labels():
+    jobs = [planning_job("done", gpu="3", rollouts=5),
+            planning_job("pending4", gpu="4", rollouts=5),
+            planning_job("pending5", gpu="5", rollouts=5)]
+    markers = {"done": {"started_at": "2026-09-08T10:00:00", "finished_at": "2026-09-08T10:10:00"}}
+    counts = {"done": status.TraceStats(rollouts=10)}
+    now = datetime.fromisoformat("2026-09-08T10:10:00")
+    assert status._estimate_eta(jobs, markers, counts, {}, now, dynamic_capacity=1) == 1200
+    assert status._estimate_eta(jobs, markers, counts, {}, now, dynamic_capacity=2) == 600
+    assert status._estimate_eta(jobs, markers, counts, {}, now, dynamic_capacity=0) is None

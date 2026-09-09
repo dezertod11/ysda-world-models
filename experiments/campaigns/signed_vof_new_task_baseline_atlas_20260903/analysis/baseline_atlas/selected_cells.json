@@ -1,0 +1,117 @@
+{
+  "selection_rule": "strict n>=4, 0.20<=commit_SR<=0.80; rank by |SR-0.5| then n, task, level; take first 6",
+  "holdout_init_state_ids": "5-24",
+  "holdout_rollouts_per_init": 2,
+  "cells": [
+    {
+      "position_level": "y0.1",
+      "direction": "y",
+      "task_id": 4,
+      "task_description": "pick the ketchup and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 2,
+      "failures": 3,
+      "commit_success_rate": 0.4,
+      "commit_success_ci_low": 0.11762077423264783,
+      "commit_success_ci_high": 0.769275718723987,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    },
+    {
+      "position_level": "x0.2",
+      "direction": "x",
+      "task_id": 5,
+      "task_description": "pick the tomato sauce and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 2,
+      "failures": 3,
+      "commit_success_rate": 0.4,
+      "commit_success_ci_low": 0.11762077423264783,
+      "commit_success_ci_high": 0.769275718723987,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    },
+    {
+      "position_level": "y0.1",
+      "direction": "y",
+      "task_id": 5,
+      "task_description": "pick the tomato sauce and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 3,
+      "failures": 2,
+      "commit_success_rate": 0.6,
+      "commit_success_ci_low": 0.2307242812760128,
+      "commit_success_ci_high": 0.882379225767352,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    },
+    {
+      "position_level": "y0.3",
+      "direction": "y",
+      "task_id": 5,
+      "task_description": "pick the tomato sauce and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 3,
+      "failures": 2,
+      "commit_success_rate": 0.6,
+      "commit_success_ci_low": 0.2307242812760128,
+      "commit_success_ci_high": 0.882379225767352,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    },
+    {
+      "position_level": "x0.2",
+      "direction": "x",
+      "task_id": 6,
+      "task_description": "pick the butter and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 3,
+      "failures": 2,
+      "commit_success_rate": 0.6,
+      "commit_success_ci_low": 0.2307242812760128,
+      "commit_success_ci_high": 0.882379225767352,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    },
+    {
+      "position_level": "y0.2",
+      "direction": "y",
+      "task_id": 8,
+      "task_description": "pick the chocolate pudding and place it in the basket",
+      "attempted_states": 5,
+      "strict_states": 5,
+      "successes": 3,
+      "failures": 2,
+      "commit_success_rate": 0.6,
+      "commit_success_ci_low": 0.2307242812760128,
+      "commit_success_ci_high": 0.882379225767352,
+      "boundary_distance": 0.09999999999999998,
+      "eligible_boundary": true
+    }
+  ],
+  "gate": {
+    "expected_states": 180,
+    "attempted_states": 180,
+    "strict_states": 180,
+    "eligible_cells": 16,
+    "selected_cells": 6,
+    "selected_tasks": 4,
+    "selected_directions": [
+      "x",
+      "y"
+    ],
+    "checks": {
+      "strict_completeness_at_least_95pct": true,
+      "at_least_six_boundary_cells": true,
+      "selected_cover_at_least_three_tasks": true,
+      "selected_cover_both_directions": true
+    },
+    "pass": true,
+    "decision": "advance_to_frozen_router_new_task_holdout"
+  }
+}

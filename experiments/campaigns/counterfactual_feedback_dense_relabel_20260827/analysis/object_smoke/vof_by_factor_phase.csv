@@ -1,0 +1,12 @@
+target,factor,phase,states,mean_vof,median_vof,positive_rate,negative_rate
+local_vof,Object,approach,36,0.0,0.0,0.0,0.0
+local_vof,Object,grasp,35,0.0,0.0,0.0,0.0
+local_vof,Object,release,1,0.0,0.0,0.0,0.0
+local_vof,Object,transport,28,0.0,0.0,0.0,0.0
+dense_vof_v2,Object,approach,36,-0.024609157443444572,-0.013439495977161375,0.16666666666666666,0.8333333333333334
+dense_vof_v2,Object,grasp,35,0.02802615960091142,0.0035346032502341362,0.5714285714285714,0.42857142857142855
+dense_vof_v2,Object,release,1,0.0,0.0,0.0,0.0
+dense_vof_v2,Object,transport,28,-0.00282821121011814,-0.0026198817992301995,0.35714285714285715,0.6428571428571429
+terminal_vof,Object,approach,8,-0.4375,0.0,0.0,0.25
+terminal_vof,Object,grasp,5,-0.1,0.0,0.0,0.2
+terminal_vof,Object,transport,6,0.0,0.0,0.0,0.0

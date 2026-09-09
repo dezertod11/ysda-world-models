@@ -1,0 +1,8 @@
+{
+  "job": "position_y0p3_new_cell",
+  "gpu": "7",
+  "status": "completed",
+  "started_at": "2026-09-07T04:29:07",
+  "finished_at": "2026-09-07T05:40:02",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p4b_terminal_candidates_20260907/logs/position_y0p3_new_cell.log"
+}

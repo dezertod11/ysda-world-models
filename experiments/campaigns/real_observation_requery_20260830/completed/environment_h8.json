@@ -1,0 +1,8 @@
+{
+  "job": "environment_h8",
+  "gpu": "3",
+  "status": "completed",
+  "started_at": "2026-08-30T17:06:44",
+  "finished_at": "2026-08-30T17:45:08",
+  "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/real_observation_requery_20260830/logs/environment_h8.log"
+}

@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "profile": "phase_vof_terminal_transfer",
+  "description": "Exact-state terminal transfer of the frozen Environment grasp/transport feedback rule on interaction-supported tasks",
+  "run_prefix": "phase_vof_terminal_transfer_20260831",
+  "created_at": "2026-08-31T17:51:30",
+  "config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/configs/libero_campaign_phase_vof_terminal_transfer.json",
+  "jobs": [
+    {
+      "name": "environment_task5_phase_vof",
+      "kind": "pro_environment_counterfactual_feedback",
+      "gpu": "2",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_environment_variant.sh",
+          "50",
+          "20260825"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_counterfactual_feedback_collect.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/configs/environment_task5_phase_vof",
+        "LIBERO_PRO_VOF_RUN_NAME": "phase_vof_terminal_transfer_20260831__environment_task5_phase_vof",
+        "LIBERO_PRO_VOF_SUITES": "libero_object_env",
+        "LIBERO_PRO_VOF_TASK_IDS": "5",
+        "LIBERO_PRO_VOF_INIT_STATE_IDS": "10-19",
+        "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": "2",
+        "LIBERO_PRO_VOF_BASE_SEED": "9100000",
+        "LIBERO_PRO_VOF_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_VOF_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_VOF_TARGET_DECISION_STATES": "34",
+        "LIBERO_PRO_VOF_SAMPLING_MODE": "phase_balanced",
+        "LIBERO_PRO_VOF_SNAPSHOT_QUERY_INDICES": "0,3,6,9",
+        "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": "0.4",
+        "LIBERO_PRO_VOF_CONSEQUENCE_HORIZON_STEPS": "16",
+        "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": "1.0",
+        "LIBERO_PRO_VOF_TERMINAL_SELECTED_FEEDBACK_ONLY": "1",
+        "LIBERO_PRO_VOF_CONTINUATION_NUM_CANDIDATES": "0",
+        "LIBERO_PRO_VOF_SKIP_FEEDBACK_BRANCH": "0",
+        "LIBERO_PRO_VOF_QUERY_COST": "0.0",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_VOF_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_CONTINUATION_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_VOF_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_VOF_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_VOF_CASE_ID": "phase_vof_environment_task5",
+        "LIBERO_PRO_VOF_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/runs",
+        "LIBERO_PRO_VOF_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/init_files"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task5_phase_vof.json"
+    },
+    {
+      "name": "environment_task8_phase_vof",
+      "kind": "pro_environment_counterfactual_feedback",
+      "gpu": "3",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_environment_variant.sh",
+          "50",
+          "20260825"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_counterfactual_feedback_collect.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/configs/environment_task8_phase_vof",
+        "LIBERO_PRO_VOF_RUN_NAME": "phase_vof_terminal_transfer_20260831__environment_task8_phase_vof",
+        "LIBERO_PRO_VOF_SUITES": "libero_object_env",
+        "LIBERO_PRO_VOF_TASK_IDS": "8",
+        "LIBERO_PRO_VOF_INIT_STATE_IDS": "10-14",
+        "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": "2",
+        "LIBERO_PRO_VOF_BASE_SEED": "9400000",
+        "LIBERO_PRO_VOF_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_VOF_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_VOF_TARGET_DECISION_STATES": "14",
+        "LIBERO_PRO_VOF_SAMPLING_MODE": "phase_balanced",
+        "LIBERO_PRO_VOF_SNAPSHOT_QUERY_INDICES": "0,3,6,9",
+        "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": "0.4",
+        "LIBERO_PRO_VOF_CONSEQUENCE_HORIZON_STEPS": "16",
+        "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": "1.0",
+        "LIBERO_PRO_VOF_TERMINAL_SELECTED_FEEDBACK_ONLY": "1",
+        "LIBERO_PRO_VOF_CONTINUATION_NUM_CANDIDATES": "0",
+        "LIBERO_PRO_VOF_SKIP_FEEDBACK_BRANCH": "0",
+        "LIBERO_PRO_VOF_QUERY_COST": "0.0",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_VOF_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_CONTINUATION_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_VOF_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_VOF_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_VOF_CASE_ID": "phase_vof_environment_task8",
+        "LIBERO_PRO_VOF_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/runs",
+        "LIBERO_PRO_VOF_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/init_files"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task8_phase_vof.json"
+    },
+    {
+      "name": "environment_task9_phase_vof",
+      "kind": "pro_environment_counterfactual_feedback",
+      "gpu": "7",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_environment_variant.sh",
+          "50",
+          "20260825"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_counterfactual_feedback_collect.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/configs/environment_task9_phase_vof",
+        "LIBERO_PRO_VOF_RUN_NAME": "phase_vof_terminal_transfer_20260831__environment_task9_phase_vof",
+        "LIBERO_PRO_VOF_SUITES": "libero_object_env",
+        "LIBERO_PRO_VOF_TASK_IDS": "9",
+        "LIBERO_PRO_VOF_INIT_STATE_IDS": "10-14",
+        "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": "2",
+        "LIBERO_PRO_VOF_BASE_SEED": "9500000",
+        "LIBERO_PRO_VOF_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_VOF_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_VOF_TARGET_DECISION_STATES": "15",
+        "LIBERO_PRO_VOF_SAMPLING_MODE": "phase_balanced",
+        "LIBERO_PRO_VOF_SNAPSHOT_QUERY_INDICES": "0,3,6,9",
+        "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": "0.4",
+        "LIBERO_PRO_VOF_CONSEQUENCE_HORIZON_STEPS": "16",
+        "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": "1.0",
+        "LIBERO_PRO_VOF_TERMINAL_SELECTED_FEEDBACK_ONLY": "1",
+        "LIBERO_PRO_VOF_CONTINUATION_NUM_CANDIDATES": "0",
+        "LIBERO_PRO_VOF_SKIP_FEEDBACK_BRANCH": "0",
+        "LIBERO_PRO_VOF_QUERY_COST": "0.0",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_VOF_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_CONTINUATION_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_VOF_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_VOF_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_VOF_CASE_ID": "phase_vof_environment_task9",
+        "LIBERO_PRO_VOF_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/runs",
+        "LIBERO_PRO_VOF_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/init_files"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task9_phase_vof.json"
+    },
+    {
+      "name": "environment_task9_phase_vof_b",
+      "kind": "pro_environment_counterfactual_feedback",
+      "gpu": "5",
+      "commands": [
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/prepare_libero_pro_environment_variant.sh",
+          "50",
+          "20260825"
+        ],
+        [
+          "bash",
+          "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/scripts/run_libero_pro_counterfactual_feedback_collect.sh"
+        ]
+      ],
+      "environment": {
+        "LIBERO_CONFIG_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/configs/environment_task9_phase_vof_b",
+        "LIBERO_PRO_VOF_RUN_NAME": "phase_vof_terminal_transfer_20260831__environment_task9_phase_vof_b",
+        "LIBERO_PRO_VOF_SUITES": "libero_object_env",
+        "LIBERO_PRO_VOF_TASK_IDS": "9",
+        "LIBERO_PRO_VOF_INIT_STATE_IDS": "15-19",
+        "LIBERO_PRO_VOF_ROLLOUTS_PER_INIT": "2",
+        "LIBERO_PRO_VOF_BASE_SEED": "9500970",
+        "LIBERO_PRO_VOF_ROLLOUT_SEED_STEP": "97",
+        "LIBERO_PRO_VOF_UNCERTAINTY_SEEDS": "0,1,2,3",
+        "LIBERO_PRO_VOF_MAX_TIMESTEPS": "280",
+        "LIBERO_PRO_VOF_TARGET_DECISION_STATES": "15",
+        "LIBERO_PRO_VOF_SAMPLING_MODE": "phase_balanced",
+        "LIBERO_PRO_VOF_SNAPSHOT_QUERY_INDICES": "0,3,6,9",
+        "LIBERO_PRO_VOF_PHASE_CAP_FRACTION": "0.4",
+        "LIBERO_PRO_VOF_CONSEQUENCE_HORIZON_STEPS": "16",
+        "LIBERO_PRO_VOF_TERMINAL_CONTINUATION_FRACTION": "1.0",
+        "LIBERO_PRO_VOF_TERMINAL_SELECTED_FEEDBACK_ONLY": "1",
+        "LIBERO_PRO_VOF_CONTINUATION_NUM_CANDIDATES": "0",
+        "LIBERO_PRO_VOF_SKIP_FEEDBACK_BRANCH": "0",
+        "LIBERO_PRO_VOF_QUERY_COST": "0.0",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_ACTION": "5",
+        "LIBERO_PRO_VOF_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_CONTINUATION_PREDICTION_MODE": "parallel",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_FUTURE_STATE": "1",
+        "LIBERO_PRO_VOF_NUM_DENOISING_STEPS_VALUE": "1",
+        "LIBERO_PRO_VOF_NUM_FUTURE_STATE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_NUM_VALUE_SAMPLES": "1",
+        "LIBERO_PRO_VOF_VALUE_ENSEMBLE_AGGREGATION": "average",
+        "LIBERO_PRO_VOF_EXPERIMENT_SPLIT": "generalization",
+        "LIBERO_PRO_VOF_CASE_ID": "phase_vof_environment_task9_b",
+        "LIBERO_PRO_VOF_OUTPUT_DIR": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/runs",
+        "LIBERO_PRO_VOF_RESUME": "1",
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_environment/init_files"
+      },
+      "completion_marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task9_phase_vof_b.json"
+    }
+  ],
+  "status": "completed",
+  "finished_at": "2026-08-31T17:55:44",
+  "results": [
+    {
+      "job": "environment_task5_phase_vof",
+      "gpu": "2",
+      "status": "completed",
+      "started_at": "2026-08-31T17:51:30",
+      "finished_at": "2026-08-31T17:55:44",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/logs/environment_task5_phase_vof.log"
+    },
+    {
+      "job": "environment_task8_phase_vof",
+      "gpu": "3",
+      "status": "completed",
+      "started_at": "2026-08-31T17:51:30",
+      "finished_at": "2026-08-31T17:51:53",
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/logs/environment_task8_phase_vof.log"
+    },
+    {
+      "job": "environment_task9_phase_vof",
+      "gpu": "7",
+      "status": "skipped",
+      "marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task9_phase_vof.json"
+    },
+    {
+      "job": "environment_task9_phase_vof_b",
+      "gpu": "5",
+      "status": "skipped",
+      "marker": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/phase_vof_terminal_transfer_20260831/completed/environment_task9_phase_vof_b.json"
+    }
+  ]
+}
