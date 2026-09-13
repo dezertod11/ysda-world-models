@@ -124,5 +124,7 @@ def test_busy_gpu_does_not_hold_work_from_other_workers(monkeypatch, tmp_path):
 
 @pytest.mark.parametrize("output,expected", [("4, 0\n", True), ("7000, 0\n", False), ("4, 100\n", False)])
 def test_gpu_availability(monkeypatch, output, expected):
-    monkeypatch.setattr(launcher.subprocess, "check_output", lambda *args, **kwargs: output)
+    monkeypatch.setattr(launcher.subprocess, "check_output",
+                        lambda command, **kwargs: "" if "--query-compute-apps=pid" in command else output)
+    monkeypatch.setattr(launcher.time, "sleep", lambda _: None)
     assert launcher.gpu_is_free("3") is expected

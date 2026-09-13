@@ -1,0 +1,9 @@
+job_id,max_value_sr,same_repeat_best_sr,all_measured_fail
+neighbor_t0_i10,0.3,0.6,False
+neighbor_t0_i11,0.0,0.0,True
+neighbor_t0_i12,0.0,0.0,True
+neighbor_t0_i9,0.0,0.5,False
+neighbor_t2_i10,1.0,1.0,False
+neighbor_t2_i11,0.4,0.6,False
+neighbor_t2_i12,1.0,1.0,False
+neighbor_t2_i9,0.9,1.0,False

@@ -1,5 +1,37 @@
 # LIBERO и LIBERO-PRO: эксперименты, статьи и протокол нашего исследования
 
+**13 сентября: когда вмешиваться вместо фиксированного t72.**
+[Sentinel, Rewind-IL, ACT, Diffusion Policy, RTC, adaptive attention horizon, FLARE](EVENT_TRIGGERED_FEEDBACK_REVIEW_20260913.md).
+Отдельно разобраны память, детекция, полезность recovery и особенности packed
+action latents Cosmos. Новый event controller реализован, его эффективность
+ещё не измерена; threshold calibration и independent transfer обязательны.
+
+**Количественное сопоставление для ICLR, 12 сентября:**
+[результаты близких работ, первичные ссылки и различия протоколов](../publication/iclr2027/RELATED_WORK_RESULTS.md).
+Включены Cosmos Policy, KeyStone, KDPE, SAVE/VFD, Sentinel, Rewind-IL,
+UNISafe, StressDream, visual alignment и таблица LIBERO-PRO.
+[Все наши результаты с анализом](../publication/iclr2027/RESULTS_AND_ANALYSIS.md)
+собраны отдельно, чтобы не смешивать собственные данные с числами авторов.
+
+**11 сентября 2026: новый implementation reference, не рецензированная статья.**
+[Robotics_project_YSDA: decoder action-token medoid, результаты, формулы и перенос на Cosmos](../experiments/DECODER_TOKEN_MEDOID_PROTOCOL_20260911.md).
+Зафиксирован commit `f1bb8d6`: GR00T/MIMIC, cosine-medoid по скрытым action-токенам
+последнего блока; первые четыре позиции x4, K3. Сильный SIMPLER Bridge gain
+49/96 -> 66/96 в одной seed group не повторился в двух других (51 -> 46,
+50 -> 51). Это не установленный универсальный best/SOTA. В наших прежних P4
+сравнениях использовались готовые actions/OSC geometry, не такой hidden space.
+Новая серия есть architecture transfer с decoder-incidence weighting,
+а не буквальная копия GR00T H4. Подробности и замороженная проверка: по ссылке.
+
+**Дополнение 9 сентября 2026: перенос из LLM/NLP.** Отдельно собраны
+[26 статей, включая 6 обзоров](llm_nlp_transfer_20260909/README.md),
+[разбор каждой работы](llm_nlp_transfer_20260909/PAPER_REVIEW.md) и
+[аналогия с Cosmos, формулы и план проверок](llm_nlp_transfer_20260909/ANALOGY_AND_PLAN.md).
+Главные направления: grounded process verification, внешняя проверка и
+correction, MBR-BoN как близкий baseline, semantic uncertainty/probes и
+flow-specific preference learning. Это анализ и предложения, не новые
+результаты LIBERO и не изменение текущей очереди запусков.
+
 Актуальный порядок реализации новых методов после broad LIBERO-PRO Object
 transfer test вынесен в
 [`../experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md`](../experiments/GROUNDED_SELECTIVE_PLANNING_PROTOCOL_20260826.md).

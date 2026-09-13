@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "stage": "replication_and_neighbor_pools",
+  "pid": 3818565,
+  "active": {},
+  "started_at": "2026-09-10T09:07:03.001534+00:00",
+  "expected_branches": 690,
+  "completed_branches": 690,
+  "updated_at": "2026-09-10T11:45:53.321152+00:00",
+  "deadline_epoch": 1789074082.6316051,
+  "estimated_seconds_remaining_if_current_workers_stay_available": null,
+  "finished_at": "2026-09-10T11:45:53.317284+00:00"
+}

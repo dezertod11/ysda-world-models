@@ -1,0 +1,23 @@
+{
+  "checked_at_utc": "2026-09-13T08:59:21+00:00",
+  "observed_status": "interrupted_incomplete",
+  "original_reported_status": "running",
+  "original_status_updated_at": "2026-09-12T23:50:35.638778+00:00",
+  "checked_pids_absent": [3085871, 3136079, 3137286, 3138162, 3139045, 3139464, 3142310],
+  "last_batch_logs_msk": "2026-09-13 02:50",
+  "original_deadline_epoch": 1789284444.0801716,
+  "original_deadline_expired": true,
+  "stop_cause": "unknown; five final batch logs report deadline or requested stop before the planned deadline",
+  "host_boot_time_reported": "2025-09-16 15:05:52",
+  "smoke_committed": 9,
+  "main_committed": 441,
+  "main_fully_matched_cases": 108,
+  "main_matched_outcomes": 432,
+  "main_partial_outcomes_excluded_from_matched_analysis": 9,
+  "main_remaining_outcomes": 71,
+  "timing_committed": 0,
+  "timing_planned": 768,
+  "new_gpu_experiments_launched": false,
+  "original_status_preserved": true,
+  "resource_budget_extended": false
+}

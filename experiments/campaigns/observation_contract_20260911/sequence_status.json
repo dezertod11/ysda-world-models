@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "stage": "screen",
+  "pid": 1289972,
+  "active": {},
+  "deadline_epoch": 1789176230.370088,
+  "holdout_started": false,
+  "updated_at": "2026-09-11T22:48:18.254966+00:00",
+  "completed_branches": {
+    "smoke": 24,
+    "screen": 1536
+  },
+  "seconds_until_deadline": 9332,
+  "expected_current_branches": 1536,
+  "waiting_for_idle_gpu": false,
+  "eta_remaining_seconds": 0
+}

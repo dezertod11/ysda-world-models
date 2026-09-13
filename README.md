@@ -1,13 +1,108 @@
 # YSDA World Models: Uncertainty-Aware Planning
 
+**September 13 follow-up launched:**
+[Frozen recovery resume and grounding diagnostic protocol](experiments/RECOVERY_GROUNDING_DIAGNOSTIC_PROTOCOL_20260913.md).
+Finish missing main/timing outcomes; separately audit32prefixes,128matched
+RGB/oracle outcomes and4event-shadow controls. Idle-only shared GPU locks,
+cutoff21:12MSK. Oracle scores are privileged diagnostics, not deployable gains.
+
+**Publication results hub (12 September 2026):**
+[All project results and analysis](publication/iclr2027/RESULTS_AND_ANALYSIS.md),
+[related-work results and protocol differences](publication/iclr2027/RELATED_WORK_RESULTS.md),
+[local source catalog](publication/iclr2027/RESULTS_INDEX.md).
+Includes positive, negative, conditional and pending evidence; historical
+run-status entries below are not a live queue monitor.
+
 Research project on uncertainty estimation and risk-aware action selection for
 Cosmos Policy in LIBERO and LIBERO-PRO.
+
+Publication workspace: [ICLR 2027 manuscript, writing plan, and reference papers](publication/iclr2027/README.md).
 
 The central question is whether stochastic and latent uncertainty can identify
 an unreliable action chunk before execution and improve the standard
 `argmax(value)` planner in out-of-distribution manipulation tasks.
 
 ## Current result
+
+September 12: both night studies completed and reviewed.
+[Observation Contract, 1536/1536 branches](experiments/OBSERVATION_CONTRACT_RESULTS_20260912.md):
+primary145/192 vs physical recovery151/192, NO-GO. Preserve-only161/192 is
+a post-hoc local lead; unnecessary regrasp caused sixteen paired losses
+after the object was already moving with the gripper.
+[Decoder-medoid, 1440/1440 rollouts](experiments/DECODER_MEDOID_RESULTS_20260912.md):
+H16 decoder and max-value both112/180 (62.22%); fixed-seed/H8 controls do not
+establish a gain. Reports include every arm, formulas, intervals and videos.
+Completed01:48/07:31MSK respectively. No new GPU experiments launched in this review.
+The launch/status entries below are historical.
+
+Night plan September 11-12: [deadline-bounded decoder-medoid checks](experiments/DECODER_MEDOID_NIGHT_20260912.md).
+Preserve the 720-rollout main comparison, then 360 fixed-seed controls and up
+to 360 H8 controls. Idle-only GPUs 0-7 after Observation Contract; compute cutoff
+09:40 MSK, reports before 10:00 MSK September 12. Absolute deadline, owned-process
+watchdog, no automatic extension. Full coverage depends on available resources.
+[Verified night launch](experiments/campaigns/decoder_token_medoid_20260911/NIGHT_LAUNCH_VERIFIED.md).
+
+Queued September 11, 21:35 MSK: [decoder action-token medoid transfer](experiments/DECODER_TOKEN_MEDOID_PROTOCOL_20260911.md)
+from Robotics_project_YSDA. Four selectors, K3/H16, 720 paired full rollouts
+across LIBERO-PRO Object, Environment and Position. Local read-only hook parity
+and four full integration rollouts passed; 70 tests pass locally/on the server.
+The autonomous dispatcher waits for Observation Contract to drain, then admits
+only idle GPUs. No transfer gain is claimed yet.
+[Verified launch and local validation](experiments/campaigns/decoder_token_medoid_20260911/LAUNCH_VERIFIED.md).
+
+Running since September 11, 20:23 MSK: [Observation Contract protocol](experiments/OBSERVATION_CONTRACT_PROTOCOL_20260911.md).
+Eight arms separate observation motion, gripper preservation, recovery, and
+privileged localization diagnostics. Planned: 24 strict replay checks, then
+1536 branches on 96 existing prefixes with two suffix seeds. This is a
+development mechanism study, not a new-init holdout or a demonstrated gain.
+180 CPU tests passed locally and on the server. [Launch and storage record](experiments/campaigns/observation_contract_20260911/LAUNCH_VERIFIED.md).
+
+Latest completed study: [timing versus renewed eligibility, results and videos](experiments/TIMING_ELIGIBILITY_RESULTS_20260911.md).
+Finished September 11 at 15:09 MSK: 10 replay + 480 prospective branches,
+96 paired states across 12 known Position cells, init46-49. Continue 63/96,
+immediate regrasp 76/96, delayed-fresh and checked-latched 74/96,
+diagnostic-latched 76/96. The new candidate did not beat immediate recovery;
+the frozen gate failed and holdout38-45 stayed closed. Immediate vs continue:
++13.54 pp, 16 rescues / 3 harms, Holm p=.17046, not a new corrected-significant claim.
+The diagnostic restores three cancelled juice recoveries but harms another
+case with just a three-step retreat. All 17 cases failing under all policies
+never passed the original gate: recovery was not tested on them.
+All 490 videos downloaded and decoded, 59,174 frames; 79 CPU tests pass.
+[Selected comparison videos](experiments/campaigns/timing_eligibility_20260911_v2/review_20260911/selected_videos.html).
+The subsequent campaign above checks non-opening observation motion and
+trigger coverage; passive/two-view verification remains a later option.
+
+Previous study: [object-grounded verification and delayed recovery, results and videos](experiments/GROUNDED_PROBE_RESULTS_20260911.md).
+All 576 branches finished September 11 at 03:56 MSK (48 smoke, 384 screen,
+144 transfer); the frozen screen gate failed, so no conditional holdout ran.
+Conservative mask: 35/48, identical outcomes to probe-then-always-regrasp,
+versus full regrasp 33/48 and continue 27/48. The mask removed ten observed
+false-held decisions, mostly by abstaining, without establishing an added
+controller benefit. On transfer, full regrasp scored 36/48; delayed and
+continue both scored 33/48. Next diagnostic: separate delay from renewed
+trigger eligibility; do not promote this mask or fixed delay as a proven gain.
+
+Previous result: [Probe → Verify → Repair, 192/192 screen branches](experiments/PROBE_VERIFY_REPAIR_RESULTS_20260911.md).
+The verified method scored 30/48 (62.50%), below physical regrasp 35/48
+(72.92%); continue and probe-only both scored 26/48. The frozen screen gate
+failed and the conditional holdout was not opened. A post-hoc audit found
+seven false `held` decisions with a stationary target and no target contact;
+the tracking crop can follow the gripper instead of the object. Next priority
+is object-specific verification and a probe-then-always-regrasp control,
+not a larger sweep of the same verifier. [Videos and frame comparison](experiments/campaigns/probe_verify_repair_20260910_v2/analysis/screen/videos.html).
+
+Earlier completed campaigns: [P5 replication (690 branches) and matched-K feedback (120 branches)](experiments/P5_AND_FEEDBACK_FINAL_RESULTS_20260910.md).
+One frozen state has a reproducible max-value selection error (1/10 vs 10/10);
+the neighboring-state diagnostic did not establish transfer. Matched-K fresh
+feedback and continuity did not improve pooled success.
+[Research priorities and subsequent screen decision](experiments/RESEARCH_PRIORITIES_20260910_EVENING.md).
+The entries below describe earlier completed studies, not live queue status.
+
+Latest completed audit: [P5 suffix repeats and feedback, 1,080 branches](experiments/P5_REPEAT_FEEDBACK_RESULTS_20260910.md).
+Fresh8 did not improve the pooled outcome (41/108 vs. open16 44/108).
+One third of saved candidates changed outcome across suffix seeds; the K8
+in-sample oracle gain vanished under a held-out-suffix diagnostic. This is
+a development mechanism study, not a new full-episode planner benchmark.
 
 - Standard LIBERO ID control: 72/72 successful rollouts.
 - LIBERO-PRO screening: 82/106 successful rollouts and seven mixed

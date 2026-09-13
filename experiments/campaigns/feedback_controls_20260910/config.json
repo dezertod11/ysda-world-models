@@ -1,0 +1,533 @@
+{
+  "name": "feedback_controls_20260910",
+  "predecessor": "p5_candidate_replication_20260910",
+  "source_config_sha256": "f08e5e80dc279d277516811cea17352f9ffa94455d0f7a013b16400ec7558848",
+  "scripts": {
+    "p5_repeat_feedback.py": "1a04cb57d0403fc867da79e675239c0be006d128d543aad4e10b977856e6c9d0",
+    "collect_p5_repeat_feedback.py": "3784c782bafd2f2c9eca3a049a5d5ce5d80d4aff6c45dda2ad452d18617d609b",
+    "run_p5_repeat_feedback_night.py": "ac1c4d2640c2f271160a4f07b8c00911e7fc393e0bc962b66a417b87b3d5dd7c",
+    "analyze_p5_repeat_feedback.py": "e549953cbf9931830a43dff6aaa36dd0a3eadce0fe5cc9e203362208c81de119",
+    "collect_counterfactual_feedback.py": "7286c98375028c16ef3d669c92b3c87a1d467e104f9d89fd88b9a186952eb207",
+    "libero_runtime_snapshot.py": "f8f87aeda81ee221cb00edcfe5309fc6187b29e71cf7029d23dfc626b576adda",
+    "counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "libero_resident.py": "e592acbc34c3aafd6826d8de6082dfd7d1c23da365608aae7f6130b2240effd5",
+    "run_libero_experiment_campaign.py": "a5371d8829d3c44ceee6145367e43bbb34321951ca3d0f18de41bc7831cd4dc5",
+    "cosmos_env.sh": "0c7ba9f066d27e5bd73205986e3d193067a2edd9feba78e6fe0a46b5992c8f00",
+    "cosmos_env_libero_pro.sh": "5c4cba083c5e912b9eb4be1facda1b5cac98012a56807971063a844ca59d066f",
+    "feedback_controls.py": "bf68c50ae2932df1940f687a25389788247930629251e4f068ec79866bd3bae6",
+    "collect_feedback_controls.py": "26f8f06f716f7a379311c7ef67d2f59de24729d2c9ae9271660c0aaf2ea2e936",
+    "run_feedback_controls.py": "c0bb182cfab5c55cce7c19050d692e6fc54a505d52f1df025a647a6ccf98ecc5",
+    "analyze_feedback_controls.py": "e9802b7f24f025f1b0c4af841b0fd715676a382ae0dff3061d28f4ed7fc6c109",
+    "p5_candidate_replication.py": "2fc711164d524d030b58597c260d46f6606be1d470242b7549579d4a6167610e",
+    "analyze_p5_candidate_replication.py": "11a8a2dd137fa63fa6d1696a02b0897346a73032ef13dcd6fd630486da669e91"
+  },
+  "runtime": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy",
+  "runtime_hashes": {
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/cosmos_utils.py": "26092a7ad0386093941bea6831a83e06f234aa48f23a0dd91fcd625dc08eea33",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "9f7efcf03271e0cb568526a1514b9585fd56454cf8319598e6cdd595561b534a",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py": "a21517759e615f15a388fba608881c50739678cd50d5482761dbdda17bd9e35b",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/safety_signals.py": "8a5ce2ba5075050a25c18c0c81fed17b7aeef1a1abec4b0f00a14934b6912e67"
+  },
+  "jobs": [
+    {
+      "id": "object_q4_i12_r0",
+      "cell": "object_q4",
+      "phase": "smoke",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 12,
+      "repeat": 0,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601200000,
+      "query_seed": 1601202000,
+      "suffix_seed": 1601205000
+    },
+    {
+      "id": "object_q4_i13_r0",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 13,
+      "repeat": 0,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601300000,
+      "query_seed": 1601302000,
+      "suffix_seed": 1601305000
+    },
+    {
+      "id": "object_q4_i13_r1",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 13,
+      "repeat": 1,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601310000,
+      "query_seed": 1601312000,
+      "suffix_seed": 1601315000
+    },
+    {
+      "id": "object_q4_i14_r0",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 14,
+      "repeat": 0,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601400000,
+      "query_seed": 1601402000,
+      "suffix_seed": 1601405000
+    },
+    {
+      "id": "object_q4_i14_r1",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 14,
+      "repeat": 1,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601410000,
+      "query_seed": 1601412000,
+      "suffix_seed": 1601415000
+    },
+    {
+      "id": "object_q4_i15_r0",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 15,
+      "repeat": 0,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601500000,
+      "query_seed": 1601502000,
+      "suffix_seed": 1601505000
+    },
+    {
+      "id": "object_q4_i15_r1",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 15,
+      "repeat": 1,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601510000,
+      "query_seed": 1601512000,
+      "suffix_seed": 1601515000
+    },
+    {
+      "id": "object_q4_i16_r0",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 16,
+      "repeat": 0,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601600000,
+      "query_seed": 1601602000,
+      "suffix_seed": 1601605000
+    },
+    {
+      "id": "object_q4_i16_r1",
+      "cell": "object_q4",
+      "phase": "screen",
+      "suite": "libero_object_object",
+      "environment": {},
+      "task_id": 0,
+      "init_state_id": 16,
+      "repeat": 1,
+      "t": 64,
+      "description": "pick up the alphabet soup and place it in the basket",
+      "prefix_seed": 1601610000,
+      "query_seed": 1601612000,
+      "suffix_seed": 1601615000
+    },
+    {
+      "id": "position_x_q3_i12_r0",
+      "cell": "position_x_q3",
+      "phase": "smoke",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 12,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611200000,
+      "query_seed": 1611202000,
+      "suffix_seed": 1611205000
+    },
+    {
+      "id": "position_x_q3_i13_r0",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 13,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611300000,
+      "query_seed": 1611302000,
+      "suffix_seed": 1611305000
+    },
+    {
+      "id": "position_x_q3_i13_r1",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 13,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611310000,
+      "query_seed": 1611312000,
+      "suffix_seed": 1611315000
+    },
+    {
+      "id": "position_x_q3_i14_r0",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 14,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611400000,
+      "query_seed": 1611402000,
+      "suffix_seed": 1611405000
+    },
+    {
+      "id": "position_x_q3_i14_r1",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 14,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611410000,
+      "query_seed": 1611412000,
+      "suffix_seed": 1611415000
+    },
+    {
+      "id": "position_x_q3_i15_r0",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 15,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611500000,
+      "query_seed": 1611502000,
+      "suffix_seed": 1611505000
+    },
+    {
+      "id": "position_x_q3_i15_r1",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 15,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611510000,
+      "query_seed": 1611512000,
+      "suffix_seed": 1611515000
+    },
+    {
+      "id": "position_x_q3_i16_r0",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 16,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611600000,
+      "query_seed": 1611602000,
+      "suffix_seed": 1611605000
+    },
+    {
+      "id": "position_x_q3_i16_r1",
+      "cell": "position_x_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "task_id": 2,
+      "init_state_id": 16,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the salad dressing and place it in the basket",
+      "prefix_seed": 1611610000,
+      "query_seed": 1611612000,
+      "suffix_seed": 1611615000
+    },
+    {
+      "id": "position_y_q3_i12_r0",
+      "cell": "position_y_q3",
+      "phase": "smoke",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 12,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621200000,
+      "query_seed": 1621202000,
+      "suffix_seed": 1621205000
+    },
+    {
+      "id": "position_y_q3_i13_r0",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 13,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621300000,
+      "query_seed": 1621302000,
+      "suffix_seed": 1621305000
+    },
+    {
+      "id": "position_y_q3_i13_r1",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 13,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621310000,
+      "query_seed": 1621312000,
+      "suffix_seed": 1621315000
+    },
+    {
+      "id": "position_y_q3_i14_r0",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 14,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621400000,
+      "query_seed": 1621402000,
+      "suffix_seed": 1621405000
+    },
+    {
+      "id": "position_y_q3_i14_r1",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 14,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621410000,
+      "query_seed": 1621412000,
+      "suffix_seed": 1621415000
+    },
+    {
+      "id": "position_y_q3_i15_r0",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 15,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621500000,
+      "query_seed": 1621502000,
+      "suffix_seed": 1621505000
+    },
+    {
+      "id": "position_y_q3_i15_r1",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 15,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621510000,
+      "query_seed": 1621512000,
+      "suffix_seed": 1621515000
+    },
+    {
+      "id": "position_y_q3_i16_r0",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 16,
+      "repeat": 0,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621600000,
+      "query_seed": 1621602000,
+      "suffix_seed": 1621605000
+    },
+    {
+      "id": "position_y_q3_i16_r1",
+      "cell": "position_y_q3",
+      "phase": "screen",
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/y0.2/init_files"
+      },
+      "task_id": 9,
+      "init_state_id": 16,
+      "repeat": 1,
+      "t": 48,
+      "description": "pick up the orange juice and place it in the basket",
+      "prefix_seed": 1621610000,
+      "query_seed": 1621612000,
+      "suffix_seed": 1621615000
+    }
+  ],
+  "arms": [
+    "open16",
+    "stale_k4",
+    "fresh_k1",
+    "fresh_k4",
+    "fresh_continuity_k4"
+  ],
+  "max_workers": 3,
+  "batch_size": 4,
+  "gpu_candidates": [
+    "1",
+    "3",
+    "5",
+    "0",
+    "2",
+    "4",
+    "6",
+    "7"
+  ],
+  "active_hours": 48,
+  "idle_only": true,
+  "primary_contrasts": [
+    [
+      "fresh_k4",
+      "open16"
+    ],
+    [
+      "fresh_k4",
+      "fresh_k1"
+    ],
+    [
+      "fresh_continuity_k4",
+      "fresh_k4"
+    ]
+  ],
+  "stage": "mechanism_screen_not_confirmatory",
+  "automatic_holdout": false,
+  "screen_branches": 120,
+  "smoke_branches": 15,
+  "continuity_lambda": 0.1,
+  "smoke_min_complete_cells": 3
+}

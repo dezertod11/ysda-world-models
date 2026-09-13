@@ -1,0 +1,1043 @@
+[
+  {
+    "id": "S1",
+    "source": "https://arxiv.org/abs/2503.24235",
+    "checked_at_utc": "2026-09-09T09:33:54.123158+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well?"
+      ],
+      "citation_author": [
+        "Zhang, Qiyuan",
+        "Lyu, Fuyuan",
+        "Sun, Zexu",
+        "Wang, Lei",
+        "Zhang, Weixu",
+        "Hua, Wenyue",
+        "Wu, Haolun",
+        "Guo, Zhihan",
+        "Wang, Yufei",
+        "Muennighoff, Niklas",
+        "King, Irwin",
+        "Liu, Xue",
+        "Ma, Chen"
+      ],
+      "citation_date": [
+        "2025/03/31"
+      ],
+      "citation_online_date": [
+        "2025/05/04"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2503.24235"
+      ],
+      "citation_arxiv_id": [
+        "2503.24235"
+      ],
+      "citation_abstract": [
+        "As enthusiasm for scaling computation (data and parameters) in the pretraining era gradually diminished, test-time scaling (TTS), also referred to as ``test-time computing'' has emerged as a prominent research focus. Recent studies demonstrate that TTS can further elicit the problem-solving capabilities of large language models (LLMs), enabling significant breakthroughs not only in specialized reasoning tasks, such as mathematics and coding, but also in general tasks like open-ended Q&A. However, despite the explosion of recent efforts in this area, there remains an urgent need for a comprehensive survey offering a systemic understanding. To fill this gap, we propose a unified, multidimensional framework structured along four core dimensions of TTS research: what to scale, how to scale, where to scale, and how well to scale. Building upon this taxonomy, we conduct an extensive review of methods, application scenarios, and assessment aspects, and present an organized decomposition that highlights the unique functional roles of individual techniques within the broader TTS landscape. From this analysis, we distill the major developmental trajectories of TTS to date and offer hands-on guidelines for practical deployment. Furthermore, we identify several open challenges and offer insights into promising future directions, including further scaling, clarifying the functional essence of techniques, generalizing to more tasks, and more attributions. Our repository is available on https://github.com/testtimescaling/testtimescaling.github.io/"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2503.24235v3"
+    ]
+  },
+  {
+    "id": "S2",
+    "source": "https://aclanthology.org/2026.acl-long.163/",
+    "checked_at_utc": "2026-09-09T09:33:54.578487+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "A Comprehensive Survey of Process Reward Models: Data Generation, Model Construction, and Usage"
+      ],
+      "citation_author": [
+        "Congmin Zheng",
+        "Jiachen Zhu",
+        "Zhuoying Ou",
+        "Yuxiang Chen",
+        "Kangning Zhang",
+        "Rong Shan",
+        "Zeyu Zheng",
+        "Mengyue Yang",
+        "Jianghao Lin",
+        "Yong Yu",
+        "Weinan Zhang"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)"
+      ],
+      "citation_publication_date": [
+        "2026/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2026.acl-long.163.pdf"
+      ],
+      "citation_firstpage": [
+        "3591"
+      ],
+      "citation_lastpage": [
+        "3607"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2026.acl-long.163"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "S3",
+    "source": "https://aclanthology.org/2025.findings-acl.1101/",
+    "checked_at_utc": "2026-09-09T09:33:55.331783+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "A Survey of Uncertainty Estimation Methods on Large Language Models"
+      ],
+      "citation_author": [
+        "Zhiqiu Xia",
+        "Jinxuan Xu",
+        "Yuqian Zhang",
+        "Hang Liu"
+      ],
+      "citation_conference_title": [
+        "Findings of the Association for Computational Linguistics: ACL 2025"
+      ],
+      "citation_publication_date": [
+        "2025/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2025.findings-acl.1101.pdf"
+      ],
+      "citation_firstpage": [
+        "21381"
+      ],
+      "citation_lastpage": [
+        "21396"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2025.findings-acl.1101"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "S4",
+    "source": "https://aclanthology.org/2026.findings-acl.2064/",
+    "checked_at_utc": "2026-09-09T09:33:55.512381+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "From Passive Metric to Active Signal: The Evolving Role of Uncertainty Quantification in Large Language Models"
+      ],
+      "citation_author": [
+        "Jiaxin Zhang",
+        "Wendi Cui",
+        "Zhuohang Li",
+        "Lifu Huang",
+        "Bradley A. Malin",
+        "Caiming Xiong",
+        "Chien-Sheng Wu"
+      ],
+      "citation_conference_title": [
+        "Findings of the Association for Computational Linguistics: ACL 2026"
+      ],
+      "citation_publication_date": [
+        "2026/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2026.findings-acl.2064.pdf"
+      ],
+      "citation_firstpage": [
+        "41525"
+      ],
+      "citation_lastpage": [
+        "41544"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2026.findings-acl.2064"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "S5",
+    "source": "https://aclanthology.org/2026.acl-long.738/",
+    "checked_at_utc": "2026-09-09T09:33:55.667635+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Uncertainty Quantification in LLM Agents: Foundations, Emerging Challenges, and Opportunities"
+      ],
+      "citation_author": [
+        "Changdae Oh",
+        "Seongheon Park",
+        "To Eun Kim",
+        "Jiatong Li",
+        "Wendi Li",
+        "Min-Hsuan Yeh",
+        "Sean Du",
+        "Hamed Hassani",
+        "Paul Bogdan",
+        "Dawn Song",
+        "Sharon Li"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)"
+      ],
+      "citation_publication_date": [
+        "2026/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2026.acl-long.738.pdf"
+      ],
+      "citation_firstpage": [
+        "16219"
+      ],
+      "citation_lastpage": [
+        "16250"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2026.acl-long.738"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "S6",
+    "source": "https://aclanthology.org/2024.tacl-1.78/",
+    "checked_at_utc": "2026-09-09T09:50:52.851141+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "When Can LLMs Actually Correct Their Own Mistakes? A Critical Survey of Self-Correction of LLMs"
+      ],
+      "citation_author": [
+        "Ryo Kamoi",
+        "Yusen Zhang",
+        "Nan Zhang",
+        "Jiawei Han",
+        "Rui Zhang"
+      ],
+      "citation_journal_title": [
+        "Transactions of the Association for Computational Linguistics"
+      ],
+      "citation_volume": [
+        "12"
+      ],
+      "citation_publication_date": [
+        "2024"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2024.tacl-1.78.pdf"
+      ],
+      "citation_firstpage": [
+        "1417"
+      ],
+      "citation_lastpage": [
+        "1440"
+      ],
+      "citation_doi": [
+        "10.1162/tacl_a_00713"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M1",
+    "source": "https://arxiv.org/abs/2408.03314",
+    "checked_at_utc": "2026-09-09T09:33:55.884435+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters"
+      ],
+      "citation_author": [
+        "Snell, Charlie",
+        "Lee, Jaehoon",
+        "Xu, Kelvin",
+        "Kumar, Aviral"
+      ],
+      "citation_date": [
+        "2024/08/06"
+      ],
+      "citation_online_date": [
+        "2024/08/06"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2408.03314"
+      ],
+      "citation_arxiv_id": [
+        "2408.03314"
+      ],
+      "citation_abstract": [
+        "Enabling LLMs to improve their outputs by using more test-time computation is a critical step towards building generally self-improving agents that can operate on open-ended natural language. In this paper, we study the scaling of inference-time computation in LLMs, with a focus on answering the question: if an LLM is allowed to use a fixed but non-trivial amount of inference-time compute, how much can it improve its performance on a challenging prompt? Answering this question has implications not only on the achievable performance of LLMs, but also on the future of LLM pretraining and how one should tradeoff inference-time and pre-training compute. Despite its importance, little research attempted to understand the scaling behaviors of various test-time inference methods. Moreover, current work largely provides negative results for a number of these strategies. In this work, we analyze two primary mechanisms to scale test-time computation: (1) searching against dense, process-based verifier reward models; and (2) updating the model's distribution over a response adaptively, given the prompt at test time. We find that in both cases, the effectiveness of different approaches to scaling test-time compute critically varies depending on the difficulty of the prompt. This observation motivates applying a \"compute-optimal\" scaling strategy, which acts to most effectively allocate test-time compute adaptively per prompt. Using this compute-optimal strategy, we can improve the efficiency of test-time compute scaling by more than 4x compared to a best-of-N baseline. Additionally, in a FLOPs-matched evaluation, we find that on problems where a smaller base model attains somewhat non-trivial success rates, test-time compute can be used to outperform a 14x larger model."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2408.03314v1"
+    ]
+  },
+  {
+    "id": "M2",
+    "source": "https://arxiv.org/abs/2410.08146",
+    "checked_at_utc": "2026-09-09T09:33:56.056314+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Rewarding Progress: Scaling Automated Process Verifiers for LLM Reasoning"
+      ],
+      "citation_author": [
+        "Setlur, Amrith",
+        "Nagpal, Chirag",
+        "Fisch, Adam",
+        "Geng, Xinyang",
+        "Eisenstein, Jacob",
+        "Agarwal, Rishabh",
+        "Agarwal, Alekh",
+        "Berant, Jonathan",
+        "Kumar, Aviral"
+      ],
+      "citation_date": [
+        "2024/10/10"
+      ],
+      "citation_online_date": [
+        "2024/10/10"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2410.08146"
+      ],
+      "citation_arxiv_id": [
+        "2410.08146"
+      ],
+      "citation_abstract": [
+        "A promising approach for improving reasoning in large language models is to use process reward models (PRMs). PRMs provide feedback at each step of a multi-step reasoning trace, potentially improving credit assignment over outcome reward models (ORMs) that only provide feedback at the final step. However, collecting dense, per-step human labels is not scalable, and training PRMs from automatically-labeled data has thus far led to limited gains. To improve a base policy by running search against a PRM or using it as dense rewards for reinforcement learning (RL), we ask: \"How should we design process rewards?\". Our key insight is that, to be effective, the process reward for a step should measure progress: a change in the likelihood of producing a correct response in the future, before and after taking the step, corresponding to the notion of step-level advantages in RL. Crucially, this progress should be measured under a prover policy distinct from the base policy. We theoretically characterize the set of good provers and our results show that optimizing process rewards from such provers improves exploration during test-time search and online RL. In fact, our characterization shows that weak prover policies can substantially improve a stronger base policy, which we also observe empirically. We validate our claims by training process advantage verifiers (PAVs) to predict progress under such provers, and show that compared to ORMs, test-time search against PAVs is $>8\\%$ more accurate, and $1.5-5\\times$ more compute-efficient. Online RL with dense rewards from PAVs enables one of the first results with $5-6\\times$ gain in sample efficiency, and $>6\\%$ gain in accuracy, over ORMs."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2410.08146v1"
+    ]
+  },
+  {
+    "id": "M3",
+    "source": "https://arxiv.org/abs/2305.20050",
+    "checked_at_utc": "2026-09-09T09:33:56.134694+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Let's Verify Step by Step"
+      ],
+      "citation_author": [
+        "Lightman, Hunter",
+        "Kosaraju, Vineet",
+        "Burda, Yura",
+        "Edwards, Harri",
+        "Baker, Bowen",
+        "Lee, Teddy",
+        "Leike, Jan",
+        "Schulman, John",
+        "Sutskever, Ilya",
+        "Cobbe, Karl"
+      ],
+      "citation_date": [
+        "2023/05/31"
+      ],
+      "citation_online_date": [
+        "2023/05/31"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2305.20050"
+      ],
+      "citation_arxiv_id": [
+        "2305.20050"
+      ],
+      "citation_abstract": [
+        "In recent years, large language models have greatly improved in their ability to perform complex multi-step reasoning. However, even state-of-the-art models still regularly produce logical mistakes. To train more reliable models, we can turn either to outcome supervision, which provides feedback for a final result, or process supervision, which provides feedback for each intermediate reasoning step. Given the importance of training reliable models, and given the high cost of human feedback, it is important to carefully compare the both methods. Recent work has already begun this comparison, but many questions still remain. We conduct our own investigation, finding that process supervision significantly outperforms outcome supervision for training models to solve problems from the challenging MATH dataset. Our process-supervised model solves 78% of problems from a representative subset of the MATH test set. Additionally, we show that active learning significantly improves the efficacy of process supervision. To support related research, we also release PRM800K, the complete dataset of 800,000 step-level human feedback labels used to train our best reward model."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2305.20050v1"
+    ]
+  },
+  {
+    "id": "M4",
+    "source": "https://aclanthology.org/2025.findings-acl.547/",
+    "checked_at_utc": "2026-09-09T09:33:56.214167+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "The Lessons of Developing Process Reward Models in Mathematical Reasoning"
+      ],
+      "citation_author": [
+        "Zhenru Zhang",
+        "Chujie Zheng",
+        "Yangzhen Wu",
+        "Beichen Zhang",
+        "Runji Lin",
+        "Bowen Yu",
+        "Dayiheng Liu",
+        "Jingren Zhou",
+        "Junyang Lin"
+      ],
+      "citation_conference_title": [
+        "Findings of the Association for Computational Linguistics: ACL 2025"
+      ],
+      "citation_publication_date": [
+        "2025/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2025.findings-acl.547.pdf"
+      ],
+      "citation_firstpage": [
+        "10495"
+      ],
+      "citation_lastpage": [
+        "10516"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2025.findings-acl.547"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M5",
+    "source": "https://arxiv.org/abs/2411.17501",
+    "checked_at_utc": "2026-09-09T09:33:56.887992+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "The Limits of Inference Scaling Through Resampling"
+      ],
+      "citation_author": [
+        "Stroebl, Benedikt",
+        "Kapoor, Sayash",
+        "Narayanan, Arvind"
+      ],
+      "citation_date": [
+        "2024/11/26"
+      ],
+      "citation_online_date": [
+        "2026/03/26"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2411.17501"
+      ],
+      "citation_arxiv_id": [
+        "2411.17501"
+      ],
+      "citation_abstract": [
+        "Recent research has generated hope that inference scaling, such as resampling solutions until they pass verifiers like unit tests, could allow weaker models to match stronger ones. Beyond inference, this approach also enables training reasoning models, where data is curated using rejection sampling against a verifier. However, we show that this approach is fundamentally limited when verifiers are imperfect and have a non-zero probability of producing false positives. Resampling cannot decrease this probability, so it imposes an upper bound to the accuracy of resampling-based inference scaling, regardless of compute budget. Our analysis shows that there is a strong correlation between the model's single-sample accuracy and its false positive rate on HumanEval and MBPP, whose unit tests have limited coverage. Therefore, no amount of inference scaling of weaker models can enable them to match the single-sample accuracy of a sufficiently strong model. Empirical results show that optimal sampling attempts are often fewer than 10, as the negative utility of false positives outweighs benefits, bending inference scaling curves downward. Finally, false positives may have other undesirable qualities, like poor adherence to coding style conventions."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2411.17501v3"
+    ]
+  },
+  {
+    "id": "M6",
+    "source": "https://proceedings.mlr.press/v202/gao23h.html",
+    "checked_at_utc": "2026-09-09T09:33:57.008322+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_publisher": [
+        "PMLR"
+      ],
+      "citation_title": [
+        "Scaling Laws for Reward Model Overoptimization"
+      ],
+      "citation_language": [
+        "en"
+      ],
+      "citation_abstract_html_url": [
+        "https://proceedings.mlr.press/v202/gao23h.html"
+      ],
+      "citation_pdf_url": [
+        "https://proceedings.mlr.press/v202/gao23h/gao23h.pdf"
+      ],
+      "citation_firstpage": [
+        "10835"
+      ],
+      "citation_lastpage": [
+        "10866"
+      ],
+      "citation_author": [
+        "Leo Gao",
+        "John Schulman",
+        "Jacob Hilton"
+      ],
+      "citation_publication_date": [
+        "2023/07/03"
+      ],
+      "citation_inbook_title": [
+        "International Conference on Machine Learning"
+      ],
+      "citation_conference_title": [
+        "International Conference on Machine Learning"
+      ],
+      "citation_issn": [
+        "2640-3498"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M7",
+    "source": "https://arxiv.org/abs/2302.09664",
+    "checked_at_utc": "2026-09-09T09:33:57.473365+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation"
+      ],
+      "citation_author": [
+        "Kuhn, Lorenz",
+        "Gal, Yarin",
+        "Farquhar, Sebastian"
+      ],
+      "citation_date": [
+        "2023/02/19"
+      ],
+      "citation_online_date": [
+        "2023/04/15"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2302.09664"
+      ],
+      "citation_arxiv_id": [
+        "2302.09664"
+      ],
+      "citation_abstract": [
+        "We introduce a method to measure uncertainty in large language models. For tasks like question answering, it is essential to know when we can trust the natural language outputs of foundation models. We show that measuring uncertainty in natural language is challenging because of \"semantic equivalence\" -- different sentences can mean the same thing. To overcome these challenges we introduce semantic entropy -- an entropy which incorporates linguistic invariances created by shared meanings. Our method is unsupervised, uses only a single model, and requires no modifications to off-the-shelf language models. In comprehensive ablation studies we show that the semantic entropy is more predictive of model accuracy on question answering data sets than comparable baselines."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2302.09664v3"
+    ]
+  },
+  {
+    "id": "M8",
+    "source": "https://arxiv.org/abs/2406.15927",
+    "checked_at_utc": "2026-09-09T09:33:57.602576+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Semantic Entropy Probes: Robust and Cheap Hallucination Detection in LLMs"
+      ],
+      "citation_author": [
+        "Kossen, Jannik",
+        "Han, Jiatong",
+        "Razzak, Muhammed",
+        "Schut, Lisa",
+        "Malik, Shreshth",
+        "Gal, Yarin"
+      ],
+      "citation_date": [
+        "2024/06/22"
+      ],
+      "citation_online_date": [
+        "2024/06/22"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2406.15927"
+      ],
+      "citation_arxiv_id": [
+        "2406.15927"
+      ],
+      "citation_abstract": [
+        "We propose semantic entropy probes (SEPs), a cheap and reliable method for uncertainty quantification in Large Language Models (LLMs). Hallucinations, which are plausible-sounding but factually incorrect and arbitrary model generations, present a major challenge to the practical adoption of LLMs. Recent work by Farquhar et al. (2024) proposes semantic entropy (SE), which can detect hallucinations by estimating uncertainty in the space semantic meaning for a set of model generations. However, the 5-to-10-fold increase in computation cost associated with SE computation hinders practical adoption. To address this, we propose SEPs, which directly approximate SE from the hidden states of a single generation. SEPs are simple to train and do not require sampling multiple model generations at test time, reducing the overhead of semantic uncertainty quantification to almost zero. We show that SEPs retain high performance for hallucination detection and generalize better to out-of-distribution data than previous probing methods that directly predict model accuracy. Our results across models and tasks suggest that model hidden states capture SE, and our ablation studies give further insights into the token positions and model layers for which this is the case."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2406.15927v1"
+    ]
+  },
+  {
+    "id": "M9",
+    "source": "https://aclanthology.org/2020.coling-main.398/",
+    "checked_at_utc": "2026-09-09T09:33:57.678387+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Is MAP Decoding All You Need? The Inadequacy of the Mode in Neural Machine Translation"
+      ],
+      "citation_author": [
+        "Bryan Eikema",
+        "Wilker Aziz"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 28th International Conference on Computational Linguistics"
+      ],
+      "citation_publication_date": [
+        "2020/12"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2020.coling-main.398.pdf"
+      ],
+      "citation_firstpage": [
+        "4506"
+      ],
+      "citation_lastpage": [
+        "4520"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2020.coling-main.398"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M10",
+    "source": "https://aclanthology.org/2025.emnlp-main.1616/",
+    "checked_at_utc": "2026-09-09T09:33:57.969235+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Structure-Conditional Minimum Bayes Risk Decoding"
+      ],
+      "citation_author": [
+        "Bryan Eikema",
+        "Anna Rutkiewicz",
+        "Mario Giulianelli"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing"
+      ],
+      "citation_publication_date": [
+        "2025/11"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2025.emnlp-main.1616.pdf"
+      ],
+      "citation_firstpage": [
+        "31706"
+      ],
+      "citation_lastpage": [
+        "31723"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2025.emnlp-main.1616"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M11",
+    "source": "https://aclanthology.org/2025.naacl-long.472/",
+    "checked_at_utc": "2026-09-09T09:33:58.127471+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Regularized Best-of-N Sampling with Minimum Bayes Risk Objective for Language Model Alignment"
+      ],
+      "citation_author": [
+        "Yuu Jinnai",
+        "Tetsuro Morimura",
+        "Kaito Ariu",
+        "Kenshi Abe"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)"
+      ],
+      "citation_publication_date": [
+        "2025/4"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2025.naacl-long.472.pdf"
+      ],
+      "citation_firstpage": [
+        "9321"
+      ],
+      "citation_lastpage": [
+        "9347"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2025.naacl-long.472"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "M12",
+    "source": "https://arxiv.org/abs/2305.11738",
+    "checked_at_utc": "2026-09-09T09:33:58.286070+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing"
+      ],
+      "citation_author": [
+        "Gou, Zhibin",
+        "Shao, Zhihong",
+        "Gong, Yeyun",
+        "Shen, Yelong",
+        "Yang, Yujiu",
+        "Duan, Nan",
+        "Chen, Weizhu"
+      ],
+      "citation_date": [
+        "2023/05/19"
+      ],
+      "citation_online_date": [
+        "2024/02/21"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2305.11738"
+      ],
+      "citation_arxiv_id": [
+        "2305.11738"
+      ],
+      "citation_abstract": [
+        "Recent developments in large language models (LLMs) have been impressive. However, these models sometimes show inconsistencies and problematic behavior, such as hallucinating facts, generating flawed code, or creating offensive and toxic content. Unlike these models, humans typically utilize external tools to cross-check and refine their initial content, like using a search engine for fact-checking, or a code interpreter for debugging. Inspired by this observation, we introduce a framework called CRITIC that allows LLMs, which are essentially \"black boxes\" to validate and progressively amend their own outputs in a manner similar to human interaction with tools. More specifically, starting with an initial output, CRITIC interacts with appropriate tools to evaluate certain aspects of the text, and then revises the output based on the feedback obtained during this validation process. Comprehensive evaluations involving free-form question answering, mathematical program synthesis, and toxicity reduction demonstrate that CRITIC consistently enhances the performance of LLMs. Meanwhile, our research highlights the crucial importance of external feedback in promoting the ongoing self-improvement of LLMs."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2305.11738v4"
+    ]
+  },
+  {
+    "id": "M13",
+    "source": "https://arxiv.org/abs/2409.12917",
+    "checked_at_utc": "2026-09-09T09:33:58.438988+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Training Language Models to Self-Correct via Reinforcement Learning"
+      ],
+      "citation_author": [
+        "Kumar, Aviral",
+        "Zhuang, Vincent",
+        "Agarwal, Rishabh",
+        "Su, Yi",
+        "Co-Reyes, John D",
+        "Singh, Avi",
+        "Baumli, Kate",
+        "Iqbal, Shariq",
+        "Bishop, Colton",
+        "Roelofs, Rebecca",
+        "Zhang, Lei M",
+        "McKinney, Kay",
+        "Shrivastava, Disha",
+        "Paduraru, Cosmin",
+        "Tucker, George",
+        "Precup, Doina",
+        "Behbahani, Feryal",
+        "Faust, Aleksandra"
+      ],
+      "citation_date": [
+        "2024/09/19"
+      ],
+      "citation_online_date": [
+        "2024/10/04"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2409.12917"
+      ],
+      "citation_arxiv_id": [
+        "2409.12917"
+      ],
+      "citation_abstract": [
+        "Self-correction is a highly desirable capability of large language models (LLMs), yet it has consistently been found to be largely ineffective in modern LLMs. Current methods for training self-correction typically depend on either multiple models, a more advanced model, or additional forms of supervision. To address these shortcomings, we develop a multi-turn online reinforcement learning (RL) approach, SCoRe, that significantly improves an LLM's self-correction ability using entirely self-generated data. To build SCoRe, we first show that variants of supervised fine-tuning (SFT) on offline model-generated correction traces are often insufficient for instilling self-correction behavior. In particular, we observe that training via SFT falls prey to either a distribution mismatch between mistakes made by the data-collection policy and the model's own responses, or to behavior collapse, where learning implicitly prefers only a certain mode of correction behavior that is often not effective at self-correction on test problems. SCoRe addresses these challenges by training under the model's own distribution of self-generated correction traces and using appropriate regularization to steer the learning process into learning a self-correction behavior that is effective at test time as opposed to fitting high-reward responses for a given prompt. This regularization process includes an initial phase of multi-turn RL on a base model to generate a policy initialization that is less susceptible to collapse, followed by using a reward bonus to amplify self-correction. With Gemini 1.0 Pro and 1.5 Flash models, we find that SCoRe achieves state-of-the-art self-correction performance, improving the base models' self-correction by 15.6% and 9.1% respectively on MATH and HumanEval."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2409.12917v2"
+    ]
+  },
+  {
+    "id": "M14",
+    "source": "https://arxiv.org/abs/2305.18290",
+    "checked_at_utc": "2026-09-09T09:33:58.517841+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Direct Preference Optimization: Your Language Model is Secretly a Reward Model"
+      ],
+      "citation_author": [
+        "Rafailov, Rafael",
+        "Sharma, Archit",
+        "Mitchell, Eric",
+        "Ermon, Stefano",
+        "Manning, Christopher D.",
+        "Finn, Chelsea"
+      ],
+      "citation_date": [
+        "2023/05/29"
+      ],
+      "citation_online_date": [
+        "2024/07/29"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2305.18290"
+      ],
+      "citation_arxiv_id": [
+        "2305.18290"
+      ],
+      "citation_abstract": [
+        "While large-scale unsupervised language models (LMs) learn broad world knowledge and some reasoning skills, achieving precise control of their behavior is difficult due to the completely unsupervised nature of their training. Existing methods for gaining such steerability collect human labels of the relative quality of model generations and fine-tune the unsupervised LM to align with these preferences, often with reinforcement learning from human feedback (RLHF). However, RLHF is a complex and often unstable procedure, first fitting a reward model that reflects the human preferences, and then fine-tuning the large unsupervised LM using reinforcement learning to maximize this estimated reward without drifting too far from the original model. In this paper we introduce a new parameterization of the reward model in RLHF that enables extraction of the corresponding optimal policy in closed form, allowing us to solve the standard RLHF problem with only a simple classification loss. The resulting algorithm, which we call Direct Preference Optimization (DPO), is stable, performant, and computationally lightweight, eliminating the need for sampling from the LM during fine-tuning or performing significant hyperparameter tuning. Our experiments show that DPO can fine-tune LMs to align with human preferences as well as or better than existing methods. Notably, fine-tuning with DPO exceeds PPO-based RLHF in ability to control sentiment of generations, and matches or improves response quality in summarization and single-turn dialogue while being substantially simpler to implement and train."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2305.18290v3"
+    ]
+  },
+  {
+    "id": "M15",
+    "source": "https://arxiv.org/abs/2306.10193",
+    "checked_at_utc": "2026-09-09T09:33:58.597993+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Conformal Language Modeling"
+      ],
+      "citation_author": [
+        "Quach, Victor",
+        "Fisch, Adam",
+        "Schuster, Tal",
+        "Yala, Adam",
+        "Sohn, Jae Ho",
+        "Jaakkola, Tommi S.",
+        "Barzilay, Regina"
+      ],
+      "citation_date": [
+        "2023/06/16"
+      ],
+      "citation_online_date": [
+        "2024/06/01"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2306.10193"
+      ],
+      "citation_arxiv_id": [
+        "2306.10193"
+      ],
+      "citation_abstract": [
+        "We propose a novel approach to conformal prediction for generative language models (LMs). Standard conformal prediction produces prediction sets -- in place of single predictions -- that have rigorous, statistical performance guarantees. LM responses are typically sampled from the model's predicted distribution over the large, combinatorial output space of natural language. Translating this process to conformal prediction, we calibrate a stopping rule for sampling different outputs from the LM that get added to a growing set of candidates until we are confident that the output set is sufficient. Since some samples may be low-quality, we also simultaneously calibrate and apply a rejection rule for removing candidates from the output set to reduce noise. Similar to conformal prediction, we prove that the sampled set returned by our procedure contains at least one acceptable answer with high probability, while still being empirically precise (i.e., small) on average. Furthermore, within this set of candidate responses, we show that we can also accurately identify subsets of individual components -- such as phrases or sentences -- that are each independently correct (e.g., that are not \"hallucinations\"), again with statistical guarantees. We demonstrate the promise of our approach on multiple tasks in open-domain question answering, text summarization, and radiology report generation using different LM variants."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2306.10193v2"
+    ]
+  },
+  {
+    "id": "M16",
+    "source": "https://arxiv.org/abs/2203.11171",
+    "checked_at_utc": "2026-09-09T09:33:58.676889+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Self-Consistency Improves Chain of Thought Reasoning in Language Models"
+      ],
+      "citation_author": [
+        "Wang, Xuezhi",
+        "Wei, Jason",
+        "Schuurmans, Dale",
+        "Le, Quoc",
+        "Chi, Ed",
+        "Narang, Sharan",
+        "Chowdhery, Aakanksha",
+        "Zhou, Denny"
+      ],
+      "citation_date": [
+        "2022/03/21"
+      ],
+      "citation_online_date": [
+        "2023/03/07"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2203.11171"
+      ],
+      "citation_arxiv_id": [
+        "2203.11171"
+      ],
+      "citation_abstract": [
+        "Chain-of-thought prompting combined with pre-trained large language models has achieved encouraging results on complex reasoning tasks. In this paper, we propose a new decoding strategy, self-consistency, to replace the naive greedy decoding used in chain-of-thought prompting. It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths. Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer. Our extensive empirical evaluation shows that self-consistency boosts the performance of chain-of-thought prompting with a striking margin on a range of popular arithmetic and commonsense reasoning benchmarks, including GSM8K (+17.9%), SVAMP (+11.0%), AQuA (+12.2%), StrategyQA (+6.4%) and ARC-challenge (+3.9%)."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2203.11171v4"
+    ]
+  },
+  {
+    "id": "M17",
+    "source": "https://aclanthology.org/2026.acl-long.2190/",
+    "checked_at_utc": "2026-09-09T09:33:58.754592+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Solve-Detect-Verify: Inference-Time Scaling with Flexible Generative Verifier"
+      ],
+      "citation_author": [
+        "Jianyuan Zhong",
+        "Zeju Li",
+        "Zhijian Xu",
+        "Xiangyu Wen",
+        "Kezhi Li",
+        "Qiang Xu"
+      ],
+      "citation_conference_title": [
+        "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)"
+      ],
+      "citation_publication_date": [
+        "2026/7"
+      ],
+      "citation_pdf_url": [
+        "https://aclanthology.org/2026.acl-long.2190.pdf"
+      ],
+      "citation_firstpage": [
+        "47377"
+      ],
+      "citation_lastpage": [
+        "47401"
+      ],
+      "citation_doi": [
+        "10.18653/v1/2026.acl-long.2190"
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": []
+  },
+  {
+    "id": "B1",
+    "source": "https://arxiv.org/abs/2311.12908",
+    "checked_at_utc": "2026-09-09T09:33:59.000437+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Diffusion Model Alignment Using Direct Preference Optimization"
+      ],
+      "citation_author": [
+        "Wallace, Bram",
+        "Dang, Meihua",
+        "Rafailov, Rafael",
+        "Zhou, Linqi",
+        "Lou, Aaron",
+        "Purushwalkam, Senthil",
+        "Ermon, Stefano",
+        "Xiong, Caiming",
+        "Joty, Shafiq",
+        "Naik, Nikhil"
+      ],
+      "citation_date": [
+        "2023/11/21"
+      ],
+      "citation_online_date": [
+        "2023/11/21"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2311.12908"
+      ],
+      "citation_arxiv_id": [
+        "2311.12908"
+      ],
+      "citation_abstract": [
+        "Large language models (LLMs) are fine-tuned using human comparison data with Reinforcement Learning from Human Feedback (RLHF) methods to make them better aligned with users' preferences. In contrast to LLMs, human preference learning has not been widely explored in text-to-image diffusion models; the best existing approach is to fine-tune a pretrained model using carefully curated high quality images and captions to improve visual appeal and text alignment. We propose Diffusion-DPO, a method to align diffusion models to human preferences by directly optimizing on human comparison data. Diffusion-DPO is adapted from the recently developed Direct Preference Optimization (DPO), a simpler alternative to RLHF which directly optimizes a policy that best satisfies human preferences under a classification objective. We re-formulate DPO to account for a diffusion model notion of likelihood, utilizing the evidence lower bound to derive a differentiable objective. Using the Pick-a-Pic dataset of 851K crowdsourced pairwise preferences, we fine-tune the base model of the state-of-the-art Stable Diffusion XL (SDXL)-1.0 model with Diffusion-DPO. Our fine-tuned base model significantly outperforms both base SDXL-1.0 and the larger SDXL-1.0 model consisting of an additional refinement model in human evaluation, improving visual appeal and prompt alignment. We also develop a variant that uses AI feedback and has comparable performance to training on human preferences, opening the door for scaling of diffusion model alignment methods."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2311.12908v1"
+    ]
+  },
+  {
+    "id": "B2",
+    "source": "https://arxiv.org/abs/2305.13301",
+    "checked_at_utc": "2026-09-09T09:33:59.075098+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Training Diffusion Models with Reinforcement Learning"
+      ],
+      "citation_author": [
+        "Black, Kevin",
+        "Janner, Michael",
+        "Du, Yilun",
+        "Kostrikov, Ilya",
+        "Levine, Sergey"
+      ],
+      "citation_date": [
+        "2023/05/22"
+      ],
+      "citation_online_date": [
+        "2024/01/04"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2305.13301"
+      ],
+      "citation_arxiv_id": [
+        "2305.13301"
+      ],
+      "citation_abstract": [
+        "Diffusion models are a class of flexible generative models trained with an approximation to the log-likelihood objective. However, most use cases of diffusion models are not concerned with likelihoods, but instead with downstream objectives such as human-perceived image quality or drug effectiveness. In this paper, we investigate reinforcement learning methods for directly optimizing diffusion models for such objectives. We describe how posing denoising as a multi-step decision-making problem enables a class of policy gradient algorithms, which we refer to as denoising diffusion policy optimization (DDPO), that are more effective than alternative reward-weighted likelihood approaches. Empirically, DDPO is able to adapt text-to-image diffusion models to objectives that are difficult to express via prompting, such as image compressibility, and those derived from human feedback, such as aesthetic quality. Finally, we show that DDPO can improve prompt-image alignment using feedback from a vision-language model without the need for additional data collection or human annotation. The project's website can be found at http://rl-diffusion.github.io ."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2305.13301v4"
+    ]
+  },
+  {
+    "id": "B3",
+    "source": "https://arxiv.org/abs/2505.05470",
+    "checked_at_utc": "2026-09-09T09:33:59.150956+00:00",
+    "http_status": 200,
+    "metadata": {
+      "citation_title": [
+        "Flow-GRPO: Training Flow Matching Models via Online RL"
+      ],
+      "citation_author": [
+        "Liu, Jie",
+        "Liu, Gongye",
+        "Liang, Jiajun",
+        "Li, Yangguang",
+        "Liu, Jiaheng",
+        "Wang, Xintao",
+        "Wan, Pengfei",
+        "Zhang, Di",
+        "Ouyang, Wanli"
+      ],
+      "citation_date": [
+        "2025/05/08"
+      ],
+      "citation_online_date": [
+        "2025/10/27"
+      ],
+      "citation_pdf_url": [
+        "https://arxiv.org/pdf/2505.05470"
+      ],
+      "citation_arxiv_id": [
+        "2505.05470"
+      ],
+      "citation_abstract": [
+        "We propose Flow-GRPO, the first method to integrate online policy gradient reinforcement learning (RL) into flow matching models. Our approach uses two key strategies: (1) an ODE-to-SDE conversion that transforms a deterministic Ordinary Differential Equation (ODE) into an equivalent Stochastic Differential Equation (SDE) that matches the original model's marginal distribution at all timesteps, enabling statistical sampling for RL exploration; and (2) a Denoising Reduction strategy that reduces training denoising steps while retaining the original number of inference steps, significantly improving sampling efficiency without sacrificing performance. Empirically, Flow-GRPO is effective across multiple text-to-image tasks. For compositional generation, RL-tuned SD3.5-M generates nearly perfect object counts, spatial relations, and fine-grained attributes, increasing GenEval accuracy from $63\\%$ to $95\\%$. In visual text rendering, accuracy improves from $59\\%$ to $92\\%$, greatly enhancing text generation. Flow-GRPO also achieves substantial gains in human preference alignment. Notably, very little reward hacking occurred, meaning rewards did not increase at the cost of appreciable image quality or diversity degradation."
+      ]
+    },
+    "withdrawn": false,
+    "pdf_arxiv_versions": [
+      "2505.05470v5"
+    ]
+  }
+]

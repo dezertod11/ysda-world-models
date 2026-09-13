@@ -1,0 +1,36 @@
+{
+  "evidence_snapshot": "2026-09-12",
+  "valid199_cases": 199,
+  "valid199_methods": 6,
+  "generated_by": "publication/iclr2027/tools/build.py",
+  "inputs": [
+    {
+      "path": "experiments/campaigns/consensus_references_20260909_valid199/matched_analysis/factor_scores.csv",
+      "sha256": "70f3798dc7f73d422b911631d109f1f2d22511120ab558b6556142f96520201e"
+    },
+    {
+      "path": "experiments/campaigns/consensus_references_20260909_valid199/matched_analysis/paired_effects.csv",
+      "sha256": "92784bed98eb2d22f5cf66479c520abb6dea8abf0df663e612b09a6d85fc82bf"
+    },
+    {
+      "path": "experiments/campaigns/decoder_token_medoid_20260911/night_analysis/seed_controls__rates.csv",
+      "sha256": "63286ddd2037835778f1383a962677f03cd128dba7fcb8e4d808f6a65d18c0c0"
+    },
+    {
+      "path": "experiments/campaigns/decoder_token_medoid_20260911/night_analysis/horizon8__rates.csv",
+      "sha256": "74425334a2861bdd14a9d1273c99865f5ede220d728eebdca698c80d58a2b135"
+    },
+    {
+      "path": "experiments/campaigns/observation_contract_20260911/analysis/screen/aggregate_scores.csv",
+      "sha256": "1c536e182c50dd32774a4820ed7bf745b9a4de5a1d50f897c15af0c7a0b06571"
+    },
+    {
+      "path": "experiments/campaigns/decoder_token_medoid_20260911/review_20260912/decoder_seed_group_bias.csv",
+      "sha256": "3bd71d762b179e00ecc5b301f3722605aa56b6a6bd19834bfdcee58ebe974ca5"
+    },
+    {
+      "path": "experiments/campaigns/observation_contract_20260911/review_20260912/probe_motion.csv",
+      "sha256": "3533e46b493f1d507855f18a97614173922f3517d9c10d89ee149d7f8477ae84"
+    }
+  ]
+}

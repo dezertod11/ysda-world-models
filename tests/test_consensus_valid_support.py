@@ -19,12 +19,13 @@ from scripts.run_libero_experiment_campaign import expand_jobs, validate_job_inp
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_gpu_pool_includes_1_and_2_but_never_0():
-    assert validate_gpu_ids(DEFAULT_GPUS) == list("1234567")
+def test_gpu_pool_includes_explicitly_authorized_zero():
+    assert validate_gpu_ids(DEFAULT_GPUS) == list("01234567")
+    assert validate_gpu_ids("0") == ["0"]
     assert validate_gpu_ids(" 1, 3, 7 ") == ["1", "3", "7"]
 
 
-@pytest.mark.parametrize("value", ["", "0", "0,1", "1,1", "8", "1,", "1,foo"])
+@pytest.mark.parametrize("value", ["", "0,0", "-1", "1,1", "8", "1,", "1,foo"])
 def test_invalid_gpu_pool_rejected(value):
     with pytest.raises(ValueError):
         validate_gpu_ids(value)
@@ -48,6 +49,55 @@ def test_resource_amendment_keeps_original_freeze_and_all_other_settings(tmp_pat
         tampered[section][key] = "changed"
         with pytest.raises(ValueError, match="experiment settings"):
             validate_night_freeze(path, tampered)
+
+
+def test_gpu07_amendment_keeps_configs_and_collectors_frozen(tmp_path, monkeypatch):
+    from scripts import run_consensus_valid_support_night as night
+    monkeypatch.setattr(night, "ROOT", tmp_path)
+    environment = tmp_path / "scripts/cosmos_env.sh"
+    environment.parent.mkdir()
+    environment.write_text("new environment")
+    backup = tmp_path / "resource_gpu07_backup/scripts/cosmos_env.sh"
+    backup.parent.mkdir(parents=True)
+    backup.write_text("old environment")
+    launcher = "run_consensus_valid_support_night.py"
+    runner = "run_libero_experiment_campaign.py"
+    original = dict(scripts={launcher: "v0", runner: "r0", "collector.py": "c0"},
+                    configs={"c": "fixed"}, gpu_ids=[3, 4, 5, 6, 7])
+    path = tmp_path / "freeze.json"
+    frozen_json(path, original)
+    previous_path = tmp_path / "resource_amendment_gpu17.json"
+    frozen_json(previous_path, dict(original_freeze_sha256=sha(path), old_launcher_sha256="v0",
+        new_launcher_sha256="v1", gpu_ids=list(range(1, 8)), paired_episode_resume=True))
+    amendment = dict(original_freeze_sha256=sha(path), previous_resource_amendment_sha256=sha(previous_path),
+        gpu_ids=list(range(8)), paired_episode_resume=True, method_configuration_changed=False,
+        gpu_policy="idle_only_no_compute_processes",
+        environment_script=dict(file="cosmos_env.sh", old_sha256=sha(backup), new_sha256=sha(environment)),
+        script_changes={
+            launcher: dict(old_sha256="v1", new_sha256="v2"),
+            runner: dict(old_sha256="r0", new_sha256="r1")})
+    amendment_path = tmp_path / "resource_amendment_gpu07.json"
+    frozen_json(amendment_path, amendment)
+    changed = copy.deepcopy(original)
+    changed["scripts"].update({launcher: "v2", runner: "r1"})
+    validate_night_freeze(path, changed)
+    assert json.loads(path.read_text()) == original
+    for section, key in (("configs", "c"), ("scripts", "collector.py")):
+        tampered = copy.deepcopy(changed)
+        tampered[section][key] = "changed"
+        with pytest.raises(ValueError, match="experiment settings"):
+            validate_night_freeze(path, tampered)
+    for key, value in [("previous_resource_amendment_sha256", "wrong"),
+                       ("method_configuration_changed", True), ("gpu_policy", "shared")]:
+        tampered = copy.deepcopy(amendment)
+        tampered[key] = value
+        amendment_path.write_text(json.dumps(tampered))
+        with pytest.raises(ValueError, match="experiment settings"):
+            validate_night_freeze(path, changed)
+    amendment_path.write_text(json.dumps(amendment))
+    environment.write_text("unexpected change")
+    with pytest.raises(ValueError, match="experiment settings"):
+        validate_night_freeze(path, changed)
 
 
 def test_amendment_excludes_only_empty_cell_symmetrically():

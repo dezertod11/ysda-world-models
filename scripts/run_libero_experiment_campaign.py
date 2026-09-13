@@ -859,6 +859,8 @@ def run_job(
     env = os.environ.copy()
     env.update(extra_env)
     env["CUDA_VISIBLE_DEVICES"] = gpu
+    if gpu == "0":
+        env["MLSPACE_ALLOW_GPU0"] = "1"
     env.setdefault("HF_HUB_OFFLINE", "1")
 
     started = datetime.now().isoformat(timespec="seconds")
@@ -922,12 +924,27 @@ def run_gpu_queue(
 
 
 def gpu_is_free(gpu: str) -> bool:
-    output = subprocess.check_output(
-        ["nvidia-smi", "--id", gpu, "--query-gpu=memory.used,utilization.gpu",
-         "--format=csv,noheader,nounits"], text=True,
-    )
-    used, utilization = map(int, output.strip().split(","))
-    return used < 256 and utilization < 5
+    """Require two idle readings and no compute process; unknown state is busy."""
+    try:
+        for reading in range(2):
+            output = subprocess.check_output(
+                ["nvidia-smi", "--id", gpu, "--query-gpu=memory.used,utilization.gpu",
+                 "--format=csv,noheader,nounits"], text=True, timeout=10,
+            )
+            used, utilization = map(int, output.strip().split(","))
+            if used < 0 or utilization < 0 or used >= 256 or utilization >= 5:
+                return False
+            processes = subprocess.check_output(
+                ["nvidia-smi", "--id", gpu, "--query-compute-apps=pid",
+                 "--format=csv,noheader,nounits"], text=True, timeout=10,
+            )
+            if processes.strip():
+                return False
+            if reading == 0:
+                time.sleep(2)
+        return True
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return False
 
 
 def run_shared_gpu_queue(pending, run_prefix, run_dir, gpu, force, on_dispatch):
@@ -978,6 +995,8 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--run-prefix", default="")
     parser.add_argument("--gpus", default="2", help="Physical GPU ids, e.g. 2,3,4,5")
+    parser.add_argument("--allow-gpu-zero", action="store_true",
+                        help="Explicit authorization for GPU0; requires the idle-only dynamic queue")
     parser.add_argument("--max-parallel", type=int, default=0)
     parser.add_argument("--only", default="", help="Comma-separated expanded job names")
     parser.add_argument("--force", action="store_true")
@@ -1016,7 +1035,10 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not gpus:
         raise ValueError("At least one GPU is required")
     if args.execute and "0" in gpus:
-        raise ValueError("Physical GPU 0 is reserved on MLSpace")
+        if not args.allow_gpu_zero:
+            raise ValueError("Physical GPU 0 requires explicit --allow-gpu-zero authorization")
+        if not campaign.get("defaults", {}).get("dynamic_gpu_queue", False):
+            raise ValueError("GPU0 authorization requires the idle-only dynamic GPU queue")
     if args.max_parallel > 0:
         gpus = gpus[: args.max_parallel]
 

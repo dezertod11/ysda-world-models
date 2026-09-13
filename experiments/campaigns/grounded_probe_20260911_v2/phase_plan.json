@@ -1,0 +1,31 @@
+{
+  "smoke": [
+    "continue_h8",
+    "physical_regrasp",
+    "probe_only",
+    "probe_verify_repair",
+    "probe_always_regrasp",
+    "mask_verify_miss",
+    "mask_verify_conservative",
+    "delayed_regrasp_h8"
+  ],
+  "screen": [
+    "continue_h8",
+    "physical_regrasp",
+    "probe_only",
+    "probe_verify_repair",
+    "probe_always_regrasp",
+    "mask_verify_miss",
+    "mask_verify_conservative",
+    "delayed_regrasp_h8"
+  ],
+  "holdout": [],
+  "transfer": [
+    "continue_h8",
+    "physical_regrasp",
+    "delayed_regrasp_h8"
+  ],
+  "winner": null,
+  "mask_enabled": true,
+  "mask_freeze_sha256": "1984f54e0c3e9f481d6749539f3ea19ed0767611b31d214a942e04d8ce444f27"
+}

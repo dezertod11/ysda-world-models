@@ -1,0 +1,499 @@
+% Working manuscript, evidence snapshot 2026-09-10; not submission-ready.
+% The exact user-provided source is preserved in templates/user_original.tex.
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\ifdefined\ICLRVersion
+  \usepackage{iclr2027_conference,times}
+\else
+  \usepackage[margin=1in]{geometry}
+  \usepackage{natbib}
+\fi
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{url}
+\graphicspath{{figures/}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\mathbf{1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\clip}{clip}
+\DeclareMathOperator{\tr}{tr}
+\title{WAMPlan: Consensus and Feedback\\in World-Action Planning}
+\author{Anonymous authors}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Generative world-action models predict action chunks together with future
+observations and values. This makes both value-based selection and
+sample-consensus selection attractive at inference time, but agreement need
+not imply that a useful action is present among the candidates. We investigate
+this distinction using a frozen Cosmos Policy on a matched LIBERO-PRO
+evaluation subset. Across 199 configurations and six deployed controllers,
+neither a controller-scaled medoid nor reference consensus adaptations
+establish a statistically convincing improvement over joint max-value
+selection. A complementary frozen-state pilot executes eight candidates from
+each of 36 snapshots: max-value succeeds in 18 snapshots and the empirical
+candidate oracle in 19, while all eight tested branches fail in 17 snapshots.
+These outcomes localize a limitation of selection on the sampled support,
+subject to stochastic continuation and finite-sample uncertainty. Separate
+repeated-continuation tests find variable labels for one third of saved
+candidates and no pooled gain from an early fresh-observation intervention.
+An outcome-based selector evaluated on held-out suffix seeds does not improve
+over max-value at eight candidates. Separate
+shared-prefix and perception-backed recovery studies show benefits in narrower
+settings, without establishing general transfer. The findings motivate
+separating candidate ranking, candidate coverage, and the value of new
+observations when evaluating world-action planning.
+\end{abstract}
+
+\section{Introduction}
+World-action models offer a unified interface for predicting actions and
+their possible consequences. Cosmos Policy embeds actions, future state, and
+value into the latent generation process of a pretrained video model
+\citep{cosmos_policy}. At deployment, however, a controller must still choose
+which sampled chunk to execute and how long to wait before observing again.
+Two plausible rules are to select the highest predicted value and to select
+an action representative of the model's sampled distribution. These rules
+answer different questions: predicted utility and distributional agreement.
+
+Consensus selection has established precedents in language-model decoding
+\citep{self_consistency} and generative robot policies \citep{keystone,kdpe}.
+Its appeal does not imply that a confident mode is physically successful.
+Likewise, an accurate offline prediction-error estimator need not improve
+closed-loop control. A useful evaluation must distinguish a poor choice
+among good candidates from a candidate set containing no observed successful
+continuation, and must account for the effect of fresh observations.
+
+We study these distinctions through three complementary views: a matched
+deployed-controller comparison under Object, Environment, and Position
+perturbations; a frozen-state candidate-outcome diagnostic; and contextual
+evidence from separately controlled feedback and recovery studies. The first
+two support conclusions about the tested selectors and candidate pools, not a
+claim of a new state-of-the-art planner. The positive recovery results concern
+different interventions and populations and are not pooled into the main
+benchmark score. This separation is central to interpreting the evidence.
+
+\section{Related Work}
+\paragraph{World models and generative control.}
+Diffusion Policy distinguishes prediction and execution horizons in receding
+horizon control \citep{diffusion_policy}. Diffuser formulates planning as
+trajectory generation \citep{diffuser}. TD-MPC2 and Dreamer investigate
+world-model learning and control across diverse environments
+\citep{tdmpc2,dreamerv3}. Our setting instead fixes the Cosmos Policy
+checkpoint and studies inference-time decisions. Results from online model
+learning or different action representations are not directly comparable.
+
+\paragraph{Consensus and density-based selection.}
+Self-consistency aggregates sampled reasoning outcomes in language models
+\citep{self_consistency}. KeyStone selects a representative action from a
+dominant cluster, with a guard against unnecessary clustering
+\citep{keystone}. KDPE uses a manifold-aware kernel over action endpoints
+\citep{kdpe}. We treat these as close prior art, not as novel components of
+our method. Our reference implementations adapt their selection rules to
+Cosmos and native LIBERO commands; they do not reproduce every sampling,
+batching, or experimental choice of the original papers.
+
+\paragraph{Uncertainty and failure-oriented evaluation.}
+Velocity-field ensemble disagreement has been studied for flow-based VLA
+uncertainty and active adaptation \citep{flow_uq}. UNISafe connects uncertainty
+to latent safety filtering \citep{unisafe}, while StressDream explores
+plausible high-impact outcomes of video world models \citep{stressdream}.
+Stochastic samples from one checkpoint are not interchangeable with a trained
+ensemble. Moreover, failure prediction, safe intervention, and improved task
+success require distinct evaluations. We follow the broader principle of
+reporting uncertainty and consistent protocols rather than relying on
+aggregate point estimates alone \citep{rliable}.
+
+\paragraph{Representation, memory, and conditioning.}
+Don't Blind Your VLA studies visual alignment during policy fine-tuning
+\citep{kachaev_blind_vla}, whereas muVLA isolates recurrent memory and
+execution-cadence effects in partially observable manipulation
+\citep{kachaev_mu_vla}. VLA Grounder optimizes input instructions while
+freezing the action policy \citep{kachaev_vla_grounder}; this changes the
+candidate distribution rather than only ranking an existing pool.
+Act2Answer separates knowledge-grounded choices from motor execution
+\citep{kachaev_act2answer}. These studies motivate distinguishing sources
+of failure before choosing an intervention. Their training procedures and
+benchmarks differ from our frozen Cosmos selector comparison; we do not
+treat their scores as directly comparable baselines.
+
+\section{Preliminaries}
+\label{sec:preliminaries}
+At query $q$, let $x_q$ contain the real camera observations, robot
+proprioception, and instruction supplied to the policy. Let $s_q$ denote the
+full simulator state, which is used only for offline replay and auditing, not
+as an additional privileged policy input. The evaluated inference mode samples
+\begin{equation}
+ (A_q^{(i)},\widehat{o}_{q+T}^{(i)},\widehat{z}_{q+T}^{(i)},V_q^{(i)})
+ \sim p_\theta(\cdot\mid x_q;\xi_{q,i}),\quad i=1,\ldots,K,
+ \label{eq:candidates}
+\end{equation}
+where $A_q^{(i)}\in\R^{T\times7}$ is an action chunk, $\widehat{o}$ contains
+predicted future images, $\widehat{z}$ is predicted future proprioception,
+and $V$ is the decoded scalar value. Here $\xi_{q,i}$ controls model sampling;
+it is conceptually separate from scene initialization and continuation RNG.
+These quantities are generated jointly in the evaluated \emph{parallel}
+mode. This is not the autoregressive action $\to$ future state $\to$ value
+planning procedure evaluated in the Cosmos paper.
+
+The controller selects an index $i^*$, executes the first $H\le T$ actions,
+and obtains new real observations. A query is a model invocation at a control
+boundary, not an individual simulator frame. The main comparison uses
+$T=H=16$ and $K=4$, except for its $K=1$ control. The pilot uses $K=8$.
+No inference about new observations is available to the selector during an
+open-loop chunk.
+
+\section{Consensus Planning}
+\label{sec:method}
+We evaluate a controller-scaled medoid alongside simpler and literature-based
+selectors. The selected trajectory remains a sampled action chunk; we do not
+execute an arithmetic average of potentially incompatible modes.
+
+\subsection{Native Action Representation}
+Each LIBERO action consists of translation command $u_t\in\R^3$, rotation
+vector $\omega_t\in\R^3$, and gripper command $g_t\in\R$. For distance
+computation, commands are clipped componentwise to $[-1,1]$. The induced
+position and orientation proxies are
+\begin{align}
+ \bar p_t^{(i)} &= \sum_{\tau=1}^{t}c_p u_\tau^{(i)},\label{eq:position}\\
+ \bar R_t^{(i)} &= \exp([c_r\omega_t^{(i)}]_\times)
+                   \bar R_{t-1}^{(i)},
+ \quad \bar R_0^{(i)}=I,\label{eq:rotation}\\
+ b_t^{(i)} &= \begin{cases}1,&g_t^{(i)}\ge0,\\-1,&g_t^{(i)}<0.\end{cases}
+ \label{eq:gripper}
+\end{align}
+Here $[\cdot]_\times$ is the skew-symmetric matrix associated with a
+rotation vector. The scales $c_p=0.05$ and $c_r=0.5$ follow the controller
+convention, with nominal
+translation and rotation units of metres and radians. These integrated
+command proxies are \emph{not} measured poses, forward-kinematic predictions,
+or guaranteed trajectories of the robot under contact. Native 3D rotation
+vectors must not be interpreted as a continuous 6D rotation representation.
+
+\subsection{Control-Aware Distance Between Chunks}
+For aligned execution times, define
+\begin{align}
+ \vartheta(R,S)
+ &=\arccos\left(\clip\left(\frac{\tr(RS^\top)-1}{2},-1,1\right)\right),\\
+ d_t(i,j)
+ &=\frac{\|\bar p_t^{(i)}-\bar p_t^{(j)}\|_2}{c_p}
+ +\lambda_r\frac{\vartheta(\bar R_t^{(i)},\bar R_t^{(j)})}{c_r}
+ +\lambda_g\ind[b_t^{(i)}\ne b_t^{(j)}],\label{eq:action-distance}\\
+ D_H(i,j)
+ &=\frac{\sum_{t=1}^{H}\gamma^{t-1}d_t(i,j)}
+         {\sum_{t=1}^{H}\gamma^{t-1}}.\label{eq:chunk-distance}
+\end{align}
+The evaluated configuration sets $\lambda_r=0.5$, $\lambda_g=0.25$,
+$\gamma=0.95$, $H=16$, and alignment window zero. Thus the score aggregates
+disagreement across the executable prefix, with larger weights on earlier
+steps. It is a geometric dissimilarity, not a calibrated failure probability
+or an estimate of epistemic variance.
+
+\subsection{Medoid Selection and Closed-Loop Execution}
+For $K>1$, the medoid rule is
+\begin{equation}
+ i^*=\argmin_i\frac{1}{K-1}\sum_{j\ne i}D_H(i,j).
+ \label{eq:medoid}
+\end{equation}
+The implementation averages over all $K$ entries including the zero diagonal;
+this positive rescaling leaves the ranking unchanged. Equal scores are broken
+by larger predicted value and then smaller candidate index. Consequently,
+the distance is value-independent, but the evaluated controller is not
+strictly value-free in a tie. The $K=1$ control executes its sole candidate.
+After $H$ actions, the controller queries the model using fresh observations.
+
+The raw-medoid reference uses Euclidean distance between flattened native
+chunks. KeyStone-style uses a guarded cluster/medoid rule; the KDPE adaptation
+uses a kernel on induced OSC endpoints. The value baseline selects
+$i_V=\argmax_i V_q^{(i)}$ from the jointly generated candidates. These are
+deployed selection rules, not guarantees that the selected action succeeds.
+
+\section{Experimental Protocol}
+\label{sec:protocol}
+\paragraph{Matched deployed comparison.}
+We use a valid subset of the LIBERO-PRO Object task suite
+\citep{libero,libero_pro}, covering all ten tasks under three perturbation
+factors: 50 Object, 50 Environment, and 99 Position cases per method.
+One planned case, Position y0.5/task1/init1, is excluded uniformly because
+its initialization asset is empty. The resulting 199 matched configurations
+yield 1,194 rollouts across six methods; they are not 1,194 independent
+initial scenes. All methods use five denoising steps and a 280-step
+execution budget. This subset is not the full official benchmark.
+
+\paragraph{Estimands and statistical reporting.}
+For factor $f$ with $n_f$ cases and terminal success labels $Y_{m,f,e}$,
+\begin{equation}
+ \mathrm{SR}_{m,f}=\frac{1}{n_f}\sum_{e=1}^{n_f}Y_{m,f,e},\qquad
+ \mathrm{MacroSR}_m=\frac13\sum_f\mathrm{SR}_{m,f}.
+ \label{eq:macro}
+\end{equation}
+Micro-SR pools all 199 labels and has different factor weights. We report
+paired macro differences with task/init-cluster bootstrap intervals, and
+rescue/harm counts relative to max-value. McNemar tests use discordant episode
+outcomes, with Holm correction across the five baseline comparisons; they
+are not a separate test of the equal-factor macro estimand.
+
+\paragraph{Replay and candidate controls.}
+Initial simulator states match to $10^{-9}$, but bitwise-identical query-zero
+$K=4$ pools occur in only approximately 31--46\% of the comparisons against
+max-value. The deployed study therefore does not isolate a selector applied
+to exactly the same pool. We retain this limitation and separately analyze
+saved candidate branches rather than attributing every difference solely to
+the selection formula.
+
+\paragraph{Frozen-state opportunity pilot.}
+The pilot contains 36 snapshots from 18 case/task/init configurations, at
+queries 0 and 3 ($t=0$ and $t=48$), with Object and Position perturbations.
+These configurations share ten underlying task/init clusters. Each snapshot has
+eight saved $H=16$ candidates, for 288 terminal branches. A common $K=1/H=16$
+continuation policy follows each executed candidate within the remaining
+budget. All 36 pools pass strict replay. Let $Y_i(s)$ be the measured terminal
+outcome of a branch and define
+\begin{equation}
+ O_K(s)=\max_{i\le K}Y_i(s),\qquad
+ G_K(s)=O_K(s)-Y_{\argmax_{i\le K}V_i}(s).
+ \label{eq:oracle}
+\end{equation}
+This oracle is an offline diagnostic, never an online feature. The $K=4$
+analysis uses the first four members of each saved $K=8$ pool; it is not a
+full-episode $K=4$ controller evaluation. The present labels use one
+continuation realization per branch, so oracle availability remains
+conditional on these samples and suffix outcomes.
+
+\paragraph{Repeated suffixes and matched feedback.}
+A subsequent development experiment reuses all 36 snapshots and eight
+saved candidates with three new suffix seeds, yielding 864 open-loop
+branches. For each snapshot's original max-value candidate, two additional
+arms execute its first eight actions and then sample once from either the
+fresh observation or the archived observation, using the same extra-query
+seed. Fresh8 executes the first eight new actions; stale8 executes the
+last eight, aligned to the original interval. All arms return to the same
+K1/H16 continuation and absolute-time seed schedule at $t+16$.
+The total is 1,080 branches, excluding six smoke branches. Both declared
+contrasts use task/init-cluster intervals and exact sign flips, with Holm
+correction. Head/tail chunk differences limit a pure information-value
+interpretation. This is a single snapshot intervention, not a controller
+that re-queries every eight steps throughout an episode.
+
+\section{Results}
+\label{sec:results}
+\subsection{Consensus Does Not Establish an Improvement on This Subset}
+\begin{table}[t]
+ \centering
+ \caption{LIBERO-PRO Object-suite subset: terminal success rates (\%).
+ The Object, Environment, and Position factors contain 50, 50, and 99 cases
+ per method, respectively. Joint generation,
+ $T=H=16$, five denoising steps, and 280-step budget; $K=4$ except $K=1$.
+ Macro equally weights factors. Reference adaptations are not full author
+ reproductions. Source counts and settings are fixed for this comparison.}
+ \label{tab:main}
+ \small
+ \input{tables/consensus_scores.tex}
+\end{table}
+
+Table~\ref{tab:main} shows strong factor dependence. Max-value achieves
+54.77\% macro-SR and 97/199 successes (48.74\% micro-SR). The OSC-medoid
+has a macro difference of $-0.68$ percentage points (pp), with a 95\%
+cluster interval of $[-3.33,1.99]$ pp and three rescues versus six harms.
+The numerically strongest reference, KeyStone-style, differs by $+1.00$ pp
+with interval $[-2.01,4.33]$ pp and six rescues versus five harms.
+All five Holm-adjusted McNemar values are 1.0. These results do not establish
+superiority, but neither do they prove equivalence of the controllers.
+
+\begin{figure}[t]
+ \centering
+ \includegraphics[width=0.88\linewidth]{consensus_effects.pdf}
+ \caption{Paired differences in factor-balanced macro-SR relative to max-value
+ on the same 199-case subset. Bars are 95\% task/init-cluster bootstrap
+ intervals from the saved analysis, not standard deviations across queries.
+ All intervals include zero; higher point estimates alone do not demonstrate
+ a reliable gain.}
+ \label{fig:effects}
+\end{figure}
+
+The negative OSC result is evidence about this deployed representation and
+setting, not a refutation of consensus across all generative policies. In
+particular, changing the backbone, candidate count, batching, or action
+representation changes the comparison with published KeyStone and KDPE.
+
+\subsection{Mixed Pools Are Not Necessarily Selection Failures}
+\begin{table}[t]
+ \centering
+ \caption{Frozen-state pilot, 36 snapshots and one continuation realization.
+ $K=4$ is nested within $K=8$. Counts describe sampled branch outcomes, not
+ independent complete-episode benchmark scores.}
+ \label{tab:pilot}
+ \begin{tabular}{lrr}
+  \toprule
+  Quantity & $K=4$ & $K=8$ \\
+  \midrule
+  Max-value successes & 15/36 & 18/36 \\
+  Empirical oracle successes & 19/36 & 19/36 \\
+  Mixed success/failure pools & 13 & 16 \\
+  All tested candidates fail & 17 & 17 \\
+  Recoverable selection failures & 4 & 1 \\
+  \bottomrule
+ \end{tabular}
+\end{table}
+
+In Table~\ref{tab:pilot}, 16 mixed $K=8$ pools do not imply 16 opportunities
+to improve max-value: it already selects a successful branch in 15 of those
+pools. Only one snapshot has an observed successful candidate that max-value
+misses. The empirical selection opportunity is therefore $1/36=2.78$ pp for
+these saved outcomes. In 17 snapshots all tested candidates fail.
+This is not a universal upper bound on planning and does not establish
+irreversibility of those simulator states. Additional candidates, different
+continuations, or feedback may change their outcomes. Repeated suffix seeds
+are required before interpreting these observations as stable candidate
+success probabilities.
+
+\subsection{Repeated Continuations Change the Interpretation}
+All 1,080 branches completed. Saved H16 endpoints replayed exactly in all
+288 checks, and all 108 recorded videos passed decoding and frame-count
+checks. Of 288 candidate chunks, 96 (33.33\%) have both success and failure
+across the three new suffix seeds. Six of the pilot's 17 all-fail pools now
+contain an observed success; 11 remain all-fail. These observations concern
+stochastic policy continuation and residual numerical variability, not
+calibrated epistemic uncertainty or state irreversibility.
+
+The original K8 max-value candidate succeeds in 44/108 repeated branches
+(40.74\%), compared with 41/108 for fresh8 (37.96\%) and 45/108 for stale8
+(41.67\%). Fresh8 minus stale8 is $-3.70$ pp, with a 95\% cluster interval
+of $[-20.51,9.72]$ pp and 13 rescues versus 17 harms. Fresh8 minus open16
+is $-2.78$ pp, with interval $[-16.67,9.17]$ pp and 13 rescues versus 16
+harms. Both Holm-adjusted values are 1.0. A pooled improvement is not
+established; these intervals do not establish equivalence or universal harm.
+
+Selecting the highest empirical candidate success rate and evaluating it on
+the same three suffixes produces 55.56\% success, an optimistic $+14.81$ pp
+relative to max-value. A post-hoc leave-one-suffix-out diagnostic instead
+chooses on two repeats and evaluates on the third, breaking training ties
+by frozen value and then index. Across all folds it achieves 44/108, exactly
+matching max-value, with five rescues and five harms; the cluster interval
+for the difference is $[-5.95,6.86]$ pp. This privileged diagnostic is not a
+deployable learned selector, nor does its null result prove that ranking
+is impossible with more reliable labels. It demonstrates why an apparent
+within-sample oracle gain must not be reported as a planner improvement.
+
+\subsection{Feedback and Recovery Provide Narrow Positive Evidence}
+In a separate shared-prefix experiment on Object task 0 at query 4, fresh
+observation feedback increases terminal success from 46/100 to 64/100
+(50 init clusters), a difference of $+18$ pp with cluster interval
+$[4,32]$ pp and 31 rescues versus 13 harms. This result concerns a specific
+decision point, not a universal observation schedule.
+
+A separate online RGB-based regrasp study on selected Position cells improves
+a 40-case untouched-init holdout from 13/40 to 24/40, or $+27.5$ pp with
+interval $[12.5,42.5]$ pp, 12 rescues, and one harm. Its subsequent transfer
+estimate on seven new cells is $+14.3$ pp with interval $[-2.9,31.4]$ pp,
+which fails its frozen gate. These findings motivate recovery and feedback
+as mechanisms worth testing, while preventing a claim of established broad
+transfer. Their populations and interventions differ from the main selector
+benchmark, so their gains are not added to Table~\ref{tab:main}.
+
+\section{Limitations and Next Tests}
+The study uses one frozen backbone and a restricted benchmark subset.
+The deployed comparison does not have fully identical candidate pools.
+The pilot and follow-up are development diagnostics with correlated
+snapshots; three new suffixes still give noisy candidate success estimates.
+Geometry-based agreement is not calibrated confidence,
+and simulated task success is not equivalent to real-world safety. Positive
+feedback and recovery effects remain conditional on selected settings;
+fixed times such as $t=72$ must not be generalized without new evidence.
+
+The next controlled test should replicate the few persistent candidate
+advantages with new suffixes and initial states, separate local contact
+consequences from later failures, and test changed proposals or targeted
+recovery where sampled support remains unsuccessful. The present results
+do not justify a broad coefficient sweep or promoting always-early feedback.
+
+\section{Conclusion}
+On the evaluated Cosmos/LIBERO-PRO subset, consensus selection does not
+establish a reliable gain over joint max-value selection. Frozen-state
+branches further show why mixed candidate outcomes alone overstate the
+available selection opportunity, while suffix replication exposes noisy
+action labels and optimistic within-sample selection. Narrow feedback and recovery results point
+to a different class of interventions, but their transfer remains unresolved.
+A credible improvement to world-action planning must demonstrate not only a
+plausible score, but useful candidate support, reproducible closed-loop gains,
+and benefits that survive matched cost and held-out conditions.
+
+\section*{Reproducibility Statement}
+The working artifact records source tables, protocol reports, candidate/state
+audits, and code-to-equation mappings. The main table and interval plot are
+generated from saved analysis CSVs with input checksums. A submission release
+still requires a complete anonymous bundle of frozen configurations, split
+identifiers, software revisions, and reproduction commands. No public
+anonymous release is claimed at this stage.
+
+\section*{Ethics Statement}
+The experiments described here use simulation. Task completion and physical
+safety are distinct endpoints; the findings do not justify unguarded
+deployment of a physical robot. Reference PDFs are collected for research
+reading and are not part of the proposed public artifact distribution.
+
+\section*{AI Use Statement}
+Generative AI tools assisted with research planning, literature discovery,
+experimental code and tests, result interpretation, and manuscript drafting
+and formatting. The present draft still requires human author verification
+of the claims, equations, references, and artifacts. The final disclosure
+must reflect the work actually performed and the verification completed;
+this draft does not assert that all author checks have already occurred.
+
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
+
+\appendix
+\section{Decision-Time and Post-Execution Quantities}
+For fixed-observation action samples $A^{(i)}\in\R^{T\times d}$, one possible
+sample-disagreement statistic is
+\begin{equation}
+ U_A=\frac{1}{Hd}\sum_{t=1}^{H}\sum_{j=1}^{d}
+ \sqrt{\frac{1}{K-1}\sum_{i=1}^{K}
+     (A^{(i)}_{t,j}-\bar A_{t,j})^2},\qquad
+ \bar A_{t,j}=\frac1K\sum_iA^{(i)}_{t,j}.
+ \label{eq:uncertainty-example}
+\end{equation}
+This equation defines an illustrative sample standard-deviation aggregate,
+not the medoid distance and not a claim that all historical metrics used
+this denominator. Every reported estimator must separately specify $H$, the
+degrees-of-freedom convention, action scaling, and averaging axes.
+For a fixed query, $U_V^{\rm range}=\max_iV_i-\min_iV_i$ measures the range
+across candidates, not temporal variation across the episode. Disagreement
+among repeated entries within one latent output is another distinct axis and
+must not be counted as independent model samples.
+
+Actual future prediction errors such as
+$\|\widehat z_{q+T}-z_{q+T}\|_2$ require execution and are unavailable for
+selecting the chunk that produced them. They can be retrospective labels or
+training targets for an online surrogate, but using the measured error as an
+input at query $q$ would leak future information. Candidate-conditioned
+uncertainty also differs from diversity between different candidate actions.
+
+\section{Repeated-Continuation Diagnostics}
+With $R$ continuation seeds, let $Y_{ir}(s)$ denote measured terminal success.
+An empirical candidate success rate is
+\begin{equation}
+ \hat p_i(s)=\frac1R\sum_{r=1}^{R}Y_{ir}(s).
+\end{equation}
+The plug-in quantity $\max_i\hat p_i(s)$ is optimistic when the same noisy
+replicates choose and evaluate the best candidate. A held-out repeat split
+is required for an outcome-based oracle estimate. Snapshots and repeats from
+the same task/init group must stay together during training and evaluation.
+
+For paired intervention outcomes, two distinct targets are
+\begin{equation}
+ \Delta_{\rm obs}=\E[Y_{\rm fresh8}-Y_{\rm stale8}],\qquad
+ \Delta_{\rm deploy}=\E[Y_{\rm fresh8}-Y_{\rm open16}].
+\end{equation}
+The former controls for an additional stochastic query, while the latter
+measures the deployed intervention relative to commitment. Their cost and
+information contracts must be reported rather than inferred from labels.
+
+\end{document}

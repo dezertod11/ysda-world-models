@@ -2,6 +2,12 @@
 
 Дата анализа: 5 сентября 2026 года.
 
+**Проверка 10 сентября:** [аудит кода, raw-таблиц и причин ухудшения](P3C_IMPLEMENTATION_AUDIT_20260910.md).
+SR и пары подтверждены. Найден неисполняемый физически post-retreat fallback,
+но в P3c/P3d он ни разу не сработал. `Exact replay` ниже означает проверку
+восстановленного sim-state, не повторный rollout. Trigger проверяет
+геометрическую допустимость, не полезность вмешательства.
+
 ## Проверяемая гипотеза
 
 P3b показал, что RGB-localizer способен заменить привилегированную позицию
@@ -103,8 +109,9 @@ post-hoc bootstrap по восьми целым cells macro delta равна `+2
 | Official safety violation | 0% | 0% | 0 п.п. |
 | Kinematic-deadlock candidate | 25.0% | 22.5% | -2.5 п.п. |
 
-Таким образом, safety/workspace guard устранил рост wrong-object interactions,
-который был главным ограничением P3b (`+20.83` п.п. на его reserve).
+В этой выборке роста wrong-object interactions нет. Это обнадёживает после
+P3b (`+20.83` п.п. на его reserve), но разные cohorts не позволяют приписать
+разницу именно guard без отдельной matched shield ablation.
 
 Единственный harm: `y0.2/task9/init39`. Baseline завершил задачу на шаге 261,
 а regrasp закончил `kinematic_deadlock_candidate` на шаге 280. Это не drop и
@@ -162,4 +169,3 @@ independent dynamics ensemble + conformal routing.
 - `campaigns/perception_regrasp_online_trigger_20260904/analysis/holdout/paired_cases.csv`
 - `campaigns/perception_regrasp_online_trigger_20260904/analysis/holdout/online_branches.parquet`
 - `frozen_models/perception_regrasp_20260904/perception_regrasp_trigger_v1.json`
-

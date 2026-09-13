@@ -1,0 +1,12 @@
+reference_papers/pdfs/
+reference_papers/text/
+templates/iclr2027/
+.tools/
+build/
+__pycache__/
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz

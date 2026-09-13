@@ -27,7 +27,7 @@ PILOT = "p5_boundary_candidates_20260909"
 OLD_COMPACT = "trajectory_consensus_20260908_compact"
 OLD_REFERENCES = "consensus_references_20260908"
 EXCLUDED_PREFIX = "position_y0_5_t1_"
-DEFAULT_GPUS = "1,2,3,4,5,6,7"
+DEFAULT_GPUS = "0,1,2,3,4,5,6,7"
 
 
 def sha(path):
@@ -44,8 +44,8 @@ def frozen_json(path, payload):
 
 def validate_gpu_ids(value):
     gpus = [item.strip() for item in value.split(",")]
-    if len(gpus) != len(set(gpus)) or any(g not in tuple("1234567") for g in gpus):
-        raise ValueError("Only unique physical GPUs 1-7 are allowed; GPU0 is reserved")
+    if len(gpus) != len(set(gpus)) or any(g not in tuple("01234567") for g in gpus):
+        raise ValueError("Only unique physical GPUs 0-7 are allowed")
     return gpus
 
 
@@ -54,16 +54,62 @@ def validate_night_freeze(path, payload):
         frozen_json(path, payload)
         return
     original = json.loads(path.read_text())
-    amendment = json.loads((path.parent / "resource_amendment_gpu17.json").read_text())
+    previous_path = path.parent / "resource_amendment_gpu17.json"
+    amendment = json.loads(previous_path.read_text())
     name = "run_consensus_valid_support_night.py"
     expected = copy.deepcopy(original)
-    expected["scripts"][name] = payload["scripts"][name]
-    if (expected != payload
-            or amendment["original_freeze_sha256"] != sha(path)
+    if (amendment["original_freeze_sha256"] != sha(path)
             or amendment["old_launcher_sha256"] != original["scripts"][name]
-            or amendment["new_launcher_sha256"] != payload["scripts"][name]
             or amendment["gpu_ids"] != list(range(1, 8))
             or amendment["paired_episode_resume"] is not True):
+        raise ValueError("Resource amendment cannot change frozen experiment settings")
+    expected["scripts"][name] = amendment["new_launcher_sha256"]
+    current_path = path.parent / "resource_amendment_gpu07.json"
+    if current_path.exists():
+        current = json.loads(current_path.read_text())
+        allowed = {name, "run_libero_experiment_campaign.py"}
+        changes = current["script_changes"]
+        if (current["original_freeze_sha256"] != sha(path)
+                or current["previous_resource_amendment_sha256"] != sha(previous_path)
+                or current["gpu_ids"] != list(range(8))
+                or current["gpu_policy"] != "idle_only_no_compute_processes"
+                or current["paired_episode_resume"] is not True
+                or current["method_configuration_changed"] is not False
+                or set(changes) != allowed):
+            raise ValueError("Resource amendment cannot change frozen experiment settings")
+        for script, change in changes.items():
+            if change["old_sha256"] != expected["scripts"][script]:
+                raise ValueError("Resource amendment cannot change frozen experiment settings")
+            expected["scripts"][script] = change["new_sha256"]
+        environment = current["environment_script"]
+        backup = path.parent / "resource_gpu07_backup/scripts/cosmos_env.sh"
+        if (environment["file"] != "cosmos_env.sh"
+                or environment["old_sha256"] != sha(backup)
+                or environment["new_sha256"] != sha(ROOT / "scripts/cosmos_env.sh")):
+            raise ValueError("Resource amendment cannot change frozen experiment settings")
+        resident_path = path.parent / "resource_amendment_resident.json"
+        if resident_path.exists():
+            resident = json.loads(resident_path.read_text())
+            files = {"libero_resident.py", "libero_resident_worker.py",
+                     "run_libero_resident_campaign.py", "verify_libero_resident.py"}
+            report_path = ROOT / resident["parity_report_relative"]
+            report = json.loads(report_path.read_text())
+            if (resident["original_freeze_sha256"] != sha(path)
+                    or resident["previous_resource_amendment_sha256"] != sha(current_path)
+                    or resident["old_launcher_sha256"] != expected["scripts"][name]
+                    or resident["method_configuration_changed"] is not False
+                    or resident["scope"] != "references_only"
+                    or resident["gpu_policy"] != "idle_only_no_compute_processes"
+                    or set(resident["adapter_sha256"]) != files
+                    or resident["parity_report_sha256"] != sha(report_path)
+                    or not 1 <= resident["batch_size"] <= 32
+                    or report.get("passed") is not True):
+                raise ValueError("Resident amendment cannot change frozen experiment settings")
+            for script, digest in resident["adapter_sha256"].items():
+                if sha(ROOT / "scripts" / script) != digest:
+                    raise ValueError("Resident adapter changed after validation")
+            expected["scripts"][name] = resident["new_launcher_sha256"]
+    if expected != payload:
         raise ValueError("Resource amendment cannot change frozen experiment settings")
 
 
@@ -174,6 +220,9 @@ def prepare(root=ROOT):
     frozen_json(references / "config.methods.json", json.loads((old_ref / "config.methods.json").read_text()))
     freeze = json.loads((old_ref / "freeze.json").read_text())
     for name, digest in freeze["script_sha256"].items():
+        # The campaign runner is checked by the chained resource freeze below.
+        if name == "run_libero_experiment_campaign.py":
+            continue
         if sha(root / "scripts" / name) != digest:
             raise ValueError(f"Original reference script changed: {name}")
     original_hashes = json.loads((campaigns / "trajectory_consensus_20260908/source_sha256.json").read_text())
@@ -269,8 +318,16 @@ def main():
         path = directory.parent / name / "manifest.json"
         if path.exists() and json.loads(path.read_text()).get("status") == "completed":
             return
-        command([sys.executable, ROOT / "scripts/run_libero_experiment_campaign.py", "--config", config,
-                 "--profile", profile, "--run-prefix", name, "--gpus", args.gpus, "--execute"])
+        resident_path = directory / "resource_amendment_resident.json"
+        resident = json.loads(resident_path.read_text()) if resident_path.exists() and name == REFERENCES else None
+        runner = "run_libero_resident_campaign.py" if resident else "run_libero_experiment_campaign.py"
+        parts = [sys.executable, ROOT / "scripts" / runner, "--config", config,
+                 "--profile", profile, "--run-prefix", name, "--gpus", args.gpus, "--execute"]
+        if resident:
+            parts += ["--batch-size", str(resident["batch_size"]), "--parity-report", ROOT / resident["parity_report_relative"]]
+        if "0" in gpus:
+            parts.append("--allow-gpu-zero")
+        command(parts)
 
     try:
         command([sys.executable, ROOT / "scripts/analyze_consensus_valid_support.py", "--compact-only"])

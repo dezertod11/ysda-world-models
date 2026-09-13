@@ -1,0 +1,53 @@
+{
+  "status": "completed",
+  "planned_branches": 120,
+  "complete_case_branches": 120,
+  "excluded_before_decision": [],
+  "incomplete": [],
+  "screen_only": true,
+  "automatic_holdout": false,
+  "full_benchmark_score": false,
+  "inference": "stratified init-cluster bootstrap and cluster sign-flip; three-contrast Holm",
+  "success_before_decision_excluded_not_counted_as_fail": true,
+  "contrasts": [
+    {
+      "left": "fresh_k4",
+      "right": "open16",
+      "pairs": 24,
+      "clusters": 12,
+      "delta": -0.08333333333333333,
+      "ci_low": -0.20833333333333334,
+      "ci_high": 0.041666666666666664,
+      "rescues": 2,
+      "harms": 4,
+      "cluster_sign_p": 0.75,
+      "holm_p": 1.0
+    },
+    {
+      "left": "fresh_k4",
+      "right": "fresh_k1",
+      "pairs": 24,
+      "clusters": 12,
+      "delta": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0,
+      "rescues": 0,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    },
+    {
+      "left": "fresh_continuity_k4",
+      "right": "fresh_k4",
+      "pairs": 24,
+      "clusters": 12,
+      "delta": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0,
+      "rescues": 0,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    }
+  ]
+}

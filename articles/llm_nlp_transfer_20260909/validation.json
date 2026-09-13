@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-09-09T09:51:39.476778+00:00",
+  "pdf_count": 26,
+  "pdf_pages": 725,
+  "pdf_bytes": 85661438,
+  "sha256_matches": 26,
+  "source_pages_http_200": 26,
+  "local_markdown_links_checked": 46,
+  "download_script_ast": "ok",
+  "new_robot_experiments_run": false
+}

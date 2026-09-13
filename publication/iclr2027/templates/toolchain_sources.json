@@ -1,0 +1,6 @@
+{
+  "style_url": "https://media.iclr.cc/Conferences/ICLR2027/iclr-2027-style-files.zip",
+  "style_sha256": "0d940dfa9398ae99a18f24a85a8a683f367204b6af6d17d2899e60a67102529e",
+  "tectonic_url": "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.17.0/tectonic-0.17.0-x86_64-unknown-linux-musl.tar.gz",
+  "tectonic_archive_sha256": "8533d07f9ccbd7a65824b9e0459041bca34af1eb33daba48f59215593753a3b7"
+}

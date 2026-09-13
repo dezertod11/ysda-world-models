@@ -1,0 +1,14 @@
+{
+  "planned_cases": 32,
+  "geometry_cases": 32,
+  "committed_outcomes": 2,
+  "fully_matched_cases": 0,
+  "complete": false,
+  "scores": [],
+  "paired_descriptive": [],
+  "shadow": [],
+  "diagnostic_only": true,
+  "no_inferential_claim": true,
+  "oracle_not_deployable": true,
+  "new_event_sr_claim": false
+}

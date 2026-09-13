@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "stage": "transfer",
+  "pid": 128107,
+  "active": {},
+  "deadline_epoch": 1789104900.0,
+  "updated_at": "2026-09-11T00:56:57.054426+00:00",
+  "completed_branches": {
+    "smoke": 48,
+    "screen": 384,
+    "holdout": 0,
+    "transfer": 144
+  },
+  "seconds_until_deadline": 16682,
+  "waiting_for_idle_gpu": false,
+  "holdout_started": false,
+  "expected_current_branches": 144,
+  "observed_branches_per_hour": 293.23173172630067,
+  "eta_remaining_upper_bound_seconds": 6482,
+  "screen_no_go": true
+}

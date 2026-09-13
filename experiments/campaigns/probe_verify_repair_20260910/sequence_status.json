@@ -1,0 +1,14 @@
+{
+  "status": "partial",
+  "pid": 26970,
+  "active": {},
+  "deadline_epoch": 1789111845.3195503,
+  "updated_at": "2026-09-10T19:35:24.201266+00:00",
+  "completed_branches": {
+    "smoke": 16,
+    "screen": 0,
+    "holdout": 0
+  },
+  "stage": "smoke",
+  "waiting_for_idle_gpu": false
+}

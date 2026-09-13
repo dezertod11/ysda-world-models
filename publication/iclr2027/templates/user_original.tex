@@ -1,0 +1,121 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+\title{ICRA2027 - WAMPlan}
+\author{Aleksandr Panov}
+\date{September 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\section{Related Work}
+
+\section{Preliminaries}
+
+\section{Consensus Planning}
+\label{sec:method}
+
+Large generative action models can represent multiple plausible continuations
+from the same observation. This stochasticity, however, creates a practical
+decision problem at test time: a single sampled action chunk may be locally
+implausible even when other samples agree on a competent continuation. We
+introduce \emph{consensus planning}, a training-free test-time procedure that
+selects a representative action chunk from a small set of samples. The method
+operates entirely in action space, requires neither additional supervision nor
+access to a value function, and can therefore be applied to a pretrained
+generative policy without modifying its parameters.
+
+\subsection{Action-Chunk Generation}
+
+At control query $q$, the policy receives the current observation history and a
+language instruction, denoted jointly by $x_q$. It produces a horizon-$T$
+action chunk
+\begin{equation}
+    \mathbf{a}^{(i)} = \left(a^{(i)}_1,\ldots,a^{(i)}_T\right),
+    \qquad \mathbf{a}^{(i)} \sim p_\theta(\mathbf{a}\mid x_q; s_i),
+    \label{eq:candidates}
+\end{equation}
+where $s_i$ is the sampling seed and $i\in\{1,\ldots,K\}$ indexes a candidate.
+In our implementation, $K=3$ and the candidate seeds are fixed to $\{0,1,2\}$
+for reproducible test-time selection. This seed controls the stochastic
+generation of an action chunk; it is distinct from the benchmark episode seed,
+which specifies the scene instance.
+
+Each action $a_t$ contains a translational command $p_t\in\mathbb{R}^3$, a
+continuous 6D rotation representation $r_t\in\mathbb{R}^6$, and a scalar
+gripper command $g_t$. Although a chunk contains $T$ proposed actions, the
+controller executes only its first $H$ actions before requesting a new chunk.
+Consequently, consensus is evaluated on this executable prefix rather than on
+long-horizon predictions that will be discarded by closed-loop replanning.
+
+\subsection{Control-Aware Distance Between Chunks}
+
+We compare candidates using a distance aligned with the robot control
+parameterization. Let $R(r)\in SO(3)$ denote the rotation matrix obtained from
+the 6D representation by orthonormalizing its two three-dimensional vectors.
+For two individual actions $a$ and $b$, we define
+\begin{equation}
+\begin{split}
+    d_{\mathrm{act}}(a,b) ={}& \lambda_p\frac{\lVert p_a-p_b\rVert_2}{\sqrt{3}}
+    + \lambda_r\frac{\arccos\!\left(
+        \operatorname{clip}\!\left(
+        \frac{\operatorname{tr}(R(r_a)R(r_b)^\top)-1}{2},-1,1
+        \right)\right)}{\pi} \\
+    &+ \lambda_g\,\mathbf{1}\!\left[\operatorname{sign}(g_a)
+        \neq \operatorname{sign}(g_b)\right],
+    \label{eq:action-distance}
+\end{split}
+\end{equation}
+where the first term measures normalized translational disagreement, the second
+is the normalized geodesic distance on $SO(3)$, and the third penalizes an
+incompatible gripper mode. We use $\lambda_p=1$, $\lambda_r=0.5$, and
+$\lambda_g=0.25$. These terms prevent a high-dimensional Euclidean distance
+from conflating translation, orientation, and discrete gripper decisions.
+
+The distance between two candidate chunks is a temporally discounted average
+over their executable prefixes:
+\begin{equation}
+    D_H\!\left(\mathbf{a}^{(i)},\mathbf{a}^{(j)}\right)
+    =
+    \frac{\sum_{t=1}^{H}\gamma^{t-1}
+    d_{\mathrm{act}}\!\left(a^{(i)}_t,a^{(j)}_t\right)}
+    {\sum_{t=1}^{H}\gamma^{t-1}},
+    \label{eq:chunk-distance}
+\end{equation}
+with $\gamma=0.9$. The discount assigns greater importance to actions that
+will be executed sooner and whose errors cannot be corrected before the next
+query.
+
+\subsection{Medoid Selection and Closed-Loop Execution}
+
+Consensus planning selects the candidate with minimum mean disagreement to the
+remaining candidates:
+\begin{equation}
+    i^* = \arg\min_{i\in\{1,\ldots,K\}}
+    \frac{1}{K-1}\sum_{\substack{j=1 \\ j\neq i}}^K
+    D_H\!\left(\mathbf{a}^{(i)},\mathbf{a}^{(j)}\right).
+    \label{eq:medoid}
+\end{equation}
+This is a medoid rather than an action-space average: the selected chunk is an
+actual sample from the generative policy. The distinction is important for
+robot actions, since averaging two valid but qualitatively different motions can
+produce an invalid intermediate command, especially near gripper transitions or
+rotational discontinuities.
+
+The controller executes the prefix
+$\left(a^{(i^*)}_1,\ldots,a^{(i^*)}_H\right)$, observes the resulting state,
+and repeats Eqs.~\eqref{eq:candidates}--\eqref{eq:medoid}. Thus, consensus is
+not a commitment to a full predicted trajectory: it is a receding-horizon
+selection rule that uses sample agreement as a local reliability signal. When
+the candidates are close, the procedure retains a representative prediction;
+when one candidate is an outlier, its larger average distance makes it unlikely
+to be executed. The method does not assume that agreement proves task success,
+and its empirical utility must therefore be established by the evaluations in
+the subsequent sections.
+
+\end{document}

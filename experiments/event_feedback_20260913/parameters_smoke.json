@@ -1,0 +1,18 @@
+{
+  "generated_horizon": 16,
+  "execution_horizon": 16,
+  "monitor_stride": 4,
+  "min_prefix": 8,
+  "history_steps": 8,
+  "persistence": 2,
+  "cooldown_steps": 16,
+  "max_interventions": 1,
+  "max_steps": 280,
+  "action_std_threshold": 0.25,
+  "value_std_threshold": 0.1,
+  "overlap_rmse_threshold": 0.3,
+  "commanded_motion_threshold": 0.2,
+  "stalled_eef_threshold_m": 0.002,
+  "grasp_near_m": 0.06,
+  "action_scale": [1, 1, 1, 1, 1, 1, 1]
+}

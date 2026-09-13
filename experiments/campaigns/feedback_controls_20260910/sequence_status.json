@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "pid": 3878088,
+  "started_at": "2026-09-10T10:18:53.156191+00:00",
+  "active": {},
+  "updated_at": "2026-09-10T12:48:41.952899+00:00",
+  "screen_completed_branches": 120,
+  "predecessor_status": {
+    "status": "completed",
+    "stage": "replication_and_neighbor_pools",
+    "pid": 3818565,
+    "active": {},
+    "started_at": "2026-09-10T09:07:03.001534+00:00",
+    "expected_branches": 690,
+    "completed_branches": 690,
+    "updated_at": "2026-09-10T11:45:53.321152+00:00",
+    "deadline_epoch": 1789074082.6316051,
+    "estimated_seconds_remaining_if_current_workers_stay_available": null,
+    "finished_at": "2026-09-10T11:45:53.317284+00:00"
+  },
+  "deadline_epoch": 1789213557.0079677,
+  "stage": "analysis",
+  "automatic_holdout": false
+}

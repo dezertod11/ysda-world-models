@@ -1,0 +1,4 @@
+left,right,pairs,clusters,delta,ci_low,ci_high,rescues,harms,cluster_sign_p,holm_p
+fresh_k4,open16,24,12,-0.08333333333333333,-0.20833333333333334,0.041666666666666664,2,4,0.75,1.0
+fresh_k4,fresh_k1,24,12,0.0,0.0,0.0,0,0,1.0,1.0
+fresh_continuity_k4,fresh_k4,24,12,0.0,0.0,0.0,0,0,1.0,1.0

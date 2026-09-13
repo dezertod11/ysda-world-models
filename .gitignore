@@ -39,6 +39,23 @@ experiments/campaigns/**/runs/
 experiments/campaigns/**/videos/
 experiments/campaigns/**/logs/
 experiments/campaigns/**/temporal_overlap/
+experiments/campaigns/**/batches/
+experiments/campaigns/**/configs/
+experiments/campaigns/**/completed/
+experiments/campaigns/**/main/
+experiments/campaigns/**/timing/
+experiments/campaigns/**/smoke/
+experiments/campaigns/**/screen/
+experiments/campaigns/**/holdout/
+experiments/campaigns/**/transfer/
+experiments/campaigns/**/seed_controls/
+experiments/campaigns/**/horizon8/
+experiments/campaigns/**/local_validation/
+experiments/campaigns/**/geometry/
+experiments/campaigns/**/rollouts/
+experiments/campaigns/**/shadow/
+experiments/campaigns/**/resource_resumes/
+experiments/campaigns/**/resident/
 experiments/campaigns/*_launcher.log
 experiments/campaigns/*_launcher.pid
 experiments/campaigns/**/*query_traces.csv
@@ -68,11 +85,15 @@ experiments/campaigns/temporal_overlap_passive_*/analysis/temporal_overlap_passi
 rollouts/
 videos/
 logs/
+*.mp4
 *.log
 output*.png
 output.jpeg
 future_image.png
 future_wrist_image.png
+
+# Local PDF-preview binaries; final manuscript PDFs remain tracked separately.
+publication/**/.tools/
 
 # Notebook backups and superseded copies
 *.bak

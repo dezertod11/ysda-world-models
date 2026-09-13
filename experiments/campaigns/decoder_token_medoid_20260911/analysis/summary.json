@@ -1,0 +1,19 @@
+{
+  "complete_pairs": 180,
+  "expected_pairs": 180,
+  "partial": false,
+  "available_rollouts": 720,
+  "matched_rollouts": 720,
+  "missing_pair_ids": [],
+  "primary": "decoder_medoid_vs_max_value",
+  "inference": "Development transfer; task-cluster bootstrap stratified by factor. Seeds/inits retained within tasks. McNemar is descriptive, repeated seeds are dependent.",
+  "claim": "No confirmatory generalization claim, even for a positive development effect.",
+  "macro_sr": {
+    "action_medoid": 0.611111111111111,
+    "decoder_medoid": 0.6222222222222222,
+    "first": 0.5833333333333334,
+    "max_value": 0.6222222222222222
+  },
+  "integration_only": false,
+  "decoder_constant_choice_episode_fraction_descriptive": 0.2222222222222222
+}

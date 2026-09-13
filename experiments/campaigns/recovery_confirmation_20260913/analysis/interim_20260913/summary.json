@@ -1,0 +1,107 @@
+{
+  "phase": "main",
+  "complete": false,
+  "missing": [
+    "x0.3_t5_i30",
+    "x0.3_t9_i30",
+    "x0.3_t2_i31",
+    "x0.3_t4_i31",
+    "x0.3_t5_i31",
+    "x0.3_t6_i31",
+    "x0.3_t7_i31",
+    "x0.3_t8_i31",
+    "x0.3_t9_i31",
+    "x0.2_t9_i32",
+    "y0.2_t9_i32",
+    "y0.3_t5_i32",
+    "x0.3_t1_i32",
+    "x0.3_t2_i32",
+    "x0.3_t4_i32",
+    "x0.3_t5_i32",
+    "x0.3_t6_i32",
+    "x0.3_t7_i32",
+    "x0.3_t8_i32",
+    "x0.3_t9_i32"
+  ],
+  "cases": 108,
+  "planned_cases": 128,
+  "branches": 432,
+  "audit": {
+    "artifacts": 432,
+    "exact_replay": 0,
+    "video_frames": 0,
+    "selected_actions": 85050,
+    "no_intervention_parity": 55,
+    "full_prefix_checks": 324
+  },
+  "automatic_holdout": false,
+  "inference_withheld": true,
+  "scope": "fresh seeds on calibration-disjoint inits, not globally untouched init states",
+  "transfer_scope": "x0.3 cells absent in localizer calibration; not new objects or official whole benchmark",
+  "aggregate": [
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "baseline_h16",
+      "n": 61,
+      "successes": 16,
+      "sr": 0.26229508196721313
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "continue_h8",
+      "n": 61,
+      "successes": 16,
+      "sr": 0.26229508196721313
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "physical_regrasp",
+      "n": 61,
+      "successes": 40,
+      "sr": 0.6557377049180327
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "refresh_preserve_only",
+      "n": 61,
+      "successes": 40,
+      "sr": 0.6557377049180327
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "baseline_h16",
+      "n": 47,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "continue_h8",
+      "n": 47,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "physical_regrasp",
+      "n": 47,
+      "successes": 1,
+      "sr": 0.02127659574468085
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "refresh_preserve_only",
+      "n": 47,
+      "successes": 1,
+      "sr": 0.02127659574468085
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "stage": "repeats_and_feedback",
+  "pid": 3466554,
+  "started_at": "2026-09-09T22:16:05.642671+00:00",
+  "expected_branches": 1080,
+  "completed_branches": 1080,
+  "active": {},
+  "waiting_workers": 0,
+  "deadline_epoch": 1789022159.0,
+  "updated_at": "2026-09-10T01:32:38.322687+00:00",
+  "finished_at": "2026-09-10T01:32:38.322655+00:00"
+}

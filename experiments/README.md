@@ -1,5 +1,195 @@
 # Эксперименты
 
+**13 сентября: продолжение запущено, grounding diagnostic в отдельной очереди.**
+[Постановка, arms, ресурсы, technical gates и команды статуса](RECOVERY_GROUNDING_DIAGNOSTIC_PROTOCOL_20260913.md).
+Прежний main/timing продолжается без изменения научного config; cutoff21:12MSK.
+Отдельно32prefix geometry, 128matched diagnostic outcomes, затем4event-shadow
+rollout. Oracle использует GT только как явную диагностику, не новый метод.
+Обе очереди idle-only с общими GPU locks; чужие4/5 на старте не трогаем.
+Ниже исторический срез до возобновления; его числа не являются текущим прогрессом.
+
+**13 сентября, разбор фактических результатов: серия recovery прервана.**
+[Результаты, таблицы, графики, диагностика и следующий план](RECOVERY_CONFIRMATION_INTERIM_RESULTS_20260913.md).
+Main441/512, полностью сопоставлены108/128 cases; timing0/768.
+Знакомые cells: physical40/61 противH8 16/61; x0.3:1/47 против0/47.
+Preserve-only не добавил SR. Offline XY-error локализатора: медиана2.53см
+против23.50см наx0.3. Сначала проверка геометрии/локализации, затем event sweep.
+Старый `sequence_status.json` завис в `running`: PID отсутствуют;
+[проверенный операционный срез](campaigns/recovery_confirmation_20260913/analysis/review/operational_status.json).
+Новый GPU-run этим разбором не открыт. Числа предварительные, без final inference.
+
+**13 сентября: событийные версии вместо обязательного t72.**
+[Что изменено, четыре метода и команды](EVENT_FEEDBACK_MIGRATION_20260913.md),
+[обзор литературы и формулы](../articles/EVENT_TRIGGERED_FEEDBACK_REVIEW_20260913.md).
+Новый entrypoint `collect_event_feedback.py`; старые fixed-q4 collectors
+остаются архивными контролями. GPU-результатов нового event controller пока нет.
+
+**13 сентября: финальная двухдневная программа и девятичасовая очередь.**
+[План, задачи, методы, контроли и команды](RECOVERY_TWO_DAY_PLAN_20260913.md).
+Кампания `recovery_confirmation_20260913`: P3/preserve, перенос на x0.3,
+контроль времени t56/72/88; до1289 исходов, полные видео сt0.
+Результаты в `analysis/`; актуальность `sequence_status.json` проверять по PID
+и времени обновления. Для прерванного запуска см. аудит статуса выше.
+
+**Единая сводка для публикации, 12 сентября:**
+[Все результаты и анализ, включая отрицательные проверки](../publication/iclr2027/RESULTS_AND_ANALYSIS.md).
+[Результаты похожих работ и сопоставимость](../publication/iclr2027/RELATED_WORK_RESULTS.md),
+[каталог локальных отчётов](../publication/iclr2027/RESULTS_INDEX.md).
+Это основной вход для чтения итогов; ниже сохранена история запусков.
+Исторические статусы ниже не являются live-статусом очереди.
+
+**12 сентября: обе ночные серии полностью завершены и разобраны.**
+[Observation Contract: SR и вывод по восьми arms](OBSERVATION_CONTRACT_RESULTS_20260912.md):
+1536/1536, завершение01:48MSK. Primary145/192 против151/192старогоrecovery,
+NO-GO; preserve-only161/192, но netgain в однойcell. В16harms дополнительный
+regrasp раскрывает удерживаемыйпредмет. Все1560видео соsmoke декодированы.
+[Decoder-medoid: main, fixedseeds, H8, формулы и полные видео](DECODER_MEDOID_RESULTS_20260912.md):
+1440/1440, завершение07:31MSK. Decoder=max-value112/180=62.22%; H8/prefix
+gain не подтверждён. Новые результаты в общем hub и evidence ledger E16–E19.
+Новых GPU-run при этом анализе не запускали. Планы запуска ниже исторические.
+
+**Ночь 11-12 сентября: deadline 10:00 MSK.**
+[План, контроли seed/H8, ресурсы и команды статуса](DECODER_MEDOID_NIGHT_20260912.md).
+После Observation Contract: сначала исходные 720 rollout decoder-medoid,
+затем 360 fixed-seed controls, затем до 360 H8 controls. До 1440 новых rollout;
+расчёты до 09:40, затем автоматические отчёты. Чужие GPU-процессы не затрагиваются.
+Полное выполнение зависит от доступности GPU, дедлайн автоматически не продлевается.
+
+**11 сентября: новая проверка decoder action-token medoid из Robotics_project_YSDA.**
+[Источник, формулы, архитектурная адаптация и протокол 720 rollout](DECODER_TOKEN_MEDOID_PROTOCOL_20260911.md).
+K3/H16, 10 задач, Object/Environment/Position, три фиксированные seed groups;
+controls: K1, max-value, action-medoid. Полные эпизоды с t=0, без regrasp/t72.
+Локальный hook-parity прошёл; серверная очередь должна идти после текущей
+Observation Contract. [Фактический статус](campaigns/decoder_token_medoid_20260911/sequence_status.json).
+Чужой лучший GR00T результат 66/96 не повторился на двух других группах;
+перенос на Cosmos пока не доказан. Новый отчёт и видео будут в `analysis/`
+внутри каталога кампании; локальные integration smoke в основные SR не входят.
+
+**11 сентября, 20:23 MSK: запущена Observation Contract.**
+[Протокол, гипотезы, формулы и восемь ветвей](OBSERVATION_CONTRACT_PROTOCOL_20260911.md).
+24 технические проверки, затем 1536 ветвей: 96 прежних prefixes, два suffix
+seed, шесть обычных политик и два privileged diagnostics. Не новый init
+holdout; преимущества пока не установлены. Проверяем получение наблюдения
+без смены gripper-команды и отдельно вклад локализации/области допуска.
+[Акт запуска и расположение данных](campaigns/observation_contract_20260911/LAUNCH_VERIFIED.md).
+
+**11 сентября, 15:09 MSK: timing/eligibility завершена, 490/490ветвей.**
+[Результаты, объяснения, таблицы и следующие проверки](TIMING_ELIGIBILITY_RESULTS_20260911.md).
+96paired states: continue63/96, immediate76/96, fresh/checked74/96,
+diagnostic76/96. Новый controller не превзошёл immediate; frozen gate NO-GO,
+holdout38–45 закрыт. Checked иfresh совпали по96labels и93траекториям.
+Снятие остальных fresh guards дало3rescue наjuice и1harm наtomato sauce;
+в harm полныйregrasp не исполнялся, был только3-stepretreat.
+Все17общихfailures не прошли исходный trigger: recovery на них не проверялся.
+Все490видео скачаны и декодированы,59174кадра;79тестовpassed.
+[Выбранные видео](campaigns/timing_eligibility_20260911_v2/review_20260911/selected_videos.html),
+[все480основныхвидео](campaigns/timing_eligibility_20260911_v2/analysis/screen/videos.html),
+[замороженный протокол и история технического запуска](TIMING_ELIGIBILITY_PROTOCOL_20260911.md).
+Новых GPU-run при этом анализе не запускали. Следующий приоритет: passive/
+two-viewverification, non-openingretreat и аудит coverage исходногоtrigger.
+
+**11 сентября: grounded-mask и delayed recovery завершены, 576 ветвей.**
+[Результаты, причины, таблицы, графики и видео](GROUNDED_PROBE_RESULTS_20260911.md).
+Screen: continue27/48, full33/48, probe-always и conservative35/48,
+miss-only/legacy29/48, delayed34/48. Gate NO-GO, holdout не открывался.
+Transfer: full36/48, continue/delayed33/48. Завершено в03:56MSK.
+На27пробах маска убрала10наблюдавшихся false-held, но8ответов превратились
+вunknown; conservative повторяет probe-always по всем outcomes и47/48
+полныхтраекторий. Дополнительный выигрыш verifier не установлен.
+[Screen-видео](campaigns/grounded_probe_20260911_v2/analysis/screen/videos.html),
+[transfer-видео](campaigns/grounded_probe_20260911_v2/analysis/transfer/videos.html).
+Далее разнести delay и повторный trigger; не расширять текущий sweep.
+Новых GPU-run при анализе не запускали. Ниже сохранены прежние результаты.
+
+**11 сентября: последний probe/verify/repair завершён, NO-GO.**
+[Полный разбор: SR, парные эффекты, причина ошибок, графики и видео](PROBE_VERIFY_REPAIR_RESULTS_20260911.md).
+24 smoke и 192/192 screen: continue26/48, full regrasp35/48, probe26/48,
+verified30/48. Новый метод −10.42п.п. к сильному контролю, 4 rescue / 9 harm.
+Семь ложных `held`: неподвижный предмет, нет контакта, crop следует за рукой.
+Holdout не открыт; сбор завершён 10 сентября в23:50 MSK. Результаты скачаны
+локально, повторный integrity и 26 CPU-тестов прошли.
+[Все 48 групп видео](campaigns/probe_verify_repair_20260910_v2/analysis/screen/videos.html).
+Далее object-specific tracking и отделение эффекта пробы от gate;
+новые GPU-эксперименты этим анализом не запущены. Статусы ниже исторические.
+
+**Вечер 10 сентября: обе последние серии завершены.**
+[Итог P5 690/690 и feedback 120/120: результаты, выводы и видео](P5_AND_FEEDBACK_FINAL_RESULTS_20260910.md).
+[Новый порядок исследований](RESEARCH_PRIORITIES_20260910_EVENING.md).
+[Следующая кампания: probe → verify → repair](PROBE_VERIFY_REPAIR_PROTOCOL_20260910.md).
+V2 запущена в 22:41 MSK, dispatcher 33728, GPU1/3/6. В 22:50 все 24 smoke
+прошли технический аудит, начат основной screen. Затем условный holdout.
+V1 technical smoke сохранён отдельно, в SR не включается.
+Утренние сообщения «ждёт P5» и «screen ещё не начался» ниже являются историей.
+
+**Актуальные приоритеты после двух аудитов:**
+[Научный план, лучшие результаты и статус методов](RESEARCH_PRIORITIES_20260910.md).
+[Следующий исполнимый screen: 15 smoke + 120 matched-K/continuity ветвей](FEEDBACK_CONTROLS_PROTOCOL_20260910.md).
+Доставка завершена: серверный PID3878088 ждёт существующую P5-очередь.
+В завершённой conditional части P5 pool13: max-value1/10, alternatives10/10;
+это пока один snapshot, не переносимый planner. Новый screen ещё не начался; live status
+смотреть в campaign, не в исторических строках ниже.
+
+**10 сентября: проверка fresh8.** [Индексы, свежие входы, причины меньшего SR и сравнение с K4/t72](FRESH8_IMPLEMENTATION_AUDIT_20260910.md).
+1080 ветвей проверены; 21 CPU-тест прошёл. В последнем опыте K8-selected tail
+заменяется одиночным K1 sample. Общий минус статистически неубедителен;
+прежний положительный K4/t72 результат `46/100 -> 64/100` сохраняется.
+Добавлены action-boundary метрики и раскадровки harm/rescue без новых GPU-run.
+
+**10 сентября: аудит P3c/P3d.** [Ошибки, ограничения trigger и причины меньшего прироста](P3C_IMPLEMENTATION_AUDIT_20260910.md).
+167 cases / 421 branch сверены с raw-данными; `13/40 -> 24/40` подтверждено.
+Два drop harm происходят после вмешательства в уже поднятый предмет.
+Все 7 P3d новых cells ранее встречались в обучении локализатора, но без
+init overlap. Нефизичный post-retreat fallback найден, срабатываний в этих
+данных нет. 30 CPU-тестов прошли; исходный controller и P5 очередь не менялись.
+
+**10 сентября, 12:09 MSK: smoke пройден, идёт conditional replication.**
+[Протокол 690 ветвей + 6 smoke, метрики и команда статуса](P5_CANDIDATE_REPLICATION_PROTOCOL_20260910.md).
+Те же pool13/pool11: зафиксированные baseline/alternatives и 10 новых suffix
+seeds. Отдельно tasks0/2 x init9-12: новые K8 pools, local H16 signals,
+split-repeat diagnostic. Это не новый trained planner и не перенос старых
+candidate indices. Автономный PID3818565, основная серия на GPU0/3/5;
+6/6 smoke-веток и видео проверены. Поправка записи векторных signals
+сохранена отдельно, научный протокол не изменился. Основные результаты
+будут в campaign analysis; 39 CPU-тестов прошли локально и на сервере.
+
+**10 сентября: P5 repeats/feedback завершён, 1080/1080.**
+[Результаты, объяснение, графики и 108 видео](P5_REPEAT_FEEDBACK_RESULTS_20260910.md).
+Завершено в 04:32 MSK. Fresh8: 41/108 против open16 44/108 и stale8 45/108;
+оба cluster CI разницы включают ноль. У 96/288 кандидатов меняется suffix label.
+K8 gain +14.81 п.п. при выборе и оценке на тех же repeats исчезает при
+leave-one-suffix-out: 44/108, как у max-value. Обученный новый P5 не запускался.
+Приоритет: точечная replication устойчивых misranking cases и task/contact
+labels, не широкий sweep. [Исходный протокол](P5_REPEAT_FEEDBACK_PROTOCOL_20260910.md).
+
+**10 сентября: ночная очередь полностью завершена.**
+[Итог consensus и P5: методы, таблицы, ограничения и следующие выводы](CONSENSUS_AND_P5_RESULTS_20260910.md).
+В сравнении 1194 rollout / 6 методов / 199 конфигураций KeyStone-style дал
+55.76% macro-SR против 54.77% max-value; убедительного превосходства нет.
+P5 pilot: 36/36 strict pools, 288 branches, 16 mixed, но при K8 только
+1 исправимый max-value fail и 17 all-fail pools. Обученная P5-модель ещё
+не тестировалась. Все стадии закончились 9 сентября в 20:31 MSK;
+нижние статусы запуска и ожидания являются историческими срезами.
+
+**Постоянный GPU-worker, 9 сентября:** [протокол, проверка cold/resident,
+сохранение видео и безопасное переключение](RESIDENT_WORKER_PROTOCOL_20260909.md).
+Проверено повторное использование модели A/B/A: действия, value, latent и
+реальное видео совпали с контролем. Межпроцессные image diagnostics и
+невоспроизводимый повтор самого cold executor разобраны отдельно.
+Внедрено в 19:20 MSK: оставшиеся 24 reference jobs распределены по 8 на
+GPU1/2/3; 333 готовых markers сохранены. P5 executor не менялся.
+
+**9 сентября, 13:44 MSK: GPU0-7 разрешены при незанятости.**
+Очередь перезапущена, PID2694673; 368 reference rollout сохранены.
+Занятые карты пропускаются, включая карты с низкой загрузкой, но чужими
+CUDA-процессами. [Ресурсная политика и проверки](GPU07_RESOURCE_POLICY_20260909.md).
+
+**Текущий план, 9 сентября 13:10-13:13 MSK:**
+[что уже доказано, статус расчётов и ближайшие быстрые проверки](RESEARCH_PRIORITIES_20260909.md).
+References **367/597**, процесс жив, но ждёт освобождения GPU; P5 ещё не
+стартовал. [Уточнение будущего P5](P5_TASK_CRITICAL_REFINEMENT_20260909.md)
+отделяет diagnostic pilot от обучения task-critical selector. Работающая
+очередь и frozen configs этим обновлением не менялись.
+
 **Решение по t=72 и recovery:** [почему сохраняем фиксированный контроль,
 как проверить время вмешательства и переходить к событийному trigger](RECOVERY_TIMING_DECISION_20260909.md).
 Это план следующей проверки recovery, не уже запущенная кампания.

@@ -15,6 +15,23 @@
 The local project remains authoritative. The server copy has no `.git` directories
 and contains no GitHub, Hugging Face, or W&B tokens.
 
+### Storage exception, September 11
+
+NFS2 reached zero free space before `observation_contract_20260911` started.
+The canonical project and environment paths have not changed. Only this new
+campaign directory is a symlink to the separate project-owned directory
+`/home/jovyan/.local/share/malnev_world_model_spill/observation_contract_20260911`
+on the NFS-home volume, which had about 2 TB available. This is persistent
+server storage, not node-local `/tmp`, and contains no credentials.
+
+An old unused `.runtime/libero_safety/libero_t5_embeddings.pkl.backup` was
+copied to `malnev_world_model_spill/preserved_backups/`, SHA256-verified, then
+replaced by a symlink at its old path. The active T5 file was not modified.
+Details and checksum: [observation protocol](experiments/OBSERVATION_CONTRACT_PROTOCOL_20260911.md).
+No previous experiment artifacts were removed. Do not overwrite the campaign
+symlink with a blanket project sync. To download its actual contents, use the
+canonical campaign path with a trailing slash as the rsync source.
+
 ## Project layout
 
 - `ysda_world_models.ipynb`: executable experiments and result analysis.
@@ -44,7 +61,9 @@ cd /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS
 source scripts/mlspace_env.sh
 ```
 
-`mlspace_env.sh` defaults to physical GPU 2 and rejects physical GPU 0. Inside
+`mlspace_env.sh` defaults to physical GPU 2 and rejects physical GPU 0 without
+explicit authorization. The idle-only campaign queue passes that authorization
+only to an admitted GPU0 worker. Inside
 PyTorch the only visible physical GPU is named `cuda:0`.
 
 Before a long run:
@@ -61,11 +80,26 @@ export CUDA_VISIBLE_DEVICES=3
 source scripts/mlspace_env.sh
 ```
 
-GPU policy:
+GPU policy, amended by the user on 2026-09-09 for this project:
 
-- GPU 0: never use.
-- GPU 1: short tests only when free.
-- GPU 2-7: experiments and training.
+- Physical GPUs 0-7 may be used when idle; do not start alongside another
+  project's CUDA process just because utilization is low.
+- GPU0 requires `--allow-gpu-zero` and a dynamic idle-only campaign. The current
+  consensus/P5 launcher supplies this explicit opt-in automatically.
+- Admission requires two idle readings, memory below 256 MiB, utilization
+  below 5%, and no compute processes. Unknown GPU status is treated as busy.
+- Never stop or reconfigure other users' processes. This admission check is
+  not a reservation against a third party starting later; stronger isolation
+  requires coordination or a shared resource scheduler.
+
+[Current resource amendment and restart](experiments/GPU07_RESOURCE_POLICY_20260909.md).
+
+The reference campaign also has a parity-gated resident executor: up to eight
+compatible jobs share one model load, while bounded CPU workers encode videos
+and build reports. Idle admission applies before each batch; existing model
+work continues between its jobs without requiring an empty GPU again.
+This is not a GPU reservation. P5 remains on its original executor.
+See [resident protocol and deployment status](experiments/RESIDENT_WORKER_PROTOCOL_20260909.md).
 
 ## Smoke tests
 
@@ -212,6 +246,17 @@ Restart the kernel and run the first setup cell before importing `torch`,
 The local tree is authoritative for source code, papers, and research notes.
 The server is authoritative for newly generated experiment outputs. Pull results
 before pushing source changes. Never use `--delete`.
+
+Campaigns such as `observation_contract_20260911` and
+`decoder_token_medoid_20260911` have intentional directory symlinks to the
+free persistent home volume. A plain `rsync -aR` with a nested campaign file
+can replace that destination symlink with a real directory. For explicitly
+verified project-owned destination links, use `--keep-dirlinks --no-perms`,
+or address the campaign directory directly with a trailing slash and transfer
+only the intended file. Verify `readlink` after synchronization. Never push
+stale local `sequence_status.json`, `launch.json`, `budget.json`, or lock files
+over a live server campaign. The decoder-medoid link was restored and its
+waiting dispatcher restarted on September 11 at 21:41 MSK; no GPU run was lost.
 
 From WSL:
 

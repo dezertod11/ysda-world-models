@@ -1,0 +1,3143 @@
+{
+  "name": "decoder_token_medoid_20260911",
+  "arms": [
+    "first",
+    "max_value",
+    "action_medoid",
+    "decoder_medoid"
+  ],
+  "jobs": [
+    {
+      "id": "Object_base_t0_i0_g0",
+      "phase": "smoke",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170000000
+    },
+    {
+      "id": "Environment_base_t0_i0_g0",
+      "phase": "smoke",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171000000
+    },
+    {
+      "id": "Position_x0.2_t0_i0_g0",
+      "phase": "smoke",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172000000
+    },
+    {
+      "id": "Object_base_t0_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170000000
+    },
+    {
+      "id": "Environment_base_t0_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171000000
+    },
+    {
+      "id": "Position_x0.2_t0_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172000000
+    },
+    {
+      "id": "Position_y0.2_t0_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173000000
+    },
+    {
+      "id": "Object_base_t0_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170000000
+    },
+    {
+      "id": "Environment_base_t0_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171000000
+    },
+    {
+      "id": "Position_x0.2_t0_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172000000
+    },
+    {
+      "id": "Position_y0.2_t0_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173000000
+    },
+    {
+      "id": "Object_base_t0_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170000000
+    },
+    {
+      "id": "Environment_base_t0_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171000000
+    },
+    {
+      "id": "Position_x0.2_t0_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172000000
+    },
+    {
+      "id": "Position_y0.2_t0_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 0,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173000000
+    },
+    {
+      "id": "Object_base_t1_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170001000
+    },
+    {
+      "id": "Environment_base_t1_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171001000
+    },
+    {
+      "id": "Position_x0.2_t1_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172001000
+    },
+    {
+      "id": "Position_y0.2_t1_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173001000
+    },
+    {
+      "id": "Object_base_t1_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170001000
+    },
+    {
+      "id": "Environment_base_t1_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171001000
+    },
+    {
+      "id": "Position_x0.2_t1_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172001000
+    },
+    {
+      "id": "Position_y0.2_t1_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173001000
+    },
+    {
+      "id": "Object_base_t1_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170001000
+    },
+    {
+      "id": "Environment_base_t1_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171001000
+    },
+    {
+      "id": "Position_x0.2_t1_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172001000
+    },
+    {
+      "id": "Position_y0.2_t1_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 1,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173001000
+    },
+    {
+      "id": "Object_base_t2_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170002000
+    },
+    {
+      "id": "Environment_base_t2_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171002000
+    },
+    {
+      "id": "Position_x0.2_t2_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172002000
+    },
+    {
+      "id": "Position_y0.2_t2_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173002000
+    },
+    {
+      "id": "Object_base_t2_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170002000
+    },
+    {
+      "id": "Environment_base_t2_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171002000
+    },
+    {
+      "id": "Position_x0.2_t2_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172002000
+    },
+    {
+      "id": "Position_y0.2_t2_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173002000
+    },
+    {
+      "id": "Object_base_t2_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170002000
+    },
+    {
+      "id": "Environment_base_t2_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171002000
+    },
+    {
+      "id": "Position_x0.2_t2_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172002000
+    },
+    {
+      "id": "Position_y0.2_t2_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 2,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173002000
+    },
+    {
+      "id": "Object_base_t3_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170003000
+    },
+    {
+      "id": "Environment_base_t3_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171003000
+    },
+    {
+      "id": "Position_x0.2_t3_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172003000
+    },
+    {
+      "id": "Position_y0.2_t3_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173003000
+    },
+    {
+      "id": "Object_base_t3_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170003000
+    },
+    {
+      "id": "Environment_base_t3_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171003000
+    },
+    {
+      "id": "Position_x0.2_t3_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172003000
+    },
+    {
+      "id": "Position_y0.2_t3_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173003000
+    },
+    {
+      "id": "Object_base_t3_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170003000
+    },
+    {
+      "id": "Environment_base_t3_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171003000
+    },
+    {
+      "id": "Position_x0.2_t3_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172003000
+    },
+    {
+      "id": "Position_y0.2_t3_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 3,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173003000
+    },
+    {
+      "id": "Object_base_t4_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170004000
+    },
+    {
+      "id": "Environment_base_t4_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171004000
+    },
+    {
+      "id": "Position_x0.2_t4_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172004000
+    },
+    {
+      "id": "Position_y0.2_t4_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173004000
+    },
+    {
+      "id": "Object_base_t4_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170004000
+    },
+    {
+      "id": "Environment_base_t4_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171004000
+    },
+    {
+      "id": "Position_x0.2_t4_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172004000
+    },
+    {
+      "id": "Position_y0.2_t4_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173004000
+    },
+    {
+      "id": "Object_base_t4_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170004000
+    },
+    {
+      "id": "Environment_base_t4_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171004000
+    },
+    {
+      "id": "Position_x0.2_t4_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172004000
+    },
+    {
+      "id": "Position_y0.2_t4_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 4,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173004000
+    },
+    {
+      "id": "Object_base_t5_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170005000
+    },
+    {
+      "id": "Environment_base_t5_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171005000
+    },
+    {
+      "id": "Position_x0.2_t5_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172005000
+    },
+    {
+      "id": "Position_y0.2_t5_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173005000
+    },
+    {
+      "id": "Object_base_t5_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170005000
+    },
+    {
+      "id": "Environment_base_t5_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171005000
+    },
+    {
+      "id": "Position_x0.2_t5_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172005000
+    },
+    {
+      "id": "Position_y0.2_t5_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173005000
+    },
+    {
+      "id": "Object_base_t5_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170005000
+    },
+    {
+      "id": "Environment_base_t5_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171005000
+    },
+    {
+      "id": "Position_x0.2_t5_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172005000
+    },
+    {
+      "id": "Position_y0.2_t5_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 5,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173005000
+    },
+    {
+      "id": "Object_base_t6_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170006000
+    },
+    {
+      "id": "Environment_base_t6_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171006000
+    },
+    {
+      "id": "Position_x0.2_t6_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172006000
+    },
+    {
+      "id": "Position_y0.2_t6_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173006000
+    },
+    {
+      "id": "Object_base_t6_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170006000
+    },
+    {
+      "id": "Environment_base_t6_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171006000
+    },
+    {
+      "id": "Position_x0.2_t6_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172006000
+    },
+    {
+      "id": "Position_y0.2_t6_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173006000
+    },
+    {
+      "id": "Object_base_t6_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170006000
+    },
+    {
+      "id": "Environment_base_t6_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171006000
+    },
+    {
+      "id": "Position_x0.2_t6_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172006000
+    },
+    {
+      "id": "Position_y0.2_t6_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 6,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173006000
+    },
+    {
+      "id": "Object_base_t7_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170007000
+    },
+    {
+      "id": "Environment_base_t7_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171007000
+    },
+    {
+      "id": "Position_x0.2_t7_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172007000
+    },
+    {
+      "id": "Position_y0.2_t7_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173007000
+    },
+    {
+      "id": "Object_base_t7_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170007000
+    },
+    {
+      "id": "Environment_base_t7_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171007000
+    },
+    {
+      "id": "Position_x0.2_t7_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172007000
+    },
+    {
+      "id": "Position_y0.2_t7_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173007000
+    },
+    {
+      "id": "Object_base_t7_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170007000
+    },
+    {
+      "id": "Environment_base_t7_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171007000
+    },
+    {
+      "id": "Position_x0.2_t7_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172007000
+    },
+    {
+      "id": "Position_y0.2_t7_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 7,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173007000
+    },
+    {
+      "id": "Object_base_t8_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170008000
+    },
+    {
+      "id": "Environment_base_t8_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171008000
+    },
+    {
+      "id": "Position_x0.2_t8_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172008000
+    },
+    {
+      "id": "Position_y0.2_t8_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173008000
+    },
+    {
+      "id": "Object_base_t8_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170008000
+    },
+    {
+      "id": "Environment_base_t8_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171008000
+    },
+    {
+      "id": "Position_x0.2_t8_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172008000
+    },
+    {
+      "id": "Position_y0.2_t8_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173008000
+    },
+    {
+      "id": "Object_base_t8_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170008000
+    },
+    {
+      "id": "Environment_base_t8_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171008000
+    },
+    {
+      "id": "Position_x0.2_t8_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172008000
+    },
+    {
+      "id": "Position_y0.2_t8_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 8,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173008000
+    },
+    {
+      "id": "Object_base_t9_i0_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170009000
+    },
+    {
+      "id": "Environment_base_t9_i0_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171009000
+    },
+    {
+      "id": "Position_x0.2_t9_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 172009000
+    },
+    {
+      "id": "Position_y0.2_t9_i0_g0",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 173009000
+    },
+    {
+      "id": "Object_base_t9_i0_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170009000
+    },
+    {
+      "id": "Environment_base_t9_i0_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171009000
+    },
+    {
+      "id": "Position_x0.2_t9_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 172009000
+    },
+    {
+      "id": "Position_y0.2_t9_i0_g1",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 173009000
+    },
+    {
+      "id": "Object_base_t9_i0_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170009000
+    },
+    {
+      "id": "Environment_base_t9_i0_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171009000
+    },
+    {
+      "id": "Position_x0.2_t9_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "x0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 172009000
+    },
+    {
+      "id": "Position_y0.2_t9_i0_g2",
+      "phase": "screen",
+      "factor": "Position",
+      "level": "y0.2",
+      "suite": "libero_object_temp",
+      "task_id": 9,
+      "init_state_id": 0,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 173009000
+    },
+    {
+      "id": "Object_base_t0_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170000001
+    },
+    {
+      "id": "Environment_base_t0_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171000001
+    },
+    {
+      "id": "Object_base_t0_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170000001
+    },
+    {
+      "id": "Environment_base_t0_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171000001
+    },
+    {
+      "id": "Object_base_t0_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170000001
+    },
+    {
+      "id": "Environment_base_t0_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 0,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171000001
+    },
+    {
+      "id": "Object_base_t1_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170001001
+    },
+    {
+      "id": "Environment_base_t1_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171001001
+    },
+    {
+      "id": "Object_base_t1_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170001001
+    },
+    {
+      "id": "Environment_base_t1_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171001001
+    },
+    {
+      "id": "Object_base_t1_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170001001
+    },
+    {
+      "id": "Environment_base_t1_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 1,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171001001
+    },
+    {
+      "id": "Object_base_t2_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170002001
+    },
+    {
+      "id": "Environment_base_t2_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171002001
+    },
+    {
+      "id": "Object_base_t2_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170002001
+    },
+    {
+      "id": "Environment_base_t2_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171002001
+    },
+    {
+      "id": "Object_base_t2_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170002001
+    },
+    {
+      "id": "Environment_base_t2_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 2,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171002001
+    },
+    {
+      "id": "Object_base_t3_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170003001
+    },
+    {
+      "id": "Environment_base_t3_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171003001
+    },
+    {
+      "id": "Object_base_t3_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170003001
+    },
+    {
+      "id": "Environment_base_t3_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171003001
+    },
+    {
+      "id": "Object_base_t3_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170003001
+    },
+    {
+      "id": "Environment_base_t3_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 3,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171003001
+    },
+    {
+      "id": "Object_base_t4_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170004001
+    },
+    {
+      "id": "Environment_base_t4_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171004001
+    },
+    {
+      "id": "Object_base_t4_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170004001
+    },
+    {
+      "id": "Environment_base_t4_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171004001
+    },
+    {
+      "id": "Object_base_t4_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170004001
+    },
+    {
+      "id": "Environment_base_t4_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 4,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171004001
+    },
+    {
+      "id": "Object_base_t5_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170005001
+    },
+    {
+      "id": "Environment_base_t5_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171005001
+    },
+    {
+      "id": "Object_base_t5_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170005001
+    },
+    {
+      "id": "Environment_base_t5_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171005001
+    },
+    {
+      "id": "Object_base_t5_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170005001
+    },
+    {
+      "id": "Environment_base_t5_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 5,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171005001
+    },
+    {
+      "id": "Object_base_t6_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170006001
+    },
+    {
+      "id": "Environment_base_t6_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171006001
+    },
+    {
+      "id": "Object_base_t6_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170006001
+    },
+    {
+      "id": "Environment_base_t6_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171006001
+    },
+    {
+      "id": "Object_base_t6_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170006001
+    },
+    {
+      "id": "Environment_base_t6_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 6,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171006001
+    },
+    {
+      "id": "Object_base_t7_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170007001
+    },
+    {
+      "id": "Environment_base_t7_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171007001
+    },
+    {
+      "id": "Object_base_t7_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170007001
+    },
+    {
+      "id": "Environment_base_t7_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171007001
+    },
+    {
+      "id": "Object_base_t7_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170007001
+    },
+    {
+      "id": "Environment_base_t7_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 7,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171007001
+    },
+    {
+      "id": "Object_base_t8_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170008001
+    },
+    {
+      "id": "Environment_base_t8_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171008001
+    },
+    {
+      "id": "Object_base_t8_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170008001
+    },
+    {
+      "id": "Environment_base_t8_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171008001
+    },
+    {
+      "id": "Object_base_t8_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170008001
+    },
+    {
+      "id": "Environment_base_t8_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 8,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171008001
+    },
+    {
+      "id": "Object_base_t9_i1_g0",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 170009001
+    },
+    {
+      "id": "Environment_base_t9_i1_g0",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 0,
+      "candidate_seeds": [
+        1,
+        999,
+        998
+      ],
+      "env_seed": 171009001
+    },
+    {
+      "id": "Object_base_t9_i1_g1",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 170009001
+    },
+    {
+      "id": "Environment_base_t9_i1_g1",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 1,
+      "candidate_seeds": [
+        2,
+        997,
+        996
+      ],
+      "env_seed": 171009001
+    },
+    {
+      "id": "Object_base_t9_i1_g2",
+      "phase": "screen",
+      "factor": "Object",
+      "level": "",
+      "suite": "libero_object_object",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 170009001
+    },
+    {
+      "id": "Environment_base_t9_i1_g2",
+      "phase": "screen",
+      "factor": "Environment",
+      "level": "",
+      "suite": "libero_object_env",
+      "task_id": 9,
+      "init_state_id": 1,
+      "seed_group": 2,
+      "candidate_seeds": [
+        3,
+        995,
+        994
+      ],
+      "env_seed": 171009001
+    }
+  ],
+  "upstream_commit": "f1bb8d6221a7ee22bd34a72ec642cac244b4f89b",
+  "upstream_repo": "https://github.com/Doub1e05/Robotics_project_YSDA",
+  "references": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "docs/RESULTS.md": "a3af819618809be33f7d5907d827da76a87abd8d91d24412d9288fe009f40514",
+    "scripts/eval/groot_n17_decoder_action_token_medoid_server.py": "cd5c18ef38ad2027b9edb6f194e6e59c4c0903ec46ec9d21fff3e6d194e1dd2a",
+    "eval/libero/run.py": "92ede2e6f3d9156db0e86b5633ee5733f845b8276a68440df4e077f4fcf56dbe",
+    "eval_outputs/simpler_bridge/ftcosmos_stop0_consensus_medoid_only_k3_fixedseeds012_directresult_full96_20260902_090800/summary.json": "2ba1dadca9fcc6f525bc595c9da9de82e910377e0c681b4b10dc31e9c90b9c90",
+    "eval_outputs/simpler_bridge/ftcosmos_stop0_consensus_medoid_only_k3_full96_20260902_072118/summary.json": "68e74c1dd7082690be29e742a7842a3b9ea62a7cf64be0d51a80f8f536ea0b89",
+    "eval_outputs/simpler_bridge/ftcosmos_stop0_full96_20260901_194203/summary.json": "333eadc520c6f48a3b5e1a3185aa61e0d4698a57dd8b9dd78d2e35dd79ded03e",
+    "eval_outputs/simpler_bridge/groot_n17_baseline_and_consensus_seeds_2_997_996_20260909_064759/baseline/summary.json": "602d340987550c3ca62d0f5204fd78ea5c72cb0a286db84688e9693610e93eff",
+    "eval_outputs/simpler_bridge/groot_n17_baseline_and_consensus_seeds_2_997_996_20260909_064759/consensus_medoid/summary.json": "b4730ce9b6be6f5cdd5947e2abab172e18774b754e68e902aba1b6f15246efed",
+    "eval_outputs/simpler_bridge/groot_n17_bridge_consensus_only_seeds_1_999_998_20260909_001/summary.json": "9bc595321d315b9e781d0973d3ba1f4b9643a3665c758eb183e0e5b3802f2ea1",
+    "eval_outputs/simpler_bridge/groot_n17_consensus_3_995_994_and_baseline_3_20260909_082742/baseline_seed_3/summary.json": "07b4dd3ee71f0f7953f4d72d6bed40d267794d82a64b3b891afd5c8b40565815",
+    "eval_outputs/simpler_bridge/groot_n17_consensus_3_995_994_and_baseline_3_20260909_082742/consensus_seeds_3_995_994/summary.json": "84ed4626af8f48bcc3105951e0f3ab426fe4033962f0df30b00178d209e031e2",
+    "eval_outputs/simpler_bridge/groot_n17_decoder_action_token_medoid_pairs_20260909_082741/seeds_2_997_996/summary.json": "e11befae8bce006d69669f91c194fbd18700e43e146719aaae23efc281b41870",
+    "eval_outputs/simpler_bridge/groot_n17_decoder_action_token_medoid_pairs_20260909_082741/seeds_3_995_994/summary.json": "e32e6ea82f5b95175a7c9a177830fa15a2306ab69153fc283a4e7cfd7715ccc3",
+    "eval_outputs/simpler_bridge/groot_n17_decoder_action_token_medoid_seeds_1_999_998_20260909_062945/summary.json": "0601baf3b2e7110c1c55ea3d8c856fe83b1d7b76d943e53a3c735af25d2a4505",
+    "eval_outputs/simpler_bridge/groot_n17_fixed_baselines_action_seeds_0_1_20260909_073557/seed_0/summary.json": "c15b581888887c25c62c7d969d50dfce8fbf368fb4e515317e83695404586b57",
+    "eval_outputs/simpler_bridge/groot_n17_fixed_baselines_action_seeds_0_1_20260909_073557/seed_1/summary.json": "a0fa6ca68f0733b05b15fb272acc99e1af0685a3a8c1584a3c8c288fe6ffeaa3",
+    "eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/action_consensus/summary.json": "3b5605833ba4a657c91e533835575f079ef70abec9876adf6741d7a3d946625d",
+    "eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/decoder_action_token_medoid/summary.json": "d20b4d824a56ee2775bd9a85e9ac0d5014e7672d558908b16b27f0170a229f7c",
+    "eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/encoder_latent_medoid/summary.json": "e091d912ee10038bbdde55c546530d3205d987a8cfe2e696f64c29a72ee5cfc3",
+    "eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/encoder_latent_medoid_robust/summary.json": "661fe2bd1f8ab7355473838a5ad8ba31e431945dc70aef5e8f64ebe6c37ecb38",
+    "eval_outputs/simpler_bridge/rank_fusion_action_hidden_k3_full96_20260902_133327/summary.json": "1bf61f71e087d26d538a2f0c3eef5c74e47184126e0caa4212f6f11bab81da7b"
+  },
+  "scripts": {
+    "p5_repeat_feedback.py": "1a04cb57d0403fc867da79e675239c0be006d128d543aad4e10b977856e6c9d0",
+    "collect_p5_repeat_feedback.py": "3784c782bafd2f2c9eca3a049a5d5ce5d80d4aff6c45dda2ad452d18617d609b",
+    "run_p5_repeat_feedback_night.py": "ac1c4d2640c2f271160a4f07b8c00911e7fc393e0bc962b66a417b87b3d5dd7c",
+    "analyze_p5_repeat_feedback.py": "e549953cbf9931830a43dff6aaa36dd0a3eadce0fe5cc9e203362208c81de119",
+    "collect_counterfactual_feedback.py": "7286c98375028c16ef3d669c92b3c87a1d467e104f9d89fd88b9a186952eb207",
+    "libero_runtime_snapshot.py": "f8f87aeda81ee221cb00edcfe5309fc6187b29e71cf7029d23dfc626b576adda",
+    "counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "libero_resident.py": "e592acbc34c3aafd6826d8de6082dfd7d1c23da365608aae7f6130b2240effd5",
+    "run_libero_experiment_campaign.py": "a5371d8829d3c44ceee6145367e43bbb34321951ca3d0f18de41bc7831cd4dc5",
+    "cosmos_env.sh": "0c7ba9f066d27e5bd73205986e3d193067a2edd9feba78e6fe0a46b5992c8f00",
+    "cosmos_env_libero_pro.sh": "5c4cba083c5e912b9eb4be1facda1b5cac98012a56807971063a844ca59d066f",
+    "feedback_controls.py": "bf68c50ae2932df1940f687a25389788247930629251e4f068ec79866bd3bae6",
+    "collect_feedback_controls.py": "26f8f06f716f7a379311c7ef67d2f59de24729d2c9ae9271660c0aaf2ea2e936",
+    "run_feedback_controls.py": "c0bb182cfab5c55cce7c19050d692e6fc54a505d52f1df025a647a6ccf98ecc5",
+    "analyze_feedback_controls.py": "e9802b7f24f025f1b0c4af841b0fd715676a382ae0dff3061d28f4ed7fc6c109",
+    "p5_candidate_replication.py": "2fc711164d524d030b58597c260d46f6606be1d470242b7549579d4a6167610e",
+    "analyze_p5_candidate_replication.py": "11a8a2dd137fa63fa6d1696a02b0897346a73032ef13dcd6fd630486da669e91",
+    "probe_repair.py": "959379ba433612b8ad44dbdd641b47fa761490eae61faed08e66820f25186c3a",
+    "collect_probe_repair.py": "b922e99dfeb81892d5b7b6ff0f27f15bcdbbf2c41c4b6db88d39e520ddf052bc",
+    "run_probe_repair.py": "2935373e3862d505d8170f91c6a04c3bc3f80271967ad9a0b80756544d5cb2ee",
+    "analyze_probe_repair.py": "8066142c31e6a32c430a28ade39ee0dd475b140ca25e7ae6c00df414ad977640",
+    "collect_online_perception_regrasp.py": "f0aa0c3e89987b9f8b8532dc3b7ec008b2a4bd9634f4a357a59b440d4bc890fb",
+    "collect_recovery_proposals.py": "156f10c72f12fd91806abd7e67304e551d9e61693c056bd47b3cb4ccc288c2d3",
+    "perception_regrasp.py": "a61d2a485bdc9279f046a8aca05f3411cf8814ac5ea96574122e660ab1dc9099",
+    "perception_regrasp_trigger.py": "f0dd84e7ca08933abca2ba3eb7b55312392832a01fee3228aed4eb284617e65b",
+    "recovery_proposal_utils.py": "affd50196caa5d04b608c834ec8c9203988a95c91550be1c95db371f8ffdf3ad",
+    "prepare_libero_pro_position_variant.sh": "d4eccf0c1b5a1ecd0805dd8455bde7020cdb92bca5b045235f53593036ee6745",
+    "grounded_probe.py": "cb761a961ec1c6ef38b91dbde8f3a8cc10d023e51b21f41791532e8f47644955",
+    "train_grounded_probe_mask.py": "c2170b2e08d6d5a8dc5fced6ec9190397e30fa142c8c124c6c23764b2b009e4c",
+    "collect_grounded_probe.py": "accb679c59955089d4a9932e7691e4c8e90cd1cf0beb8c674b4e1374fae87b71",
+    "analyze_grounded_probe.py": "12f192c86a154c192fdb6b2c5446c73f8b371be90a64d3d8fe380cc11bb996ec",
+    "run_grounded_probe.py": "e0a61d674e58934e45500e6ea4a42d5834acd9e187422f8b14a4bf65fe5a2d6e",
+    "train_perception_regrasp_heatmap.py": "897ecc7e1592ed5195d4659133247030ac15685edf8669ae66fa3d0ea55dbdcb",
+    "timing_eligibility.py": "abb6e537ebe2258e0bc4f6f5385319d5790fa35ce47d8a4c85409a41c1f8e8bf",
+    "collect_timing_eligibility.py": "dc389224fec4f3fe027a82b2d8eaf08ed7815d23d28de664f6ca2248c7bc0db1",
+    "run_timing_eligibility.py": "33eb8f6ee543c4e124af855665d10adae86fc2c967955240869ee08e3c394703",
+    "analyze_timing_eligibility.py": "b95c2f8139edc55b10883d7a6a1fdc5b8ca0e3f77a797e34121842601aba3a59",
+    "observation_contract.py": "3d3be22027fa985d24636a7cdfb51a1661dab14a42f6723c95ec3f0315fd4e3b",
+    "collect_observation_contract.py": "fdce97cc45e5612096d2186b73bca586f7278d16764f160ba4ae402c19c66a8a",
+    "run_observation_contract.py": "ccb15e8ef8319e13e1d4dc93f026b4f59c42ab1c36ed5c10f5ae715e02b1ad14",
+    "analyze_observation_contract.py": "b76c9483a0bd2d4b64cb6f9b822e28670b4436b31d46d393dbe07b000774098a",
+    "decoder_token_medoid.py": "5bea4bd1ef0617c8775be44c4ee656acdd97ce075db36b71c7e27cf092a6cc54",
+    "collect_decoder_token_medoid.py": "1600d7c441a04fc1d79483dcc41526306ff5aaadfb975254236917106d31a000",
+    "run_decoder_token_medoid.py": "c2c757dafbd3e3acbeab10991e7d717178782c7dff8c093039c921c68202f4c1",
+    "analyze_decoder_token_medoid.py": "bcc79865c2bb56377229e023942524b20023cea7d8e87a75a591f0f611f5c456"
+  },
+  "runtime": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy",
+  "runtime_hashes": {
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/cosmos_utils.py": "26092a7ad0386093941bea6831a83e06f234aa48f23a0dd91fcd625dc08eea33",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "9f7efcf03271e0cb568526a1514b9585fd56454cf8319598e6cdd595561b534a",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py": "a21517759e615f15a388fba608881c50739678cd50d5482761dbdda17bd9e35b",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/safety_signals.py": "8a5ce2ba5075050a25c18c0c81fed17b7aeef1a1abec4b0f00a14934b6912e67",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/_src/predict2/networks/minimal_v4_dit.py": "8d517d7e8ff1ed5cd4777cf6551ad0db89358a72f62bc52b6603d4d05cae8be6",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/_src/predict2/networks/minimal_v1_lvg_dit.py": "7081b61ef8e9fd5b28f1578223bb2be153888567bfeb27d64284d97e0f1b220c",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/models/policy_video2world_model.py": "4f5314fdea8f3f05d210f99923ca07e3c05fe9e0756b71f77b201f4b52e460eb",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/conditioner.py": "00c7255ea3cd869f3a914830c703b207a45e6176e5442e4a2e87052cd05879b6",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/consensus_medoid.py": "a6dc6b388cce6731aae4163da87ff92f2389341c4ea0150983f2285f2f8c3923"
+  },
+  "assets": {
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl": "ccc885a5817f50925669b902de89a891a7cbca193bf4a54e4dde00f6e974ef31",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl": "0639b15ed7abb04d59f163807688949d86ac976bd581cc77f9b24aebb4c71eb7",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_butter_and_place_it_in_the_basket.bddl": "beb0387f33b72d6e6f33d14f26665eeef4267b39f6329b6ecb33b91810173c2f",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl": "ced3aba8233baee3d691a9898ad69eef94b0e9ebc6e166762cda1c815511d5eb",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl": "2bdd42a7e444d5d02723901b7e11c2ee1a2964b5a4ba972b495d79fce7a0c4a5",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_ketchup_and_place_it_in_the_basket.bddl": "a131f09aa2447b3f3caaceedac14fa07e32074e9e4b570e0ac5c905a1f930958",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_milk_and_place_it_in_the_basket.bddl": "9e77b95d4488d21dd262622c98f3e2e17c27f2adf6f15f501c2538f8499d0c40",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl": "a13e18795ce27b8a8418345750d026ef1b5de7eb86d531eac5e9db8c6f2ab91b",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl": "55b68a1a543e665004181bdc379c7990c42abbdd78d670f82fff1c8f86946c48",
+    "LIBERO-PRO/libero/libero/bddl_files/libero_object_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket.bddl": "1be00c60b1519d4af13fe1bad53681b76de0b2e87a783699d1ae378a60b07b67",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init": "9145aac8410721db67e83d4b6413c8db980fd3145b7f61831cbc99b0ff58788b",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init": "650b107074818bcd4a3eaf45b90b6fe8f30a9eacf2d1638e85fd538e4d507851",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_butter_and_place_it_in_the_basket.pruned_init": "bd672d1d9addf7e113d51ff5d96c84ccad326aef9b38d788e827cb709bde9a28",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.pruned_init": "510e205e0e3dc19dcea31ba38ab67975a2449712567186c0f668c102e3610c28",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init": "0c127f132eb2d4877b01daad923f00df8917c77f0a5a58cb6434cc5e62a553bd",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init": "62bfe2024756202e43116726f22b22c22b0bc399ac71b22b7498020e0297f1b4",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_milk_and_place_it_in_the_basket.pruned_init": "e8aaa6c48948a2ba3bf51076e59815c1917160c3bafc64984224b1303d29bf59",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init": "76ad7f9a7cce1fbe452fbac265dbb024ca94ca0778d1eb06655058e11f4cc9fa",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init": "4918ad2d123d007b3aa50a73da7780249c90dd31455f89fad0580551f869488f",
+    "LIBERO-PRO/libero/libero/init_files/libero_object_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket.pruned_init": "0165da9cd8a2454e4e7c99a5e8f25d51cc7bf3674ad7d9ed4f10c256d0884a30",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl": "3ef49e74096961fc9935be585781faaf163639cb83b1d6d0b423ac67086880a1",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl": "afc81e40da8da52cb0b978669ec8249202bfe9e3df816375efbc7cb3f51d08b4",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_butter_and_place_it_in_the_basket.bddl": "f48f6487331fb03c84371142a70eec02506e02619d3229315e54fc07cc5bac02",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl": "31195279b7377a1dad981645b68ac9cc37ac4fd5fbb60bb32e728f5f47681509",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl": "68d5bd4870c915b242f2e83666aebb63843626b9a0cdc2156e077713c7bf09d1",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_ketchup_and_place_it_in_the_basket.bddl": "8408036094641bbcabca3a706ebda27ee806fc2d92242790e346122ef29468d1",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_milk_and_place_it_in_the_basket.bddl": "85609431fe0d8d2e6fc76d875e07133e92e884a6e0ae75e78833a6e60fa3fa82",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl": "39dab234b4f2579a76e444060b3daa6e7851c01e0fb85bd191252be4129c2436",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl": "088ceb7cf4cd1756eb166001d885d6c0f1d19230f69452dd037752ee0d80e0ba",
+    ".runtime/libero_pro_position/y0.2/bddl_files/libero_object_temp/pick_up_the_tomato_sauce_and_place_it_in_the_basket.bddl": "5c8357fd0c18156c20b20300e7164ebb96d3ea4896fdf72ab14ec593945069dd",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init": "c7fc0718208447e2b520db0c2b8d21f0b3313de9442e3b2a3ba517b79e9131d4",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init": "8dc38f8cf549d845e1c26df41cbd8c61b9ea9269bbe5b5db2e05e273a0d6068f",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_butter_and_place_it_in_the_basket.pruned_init": "c80d3fa67806b642dd9dd5af87d15e4676d2199ffecac8142f8876205bf2c4e6",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.pruned_init": "8a31a7fa0c91f524bec9f4c89d282be0bb03998383c89608a21bb0d9e710b64c",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init": "4203b98172a882740a21abaa6b3cbae0a727d4fbeeac42660e79a7e1b46d3513",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init": "b4d9cb5eaed5545c58d99a21d2b700d6015264b16d114ed544200ee0e40393db",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_milk_and_place_it_in_the_basket.pruned_init": "3bb6f26933be4a9056ec787a21205882d3e8192f102402538eaf34fe8477dc30",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init": "796d03be7dd42f693e07d081f59b191940949441dc2eb5a711d7820663fa32cf",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init": "c80b1e6dafd2ea74504339f66e0e7ec025b2f86b111dd6d8e47a5650d33b2256",
+    ".runtime/libero_pro_position/y0.2/init_files/libero_object_temp/pick_up_the_tomato_sauce_and_place_it_in_the_basket.pruned_init": "59cac505e10cb9f7a143d558284c0a45b412f3dd85ab7c16cb10934cd4d8a36d",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl": "49736fb8f3011f3c4941c5816057dd687c12dda8bc694723b1581159ed7e07e2",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl": "94bc9a83481bdfc1924bbf16e0fd15b911eb52d704961cf547cfad35e1c4b5ca",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_butter_and_place_it_in_the_basket.bddl": "253390618a551f55f484562f3c834f3238e794c3f6aa6273b4a8ff7bb6e2d407",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl": "89f9a0093b4b045c78ca7762fa78636dbc57335c2e7cec4cf6fa10ec3ad4fd8e",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl": "71ef707b8713141d7d8fda1661a949ecb743bd249dc213d626b8f614c9772bbd",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_ketchup_and_place_it_in_the_basket.bddl": "64afdcc1a030a670c49c5ae744c84e59622f0081365b460c4efece62b24984fe",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_milk_and_place_it_in_the_basket.bddl": "604b568050b47b77d7a06a741c5a9b5b54eb24db7338f89478567920d7f6c844",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl": "ea8efb37e9da269a31da520e999401ab58f59ea3a1cdca07e7bd704a1cda6851",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl": "ed019f20366561ce9a1629e9c0e8196443a53fb1837df53882b48d2e63ce04a7",
+    ".runtime/trajectory_consensus_20260908_environment/bddl_files/libero_object_env/pick_up_the_tomato_sauce_and_place_it_in_the_basket.bddl": "25cdd3f02723aee70f7079e25ec0ffac155631f2db48c853f9ac85a5fb45babe",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init": "47b9bd4f82667fbcd94004f31bf44633e0820aee88252ec18525fbaf6e27f1b1",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init": "8bcd9def3bf6e636b8dd6c6f3ba4154ea7fbfb1796fa05f6c1e2f19155107189",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_butter_and_place_it_in_the_basket.pruned_init": "873a51174f992fc216be8490805f1bd24b528d898c20fd0b4cf8c9ee156b3942",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.pruned_init": "92af8c49558541d7658b9a7214733bb91ac32c348c82d7fd82576494e84124ab",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init": "318321f90eabbd59911eea7df3c331ea23b09699880a07952a812b288195e204",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init": "e5dd7efc2da760e1fb99444d46c8e51efa3c047b357d0fb8c9bd0ab0a5d67ba1",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_milk_and_place_it_in_the_basket.pruned_init": "7962b6c5e80e303f758882c791ed0a9d8aff3a6823aee645fd32acb9726224ad",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init": "f063c6f2a8a9df67fc29e4effb6c214c5da80cb43b7f1809535ff6491e604ebc",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init": "27e2fb2547f52a98203a433a5c77cd4fee4299bddc31751fb49009f348424820",
+    ".runtime/trajectory_consensus_20260908_environment/init_files/libero_object_env/pick_up_the_tomato_sauce_and_place_it_in_the_basket.pruned_init": "adaab24e34e311a966aec5833c963e71b64d0989055eee860fecf706a915851b",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl": "9dfca02d53a68da0c50c72c5f055726d61b05f15b031f8623bea6801d81565db",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl": "d079587eafd76e04fad0293a84af88c94ac45fc0736878ad3e35d349f896c665",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_butter_and_place_it_in_the_basket.bddl": "17038df4193e8ac2ba5ae10127af8b4f6798b0186338a472499bc9b36f91c533",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl": "cceabb4c8ec7e9514baceae05fe353d3f5aab855086cc5cca6cf3d6898810a01",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl": "6b566a4b01aeb215b89a97f4f7147e1aecaee3097d0291369ee6fae242599d84",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_ketchup_and_place_it_in_the_basket.bddl": "fd25834456ef3556a975898a96034c0e9cc90197c9d7aaed288ba891425982e3",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_milk_and_place_it_in_the_basket.bddl": "7f7b39ea403d8358e3681e10753a31d03c66ed66455130bbd533cf283e2c697c",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl": "e382c71da6c89fd6f342127dc831ee1217fc219de65306bff20beb1a67651781",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl": "e60d818f8fc562973e7f4b25419bf6500e502190823a5d96a4af2e4f3d053032",
+    ".runtime/libero_pro_position/x0.2/bddl_files/libero_object_temp/pick_up_the_tomato_sauce_and_place_it_in_the_basket.bddl": "578a3b7583755291d10a2c85d2e623c79f9513ef80191fbafc370e29a024e75b",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_alphabet_soup_and_place_it_in_the_basket.pruned_init": "e8b900cdf476958f3f969768aacc728d69ed24624e27ee05a8ec62b1336f2dda",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init": "9c480ecdb1a1e69d8e1d4caf193511d481bce2564b487049b80dda2fa15e63d3",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_butter_and_place_it_in_the_basket.pruned_init": "2192ea27645ac9beb0a8be8dc84cf0b664a9fe3c9eab985b3d7572132beadb6c",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.pruned_init": "5a29c19e34db71e92e88bad32d45b516fae086db2e38830bc67e3d50ae9e3798",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init": "22a8a97172a742c97e8e41cbaf1eefa67b662074bb06f48bd3a7eda1af26ee56",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_ketchup_and_place_it_in_the_basket.pruned_init": "571537198156a7f56621bfd844a5961201c0833639c0ab6ed3cb2458351e555b",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_milk_and_place_it_in_the_basket.pruned_init": "a84122e86da8f2741d9ca3eb8a9b1802d68dc2b0deb866b8a60b2b139b3281b2",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_orange_juice_and_place_it_in_the_basket.pruned_init": "77ccb296c9d2ba2263c4ab18b6610f95fc077d854eaac4997d4b24e7fcc933d6",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init": "8f338b4f017f4003f96cdb4006b10094e5f84db2d59b4fe2d5c6e2033b6e03f1",
+    ".runtime/libero_pro_position/x0.2/init_files/libero_object_temp/pick_up_the_tomato_sauce_and_place_it_in_the_basket.pruned_init": "fae435a750ae4149f0320e56c3a83219df1b521aa5e57e3c928a322e0fe3fb39"
+  },
+  "gpu_candidates": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "0"
+  ],
+  "max_workers": 7,
+  "batch_size": 3,
+  "dependency": "observation_contract_20260911",
+  "max_run_hours_after_first_admission": 24,
+  "K": 3,
+  "generated_horizon": 16,
+  "executed_horizon": 16,
+  "max_steps": 280,
+  "settle_steps": 10,
+  "denoising_steps": 5,
+  "prediction_mode": "parallel",
+  "fixed_seeds_each_query": true,
+  "primary": "decoder_medoid",
+  "early_action_count": 4,
+  "early_weight": 4.0,
+  "action_medoid": {
+    "horizon": 5,
+    "discount": 0.9,
+    "xyz": 1.0,
+    "rotation": 0.5,
+    "gripper": 0.25
+  },
+  "automatic_hyperparameter_search": false,
+  "automatic_holdout": false,
+  "scientific_scope": "development_transfer_180_paired_configs_720_full_rollouts_not_full_standard_benchmark",
+  "source_architecture": "GR00T_N1.7_final_DiT_action_tokens",
+  "transfer_architecture": "Cosmos_2B_action_slice_final_block_with_decoder_incidence_weighting"
+}

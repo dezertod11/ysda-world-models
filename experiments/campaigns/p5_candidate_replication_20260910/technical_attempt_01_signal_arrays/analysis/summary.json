@@ -1,0 +1,10 @@
+{
+  "status": "partial",
+  "completed_jobs": [],
+  "excluded": [],
+  "branches": 0,
+  "planned_branches": 690,
+  "conditional_same_state_replication": true,
+  "full_episode_new_controller": false,
+  "neighbor_init_is_not_globally_untouched": true
+}

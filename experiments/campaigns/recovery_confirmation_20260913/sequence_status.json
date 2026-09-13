@@ -1,0 +1,30 @@
+{
+  "status": "running",
+  "stage": "main",
+  "pid": 3534005,
+  "active": {
+    "7": {
+      "pid": 3539778,
+      "jobs": [
+        "x0.3_t5_i32",
+        "x0.3_t6_i32",
+        "x0.3_t7_i32",
+        "x0.3_t8_i32"
+      ],
+      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_confirmation_20260913/batches/1789291135901553116_gpu7.log"
+    }
+  },
+  "deadline_epoch": 1789323160.2128422,
+  "started_at": "2026-09-13T09:12:40.212842+00:00",
+  "automatic_holdout": false,
+  "updated_at": "2026-09-13T09:36:57.110728+00:00",
+  "completed_branches": {
+    "smoke": 9,
+    "main": 496,
+    "timing": 0
+  },
+  "expected_branches": 1289,
+  "seconds_until_deadline": 30943,
+  "waiting_for_idle_gpu": false,
+  "eta_remaining_seconds": 2261
+}

@@ -1,0 +1,15 @@
+{
+  "status": "completed_screen_gate_failed",
+  "pid": 33728,
+  "active": {},
+  "deadline_epoch": 1789112477.1665037,
+  "updated_at": "2026-09-10T20:50:12.395127+00:00",
+  "completed_branches": {
+    "smoke": 24,
+    "screen": 192,
+    "holdout": 0
+  },
+  "stage": "screen",
+  "waiting_for_idle_gpu": false,
+  "holdout_started": false
+}

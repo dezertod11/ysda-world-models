@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "pid": 1544368,
+  "active": {},
+  "dependency": "observation_contract_20260911",
+  "night_plan": "night_plan_20260912_1000.json",
+  "deadline_epoch": 1789196400.0,
+  "compute_deadline_epoch": 1789195200.0,
+  "expected_rollouts": 1440,
+  "stage_expected_rollouts": {
+    "screen": 720,
+    "seed_controls": 360,
+    "horizon8": 360
+  },
+  "updated_at": "2026-09-12T04:31:31.106260+00:00",
+  "stage_completed_rollouts": {
+    "screen": 720,
+    "seed_controls": 360,
+    "horizon8": 360
+  },
+  "completed_rollouts": 1440,
+  "completed_smokes": 3,
+  "seconds_until_deadline": 8908,
+  "seconds_until_compute_cutoff": 7708,
+  "dependency_status": "running",
+  "dependency_active": {},
+  "stage": "horizon8",
+  "waiting_for_idle_gpu": false,
+  "calculation_status": "completed",
+  "finished_at": "2026-09-12T04:31:31.106227+00:00",
+  "reports_complete": true
+}

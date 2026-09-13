@@ -1,0 +1,233 @@
+[
+  {
+    "job_id": "x0.3_t5_i30",
+    "cohort": "transfer",
+    "cell": "x0.3_t5",
+    "missing_arms": [
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 653073150
+  },
+  {
+    "job_id": "x0.3_t9_i30",
+    "cohort": "transfer",
+    "cell": "x0.3_t9",
+    "missing_arms": [
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 514112832
+  },
+  {
+    "job_id": "x0.3_t2_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t2",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 414678391
+  },
+  {
+    "job_id": "x0.3_t4_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t4",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 662789374
+  },
+  {
+    "job_id": "x0.3_t5_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t5",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 599507361
+  },
+  {
+    "job_id": "x0.3_t6_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t6",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 425128561
+  },
+  {
+    "job_id": "x0.3_t7_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t7",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 462356178
+  },
+  {
+    "job_id": "x0.3_t8_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t8",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 1171648836
+  },
+  {
+    "job_id": "x0.3_t9_i31",
+    "cohort": "transfer",
+    "cell": "x0.3_t9",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 301941079
+  },
+  {
+    "job_id": "x0.2_t9_i32",
+    "cohort": "replication",
+    "cell": "x0.2_t9",
+    "missing_arms": [
+      "physical_regrasp"
+    ],
+    "rollout_seed": 587685129
+  },
+  {
+    "job_id": "y0.2_t9_i32",
+    "cohort": "replication",
+    "cell": "y0.2_t9",
+    "missing_arms": [
+      "continue_h8",
+      "physical_regrasp"
+    ],
+    "rollout_seed": 742237284
+  },
+  {
+    "job_id": "y0.3_t5_i32",
+    "cohort": "replication",
+    "cell": "y0.3_t5",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 348668530
+  },
+  {
+    "job_id": "x0.3_t1_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t1",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 997879235
+  },
+  {
+    "job_id": "x0.3_t2_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t2",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 920823329
+  },
+  {
+    "job_id": "x0.3_t4_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t4",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 666986165
+  },
+  {
+    "job_id": "x0.3_t5_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t5",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 331541621
+  },
+  {
+    "job_id": "x0.3_t6_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t6",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 856136122
+  },
+  {
+    "job_id": "x0.3_t7_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t7",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 523802412
+  },
+  {
+    "job_id": "x0.3_t8_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t8",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 441471703
+  },
+  {
+    "job_id": "x0.3_t9_i32",
+    "cohort": "transfer",
+    "cell": "x0.3_t9",
+    "missing_arms": [
+      "baseline_h16",
+      "continue_h8",
+      "physical_regrasp",
+      "refresh_preserve_only"
+    ],
+    "rollout_seed": 467409147
+  }
+]

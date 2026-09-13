@@ -1,0 +1,343 @@
+{
+  "name": "p5_candidate_replication_20260910",
+  "source_config_sha256": "f08e5e80dc279d277516811cea17352f9ffa94455d0f7a013b16400ec7558848",
+  "source_config": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p5_repeat_feedback_20260910/config.json",
+  "created_at": "2026-09-10T09:01:22.631587+00:00",
+  "deadline_epoch": 1789074082.6316051,
+  "max_workers": 3,
+  "batch_size": 2,
+  "gpu_candidates": [
+    "1",
+    "3",
+    "5",
+    "0",
+    "2",
+    "4",
+    "6",
+    "7"
+  ],
+  "jobs": [
+    {
+      "id": "repeat_pool_13",
+      "kind": "replication",
+      "source_pool": "pool_13",
+      "task_id": 2,
+      "init_state_id": 7,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the salad dressing and place it in the basket",
+      "candidates": [
+        4,
+        3,
+        5
+      ],
+      "baseline": 4,
+      "sidecar": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p5_boundary_candidates_20260909/runs/p5_boundary_candidates_20260909__position_x0p2_t2_i7__snapshots/libero_object_temp__task2__init7__rollout0__query3.npz",
+      "sidecar_sha256": "274d2b73b4903bd6355edf2ae3d628088a8446332ce718d0e12ef17b7551357c",
+      "t": 48,
+      "seed_base": 1100000000,
+      "expected_branches": 30
+    },
+    {
+      "id": "repeat_pool_11",
+      "kind": "replication",
+      "source_pool": "pool_11",
+      "task_id": 0,
+      "init_state_id": 8,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the alphabet soup and place it in the basket",
+      "candidates": [
+        7,
+        6
+      ],
+      "baseline": 7,
+      "sidecar": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p5_boundary_candidates_20260909/runs/p5_boundary_candidates_20260909__position_x0p2_t0_i8__snapshots/libero_object_temp__task0__init8__rollout0__query3.npz",
+      "sidecar_sha256": "f5ba70e57874172839a3b2f81aea6164a9d1e03cfdc187a28659b2c34e55435c",
+      "t": 48,
+      "seed_base": 1101000000,
+      "expected_branches": 20
+    },
+    {
+      "id": "neighbor_t0_i9",
+      "kind": "neighbor",
+      "task_id": 0,
+      "init_state_id": 9,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the alphabet soup and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 700090000,
+      "seed_base": 1102000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t0_i10",
+      "kind": "neighbor",
+      "task_id": 0,
+      "init_state_id": 10,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the alphabet soup and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 700100000,
+      "seed_base": 1103000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t0_i11",
+      "kind": "neighbor",
+      "task_id": 0,
+      "init_state_id": 11,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the alphabet soup and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 700110000,
+      "seed_base": 1104000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t0_i12",
+      "kind": "neighbor",
+      "task_id": 0,
+      "init_state_id": 12,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the alphabet soup and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 700120000,
+      "seed_base": 1105000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t2_i9",
+      "kind": "neighbor",
+      "task_id": 2,
+      "init_state_id": 9,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the salad dressing and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 702090000,
+      "seed_base": 1106000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t2_i10",
+      "kind": "neighbor",
+      "task_id": 2,
+      "init_state_id": 10,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the salad dressing and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 702100000,
+      "seed_base": 1107000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t2_i11",
+      "kind": "neighbor",
+      "task_id": 2,
+      "init_state_id": 11,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the salad dressing and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 702110000,
+      "seed_base": 1108000000,
+      "expected_branches": 80
+    },
+    {
+      "id": "neighbor_t2_i12",
+      "kind": "neighbor",
+      "task_id": 2,
+      "init_state_id": 12,
+      "suite": "libero_object_temp",
+      "environment": {
+        "LIBERO_BDDL_FILES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/bddl_files",
+        "LIBERO_INIT_STATES_PATH": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/.runtime/libero_pro_position/x0.2/init_files"
+      },
+      "description": "pick up the salad dressing and place it in the basket",
+      "candidates": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "t": 48,
+      "prefix_seed": 702120000,
+      "seed_base": 1109000000,
+      "expected_branches": 80
+    }
+  ],
+  "scripts": {
+    "p5_repeat_feedback.py": "1a04cb57d0403fc867da79e675239c0be006d128d543aad4e10b977856e6c9d0",
+    "collect_p5_repeat_feedback.py": "3784c782bafd2f2c9eca3a049a5d5ce5d80d4aff6c45dda2ad452d18617d609b",
+    "run_p5_repeat_feedback_night.py": "ac1c4d2640c2f271160a4f07b8c00911e7fc393e0bc962b66a417b87b3d5dd7c",
+    "analyze_p5_repeat_feedback.py": "e549953cbf9931830a43dff6aaa36dd0a3eadce0fe5cc9e203362208c81de119",
+    "collect_counterfactual_feedback.py": "7286c98375028c16ef3d669c92b3c87a1d467e104f9d89fd88b9a186952eb207",
+    "libero_runtime_snapshot.py": "f8f87aeda81ee221cb00edcfe5309fc6187b29e71cf7029d23dfc626b576adda",
+    "counterfactual_feedback_utils.py": "e5966231aaaf45ca46274f6804c28465d982bbdde558c6ff2fdd5d3580978d96",
+    "libero_resident.py": "e592acbc34c3aafd6826d8de6082dfd7d1c23da365608aae7f6130b2240effd5",
+    "run_libero_experiment_campaign.py": "a5371d8829d3c44ceee6145367e43bbb34321951ca3d0f18de41bc7831cd4dc5",
+    "cosmos_env.sh": "0c7ba9f066d27e5bd73205986e3d193067a2edd9feba78e6fe0a46b5992c8f00",
+    "cosmos_env_libero_pro.sh": "5c4cba083c5e912b9eb4be1facda1b5cac98012a56807971063a844ca59d066f",
+    "p5_candidate_replication.py": "2fc711164d524d030b58597c260d46f6606be1d470242b7549579d4a6167610e",
+    "collect_p5_candidate_replication.py": "2f3fb3886b79fca48f15a948b23199ae14c3ab518a5b9d6126ff87d7b7ac49d0",
+    "run_p5_candidate_replication.py": "7489d68a8971291f52dbcbbf5a185a4e9719b02d20742d2b13ed09bf8b38e9e7",
+    "analyze_p5_candidate_replication.py": "11a8a2dd137fa63fa6d1696a02b0897346a73032ef13dcd6fd630486da669e91"
+  },
+  "runtime": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy",
+  "runtime_hashes": {
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/cosmos_utils.py": "26092a7ad0386093941bea6831a83e06f234aa48f23a0dd91fcd625dc08eea33",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_comparison.py": "9f7efcf03271e0cb568526a1514b9585fd56454cf8319598e6cdd595561b534a",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/uncertainty_metrics.py": "a21517759e615f15a388fba608881c50739678cd50d5482761dbdda17bd9e35b",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/consensus_references_20260909_valid199/source/cosmos-policy/cosmos_policy/experiments/robot/libero/safety_signals.py": "8a5ce2ba5075050a25c18c0c81fed17b7aeef1a1abec4b0f00a14934b6912e67"
+  },
+  "expected_branches": 690,
+  "expected_smoke_branches": 6,
+  "smoke_jobs": [
+    "repeat_pool_13",
+    "repeat_pool_11",
+    "neighbor_t2_i12"
+  ],
+  "primary_pairs": [
+    [
+      "repeat_pool_13",
+      3,
+      4
+    ],
+    [
+      "repeat_pool_13",
+      5,
+      4
+    ],
+    [
+      "repeat_pool_11",
+      6,
+      7
+    ]
+  ],
+  "suffix_repeats": 10,
+  "neighbor_split": [
+    [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  ],
+  "protocol": "conditional_replication_and_new_pool_diagnostic_not_new_controller",
+  "no_automatic_fit_or_holdout": true
+}

@@ -38,8 +38,8 @@ if [[ -z "${CUDA_VISIBLE_DEVICES:-}" ]]; then
   fi
 fi
 
-if [[ "$IS_MLSPACE" == "1" && ",$CUDA_VISIBLE_DEVICES," == *,0,* ]]; then
-  echo "GPU 0 is reserved on MLSpace; choose CUDA_VISIBLE_DEVICES=1..7." >&2
+if [[ "$IS_MLSPACE" == "1" && ",$CUDA_VISIBLE_DEVICES," == *,0,* && "${MLSPACE_ALLOW_GPU0:-0}" != "1" ]]; then
+  echo "GPU 0 requires explicit authorization; use the idle-only campaign queue with --allow-gpu-zero." >&2
   return 2 2>/dev/null || exit 2
 fi
 
