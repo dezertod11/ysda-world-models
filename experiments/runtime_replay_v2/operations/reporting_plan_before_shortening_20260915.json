@@ -1,0 +1,16 @@
+{
+  "deadline_epoch": 1789502739,
+  "deadline_msk": "2026-09-15T23:05:39+03:00",
+  "supervisor_pid": 164499,
+  "stages": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s1",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s2"
+  ],
+  "resource_authorization": "User delegated duration; agent selected 12-hour cap with early exit",
+  "expected_main_cases": 597,
+  "expected_main_rollouts": 2985,
+  "expected_smoke_rollouts": 54,
+  "partial_stages_descriptive_only": true,
+  "auditor_sha256": "515a7a440a8249d229f8209a22ca95e113dc0f7d4e14437a39833b047d43bb85"
+}

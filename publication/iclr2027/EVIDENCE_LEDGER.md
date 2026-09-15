@@ -1,14 +1,52 @@
 # Реестр доказательств для статьи
 
-**Предварительные данные 13 сентября, вне confirmatory E1–E19:**
-[Recovery confirmation interim](../../experiments/RECOVERY_CONFIRMATION_INTERIM_RESULTS_20260913.md).
-108/128 полных matched cases: physical40/61 противH8 16/61 наfamiliar,
-1/47 против0/47 наx0.3; preserve-only не добавил SR.
-Post-hoc offline GT audit обнаружил XY-error>5см у18/18разрешённых transfer
-gates против0/40наfamiliar. Разрешено описывать этот срез с указанием
-прерывания и ограничения выборки; нельзя приписывать ему final p-values,
-доказанную единственную причину failures, event-controller gain или общий
-LIBERO-PRO SR. Полные старые доказательства ниже не заменены этими числами.
+**Статус рукописи15сентября:** [submission checklist](SUBMISSION_CHECKLIST.md)
+отделяет техническую сборку от научной готовности. Исторические scoped
+claims не повышены до corrected-runtime confirmation; в machine evidence
+это отражено как `scoped_runtime_v2_replication_complete=false`.
+Новые редакционные формулы advantage не являются результатом обученного метода.
+
+**E27, 15 сентября: [полная S0-v2](../../experiments/P3_RUNTIME_V2_RESULTS_20260915.md).**
+199matched cases,995main+18smoke, исправленный snapshot, strict audit passed.
+P3fixed96/199 vsH16 93/199, Macro54.10% vs53.42%, delta+0.6801п.п.,
+CI[-2.9967;4.3636],9rescue/6harm,Holmp=1. Event0interventions и точный
+H16 parity. Общий gain не подтверждён. E23–E25 ниже исторические v1;
+E26 дополнен успешной closed-loop проверкой. E20/scoped gain остаётся
+историческим результатом и требует отдельного v2 replay. Новых seed-репликаций нет.
+
+**Редакционный фокус 14 сентября:** основная рукопись теперь о gated RGB
+recovery. [Обоснование выбора](PAPER_NARRATIVE.md) и
+[остальные эксперименты](OTHER_EXPERIMENTS.md) разделяют научные вопросы,
+но не меняют значения и статус доказательств ниже. В main/appendix сохранены
+P3 transfer limitations, timing, обучение localizer и отрицательные direct
+абляции. Нулевые selector-результаты не превращаются в положительные claims.
+
+**Завершённое дополнение 14 сентября, отдельно от E1–E19:**
+[Recovery final report](../../experiments/RECOVERY_FINAL_RESULTS_20260914.md).
+
+| Evidence | Результат | Допустимый вывод / ограничение |
+|---|---|---|
+| E20: recovery confirmation, 128 matched cases, 512 branches | Familiar: physical41/64, H8 16/64; +39.06 п.п., CI[29.69; 48.44], 27 rescue/2 harm. Transfer: 1/64 vs0/64. Preserve-only равен physical по SR | Сильная локальная репликация, не общий перенос. Новый preserve-only выигрыш не подтверждён |
+| E21: timing, 768 branches из тех же 128 prefixes | Familiar physical: t56 31/64, t72 41/64, t88 34/64 | Эффект чувствителен к времени. Нельзя объявлять t72 универсальным или считать branches независимыми задачами |
+| E22: privileged grounding, 32 cases, 128 branches | Transfer RGB0/16, GT-XY3/16, GT-XYZ2/16. Gate-passed XY-error>5cm: 24/24 transfer против0/42 familiar в отдельном полном confirmation-аудите | Grounding вносит вклад, но не является доказанной единственной причиной. GT не online input deployable-метода |
+
+**Дополнение 15 сентября:** [полный broad P3 benchmark](../../experiments/P3_BENCHMARK_FINAL_RESULTS_20260915.md).
+
+| Evidence | Результат | Допустимый вывод / ограничение |
+|---|---|---|
+| E23: 199 matched cases, 995 rollout | P3fixed95/199 противH16 93/199; Macro53.43% против53.42%; delta+0.0135п.п., CI[-3.6701;3.7801], 9rescue/7harm, Holmp=1 | Общий выигрыш не подтверждён; Position+4.04п.п. компенсирован Object-6п.п. Не скрывать broad рядом со scoped gain |
+| E24: event coverage на тех же199cases | 159supported,70valid localization,10grasp attempt,3attempt+miss,0persistent miss,0physical intervention; event точно повторяетH16 | Это не положительный adaptive recovery result; detector не обеспечивает coverage |
+| E25: незавершённая seed-репликация S1 | 180raw outcomes,33matched cases; no-intervention parity failure вBBQ-sauce case, обаsuccess,240vs237actions; S2 не стартовала | Не использовать как завершённую репликацию или evidence межseed устойчивости. CPU-диагностика причины ниже; не ослаблять audit |
+| E26: [snapshot v2, CPU replay](../../experiments/runtime_replay_v2/README.md) | Несохранённый warmstart воспроизводимо нарушает replay локально и на сервере; исправлены integration state и sensor clocks/cache. 30 tests passed на каждом хосте, 5 RGB tests локально | Инженерная проверка, не новый SR. Closed-loop GPU ещё не проверен. Исторические v1 counts сохранены, строгую paired-интерпретацию перепроверить в новом S0/S1/S2-v2 |
+
+13-сентябрьский промежуточный срез сохранён в отдельном историческом отчёте.
+
+**Вечерняя проверка 14 сентября, не новый evidence cohort:**
+[512 локальных outcomes повторно сверены; разбор по всем клеткам](../../experiments/EXPERIMENT_REVIEW_20260914_EVENING.md).
+P3 выигрывает по point estimate в 6/8 клеток относительно H8, но в 5/8
+относительно H16. На x0.2/task6 recovery=5/8 против H8=4/8 и H16=6/8.
+Не выбирать control постфактум по величине gain. Новая общая серия остаётся
+непроверенной: текущий SSH timeout не сообщает исходов эксперимента.
 
 Срез: завершённые локальные отчёты, доступные 12 сентября 2026. Это не live
 статус сервера. Новая очередь не становится результатом до её полного аудита.
@@ -22,7 +60,7 @@ LIBERO-PRO SR. Полные старые доказательства ниже �
 
 Полный текст исследования с формулами: [FULL_RESEARCH_REPORT.md](FULL_RESEARCH_REPORT.md).
 Краткая версия: [RESEARCH_SUMMARY.md](RESEARCH_SUMMARY.md). Английская
-рукопись обновлена по E1–E19, без объявления нового общего SOTA результата.
+рукопись сосредоточена на recovery, включая E20–E22, без объявления общего SOTA.
 
 ## Основная таблица: valid199
 
@@ -146,8 +184,9 @@ Controls в расширенных decoder таблицах повторно и�
 
 ## Воспроизводимость чисел
 
-[build.py](tools/build.py) генерирует main table и error-bar figure из двух CSV,
-проверяет размеры factors, набор методов и counts. SHA-256 входов записываются
+[build.py](tools/build.py) вызывает [recovery_assets.py](tools/recovery_assets.py)
+для таблиц и рисунков текущей recovery-статьи. Проверяются counts, полный
+набор восьми клеток и оба контроля; SHA-256 всех 15 входов записываются
 в [manuscript/tables/provenance.json](manuscript/tables/provenance.json).
-E1–E19 приведены из отдельных отчётов, а не автоматически объединены в одну SR.
+Исторические E1–E19 приведены из отдельных отчётов, не объединены в одну SR.
 Изменение исходных данных требует нового аудита текста и ledger.

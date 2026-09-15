@@ -1,11 +1,123 @@
 {
   "planned_cases": 32,
   "geometry_cases": 32,
-  "committed_outcomes": 2,
-  "fully_matched_cases": 0,
-  "complete": false,
-  "scores": [],
-  "paired_descriptive": [],
+  "committed_outcomes": 128,
+  "fully_matched_cases": 32,
+  "complete": true,
+  "scores": [
+    {
+      "cohort": "replication",
+      "arm": "rgb_replay",
+      "n": 16,
+      "successes": 10,
+      "sr": 0.625
+    },
+    {
+      "cohort": "replication",
+      "arm": "oracle_xy_fixed_gate",
+      "n": 16,
+      "successes": 11,
+      "sr": 0.6875
+    },
+    {
+      "cohort": "replication",
+      "arm": "oracle_xyz_fixed_gate",
+      "n": 16,
+      "successes": 10,
+      "sr": 0.625
+    },
+    {
+      "cohort": "replication",
+      "arm": "oracle_xyz_physical_gate",
+      "n": 16,
+      "successes": 12,
+      "sr": 0.75
+    },
+    {
+      "cohort": "transfer",
+      "arm": "rgb_replay",
+      "n": 16,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "cohort": "transfer",
+      "arm": "oracle_xy_fixed_gate",
+      "n": 16,
+      "successes": 3,
+      "sr": 0.1875
+    },
+    {
+      "cohort": "transfer",
+      "arm": "oracle_xyz_fixed_gate",
+      "n": 16,
+      "successes": 2,
+      "sr": 0.125
+    },
+    {
+      "cohort": "transfer",
+      "arm": "oracle_xyz_physical_gate",
+      "n": 16,
+      "successes": 2,
+      "sr": 0.125
+    }
+  ],
+  "paired_descriptive": [
+    {
+      "cohort": "replication",
+      "method": "oracle_xy_fixed_gate",
+      "control": "rgb_replay",
+      "n": 16,
+      "rescue": 1,
+      "harm": 0,
+      "difference_pp": 6.25
+    },
+    {
+      "cohort": "replication",
+      "method": "oracle_xyz_fixed_gate",
+      "control": "oracle_xy_fixed_gate",
+      "n": 16,
+      "rescue": 0,
+      "harm": 1,
+      "difference_pp": -6.25
+    },
+    {
+      "cohort": "replication",
+      "method": "oracle_xyz_physical_gate",
+      "control": "oracle_xyz_fixed_gate",
+      "n": 16,
+      "rescue": 2,
+      "harm": 0,
+      "difference_pp": 12.5
+    },
+    {
+      "cohort": "transfer",
+      "method": "oracle_xy_fixed_gate",
+      "control": "rgb_replay",
+      "n": 16,
+      "rescue": 3,
+      "harm": 0,
+      "difference_pp": 18.75
+    },
+    {
+      "cohort": "transfer",
+      "method": "oracle_xyz_fixed_gate",
+      "control": "oracle_xy_fixed_gate",
+      "n": 16,
+      "rescue": 0,
+      "harm": 1,
+      "difference_pp": -6.25
+    },
+    {
+      "cohort": "transfer",
+      "method": "oracle_xyz_physical_gate",
+      "control": "oracle_xyz_fixed_gate",
+      "n": 16,
+      "rescue": 0,
+      "harm": 0,
+      "difference_pp": 0.0
+    }
+  ],
   "shadow": [],
   "diagnostic_only": true,
   "no_inferential_claim": true,

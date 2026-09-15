@@ -1,0 +1,16 @@
+arm,factor,size,sum,mean
+first_k1,Environment,50,20,0.4
+first_k1,Object,50,48,0.96
+first_k1,Position,99,29,0.29292929292929293
+h8_at72,Environment,50,21,0.42
+h8_at72,Object,50,48,0.96
+h8_at72,Position,99,26,0.26262626262626265
+max_value_h16,Environment,50,20,0.4
+max_value_h16,Object,50,47,0.94
+max_value_h16,Position,99,26,0.26262626262626265
+p3_at72,Environment,50,21,0.42
+p3_at72,Object,50,45,0.9
+p3_at72,Position,99,30,0.30303030303030304
+p3_event,Environment,50,20,0.4
+p3_event,Object,50,47,0.94
+p3_event,Position,99,26,0.26262626262626265

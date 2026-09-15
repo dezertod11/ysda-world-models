@@ -1,0 +1,29 @@
+{
+  "config_sha256": "10d8f0530edaaa024e734769d007553659bfe1bd7060e5f3f936805239293446",
+  "cases": 199,
+  "outcomes": 995,
+  "verified_video_and_npz_hashes": 1990,
+  "event_input_and_video_parity_cases": 199,
+  "v1_v2_changed_outcomes": [
+    {
+      "id": "object__t0_i3",
+      "factor": "Object",
+      "arm": "h8_at72",
+      "old_success": false,
+      "new_success": true
+    },
+    {
+      "id": "object__t0_i3",
+      "factor": "Object",
+      "arm": "p3_at72",
+      "old_success": false,
+      "new_success": true
+    }
+  ],
+  "local_video_decode_repeated": false,
+  "sources": {
+    "summary.json": "a56532e5ebcada7d526709025e9b5cda3f771a564e98ef4321894d7bb1de1c68",
+    "episode_outcomes.csv": "6279c8cac102ce737c54a22df2a1f7c251829a17fcc8da433e0e7cbccada600f",
+    "paired_effects.csv": "e7c63bdc73f70e850084c1ca7ff6ebc8db2fc9fd3a0202ee076807d6e4ad2121"
+  }
+}

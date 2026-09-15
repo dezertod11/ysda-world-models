@@ -1,0 +1,23 @@
+{
+  "stages": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s1",
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s2"
+  ],
+  "status": "prepared_not_launched",
+  "required_deadline": null,
+  "old_results_immutable": true,
+  "no_v1_resume": true,
+  "main_per_stage": 995,
+  "smoke_per_stage": 18,
+  "promotion": "Full strict audit; independent of success rate",
+  "runtime_v2_files": {
+    "experiments/runtime_replay_v2/collect_v2.py": "71a32953621f5a3945b9846ccee28804ecc6d4d6688bd503c4dff1a9f2b5d67a",
+    "experiments/runtime_replay_v2/replay.py": "5d601c29e2772a0f797b8b8620f7ac1476a74ab7cef983e7c4ae123642319b96",
+    "experiments/runtime_replay_v2/run_v2.py": "7c654ed152cf3b46650e9304f91c42de8e2a233cbdd841b53e6d932a37cadf78",
+    "experiments/runtime_replay_v2/runtime_snapshot.py": "0fb60b74325426b409f5a78a33289f060858ac5dcd4e2fcd713a0e2e44caae9a",
+    "experiments/runtime_replay_v2/test_protocol.py": "3cb1fedf8df553cd6e82055ee94c96eef0e51626f69a04adf14769b016121327",
+    "experiments/runtime_replay_v2/test_runtime_snapshot.py": "c08a329afd408a525910b9f3320a3b70aa35ebb7d012e13805ceffad9d7e5d0e",
+    "experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis_tools/analyze_p3_benchmark.py": "0f1f340023771fd20a7af9229fcf8a5e533fdda7eca2a4b943968e5978891111"
+  }
+}

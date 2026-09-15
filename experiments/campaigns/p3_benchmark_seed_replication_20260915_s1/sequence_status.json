@@ -1,0 +1,16 @@
+{
+  "status": "failed",
+  "stage": "main",
+  "pid": 130523,
+  "active": {},
+  "expected_rollouts": 995,
+  "deadline_epoch": 1789450200.0,
+  "started_at": 1789423466.727448,
+  "updated_at": "2026-09-14T23:42:25.525401+00:00",
+  "matched_cases": 33,
+  "completed_rollouts": 180,
+  "seconds_until_deadline": 20854,
+  "eta_remaining_seconds": 26617,
+  "waiting_for_idle_gpu": false,
+  "error": "RuntimeError('Worker failed; inspect /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/batches/main_1789428300373372686_gpu0.log')"
+}

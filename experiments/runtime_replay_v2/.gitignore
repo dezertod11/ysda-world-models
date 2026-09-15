@@ -1,0 +1,2 @@
+# Replay arrays remain local; compact audit reports are publishable.
+*.npz

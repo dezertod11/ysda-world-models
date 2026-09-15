@@ -60,6 +60,49 @@ def write_count_table(path, records):
     path.write_text("\n".join([*lines, r"\bottomrule", r"\end{tabular}"]) + "\n")
 
 
+def generate_recovery_assets(table_dir, figure_dir):
+    confirmation = CAMPAIGNS / 'recovery_confirmation_20260913/analysis'
+    grounding = CAMPAIGNS / 'recovery_grounding_diagnostic_20260913/analysis'
+    score_path = confirmation / 'review/cohort_scores.csv'
+    oracle_path = grounding / 'scores.csv'
+    scores, oracle = pd.read_csv(score_path), pd.read_csv(oracle_path)
+    methods = {'baseline_h16': 'Max-value H16', 'continue_h8': 'H8 after 72',
+               'physical_regrasp': 'RGB recovery', 'refresh_preserve_only': 'Preserve-only'}
+    expected = {'replication': [17, 16, 41, 41], 'transfer': [0, 0, 1, 1]}
+    lines = [r'\begin{tabular}{lrr}', r'\toprule',
+             r'Controller & Familiar (success / 64) & Transfer (success / 64) \\', r'\midrule']
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.4), layout='constrained')
+    colors = ['#737373', '#287a83', '#348655', '#b74850']
+    for ax, cohort in zip(axes[:2], expected):
+        group = scores[scores.cohort.eq(cohort)].set_index('arm').loc[list(methods)]
+        assert list(group.successes) == expected[cohort] and (group.n == 64).all()
+        assert ((group.sr - group.successes / group.n).abs() < 1e-12).all()
+        bars = ax.bar(range(4), group.sr * 100, color=colors)
+        ax.bar_label(bars, labels=[f'{n}/64' for n in group.successes], padding=3)
+        ax.set_xticks(range(4), list(methods.values()), rotation=25, ha='right')
+        ax.set_title(('Familiar' if cohort == 'replication' else 'Transfer x0.3') + ': 64 paired cases')
+    oracle_methods = ['rgb_replay', 'oracle_xy_fixed_gate', 'oracle_xyz_fixed_gate', 'oracle_xyz_physical_gate']
+    group = oracle[oracle.cohort.eq('transfer')].set_index('arm').loc[oracle_methods]
+    assert list(group.successes) == [0, 3, 2, 2] and (group.n == 16).all()
+    bars = axes[2].bar(range(4), group.sr * 100, color=['#737373'] * 4)
+    axes[2].bar_label(bars, labels=[f'{n}/16' for n in group.successes], padding=3)
+    axes[2].set_xticks(range(4), ['RGB', 'GT XY', 'GT XYZ', 'GT + physical gate'], rotation=25, ha='right')
+    axes[2].set_title('Privileged diagnostic: 16 transfer cases')
+    for ax in axes:
+        ax.set_ylim(0, 100)
+        ax.set_ylabel('Terminal success (%)')
+        ax.spines[['top', 'right']].set_visible(False)
+    for suffix in ('pdf', 'png'):
+        fig.savefig(figure_dir / f'recovery_confirmation_final.{suffix}', dpi=180)
+    plt.close(fig)
+    for i, label in enumerate(methods.values()):
+        lines.append(f'{label} & {expected["replication"][i]} & {expected["transfer"][i]}' + r' \\')
+    (table_dir / 'recovery_confirmation.tex').write_text('\n'.join(lines + [r'\bottomrule', r'\end{tabular}']) + '\n')
+    return [score_path, oracle_path, confirmation / 'main/paired_effects.csv',
+            confirmation / 'timing/aggregate_scores.csv', confirmation / 'review/summary.json',
+            grounding / 'geometry.csv']
+
+
 def generate_latest_assets(table_dir, figure_dir):
     h16_path = DECODER / "night_analysis/seed_controls__rates.csv"
     h8_path = DECODER / "night_analysis/horizon8__rates.csv"
@@ -180,7 +223,7 @@ def generate_latest_assets(table_dir, figure_dir):
     return [h16_path, h8_path, observation_path, bias_path, motion_path]
 
 
-def generate_assets():
+def generate_historical_assets():
     scores = pd.read_csv(SOURCE / "factor_scores.csv")
     effects = pd.read_csv(SOURCE / "paired_effects.csv")
     assert set(scores.method) == set(METHODS), "Unexpected methods: audit before updating the draft"
@@ -227,7 +270,8 @@ def generate_assets():
     plt.close(fig)
     inputs = [SOURCE / "factor_scores.csv", SOURCE / "paired_effects.csv"]
     inputs.extend(generate_latest_assets(table_dir, figure_dir))
-    provenance = {"evidence_snapshot": "2026-09-12", "valid199_cases": 199, "valid199_methods": 6,
+    inputs.extend(generate_recovery_assets(table_dir, figure_dir))
+    provenance = {"evidence_snapshot": "2026-09-14", "valid199_cases": 199, "valid199_methods": 6,
                   "generated_by": "publication/iclr2027/tools/build.py",
                   "inputs": [{"path": str(path.relative_to(PROJECT)),
                               "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
@@ -243,18 +287,20 @@ def package_sources(stage, output):
         for path in sorted(stage.rglob("*")):
             if path.is_file() and path.suffix in allowed:
                 bundle.write(path, path.relative_to(stage))
-        bundle.writestr("README.txt", "ICLR 2027 manuscript, evidence snapshot 2026-09-12.\n"
+        bundle.writestr("README.txt", "ICLR 2027 manuscript, evidence snapshot 2026-09-15.\n"
                         "Main file: iclr2027.tex; edit main.tex.\n"
                         "Overleaf: upload this ZIP and select iclr2027.tex.\n"
                         "Local: latexmk -pdf iclr2027.tex, or tectonic iclr2027.tex.\n"
                         "Figures, tables, bibliography and official styles are included.\n"
                         "This is an anonymous working manuscript, not a submitted paper.\n"
+                        "Scientific readiness: scoped gains await corrected-runtime replication.\n"
                         "Human authors must review claims, references and AI-use disclosure before submission.\n")
     return archive
 
 
 def main():
-    generate_assets()
+    from recovery_assets import generate, TABLES, FIGURES
+    generate()
     engine = Path(os.environ.get("TECTONIC", str(ROOT / ".tools/tectonic")))
     if not engine.is_file():
         raise SystemExit("Tectonic missing. Install Tectonic or set TECTONIC to its executable; see README.md")
@@ -262,9 +308,15 @@ def main():
     if not (styles / "iclr2027_conference.sty").is_file():
         raise SystemExit("Download official ICLR 2027 styles into templates/iclr2027; see templates/toolchain_sources.json")
     output = ROOT / "build"
-    stage = output / "source"
+    stage = output / "focused_source"
     stage.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(ROOT / "manuscript", stage, dirs_exist_ok=True, copy_function=shutil.copyfile)
+    paper_files = ["main.tex", "iclr2027.tex", "references.bib"]
+    paper_files += ["tables/" + name for name in TABLES]
+    paper_files += ["figures/" + name for name in FIGURES]
+    for name in paper_files:
+        target = stage / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / "manuscript" / name, target)
     for path in styles.iterdir():
         if path.suffix in {".sty", ".bst"}:
             shutil.copyfile(path, stage / path.name)
@@ -275,7 +327,7 @@ def main():
         pdf = output / f"{name}.pdf"
         reader = PdfReader(pdf)
         text = "\n".join(page.extract_text() or "" for page in reader.pages)
-        if not text.strip() or "Consensus" not in text:
+        if "GATED VISUAL RECOVERY" not in " ".join(text.upper().split()):
             raise RuntimeError(f"Unexpected or empty PDF: {pdf}")
         log = (output / f"{name}.log").read_text(errors="replace")
         warnings = [line for line in log.splitlines()

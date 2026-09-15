@@ -1,0 +1,14 @@
+\begin{tabular}{llrrr}
+\toprule
+Model / slice & Sampling & K1 & Action & Decoder \\
+\midrule
+MIMIC / SIMPLER (96) & K1; action[0,1,2]; decoder[2,996,997] & 45 & 52 & 42 \\
+MIMIC / INT-ACT (192) & primary0; candidates[0,1,2] & 73 & 74 & 88 \\
+MIMIC / INT-ACT (192) & primary1 / primary2 & 33 / 9 & -- & -- \\
+MIMIC / INT-ACT (192) & action[2,996,997] / [3,998,999] & -- & 50 / 39 & -- \\
+MIMIC / LIBERO Spatial (100) & reported default & 69 & 75 & 64 \\
+GR00T / PRO Spatial (400) & primary1 / primary2 / primary3 & 246 / 244 / 246 & 248 / -- / -- & 253 / 241 / -- \\
+GR00T / LIBERO Spatial (100) & decoder[2,997,996] & -- & -- & 100 \\
+GR00T / Plus texture slice (100) & primary1; candidates[1,999,998] & 100 & 100 & 100 \\
+\bottomrule
+\end{tabular}

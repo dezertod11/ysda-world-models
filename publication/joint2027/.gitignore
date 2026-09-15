@@ -1,0 +1,6 @@
+# Keep deliverables, not duplicate sources or TeX intermediates.
+build/*
+!build/icra2027.pdf
+!build/iclr2027.pdf
+!build/joint_paper_sources.zip
+!build/validation.json

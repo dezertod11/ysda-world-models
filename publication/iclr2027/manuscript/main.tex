@@ -1,5 +1,4 @@
-% Evidence snapshot 2026-09-12. Complete working manuscript, not submitted.
-% The previous manuscript and the user's original template are preserved.
+% Evidence-linked draft, 2026-09-15. Scoped v2 replication pending; not submitted.
 \documentclass{article}
 \usepackage[T1]{fontenc}
 \ifdefined\ICLRVersion
@@ -13,720 +12,683 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\ind}{\mathbf{1}}
 \DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator{\Std}{Std}
 \DeclareMathOperator{\clip}{clip}
-\DeclareMathOperator{\tr}{tr}
-\title{When Consensus Is Not Enough:\\Selection, Feedback, and Recovery\\in a Frozen World-Action Model}
+\title{Gated Visual Recovery for a Frozen World-Action Policy:\\Separating State Correction from Requery}
 \author{Anonymous authors}
 \date{September 2026}
-\hypersetup{pdftitle={When Consensus Is Not Enough},pdfauthor={Anonymous authors}}
+\hypersetup{pdftitle={Gated Visual Recovery for a Frozen World-Action Policy},pdfauthor={Anonymous authors}}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-World-action models jointly predict actions, future observations, and values,
-suggesting that test-time uncertainty or sample consensus could improve
-closed-loop control. We investigate when these signals support a useful
-decision, using a frozen Cosmos Policy on explicitly defined LIBERO-PRO
-subsets. A six-controller, 199-configuration comparison finds no statistically
-convincing improvement over joint max-value selection. A decoder-space medoid
-study with stronger initial-pool controls matches max-value at 112/180
-successes; shorter execution horizons do not improve average success.
-Frozen-candidate experiments separate selection opportunity from stochastic
-continuation: one third of 288 saved candidates change outcome across suffix
-seeds, although a narrowly replicated pool exhibits persistent value
-misranking. Feedback and RGB-based regrasp improve success in selected settings,
-including a 27.5 percentage-point recovery gain on new initializations of
-eight difficult cells, without established transfer to new cells. Finally,
-paired observation-contract experiments identify 16 lost successes after
-an extra regrasp releases an already coupled object. These results distinguish
-state-risk detection, within-pool ranking, and intervention advantage.
-They support a controlled diagnostic account of inference-time planning,
-not a universally superior selector or a new benchmark state of the art.
+When a manipulation policy loses the physical conditions needed for progress,
+another action sample may not suffice. We study whether a short, visually
+grounded correction improves a frozen world-action policy beyond additional
+observation and requery. Our controller combines a separately trained RGB
+localizer, a calibrated geometry gate, and a physical regrasp maneuver;
+the backbone remains frozen and recovery consumes the original action budget.
+On eight development-selected LIBERO-PRO Position cells, three recorded
+evaluations yield gains of 27.5, 47.5, and 39.1 percentage points over matched
+eight-action continuation. The largest confirmation records 16/64 versus
+41/64 successes, with a paired init-cluster 95\% interval of [29.7,48.4] points.
+A matched ablation records 25/40 for full recovery versus 8/40 for retreat
+and requery; timing controls show positive effects at three scheduled points.
+The findings motivate physical state correction as a complement to generative
+control, not a universal failure detector. A subsequent simulator-state audit
+requires corrected-runtime replication of the scoped gains; a completed
+corrected 199-case broad comparison finds no significant aggregate advantage.
 \end{abstract}
 
 \section{Introduction}
-World-action models predict robot actions together with their possible
-consequences \citep{cosmos_policy}. This suggests selecting the most valuable
-candidate, penalizing uncertainty, or following a representative mode of the
-generated distribution. Yet agreement can reflect a shared error, and
-predicting a consequence accurately does not make that consequence desirable.
-A score distinguishing easy from difficult scenes may not identify the best
-action within one scene.
+A visuomotor policy may continue issuing plausible commands after missing a
+grasp. At that point, increasing the number of candidate actions need not
+restore the physical precondition required for task completion. An alternative
+is to correct the local interaction and then return control to the original
+policy. We ask whether such a correction yields a reproducible improvement,
+and whether its benefit exceeds that of simply obtaining another observation.
 
-In out-of-distribution manipulation, failures can arise from poor ranking,
-a candidate pool with no useful action, insufficient feedback, or harmful
-recovery. Querying more often changes both information and action commitment.
-Gathering diagnostic evidence through a physical probe can itself alter
-contact. Improving one metric cannot isolate these mechanisms.
+We investigate this question with a frozen world-action model,
+Cosmos Policy \citep{cosmos_policy}, in LIBERO-PRO \citep{libero_pro}.
+The intervention combines task-conditioned RGB localization, a geometry
+eligibility gate, and a short Cartesian regrasp primitive. It does not change
+the world-action model's weights or use simulator object poses online.
+The perception module does require task-specific supervised calibration;
+the complete system is therefore not training-free.
 
-We investigate them using one frozen Cosmos Policy checkpoint and a series
-of deployed-controller and saved-state experiments. Our empirical
-contributions are (i) scoped comparisons of geometric and decoder consensus
-with joint max-value, including fixed-index and horizon controls;
-(ii) repeated-candidate diagnostics of opportunity and continuation
-variability; and (iii) paired analysis of feedback and RGB recovery,
-including intervention-induced harm. We retain unsuccessful methods and
-replay limitations rather than pooling heterogeneous runs into one success rate.
-The goal is a diagnostic account, not a claim that consensus or uncertainty
-methods are generally ineffective.
+Our primary scope is a previously defined set of eight challenging,
+calibration-familiar task--Position cells. This choice reflects the recovery
+problem and the available calibrated localizer, not the removal of unsuccessful
+evaluation episodes. Every initialization in each manifest is retained,
+including failed interventions, gate-rejected cases, and baseline successes.
+We distinguish this scope from calibration-unseen perturbations and from a
+complete three-factor benchmark.
+
+\paragraph{Research questions and contributions.}
+We organize the study around three questions. \emph{Does physical recovery
+help?} We report sizeable paired gains on a fixed, fully retained population.
+\emph{Is the gain just another observation?} Matched continuation and
+retreat-only controls separate the maneuver from its sensing component.
+\emph{When is the maneuver applicable?} Timing, grounding, and broader-scene
+controls separate geometric eligibility from expected intervention benefit.
+The contribution is an empirical decomposition of recovery for a frozen
+world-action policy, not a new backbone, the invention of regrasp, or a
+general-purpose failure detector.
 
 \section{Related Work}
-\paragraph{World models and selection.}
-Diffusion Policy generates actions with receding-horizon execution
-\citep{diffusion_policy}, while Diffuser generates trajectories for planning
-\citep{diffuser}. TD-MPC2 and Dreamer study learned world models for control
-\citep{tdmpc2,dreamerv3}. Here the backbone is frozen, and most inference
-jointly generates actions, futures, and values. This differs from the full
-autoregressive, rollout-finetuned planning system in the Cosmos paper.
+\paragraph{Action-chunked and world-action policies.}
+Diffusion Policy uses generative action sequences for visuomotor control
+\citep{diffusion_policy}. Cosmos Policy adapts a video model to predict
+actions, future observations, and value \citep{cosmos_policy}.
+We retain a frozen Cosmos checkpoint and its native action representation.
+Our candidate selection uses values generated jointly with actions and futures;
+it is not a reproduction of the paper's full autoregressive,
+rollout-finetuned planning system.
 
-Self-consistency aggregates language-model samples \citep{self_consistency}.
-KeyStone uses geometric clustering and medoid selection, whereas KDPE
-uses a density-based endpoint criterion \citep{keystone,kdpe}.
-Consensus itself is not our novelty. Our small-population adaptations to
-Cosmos differ from their backbones, action parameterizations, and budgets.
+\paragraph{Monitoring and recovery.}
+Sentinel separates temporal inconsistency from lack of task progress
+\citep{sentinel}. Rewind-IL combines overlap-based monitoring with
+semantically verified recovery checkpoints \citep{rewind_il}.
+Monitoring and recovery are therefore established ideas.
+Our experiment isolates a particular physical regrasp maneuver and its
+incremental terminal-success benefit under paired continuation controls.
+Unlike checkpoint respawning, the tested correction spends physical actions
+from the current reached state; it does not restore an earlier simulator
+state as an online recovery action. Evaluation branching is a measurement
+tool, not an ability available to the deployed controller.
+We do not claim a head-to-head improvement over those systems, which use
+different intervention and evaluation contracts.
 
-\paragraph{Failure monitoring and intervention.}
-Flow-based VLA uncertainty has been studied with independently trained
-velocity-field models and active fine-tuning \citep{flow_uq}, not merely
-noise samples from one checkpoint. Sentinel separates temporal inconsistency
-from lack of task progress \citep{sentinel}; Rewind-IL combines overlap
-monitoring with recovery checkpoints \citep{rewind_il}. Thus, neither overlap
-alarms nor detection followed by recovery are new ideas by themselves.
-UNISafe and StressDream investigate safety filtering and failure-oriented
-world-model use in distinct learning settings \citep{unisafe,stressdream}.
-Visual alignment and memory offer other robustness mechanisms
-\citep{kachaev_blind_vla,kachaev_mu_vla}. Our study asks what the tested frozen
-model supports before attributing gains to an uncertainty formula.
+\paragraph{Scope of robustness claims.}
+LIBERO studies language-conditioned manipulation, and LIBERO-PRO introduces
+perturbations beyond the nominal task configuration \citep{libero,libero_pro}.
+A change in initial state, a change in task--perturbation cell, and a change
+outside perception calibration are distinct generalization tests.
+Our tables preserve these distinctions and report paired uncertainty
+\citep{rliable}. Broader uncertainty and consensus explorations are documented
+separately; they are not the main empirical claim of this paper.
 
-\section{Problem and Evaluation Contracts}
-\label{sec:protocol}
-\paragraph{Model and control.}
-At physical time $t_q$, query $q$ receives real external/wrist RGB, robot
-proprioception, and a T5 instruction embedding, denoted $x_q$.
-Full simulator state $s_q$ is used only for replay and offline diagnostics.
-Joint inference samples
+\section{Problem and Controller}
+\label{sec:method}
+\subsection{Frozen World-Action Policy}
+At query time $t_q$, the policy receives
 \begin{equation}
- (A_q^{(i)},\widehat I_{q,T}^{(i)},\widehat p_{q,T}^{(i)},V_q^{(i)})
- \sim p_\theta(\cdot\mid x_q;\xi_i),\quad
- A_q^{(i)}\in\R^{T\times7},\quad i=1,\ldots,K.
- \label{eq:model}
+x_q=(I^{\mathrm{ext}}_{t_q},I^{\mathrm{wrist}}_{t_q},p_{t_q},e_\ell),
+\qquad
+(A_q^{(i)},\widehat I_q^{(i)},\widehat p_q^{(i)},V_q^{(i)})
+\sim p_\theta(\cdot\mid x_q;\xi_i),
+\label{eq:policy}
 \end{equation}
-The controller executes the first $H\le T=16$ actions of one candidate,
-then obtains new real observations. Generated images do not replace actual
-camera input at the next ordinary query. Native actions contain translation,
-rotation-vector, and gripper commands. Nine-dimensional proprioception is
-robot state, not object poses. Most experiments use joint-value best-of-$K$,
-not the complete original autoregressive $a\to s'\to v$ planning protocol.
+where $p$ is nine-dimensional robot proprioception and $e_\ell$ is the
+instruction embedding. Each action chunk $A_q^{(i)}\in\R^{16\times7}$
+contains translation, rotation, and gripper commands. The controller selects
+\begin{equation}
+i_q^\star=\argmax_{i=1,\ldots,4} V_q^{(i)},\qquad
+a_{t_q+h}=A_q^{(i_q^\star)}[h],\quad h=0,\ldots,H-1.
+\label{eq:selection}
+\end{equation}
+All evaluated continuations use $K=4$ and five action-denoising steps.
+A new ordinary query receives actual camera observations, not predicted
+future images. The common prefix executes $H=16$; matched intervention
+branches resume with $H=8$.
+A separate H16 baseline continues without the scheduled switch.
+Changing the horizon is thus an explicit control, not an unreported feature
+of the recovery method.
 
-\paragraph{Benchmark and populations.}
-We evaluate the LIBERO-PRO Object task suite under Object, Environment, and
-Position perturbations \citep{libero,libero_pro}. A task suite and a
-perturbation factor are different identifiers. Table~\ref{tab:protocol}
-separates the main populations. Full-controller studies use five denoising
-steps and 280 physical actions; settling is separate. Recovery consumes
-the remaining action budget. These are explicit subsets and intervention
-populations, not the full official benchmark.
+\subsection{Calibrated RGB Grounding}
+\label{sec:grounding}
+The recovery module uses external RGB and the target category parsed
+from the instruction. The frozen artifact is a DeepLabV3--ResNet50 heatmap
+localizer with object-specific height estimation, trained separately from
+Cosmos on 388 calibration images from 194 groups.
+Simulator-derived supervision and camera calibration are used during
+development; online object position is inferred from RGB.
+For the target heatmap $L_\phi(I,\ell)$, the implementation selects its maximum:
+\begin{equation}
+(\hat u,\hat v)=\argmax_{u,v}L_\phi(I,\ell)[v,u],\qquad
+c=\max_{u,v}L_\phi(I,\ell)[v,u]-\min_{u,v}L_\phi(I,\ell)[v,u].
+\label{eq:heatmap}
+\end{equation}
+Here $c$ is a heatmap score range, not a calibrated probability of successful
+recovery. Height $\hat z$ uses a frozen object-specific route: a learned
+global head, calibrated regression, or a calibration-set object median
+(Appendix~\ref{app:calibration}).
+
+Using camera intrinsics $K_c$ and camera-to-world transform $(R_c,b_c)$,
+we intersect the ray with the estimated horizontal plane:
+\begin{equation}
+d=R_cK_c^{-1}[\hat u,\hat v,1]^\top,\qquad
+\hat p^{\mathrm{obj}}=b_c+
+\frac{\hat z-b_{c,z}}{d_z}d.
+\label{eq:projection}
+\end{equation}
+Invalid rays or nonfinite estimates reject the intervention.
+Camera calibration and robot proprioception are available inputs; true
+simulator object coordinates are not online inputs.
+
+\subsection{Eligibility and Physical Recovery}
+At scheduled assessment time $\tau$, eligibility is
+\begin{equation}
+G(x_\tau)=
+\ind[\mathrm{finite}]\,
+\ind[c\ge c_\ell]\,
+\ind[\hat p^{\mathrm{obj}}\in\mathcal W_\ell]\,
+\ind[0.08\le \|\hat p^{\mathrm{obj}}-p^{\mathrm{eef}}\|_2\le0.50].
+\label{eq:gate}
+\end{equation}
+Distances are in meters and $p^{\mathrm{eef}}$ is observed robot position.
+Thresholds and workspaces are frozen from the earlier calibration/screening
+stage. The lower distance bound is a heuristic reach-miss condition, not
+a validated failure detector or proof that the gripper is empty.
+
+When $G=1$, the controller opens the gripper and retreats upward, obtains
+a fresh RGB localization, then approaches, descends, closes, and lifts.
+A second guard checks the refreshed position before approach.
+It omits the lower miss-distance bound but retains finite, confidence,
+workspace, and reach checks. If it rejects, the corrected implementation
+continues from the physically reached state, without rollback.
+Table~\ref{tab:primitive} lists the fixed stages.
 
 \begin{table}[t]
-\caption{Different evaluation populations. Reused controls, shared prefixes,
-and suffix repeats are not additional independent scenes.}
-\label{tab:protocol}
+\caption{Recovery stages. Counts are maximum environment actions, not extra
+budget; early success or servo tolerance can shorten a stage.}
+\label{tab:primitive}
 \centering\small
-\begin{tabular}{l>{\raggedright\arraybackslash}p{4.3cm}cc}
+\begin{tabular}{llrr}
 \toprule
-Study & Population per controller & $K$ & $T/H$ \\
+Stage & Cartesian target & Gripper & Steps\\
 \midrule
-Broad selectors & 199: 50 Object, 50 Environment, 99 Position & 4 & 16/16 \\
-Decoder main & 180: 60 per factor & 3 & 16/16 \\
-Decoder H8 & 120 matched: 30/30/60 by factor & 3 & 16/8 \\
-Candidate replay & 36 snapshots, 10 task/init clusters & 8 & 16/16 \\
-RGB recovery & 40 new-init branches, eight selected cells & 4 & 16/8 \\
-Observation contract & 96 prefixes, two suffixes, 48 init clusters & 4 & 16/8 \\
+Retreat & current EEF $+0.08$ m upward & open & 3\\
+Approach & refreshed target $+0.08$ m & open & 7\\
+Descend & refreshed target $+0.012$ m & open & 6\\
+Close & zero pose increment & closed & 4\\
+Lift & current EEF $+0.10$ m upward & closed & 5\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Outcomes and inference.}
-Success $Y$ is the environment's task predicate within budget. Failure
-does not automatically mean a drop: timeout and incomplete placement differ.
-Our local drop proxy is not an official LIBERO-Safety score.
+The confirmation attempts the intervention at most once.
+Every physical action counts toward the original 280-step horizon, after
+ten settling actions. Rejected initial gates resume matched continuation.
+The main experiment uses historical $\tau=72$; timing controls use
+$\tau\in\{56,72,88\}$. This is scheduled assessment with an observation-dependent
+gate, not an event-driven timing algorithm.
+
+\paragraph{Execution contract.}
+The controller follows
 \begin{equation}
-\mathrm{MacroSR}_m=\frac13\sum_f\frac{\sum_eY_{m,f,e}}{n_f},\qquad
-\mathrm{MicroSR}_m=\frac{\sum_{f,e}Y_{m,f,e}}{\sum_fn_f}.
-\label{eq:sr}
+\underbrace{\pi_\theta^{H16}\ \longrightarrow\ x_\tau}_{\text{shared prefix}}
+\ \longrightarrow\
+\begin{cases}
+\text{regrasp}(x_\tau)\ \longrightarrow\ \pi_\theta^{H8},&G(x_\tau)=1,\\
+\pi_\theta^{H8},&G(x_\tau)=0.
+\end{cases}
+\label{eq:controller}
 \end{equation}
-We report paired effects, rescues (control fails, method succeeds), and harms
-(the converse). Intervals preserve study-specific task/init clusters and
-factor weights (Appendix~\ref{app:stats}). Unadjusted intervals and corrected
-tests are distinguished; repeated seeds are not independent tasks
-\citep{rliable}. Post-hoc findings are not confirmatory tests.
+The gate is evaluated once; after any executed movement, continuation uses
+the reached state and remaining budget. Relocalization follows retreat,
+so approach does not use a stale pre-retreat image.
 
-\paragraph{Replay contracts.}
-Initial simulator states match in the 199-configuration study, but initial
-$K=4$ pools are bitwise identical in only approximately 31--46\% of comparisons.
-That study compares deployed controllers, not selectors on perfectly fixed
-pools. The later decoder study uses cached initial RGB, proprioception, and
-candidates: all 180 comparison groups pass exact query-zero checks.
-After a different action, fresh observations legitimately diverge.
-Saved-state studies instead control snapshots, executed candidates, and
-suffix seeds explicitly.
+\section{Paired Evaluation}
+\label{sec:evaluation}
+\paragraph{Primary population.}
+The eight primary cells combine x0.2 with tasks 5, 6, and 9;
+y0.2 with tasks 4, 6, and 9; and y0.3 with tasks 1 and 5.
+They belong to the LIBERO-PRO Object task suite under Position perturbations.
+They were selected during earlier development for difficult manipulation and
+localizer applicability, not sampled uniformly from LIBERO-PRO.
+All eight cells, including cells with no benefit, remain in every primary
+aggregate. Appendix~\ref{app:cells} lists commands and final per-cell counts.
 
-\section{Signals and Controllers}
-\paragraph{Disagreement.}
-Across samples of one query, we compute
+P3c tests init~35--39 after screening and development on other groups.
+P3d uses init~40--44 in a later development-stage replication, not an
+opened confirmatory transfer holdout. The latest confirmation uses init~25--32
+with new frozen rollout seeds. These IDs are outside perception calibration
+(init~5--24), but some were inspected in earlier policy research.
+We call this a fresh-seed replication on fixed cells, not a globally untouched
+holdout. The three evaluations have different roles and are not pooled.
+
+\paragraph{Branches and controls.}
+At each assessment, branches start from the same captured MuJoCo/controller
+state and observations. H8 and recovery continuations use paired suffix seeds.
+The latest H16 control is a full, uninterrupted baseline.
+Timing snapshots come from that uninterrupted trajectory, not a trajectory
+already changed by earlier recovery.
+Success before assessment remains success in the corresponding arms.
+
+P3d additionally compares full recovery with a trigger-matched
+open--retreat--relocalize--requery control, omitting approach, grasp, and lift.
+The latest confirmation also tests a preserve-only extension.
+Appendix~\ref{app:audit} explains the historical fallback audit and why
+snapshot equality is not independent full-trajectory replay.
+
+\paragraph{Evidence versions.}
+The scoped and timing measurements below predate a simulator-state repair.
+An audit found omitted solver warmstart and sensor-cache state; a
+\emph{scoped corrected-runtime replication is still required} before treating
+the headline as confirmed under the repaired contract. We retain the original
+counts and label them historical, rather than silently upgrading their status.
+The broad comparison in Appendix~\ref{app:broad} has already been recollected
+and audited with the corrected snapshot.
+
+\paragraph{Endpoints.}
+The primary endpoint is the environment's terminal task predicate within
+budget. For method $m$, cell $c$, and initialization $j$,
 \begin{equation}
-\sigma_{h,d}=\sqrt{\frac1K\sum_i(a_{h,d}^{(i)}-\bar a_{h,d})^2},\quad
-U_{\mathrm{first}}=\sqrt{\sum_{d=1}^{6}\sigma_{1,d}^2},\quad
-U_V=\Std_i(V_i).
-\label{eq:uncertainty}
+\mathrm{SR}_m=\frac1{|\mathcal C|}\sum_{c\in\mathcal C}
+\frac1{n_c}\sum_jY^m_{cj},\qquad
+\Delta=\frac1{|\mathcal C|}\sum_c\frac1{n_c}
+\sum_j(Y^R_{cj}-Y^C_{cj}).
+\label{eq:effect}
 \end{equation}
-The first-action statistic excludes the gripper. Internal disagreement among
-repeated entries of one latent frame is a separate diagnostic, not an
-independent ensemble. Appendix~\ref{app:metrics} specifies aggregation axes
-and online availability. A candidate-specific penalty is $S_i=V_i-\lambda U_i$.
-Subtracting the same pool-wide uncertainty from every candidate cannot
-change the argmax; pool risk can instead inform a control-mode decision.
-
-\paragraph{Geometric consensus.}
-OSC-medoid integrates clipped translation commands and composes scaled
-rotations into trajectory proxies, then combines translation, rotation
-geodesic, and gripper-sign differences with temporal discount. These are
-command proxies, not contact-aware future poses. For candidate distance $D$,
+Cell sizes are equal within each primary cohort, so cell-macro and pooled
+SR coincide there. These are not Object/Environment/Position macro scores.
+We report init-cluster bootstrap intervals within fixed cells,
+rescues $N_{01}$, and harms $N_{10}$. For equal-sized paired samples,
 \begin{equation}
-i_D=\argmin_i\frac1{K-1}\sum_{j\ne i}D(i,j),\qquad
-i_V=\argmax_i V_i.
-\label{eq:selection}
+\Delta=\frac{N_{01}-N_{10}}N
+=(1-\mathrm{SR}_C)\Pr(Y^R=1\mid Y^C=0)
+-\mathrm{SR}_C\Pr(Y^R=0\mid Y^C=1).
+\label{eq:rescue}
 \end{equation}
-We execute a sampled chunk, not an average of incompatible modes. Controls
-include raw medoid, KeyStone-style guarded clustering, and a KDPE-inspired
-kernel on induced endpoints. Appendix~\ref{app:geometry} gives parameters.
-
-\paragraph{Decoder medoid.}
-We adapt an external decoder-token selection implementation
-\citep{decoder_code} to Cosmos's tiled action latent. Hidden features come
-from the last conditional denoising call before the output layer.
-The 196 spatial patches are not action-time tokens. If $C_{p,h}$ counts
-decoded action scalars associated with patch $p$ and action time $h$, use
-\begin{equation}
-w_p=\frac{\sum_hC_{p,h}\omega_h}{\sum_{p',h}C_{p',h}\omega_h},\qquad
-D_Z(i,j)=\sum_pw_p[1-\cos(z_{i,p},z_{j,p})].
-\label{eq:decoder}
-\end{equation}
-Full weights give fourfold weight to actions 1--4 and unit weight to 5--16.
-Prefix-H8 sets weights 9--16 to zero. Selection uses Eq.~\eqref{eq:selection}
-with stable lowest-index ties. Fixed-index controls test seed preference,
-and action medoid controls for representation.
-
-\paragraph{Feedback and recovery.}
-We distinguish committing a saved suffix, querying on the old observation
-(stale), and querying on current observations (fresh). These controls separate
-extra inference from fresh information. Recovery adds a physical
-open--retreat--relocalize--approach--close--lift sequence, then resumes Cosmos.
-A frozen RGB localizer and confidence/workspace/reach-miss gate enable
-non-privileged execution. Probe variants move the end effector before deciding
-whether to recover: their information-gathering action also changes contact.
+This decomposition is descriptive, not an online decision rule.
+It shows why a high method SR alone is insufficient evidence of improvement.
+Timing branches and suffix repeats do not create independent tasks.
+Multiplicity and cost interpretation are in Appendix~\ref{app:stats}.
 
 \section{Results}
-\subsection{Broad Selection Does Not Establish a Gain}
-Six controllers on 199 configurations yield 1, 194 rollouts; one empty upstream
-initialization asset is excluded uniformly. Table~\ref{tab:consensus} shows
-factor and macro rates. OSC-medoid changes macro success by $-0.68$
-percentage points (pp), interval $[-3.33,1.99]$, 3 rescues/6 harms.
-KeyStone-style has the best point estimate, but $+1.00$ pp has interval
-$[-2.01,4.33]$. Raw medoid ($-0.01$ pp) and KDPE endpoint ($-1.68$ pp) also
-do not establish superiority. This concerns the tested subset and adaptations,
-not the original methods under their published protocols.
-
+\subsection{Recorded Gains on the Fixed Primary Cells}
 \begin{table}[t]
-\caption{Broad deployed comparison. Factor and macro columns are percentages;
-the last column is successes out of 199. K1 is the single-sample control.}
-\label{tab:consensus}
-\centering\small\input{tables/consensus_scores.tex}
+\caption{Gated RGB recovery versus matched H8 on the same eight primary cells.
+Rows are separate historical evaluations, not a combined sample or completed
+v2 replications. Intervals describe paired gain in percentage points;
+R/H denotes rescues/harms.}
+\label{tab:primary}
+\centering\small\input{tables/recovery_primary.tex}
 \end{table}
+Table~\ref{tab:primary} shows consistently positive recovery effects.
+The new-init P3c evaluation improves 13/40 to 24/40 successes,
+a gain of 27.5 percentage points (pp), with 12 rescues and one harm.
+The P3d replication improves 6/40 to 25/40, with 20 rescues and one harm.
+The latest confirmation improves 16/64 (25.00\%) to 41/64 (64.06\%):
+$\Delta=39.06$ pp, 95\% CI $[29.69,48.44]$, 27 rescues and two harms.
 
-A residual-risk study illustrates the distinction between detection and
-ranking. Across 200 states/800 candidate branches, global failure AUROC is 0.650
-but within-pool ranking is 0.509. The score reduces measured future-proprio
-error by 2.14\%, yet success changes 117/200 to 113/200.
-Six replay-integrity deviations limit strict causal interpretation of this
-historical study. Separately, a frozen-ranker test improves its offline
-objective but gives 165/360 versus 164/360 closed-loop successes.
-State-difficulty prediction does not ensure action-advantage prediction.
-
-\subsection{Decoder Consensus, Seeds, and Execution Horizon}
-The decoder campaign contains 720 main, 360 fixed-index, and 360 H8 rollouts.
-Decoder medoid and max-value both succeed 112/180 times (62.22\%),
-with 7 rescues/7 harms and paired macro interval $[-3.33,3.33]$ pp.
-Two additional Environment successes are offset by Position losses.
-Fixed-index controls achieve 110/180 and 109/180; differences from decoder
-also have intervals including zero (Table~\ref{tab:decoder}).
-
-\begin{table}[t]
-\caption{Decoder H16 and fixed-index controls. Each factor has 60 cases;
-total is out of 180. Indices are zero-based.}
-\label{tab:decoder}
-\centering\small\input{tables/decoder_h16.tex}
-\end{table}
-
-The matched H8 subset has 120 configurations with 30/30/60 factor counts.
-Equal-factor macro success is 65.00\% for max-value H16, 59.44\% for max H8,
-57.78\% for full decoder H8, and 59.44\% for prefix decoder H8.
-Principal paired intervals include zero (Appendix~\ref{app:h8}), and candidate
-calls roughly double. Neither shortening execution nor prefix weighting
-establishes a benefit; this does not prove universal harm from H8.
-
-Within each of three fixed candidate seed groups, one index accounts for
-81--84\% of decoder queries (Fig.~\ref{fig:mechanisms}, left).
-Forty of 180 episodes use one index throughout, although most are not constant.
-This motivates new seed-bank and permutation controls before treating hidden
-similarity as physical correctness. It does not prove seed identity caused
-every observed outcome.
-
-\subsection{Opportunity Is Conditional on the Continuation}
-Eight saved candidates from each of 36 snapshots initially give 18/36 max-value
-successes and 19/36 empirical-oracle successes; 17 pools contain no successful
-tested branch. The empirical oracle is
-\begin{equation}
-O_K(s)=\max_i Y(s,A_i,\xi_{suffix}).
-\end{equation}
-It is conditional on its suffix, not a universal upper bound on attainable success.
-
-Three additional continuation seeds change labels for 96 of 288 fixed candidates.
-Six initially all-fail pools then contain a success. Choosing and evaluating
-on the same repeats yields an optimistic 55.56\%; held-out-suffix selection
-gives 40.74\%, equal to max-value. Outcome-based selection also needs holdout.
-
-Persistent misranking exists locally. In one saved pool, two alternatives
-each succeed 10/10 times on new suffixes while the max-value candidate
-succeeds 1/10 (Holm-adjusted $p=0.01172$). These are two actions in one state,
-not independent tasks. On eight neighboring pools, held-out-repeat selection
-gives 40/80 versus 36/80, interval $[-3.75,18.75]$ pp. It still uses offline outcome
-information; a transferable online verifier remains absent.
-
-\subsection{Narrow Positive Feedback and RGB Recovery}
-A shared-prefix Object/task 0 study branches at $t=72$, after eight actions
-of a common query at $t=64$. Fresh requery versus committing the remaining
-eight actions gives 64/100 versus 46/100 successes:
-$+18$ pp, init-cluster interval $[4,32]$. The 100 branches contain 50 initializations
-with two rollout seeds. This supports that intervention on that task,
-not a universal time 72 schedule.
-
-A separate 36-snapshot repeat-feedback study gives 41/108 fresh 8 successes,
-44/108 open 16, and 45/108 stale 8. Fresh-minus-stale is $-3.70$ pp,
-interval $[-20.51,9.72]$. Matched-$K$/continuity tests on 24 states give 15 open 16,
-14 stale, and 13 for each fresh variant. More frequent observation alone is
-not an established remedy.
-
-RGB regrasp provides the strongest narrow improvement: on new initializations
-of eight selected difficult Position cells, continuation succeeds 13/40 times
-and RGB-triggered recovery 24/40, a $+27.5$ pp effect,
-init-cluster interval $[12.5,42.5]$, 12 rescues/1 harm. Same-cell replication gives
-6/40 versus 25/40. Transfer to seven other cells gives 26/35 versus 31/35,
-interval $[-2.9,31.4]$ pp. These cells were not necessarily unseen during
-localizer training; general transfer is not established.
-A later router adds only two successes over full recovery (55/75 versus 53/75),
-so the full system's gain cannot be assigned to the router.
-
-\subsection{Observation Contracts Reveal Intervention-Induced Harm}
-The latest recovery experiment reuses 96 prefixes from 12 selected Position cells,
-with two suffixes and eight arms:1536 branches, 48 initclusters.
-When the old gate declines recovery, a 3 action probe either opens the gripper
-or preserves its previous command, followed by refresh only or extra regrasp.
-Refresh-only arms still keep old-gate recovery on previously eligible states.
-Oracle controls use privileged localization/workspace information.
-
-\begin{table}[t]
-\caption{Observation-contract outcomes. Drops are a local proxy, not official
-LIBERO-Safety. These branches share 96 prefixes and 48 initclusters.}
-\label{tab:observation}
-\centering\small\input{tables/observation_contract.tex}
-\end{table}
-
-The primary preserve-refresh-plus-regrasp arm succeeds 145/192 times versus
-151/192 for old physical recovery: $-3.125$ pp, interval $[-6.25,0]$,
-9 rescues/15 harms, Holm $p=1$. None of six predeclared pooled contrasts passes
-Holm 0.05. Post-hoc preserve-only achieves 161/192, but its ten net successes
-over physical recovery are concentrated in one cell; cluster-sign $p=0.09587$
-does not establish transfer.
-
-Adding regrasp after the matched preserve probe loses 16 successes and rescues
-none, across eight prefixes and six initclusters. Before divergence, the
-target moves 32.01 mm and the EEF 31.68 mm on average, with contact throughout
-all three common probe steps. Regrasp opens the gripper near $t=76$;
-drops occur at $t=82$--85 during the maneuver. Refresh-only succeeds in all 16.
-The ground-truth motion diagnostic (Fig.~\ref{fig:mechanisms}, right) is offline,
-not an online RGB input. The paired effect is $-8.33$ pp,
-interval $[-11.46,-5.21]$, while cluster-sign $p=0.03158$ becomes 0.18948 after
-Holm. This is a localized audited mechanism, not sixteen independent
-confirmations of a general safety claim.
+The latest uninterrupted H16 baseline achieves 17/64, so an improvement
+is also present against H16 (+37.50 pp).
+Merely switching to H8 does not explain the result: H8 achieves 16/64.
+This supports the tested recovery system on the fixed population, not the
+claim that its geometry gate estimates optimal intervention advantage.
 
 \begin{figure}[t]
-\centering\includegraphics[width=\linewidth]{mechanism_audit.pdf}
-\caption{Two diagnostics from different populations. Left: candidate-index
-frequencies across 2341 decoder queries reveal seed-group affinity.
-Right: target and EEF displacement during the common probe;
-red marks the 16 branches later harmed by extra regrasp. Their objects already
-move with the gripper. Motion is an offline GT diagnostic.
-Repeated suffixes can overlap in this plot.}
-\label{fig:mechanisms}
+\centering\includegraphics[width=\linewidth]{recovery_evidence.pdf}
+\caption{Left: paired gains and 95\% intervals on fixed primary cells.
+Right: paired P3d replication ablation, 40 cases per arm.
+Object-directed recovery adds benefit beyond retreat and requery.
+Denominators and selection history differ; historical runs are not pooled.}
+\label{fig:evidence}
 \end{figure}
 
-\section{Discussion and Limitations}
-Risk, choice, and intervention require distinct evidence. A detector can
-separate scene difficulty without ranking actions. Consensus can identify a
-likely but physically incorrect mode. Requery can interrupt a useful sequence,
-and regrasp can destroy a useful contact. Intervention-specific advantage
-should include the cost and harm of gathering information.
+\subsection{The Gain Exceeds Retreat and Requery}
+On the P3d replication population, H8 succeeds 6/40 times, retreat-only
+8/40, and full recovery 25/40.
+Full recovery gains 42.5 pp over retreat-only, with 17 full-only successes
+and no retreat-only successes. This supports the contribution of the complete
+object-directed maneuver, not any individual stage in isolation.
+Across all 75 P3d cases, including seven other calibrated cells,
+the counts are 32/75, 36/75, and 56/75.
+Full-versus-retreat gains 26.67 pp, with 23 full-only and three retreat-only
+successes. On the seven other cells alone, the contrast is smaller and uncertain;
+Appendix~\ref{app:bounds} retains the complete cohort table.
 
-The study is limited to one frozen backbone in simulation. Selected cells,
-reused prefixes, and few independent clusters limit generalization.
-K, horizons, and perturbation levels differ across campaigns: cross-table SR
-differences are not method effects. The broad selector study has imperfect
-initial-pool matching. Narrow gains do not establish new-task or real-robot
-transfer; oracles use unavailable information. Shared-server timings are not
-controlled latency measurements. Repeated exploration requires new holdouts
-to prevent selection bias. These constraints do not establish impossibility
-for other uncertainty, consensus, or feedback methods.
+\subsection{Positive Effects at Three Tested Times}
+\begin{figure}[t]
+\centering\includegraphics[width=.88\linewidth]{recovery_timing.pdf}
+\caption{The same 64 primary initializations assessed at three points along
+uninterrupted H16 prefixes. Counts are successes out of 64.
+Effects are positive at all tested times but vary in size.
+These are dependent timing controls, not 192 independent scenes.}
+\label{fig:timing}
+\end{figure}
+At $\tau=56$, recovery achieves 31/64 versus H8's 16/64;
+at $\tau=72$, 41/64 versus 16/64; at $\tau=88$, 34/64 versus 18/64.
+Gains remain positive (+23.44, +39.06, +25.00 pp) at all three sampled points.
+This supports a local effect beyond a single tested instant, not success
+throughout a continuous interval.
+The larger gain at 72 does not make 72 a universal phase marker.
+An observation-triggered replacement is a separate method requiring evaluation.
+
+\subsection{Grounding and Intervention Opportunity}
+The benefit is conditional on the perception and manipulation regime.
+Among initial gate-passing confirmation cases, median XY error is 1.12\,cm
+in the primary cohort and 9.56\,cm on calibration-unseen x0.3.
+Replacing predicted XY with ground truth in a separate transfer diagnostic
+changes 0/16 to 3/16 successes: better grounding helps but is not sufficient.
+Other calibrated cells give 31/35 versus 26/35 with an interval spanning zero;
+x0.3 confirmation gives 1/64 versus 0/64. The broader v2 comparison also
+finds no significant aggregate gain. These boundaries constrain the claim
+to the studied calibrated regime; Appendix~\ref{app:bounds} retains all
+transfer and preserve-only controls.
+
+\section{Discussion and Limitations}
+A calibrated physical recovery option has a substantial recorded benefit
+within a defined manipulation regime. The retreat ablation suggests
+a benefit beyond observation frequency alone.
+Neither the experiment nor the localizer identifies an optimal recovery
+action for every state.
+
+The gate checks geometry rather than grasp state or expected benefit.
+An unnecessary release can destroy useful contact, and an object center
+need not specify a good grasp point.
+Future control should separate feasibility, grasp evidence, and intervention
+advantage. Geometric feasibility $G(x)=1$ does not imply positive
+continuation advantage
+\begin{equation}
+\mathcal A_R(x)=\mathbb E[Y\mid\operatorname{do}(R),x]
+              -\mathbb E[Y\mid\operatorname{do}(C),x]>0.
+\label{eq:advantage}
+\end{equation}
+Here $Y$ is terminal success and $C$ the declared continuation control.
+This is a target for future paired-branch learning, not an estimated online
+component of our controller. A failure-probability score alone does not
+identify whether the particular recovery action helps.
+
+Primary cells were selected during development; the narrative focus was
+chosen after examining a broader research program. Disclosing this and
+retaining all outcomes does not retroactively preregister the whole project.
+One backbone, task-specific perception calibration, known camera geometry,
+scheduled assessment, and simulation limit the claim.
+New-init replication does not establish unseen-object, arbitrary-background,
+or real-robot transfer. Drop flags are not official LIBERO-Safety scores.
+A separate completed 199-case three-factor evaluation finds no aggregate
+advantage: recovery and H16 have macro-SR 54.10\% and 53.42\%, respectively
+(paired difference +0.680 pp, 95\% CI $[-3.00,4.36]$).
+This bounds, rather than extends, the calibrated-cell claim
+(Appendix~\ref{app:broad}).
 
 \section{Conclusion}
-Neither geometric nor decoder consensus establishes a broad improvement
-over joint max-value for the tested frozen Cosmos Policy. Candidate repeats
-reveal suffix-dependent labels and narrow persistent misranking. Feedback
-and RGB recovery help in selected states, but extra intervention can cause
-physical failure. The next priority is to predict intervention-specific
-advantage and harm on new cluster-separated data while auditing proposal
-coverage, ranking, information, and recovery separately.
+The recorded experiments identify visually grounded physical correction as
+a promising complement to frozen generative control: 41/64 versus 16/64
+successes on fixed calibrated cells, an advantage over retreat-and-requery,
+and positive effects at three assessed times, without extra physical-action
+budget. The corrected broad test establishes a limit, not universal transfer.
+Completing scoped runtime replication is necessary for the strongest empirical
+claim. Beyond that validation, the methodological opportunity is to predict
+the benefit of a specific correction, rather than equate geometric
+eligibility or predicted failure with a reason to intervene.
 \label{sec:main_end}
 
 \subsection*{Reproducibility Statement}
-The working artifact contains source-linked tables, generation scripts,
-checksums, manifests, and paired video galleries. Appendices specify inference,
-aggregation, and replay checks. The final audit decoded 3000 videos/480434 frames
-and checked 23933 decoder queries, including dependent branches and smoke tests.
-The manuscript source package is self-contained for typesetting; raw rollout
-data and an anonymous executable experimental package are separate artifacts,
-not claimed publicly released here.
+The artifact records task/perturbation/init manifests, inference settings,
+frozen perception and trigger hashes, paired outcomes, and source-linked
+table generation. Appendices specify cells, parameters, and distinct
+historical/new implementation audits.
+The typesetting ZIP contains the manuscript and figures; an anonymous
+executable evaluation package and raw data release require separate preparation.
 
 \subsection*{Ethics Statement}
-Experiments are simulated. Neither terminal success nor a drop proxy certifies
-deployment safety. Privileged diagnostics are distinguished from RGB-only
-decisions. Physical recovery consumes the action budget rather than providing
-cost-free simulator resets. Real-robot use requires independent safety review.
+All experiments are simulated. Improved success does not certify safety.
+Recovery consumes budget and can cause harmful releases.
+Simulator object labels are used for calibration and offline analysis,
+not as an undeclared online input. Real-robot deployment requires independent
+validation and safety precautions.
 
 \subsection*{AI Use Statement}
-Generative AI coding assistance was used for literature synthesis, research
-planning, implementation and debugging, analysis, result organization, and
-manuscript drafting. Quantitative results derive from saved experiment
-artifacts, not invented measurements. Automated checks do not replace
-scientific review. This working manuscript's claims, citations, and disclosure
-remain subject to final human-author verification before submission.
+Generative AI assisted planning, coding, debugging, analysis, literature
+synthesis, and drafting. Numerical claims derive from recorded experiments
+and audited artifacts, not invented measurements. Automated checks do not
+replace scientific review. Human authors must verify claims, citations,
+and disclosure before submission.
 
 \bibliographystyle{iclr2027_conference}
 \bibliography{references}
 \clearpage
 \appendix
 
-\section{Latent Representation and Metric Definitions}
-\label{app:metrics}
-\subsection{Decoding}
-Normalized low-dimensional targets are repeated in designated latent frames.
-The decoder configuration has latent shape $[1,16,9,28,28]$
-(batch, channels, time, height, width). One action frame has 12544 scalars,
-or 112 complete copies of a $16\times7$ chunk. Channel-height-width flattening,
-not spatial action-time tokenization, defines the repeated vectors.
-For $B^A\in\R^{R_A\times T\times D}$:
-\begin{equation}
-\widetilde A_{h,d}=\frac1{R_A}\sum_rB^A_{r,h,d},\qquad
-A=\operatorname{denormalize}(\widetilde A).
-\end{equation}
-Proprio uses repeated 9 D vectors, value its repeated scalar frame, and future
-RGB the VAE decoder. Trailing incomplete proprio vectors are excluded.
-Copies within one generation are correlated, not independent model samples.
+\section{Primary Cells and Selection History}
+\label{app:cells}
+A cell is a task ID paired with a Position variant label. The labels
+x0.2/y0.3 are benchmark configuration identifiers, not a claim that all objects
+are displaced by that many meters.
+All eight primary cells are included below, including low-SR and zero-gain
+cases. Commands use the template \emph{pick up the [object] and place it in the basket}.
+Target categories are tomato sauce (task 5), butter (task 6), orange juice
+(task 9), ketchup (task 4), and cream cheese (task 1).
 
-\subsection{Sample and Copy Axes}
-Standard deviations use NumPy population normalization, $\texttt{ddof}=0$:
-\begin{align}
-U_{A,\mathrm{mean}}&=\frac1{TD}\sum_{h,d}\sigma_{h,d},&
-U_{A,\mathrm{first}}&=\sqrt{\sum_{d=1}^{6}\sigma_{1,d}^2},\\
-\bar V&=\frac1K\sum_iV_i,&U_{V,\mathrm{range}}&=\max_iV_i-\min_iV_i,\\
-U_p&=\frac19\sum_d\Std_i(\widehat p_{i,d}),&
-U_I&=\frac1{3HW}\sum_{u,v,c}\Std_i(\widehat I_i[u,v,c]).
-\end{align}
-NaN-aware value metrics use finite subsets. Future-proprio dispersion uses
-normalized latent-derived values; image dispersion depends on pixel scale.
-Internal metrics for a single sample are
-\begin{align}
-U^i_{A,\mathrm{copy}}&=\frac1{TD}\sum_{h,d}\Std_r B^A_{i,r,h,d},\\
-U^i_{p,\mathrm{copy}}&=\frac19\sum_d\Std_r B^p_{i,r,d},\\
-U^i_{V,\mathrm{element}}&=\Std_\ell(\operatorname{flat}(L_i^V)_\ell).
-\end{align}
-Latent first-action copy disagreement includes all 7 coordinates, unlike the
-6D across-sample statistic. A mean-over-samples suffix averages over $i$;
-episode std then aggregates across queries. These axes cannot be conflated.
-
-Joint $V_i$ vary with different actions/futures. Conditional variance
-$\operatorname{Var}(V\mid x,A_i)$ requires repeats holding action fixed.
-A common penalty cannot change selection:
-\begin{equation}
-\argmax_i[V_i-\lambda U(x)]=\argmax_iV_i.
-\end{equation}
-The historical risk-overconfidence-value predictor averages available
-training-standardized components
-\begin{equation}
-\{-z(U_{V,\mathrm{std}}),-z(U_{V,\mathrm{range}}),
--z(U_{V,\mathrm{element}}),-0.5z(\bar V)\}.
-\end{equation}
-Its name is not a theoretical definition: these signs favor higher risk
-for lower dispersion and lower mean value. The denominator is the number
-of available components. It is not a validated universal risk formula.
-
-\subsection{Prediction Error and Leakage}
-For a completely executed prediction horizon:
-\begin{equation}
-E_p=\|\widehat p_{t+T}-p_{t+T}\|_2,\qquad
-E_I=\frac1{3HW}\|\widehat I_{t+T}-I_{t+T}\|_F^2.
-\end{equation}
-SSIM/LPIPS are optional, not guaranteed present in every campaign.
-Proprio scales must match. A forecast for $t+16$ cannot be scored against $t+8$.
-The last H8 campaign leaves these fields empty, as with early-terminal H16
-chunks; missing is not zero. Post-execution errors inform the next query,
-not an accident already occurring inside the executed chunk.
-Whole-episode aggregates likewise use future information.
-At H16, query 3 starts at 48 and ends at 64; an error at 64 cannot anticipate
-a drop at 48--56. Variable H/recovery require actual saved timestamps.
-
-Aligned overlap for generate 16/execute 8 is
-\begin{equation}
-U_{\mathrm{overlap}}(q)=\sqrt{\frac1{8D}\sum_{h=1}^{8}\sum_d
-(A_q[h,d]-A_{q-1}[h+8,d])^2}.
-\end{equation}
-Disagreement may be beneficial correction; consistency can accompany failure.
-Endpoint images from consecutive queries usually target different times.
-Failure is the positive classification label:
-$\mathrm{TPR}=TP/(TP+FN)$, $\mathrm{TNR}=TN/(TN+FP)$;
-balanced accuracy is their mean. Feature/threshold selection and normalization
-belong inside training folds. Holding out seeds but not task/init does not
-establish new-scene transfer. Event detection requires pre-event lead time.
-
-\section{Controller Parameters and Decoder Layout}
-\label{app:geometry}
-For clipped translation $u_h$, rotation $\omega_h$, and gripper sign $b_h$:
-\begin{align}
-\bar p_h&=\sum_{\tau\le h}c_pu_\tau,&
-\bar R_h&=\exp([c_r\omega_h]_\times)\bar R_{h-1},\quad\bar R_0=I,\\
-\vartheta(R,S)&=\arccos\left(\clip\left(\frac{\tr(RS^\top)-1}{2},-1,1\right)\right).
-\end{align}
-The broad OSC distance is
-\begin{equation}
-D(i,j)=\frac{\sum_{h=1}^{16}\gamma^{h-1}
-[\|\bar p_h^i-\bar p_h^j\|_2/c_p+
-\lambda_r\vartheta(\bar R_h^i,\bar R_h^j)/c_r+
-\lambda_g\ind(b_h^i\ne b_h^j)]}{\sum_{h=1}^{16}\gamma^{h-1}}.
-\end{equation}
-Frozen parameters: $c_p=.05,c_r=.5,\lambda_r=.5,\lambda_g=.25,\gamma=.95$,
-zero alignment window. Command proxies are not true contact-aware poses.
-Averaging distances over $K$ including zero diagonal only rescales the medoid
-cost. OSC ties use larger value then smaller index, so selection is not
-strictly value-free in ties. Raw medoid uses flattened native actions;
-KeyStone-style adds guarded clustering; KDPE uses induced endpoints.
-
-The decoder campaign's action control instead uses first 5 actions,
-discount.9, translation norm/$\sqrt3$, rotation-angle/$\pi$ with weight.5,
-and gripper-sign mismatch with weight.25. It is not the broad OSC control.
-Native axis-angle commands are not continuous 6 D rotations.
-
-Decoder capture uses final conditional forward, action index 4 of 9,
-spatial patch 2 and temporal patch 1:196 vectors of dimension 2048.
-Incidence follows the actual channel-height-width repeated action layout.
-Cosine uses a $10^{-12}$ norm floor and clipped dot products.
-No policy-weight updates or averaging of incompatible actions are performed.
-
-Candidate groups are $(1,999,998),(2,997,996),(3,995,994)$, separate from env
-seed, and reused at every query. Object/Environment cover 10 tasks, init 0, 1;
-Position uses x 0.2/y 0.2, init 0. Sixty base configurations times 3 groups yield 180.
-This is controlled fixed-seed sampling, not new iid noise per query.
-Modal selection is 652/772(group 0/index 1), 656/788(group 1/index 0),
-634/781(group 2/index 2). Equal-episode rates 85.90\%, 84.99\%, 82.70\% show that
-affinity is not only length weighting. It is visible atq 0.
-Full/prefix shadow choices differ 7.22\%, full/uniform 16.66\%;
-shadow decisions are not separate deployed SRs.
-
-\section{Horizon and Compute Controls}
-\label{app:h8}
-H16 controls below use exactly the 120 H8 configurations. Only 360 new H8
-rollouts are added; reused controls are not new independent data.
-Full-minus-max H8:$-1.67$ pp, CI $[-6.67,2.78]$, 9 rescues/10 harms.
-Prefix-minus-max H8 has zero macro effect despite 9 rescues/7 harms because
-factor weights differ from pooled episode weights.
-Prefix-minus-full H8:$+1.67$ pp, CI $[-.56,3.89]$.
-MaxH 8-minus-maxH 16:$-5.56$ pp, CI $[-13.89,1.67]$.
-FullH 8-minus-decoderH 16:$-8.33$ pp, CI $[-19.44,1.11]$.
-\begin{table}[htbp]
-\caption{Matched horizon results. Factor denominators30/30/60;
-total successes out of 120. Macro is not micro.}
-\label{tab:h8}
-\centering\small\input{tables/decoder_h8.tex}
+\begin{table}[ht]
+\caption{Historical primary confirmation, init~25--32 per cell.
+H16 is uninterrupted max-value; H8 and recovery branch at 72.}
+\centering\small\input{tables/recovery_cells.tex}
 \end{table}
-Mean max-value candidate calls H16/H8 are 29.0/55.9 Object, 40.2/83.1 Environment,
-46.75/94.3 Position. Episode length affects these counts. Shared hardware,
-instrumentation, and cache differences prevent interpreting wall time as
-a controlled production-latency comparison.
-\begin{figure}[htbp]
-\centering\includegraphics[width=\linewidth]{decoder_comparison.pdf}
-\caption{H16 factor rates (left) and matched horizon subset (right).
-Bars are point estimates; paired intervals are in the text.
-Populations differ between panels.}
+
+Tasks 0 and 3 are outside the eight-category localizer's support; this is not
+silently counted as a ten-task benchmark.
+Calibration uses init~5--24, with 388 images from 194 groups.
+P3c's init~35--39 split was withheld from its screen/development stages;
+P3d's init~40--44 replication was development data.
+The latest init~25--32 cohort is calibration-disjoint but not globally
+untouched by preceding research.
+
+A future \emph{recoverable} subset must use a frozen pre-outcome rule or a
+development/holdout split, not only states where recovery later succeeded.
+Video exemplars must not redefine quantitative support.
+Primary numbers here retain rejected gates and harmed baseline successes.
+
+\paragraph{Comparator-sensitive heterogeneity.}
+Recovery improves the point estimate in six of eight cells relative to H8,
+but in five relative to uninterrupted H16. On x0.2/task~6 it succeeds 5/8
+times versus H8's 4/8 and H16's 6/8. The H8 switch itself changes success
+from 4/8 to 0/8 on each of y0.2/task~9 and y0.3/task~1, while increasing it
+from 1/8 to 6/8 on x0.2/task~5. Similar aggregate H16/H8 scores therefore
+do not imply equivalent cell-level behavior. The total recovery advantage
+remains positive against both controls; Figure~\ref{fig:cell_effects} retains
+every cell, including zero and negative contrasts.
+This is a descriptive breakdown of the same outcomes, not eight new tests
+or an outcome-selected subgroup claim.
+
+\begin{figure}[ht]
+\centering\includegraphics[width=.95\linewidth]{recovery_cell_effects.pdf}
+\caption{Descriptive per-cell recovery effects under two continuation controls.
+Labels give net additional successes out of eight paired cases per cell.
+No per-cell significance or new evaluation sample is implied.}
+\label{fig:cell_effects}
 \end{figure}
 
-\section{Candidate Repeats and Recovery Details}
-\subsection{Saved Candidates and Feedback}
-The 36 snapshots are atq 0/q3 ($t=0,48$) from 18 case/task/init configurations
-sharing 10 underlying task/init clusters. Eight candidates give 288 strictly
-replayed branches with a common type of K1/H16 continuation.
-Nested first 4 yields max 15/36 and oracle 19/36, not a deployed K4 benchmark.
-The 1080-branch repeat series contains 864 candidate branches
-(36 states, 8 actions, 3 suffixes) and 216 feedback branches
-(3 arms, 2 suffixes per state). Candidate outcomes depend on continuation,
-budget, and noise, not just the first chunk.
+\section{Perception Calibration and Gate Parameters}
+\label{app:calibration}
+The actual frozen artifact is \texttt{deeplab\_heatmap\_v2}, not the earlier
+CLIP/ridge localizer also present in the repository.
+Its metadata specifies three-fold calibration, 12 training epochs within each
+fold, and 14 final-training epochs.
+Butter and salad dressing use neural global height, orange juice uses
+stacked regression, and the remaining supported objects use calibration-set
+median height. Native camera orientation is retained for projection.
 
-The 690-branch follow-up includes two local pools and 640 branches on eight
-neighbors (tasks 0/2, init 9--12, Positionx 0.2, 8 actions, 10 suffixes).
-Pool 13 alternatives give 10/10 versus 1/10 max. Pool 11 gives 6/10 versus 4/10,
-4 rescues/2 harms, $p=.6875$, not confirmed. Two neighbors remain all-fail over
-80 branches each, not proof of impossibility.
-Matched-$K$ feedback uses 24 states/12 clusters, 5 arms:120 branches.
-FreshK 4 changes 17/24 actions, continuity only 4/24; both succeed 13/24,
-versus 15/24 open 16.
+The selected \texttt{workspace\_calibrated} gate uses each object's fifth
+percentile of out-of-fold heatmap score ranges.
+Per-coordinate workspace bounds use calibration quantiles 0.01 and 0.99,
+with a 0.06\,m margin. The distance interval is $[0.08,0.50]$ m.
+The table exports actual frozen thresholds, not estimates optimized on
+confirmation outcomes.
 
-\subsection{Recovery Development}
-Privileged regrasp succeeds 62/80 versus 7/80 H4 and 8/80 blind lift,
-a conditional oracle result, not full benchmark SR.
-RGB development restores 43/72 cases across 47 task/init groups.
-P3c uses init 35--39 on 8 selectedcells, frozen localizer/gate, full H16
-queries 0--3 then 8 actions ofq 4, branching at 72.
-The 13/40 versus 24/40 result has 12 rescues/1 harm, $p=.00342$.
-Same-cell 6/40 versus 25/40 has CI $[30,65]$ pp; new-cells 26/35 versus 31/35 has
-CI $[-2.9,31.4]$ pp. New recovery-test cells were not necessarily outside
-localizer training. Full versus retreat-only gives 56/75 versus 36/75.
+\begin{table}[ht]
+\caption{Frozen heatmap score-range thresholds and XYZ workspace boxes
+in meters. These are feasibility parameters, not success probabilities.}
+\centering\scriptsize\input{tables/recovery_gate.tex}
+\end{table}
 
-A historical nonphysical fallback was found but did not activate in audited
-main P3c/P3d branches. New protocols do not undo physical steps.
-Some old illustrative videos are seeded replays rather than original records.
-On 48 states, continue/full/probe/verified counts are 26/35/26/30; 7 of 9 held
-decisions are false-held because crops follow the gripper.
-Grounded-mask screening on 48 newstates gives full 33,
-conservative/probe-always 35, identical outcomes and 47 identical trajectories.
-Ten false-held errors vanish on 27 common probes, but 8 becomeunknown;
-a separate verifier control gain is not isolated.
+Heatmap uncertainty is not Cosmos value uncertainty.
+The recovery method does not rank actions using latent-copy variance,
+ensemble standard deviation, or an uncertainty penalty.
 
-Another 48-state delayed test gives 33 versus 36 full successes;
-the fresh gate cancels 14 of 21 eligible recoveries, confounding timing.
-A 96-prefix/48-init-cluster timing test (480 main+10 smoke) gives continue 63,
-immediate/diagnostic 76, fresh/checked 74. Checked-minus-immediate:$-2.08$ pp,
-CI $[-7.29,3.13]$, 3 rescues/5 harms, Holm 1.
-All 17 shared failures lie outside the old trigger.
-
-\subsection{Latest Observation Contract}
-Tasks 2/5/9, x/y 0.1/0.2 define 12 selected Position cells.
-Init 46--49, two prefix realizations and two suffixes give 192 branches/arm,
-48 initclusters; prefixes were collected previously.
-Ninety-eight cases pass old eligibility; internal checks permit 70 full
-recoveries. Ninety-two receive refresh probes; 20 extra regrasp maneuvers
-are added by the new branch.
-Three-step probe target 8 cm produces about 3.2 cm actual motion.
-Preserve keeps clipped previous gripper command; open uses $-1$.
-All refresh arms retain old-gate recovery.
-
-No six-way predeclared pooled contrast passes Holm.05.
-Primary preserve+regrasp-minus-physical CI $[-6.25,0]$ pp, Holm 1.
-Preserve+regrasp-minus-preserve-only CI $[-11.46,-5.21]$ pp, Holm.18948.
-Post-hoc preserve-only-minus-physical:$+5.208$ pp, CI $[3.125,7.8125]$,
-11 rescues/1 harm, cluster-sign $p=.09587$.
-Net ten successes arise in task 9/x 0.2(1/16 to 11/16);
-task 2/y 0.2 has one rescue and one harm; other net effects are zero.
-GT physical/calibrated workspace arms are privileged diagnostics.
-
-All 16 extra-regrasp harms have identical common-probe actions/inputs,
-eight prefixes and six initclusters. Contact persists for 3 probe steps,
-object and gripper moving together. Opening at 76 precedes drops at 82--85,
-before maneuver end 95--97. These paired trajectories support localized
-intervention-induced failure, not an online GT-based detector.
-\begin{figure}[htbp]
-\centering\includegraphics[width=\linewidth]{observation_contract.pdf}
-\caption{Observation-contract point estimates and local drop counts.
-Gray denotes privileged oracles. The best deployable point estimate is
-post-hoc and one-cell concentrated; the primary method is not confirmed.}
-\end{figure}
-
-\section{Statistics, Historical Evidence, and Integrity}
+\section{Statistics and Cost Interpretation}
 \label{app:stats}
-Valid 199 uses factor-balanced effects and task/init-cluster bootstrap.
-Decoder resamples tasks within factors, retaining seed groups; intervals are
-unadjusted. Q 4/P3c cluster by init.
-Observation intervals use stratified fixed-cell init bootstrap, while
-significance uses cluster-sign tests and Holm over six contrasts.
-Narrow bootstrap intervals do not override corrected-test decisions
-or establish new-cell transfer. Episode McNemar is descriptive under seed
-dependence and not a separate test of macro-SR.
+The latest confirmation defines four primary contrasts: recovery versus H8
+within primary cells; that contrast on x0.3; preserve-only versus recovery
+across both cohorts; and recovery versus uninterrupted H16 across both cohorts.
+Its frozen analyzer bootstraps init clusters within fixed cells and uses
+cluster sign flips with Holm adjustment.
+The headline reports effect and 95\% interval, not the analyzer's finite
+Monte Carlo zero as an exact probability of zero.
+The H16 contrast restricted to primary cells is descriptive, not a newly
+preregistered primary contrast.
 
-Table~\ref{tab:history} retains predecessor results with distinct populations;
-they are not additional independent main-test observations.
-\begin{table}[htbp]
-\caption{Historical evidence. Counts are control versus method unless labeled.
-These rows are not a shared benchmark or a formal meta-analysis.}
-\label{tab:history}
-\centering\small
-\begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{4.7cm}}
-\toprule
-Study & Observation & Scope \\
-\midrule
-Early 12-seed case & Max 6, action 6, value 7, combined 4 & Exploratory selected case \\
-Static penalties, 10 steps & 52/100 vs 56/100 & CI $[-5,13]$ pp \\
-Adaptive horizon, 6 cases & 115/180 vs 143/180 & Replay disagreement 4.4--9.4\% \\
-Selection/horizon factorial & 100/168 vs 121/168 & Init-CI $[4.8,20.8]$; case-CI $[-4,29]$ pp \\
-Temporal overlap & 312 rollouts, AUROC near.50 & Some event labels invalidated \\
-Boundary screen & 264 rollouts, best AUROC.613 & Interval includes.5 \\
-Frozen ranker & Offline regret $-43.1\%$ & Closed-loop 165/360 vs 164/360 \\
-Surrogate requery & 146/240 vs 147/240 & Older requery 161/240 \\
-AR pilot & 10 states, 80 candidates, 30\%SR & Not original Cosmos planning \\
-Signed feedback transfer & 240 pairs, AUROC.398 & No transferable benefit predictor \\
-Invariant CATE reserve & 400 pairs, 57\%vs 55.75\% & No gain over commit \\
-Residual dynamics & 5668 transitions & Quadratic-JRD collapses after clamp \\
-Official LIBERO-Safety & 144 rollouts, 0 safe-success & Four violations; missing semantic assets \\
-\bottomrule
-\end{tabular}
+The confirmation has 128 paired cases and 512 main branches.
+Timing at 56 and 88 adds 768 branches from the same underlying trajectories.
+The 72 counts are shared with main, not counted again as independent evidence.
+P3c/P3d's older discordance tests are not silently combined with the later
+Holm family. Intervals condition on evaluated cells; adding suffix seeds
+does not measure generalization over all LIBERO-PRO tasks.
+
+Recovery adds at most 25 physical actions within 280 and uses auxiliary
+perception inference. Failed episodes reaching 280 are not successful
+completion times. Shared GPU wall times and reused candidate pools are
+not controlled production-latency measurements.
+Suffix-only safety trackers and whole-episode H16 trackers have different
+exposure windows and must not be pooled.
+
+\section{Common Three-Factor Evaluation}
+\label{app:broad}
+We completed a fresh paired collection on the same historically inspected
+LIBERO-PRO support: 50 Object, 50 Environment and 99 Position cases,
+five controllers each, 995 complete rollouts. This is not an untouched
+task/init holdout. All controllers use the same initial snapshot per case,
+280 physical steps, generated horizon 16, and five denoising steps.
+Except K1, selection uses four jointly generated action/state/value candidates,
+not autoregressive planning. Macro-SR gives equal weight to the three factors.
+
+\begin{table}[ht]
+\caption{Completed corrected-runtime v2 evaluation. Factor entries and macro-SR are
+percentages; Success counts all 199 cases. Scheduled recovery does not
+establish significant aggregate improvement over H16.}
+\label{tab:broad}
+\centering\small\input{tables/recovery_broad.tex}
 \end{table}
 
-Cosmos's standardLIBERO policy score and separate planning result are not
-our joint-value PRO protocol \citep{cosmos_policy}. KeyStone's sampling budget
-and KDPE's action endpoints differ from our adaptations \citep{keystone,kdpe}.
-Flow-VLA UQ concerns data acquisition/fine-tuning \citep{flow_uq};
-Sentinel concerns monitoring and Rewind-IL adds recovery
-\citep{sentinel,rewind_il}. Negative transfer here does not refute those results.
+Recovery versus H16 yields nine rescues and six harms. Its +4.04 pp
+Position gain is partly offset by -4.00 pp on Object; Environment gains
++2.00 pp without physical recovery and matches the H8 control.
+The paired factor-macro difference is +0.680 pp, CI $[-3.00,4.36]$;
+versus H8 it is -0.65 pp, CI $[-3.76,2.67]$.
+Intervals use 5,000 factor-stratified task/init cluster bootstrap draws,
+keeping Position levels together. Cluster sign-flip tests use 20,000 draws
+with a plus-one correction and Holm correction over four prespecified
+contrasts; all adjusted $p$-values equal one. These do not prove equivalence.
+Logical query counts are 22.99 per episode for scheduled recovery and
+13.86 for H16; cached runtimes are not standalone latency comparisons.
 
-The decoder audit validates 1440 videos/297109 frames, 23933 queries,
-selected actions, fresh inputs, horizons, and 180 exact initial groups.
-Observation auditing decodes 1560 videos/183325 frames including 24 smoke videos;
-1536 main outcomes and 184 common-probe pairs are checked.
-Together 3000 videos/480434 frames include technical and dependent branches.
-Earlier results rely on recorded reports/audits, not a claim to re-audit
-every old raw trajectory. Generated tables retain source hashes.
+The exploratory event controller never executes recovery in these 199 cases.
+Its localizer supports 159 targets; valid localization occurs in 70 cases,
+a close-near grasp attempt in ten, and coincident attempt/miss evidence in
+three. No case supplies persistent miss evidence. It therefore reproduces
+H16 actions and outcomes, not a demonstrated successful adaptive controller.
 
-\section{Prospective Tests, Not Additional Results}
-Freeze contact-preserving refresh/recovery before new task/init/cell tests.
-Compare continuation, old recovery, and matched probes; report SR, drops,
-false interventions, and compute. A possible objective is
-\begin{equation}
-b^*(x)=\argmax_b[
-\widehat{\Pr}(Y=1\mid x,b)-\lambda\widehat{\Pr}(\mathrm{harm}\mid x,b)
--\eta\,\operatorname{cost}(b)],
-\end{equation}
-where $b$ is continue, refresh, or recover. This is a direction, not an evaluated
-new algorithm. It requires paired training branches, cluster-separated
-calibration, and a frozen holdout.
-Decoder refinements should first pass new seed-bank/permutation/fixed-index
-controls. When pools lack useful actions, proposal expansion or grounding
-should precede more reranking hyperparameter searches.
+An earlier, pre-repair seed replication passed its 12-rollout smoke but stopped at
+33 complete cases after a no-intervention parity failure. In an unsupported
+BBQ-sauce case both H16 and event succeeded, at steps 240 and 237; there was
+no recovery event. Proprioceptive hashes first differ at query step 48,
+image/candidate hashes at step 80 despite matching seeds. Subsequent fixed-action
+CPU replay on both hosts reproduced divergence from omitted MuJoCo solver
+warmstart state. A versioned repair saves the complete integration state and
+robosuite sensor clocks/cache; exact continuation tests pass at multiple
+snapshot times. The repaired version passes 18 closed-loop smoke rollouts
+and a fresh 995-rollout collection on all 199 cases. All H16/event query-input
+hashes and videos match in the absence of intervention. An additional artifact
+audit verifies actions, budgets, seeds, and file hashes. Only two terminal
+labels change relative to v1, H8 and recovery on the same Object case;
+Table~\ref{tab:broad} reports v2 only. The invalid old case is not a robot
+failure; old/new versions are not pooled as seed replicates. Two additional
+v2 seed series were deferred for budget before aggregate S0 results.
+Multi-seed robustness and scoped v2 replication remain unestablished.
+
+\section{Ablations and Transfer Boundaries}
+\label{app:bounds}
+\begin{table}[ht]
+\caption{P3d development ablation. Other calibrated cells are new to the
+P3c intervention cohort, not unseen by perception.}
+\centering\small\input{tables/recovery_ablation.tex}
+\end{table}
+Direct full-versus-retreat comparisons are paired by case:
+17 full-only and zero retreat-only successes on the 40 primary cases;
+23 and three on all 75. The positive point estimate on seven other calibrated
+cells failed the frozen transfer criterion; init~45--49 holdout was not opened.
+
+\begin{table}[ht]
+\caption{Latest confirmation: all four arms and both predeclared cohorts.
+Transfer has eight x0.3 cells, tasks~1,2,4--9.}
+\centering\small\input{tables/recovery_confirmation.tex}
+\end{table}
+The preserve-only extension retains original recovery on eligible states.
+On rejected but probe-eligible states it makes up to three upward steps
+while preserving the previous gripper command, then resumes H8 without a
+new regrasp after the probe. It achieves 41/64 in primary and 1/64 on x0.3,
+equal to standard recovery. Across 128 pairs there is one rescue and one harm.
+Its earlier incremental gain therefore did not replicate.
+
+The localization audit has 42 initially gate-passing primary cases and 24
+gate-passing x0.3 cases. No primary estimate exceeds 5\,cm XY error; all 24
+transfer estimates do. All-case median XY errors are 2.53\,cm and 23.50\,cm.
+Gate-passing and all-case statistics must not be interchanged.
+A 32-case camera diagnostic finds negligible GT projection round-trip error
+and better alignment with native than flipped rendering; a simple
+camera-orientation bug is not supported as the transfer explanation.
+
+\begin{table}[ht]
+\caption{Privileged grounding diagnostic, 16 cases per cohort.
+Simulator coordinates replace predictions only in explicit oracle arms.}
+\centering\small\input{tables/recovery_oracle.tex}
+\end{table}
+GT XY rescues three transfer cases; GT XYZ gives two.
+Object-center coordinates do not define an optimal contact point.
+The remaining failures do not separately identify timing, orientation,
+reachability, or continuation as causes.
+This oracle experiment is diagnostic, not a deployable improvement.
+
+\section{Implementation and Harm Audits}
+\label{app:audit}
+The historical P3c/P3d collector could reuse baseline after a rejected
+post-retreat guard despite retreat having altered the state.
+The audit found zero activations in these datasets, so this defect does
+not explain their measured gains.
+The later confirmation retains the real reached state after post-action
+rejection. Historical snapshot equality verifies restored state, not
+independent re-execution of the complete trajectory.
+
+In two P3d x0.2/task~2 cases, baseline and retreat-only succeed, but full
+regrasp produces a drop proxy during approach and later times out.
+In a separate observation-contract study, extra regrasp after a common
+preserve probe loses 16 successes with no rescues. These branches share eight
+prefixes and six init clusters.
+Offline tracking shows the object moving with the end effector before
+the extra release. This is mechanism evidence about unnecessary intervention,
+not 16 independent proofs of a general safety theorem or a tested contact veto.
+
+Older statistical P3c/P3d runs did not record all rollout videos.
+Later mechanism replays are illustrative, not replacement endpoint trajectories.
+The latest confirmation stores complete two-camera episode videos.
+Examples should include rescue and harm with case IDs and shared-prefix
+timing, without changing the evaluation denominator.
+
+\section{Supporting Feedback Study}
+\label{app:feedback}
+A separate historical shared-prefix experiment tests one real-observation
+requery halfway through the fifth chunk on LIBERO-PRO Object task~0.
+It uses 50 initializations with two rollout seeds each, 100 pairs, a shared
+four-candidate pool at step 64, and identical selected actions through step 72.
+The feedback branch samples a new H8 continuation from the real observation;
+the commit branch executes the old suffix. Both then return to max-value H16.
+The original experiment records 46/100 versus 64/100 successes, +18 pp,
+init-cluster CI $[4,32]$, with 31 rescues and 13 harms.
+Its original replay tolerance passed but does not certify the subsequently
+identified missing runtime components; applicability of the v2 repair must
+be audited separately. This is evidence about a particular feedback point,
+not a universal query schedule, a regrasp ablation, or an independent
+replication of the primary recovery cohort.
+
+\section{Research Scope}
+A separate research report retains candidate-selection, uncertainty,
+decoder-consensus, and suffix-repeat studies. They address distinct questions
+and populations and are not included as competing headline methods here.
+All direct recovery controls, transfer boundaries, and implementation audits
+remain in this manuscript. Qualitative exemplars illustrate mechanisms;
+they neither redefine quantitative support nor substitute for paired endpoints.
+
 \end{document}

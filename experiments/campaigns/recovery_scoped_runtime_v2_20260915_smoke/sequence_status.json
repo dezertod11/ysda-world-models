@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "stage": "analysis_complete",
+  "pid": 269634,
+  "active": {},
+  "deadline_epoch": 1789534200.0,
+  "started_at": "2026-09-15T16:53:54.373378+00:00",
+  "automatic_holdout": false,
+  "updated_at": "2026-09-15T16:59:06.308926+00:00",
+  "completed_branches": {
+    "main": 8
+  },
+  "expected_branches": 8,
+  "seconds_until_deadline": 42653,
+  "waiting_for_idle_gpu": false,
+  "eta_remaining_seconds": 0
+}

@@ -1,0 +1,2 @@
+seed_group,supported_target,physical_interventions,localization_valid_episode,close_near_episode,grasp_attempt_episode,mask_miss_episode,attempt_and_miss_episode,persistent_miss_episode,persistent_miss_and_geometry_episode,episodes
+0,159,0,70,10,10,24,3,0,0,199

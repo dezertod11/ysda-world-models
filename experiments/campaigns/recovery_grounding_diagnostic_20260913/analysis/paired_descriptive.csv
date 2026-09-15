@@ -1,0 +1,7 @@
+cohort,method,control,n,rescue,harm,difference_pp
+replication,oracle_xy_fixed_gate,rgb_replay,16,1,0,6.25
+replication,oracle_xyz_fixed_gate,oracle_xy_fixed_gate,16,0,1,-6.25
+replication,oracle_xyz_physical_gate,oracle_xyz_fixed_gate,16,2,0,12.5
+transfer,oracle_xy_fixed_gate,rgb_replay,16,3,0,18.75
+transfer,oracle_xyz_fixed_gate,oracle_xy_fixed_gate,16,0,1,-6.25
+transfer,oracle_xyz_physical_gate,oracle_xyz_fixed_gate,16,0,0,0.0

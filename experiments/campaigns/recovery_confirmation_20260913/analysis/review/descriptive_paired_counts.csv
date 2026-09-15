@@ -1,9 +1,9 @@
 cohort,method,control,n,successes_method,successes_control,rescue,harm,difference_pp
-replication,physical_regrasp,continue_h8,61,40,16,26,2,39.34426229508197
-replication,physical_regrasp,baseline_h16,61,40,16,28,4,39.34426229508197
-replication,refresh_preserve_only,physical_regrasp,61,40,40,1,1,0.0
-replication,continue_h8,baseline_h16,61,16,16,11,11,0.0
-transfer,physical_regrasp,continue_h8,47,1,0,1,0,2.127659574468085
-transfer,physical_regrasp,baseline_h16,47,1,0,1,0,2.127659574468085
-transfer,refresh_preserve_only,physical_regrasp,47,1,1,0,0,0.0
-transfer,continue_h8,baseline_h16,47,0,0,0,0,0.0
+replication,physical_regrasp,continue_h8,64,41,16,27,2,39.0625
+replication,physical_regrasp,baseline_h16,64,41,17,28,4,37.5
+replication,refresh_preserve_only,physical_regrasp,64,41,41,1,1,0.0
+replication,continue_h8,baseline_h16,64,16,17,11,12,-1.5625
+transfer,physical_regrasp,continue_h8,64,1,0,1,0,1.5625
+transfer,physical_regrasp,baseline_h16,64,1,0,1,0,1.5625
+transfer,refresh_preserve_only,physical_regrasp,64,1,1,0,0,0.0
+transfer,continue_h8,baseline_h16,64,0,0,0,0,0.0

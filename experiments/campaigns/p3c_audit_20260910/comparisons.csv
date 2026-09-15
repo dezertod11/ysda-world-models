@@ -1,0 +1,9 @@
+cohort,method,n,baseline_successes,method_successes,delta_pp,rescues,harms,ci_low_pp,ci_high_pp,mcnemar_p
+perception_regrasp_online_trigger_20260904/screen,global_conservative,12,4,4,0.0,0,0,0.0,0.0,1.0
+perception_regrasp_online_trigger_20260904/screen,workspace_calibrated,12,4,8,33.33333333333333,4,0,8.333333333333332,66.66666666666666,0.125
+perception_regrasp_online_trigger_20260904/development,workspace_calibrated,40,7,25,45.0,18,0,30.0,60.0,7.62939453125e-06
+perception_regrasp_online_trigger_20260904/holdout,workspace_calibrated,40,13,24,27.500000000000004,12,1,12.5,42.5,0.00341796875
+perception_regrasp_transfer_ablation_20260905/replication,workspace_calibrated,40,6,25,47.5,20,1,30.0,65.0,2.09808349609375e-05
+perception_regrasp_transfer_ablation_20260905/replication,workspace_retreat_only,40,6,8,5.0,4,2,-7.5,17.5,0.6875
+perception_regrasp_transfer_ablation_20260905/novel_cell,workspace_calibrated,35,26,31,14.285714285714285,7,2,-2.857142857142857,31.428571428571427,0.1796875
+perception_regrasp_transfer_ablation_20260905/novel_cell,workspace_retreat_only,35,26,28,5.714285714285714,5,3,-11.428571428571429,22.857142857142858,0.7265625

@@ -1,0 +1,996 @@
+id,phase,factor,level,suite,task_id,init_state_id,rollout_seed,task_description,arm,success,final_t,query_count,logical_candidates,interventions,drop_proxy,wrong_object_proxy
+object__t0_i2,main,Object,,libero_object_object,0,2,40020000,pick up the alphabet soup and place it in the basket,first_k1,True,128,8,8,0,False,False
+object__t0_i2,main,Object,,libero_object_object,0,2,40020000,pick up the alphabet soup and place it in the basket,max_value_h16,True,114,8,32,0,False,False
+object__t0_i2,main,Object,,libero_object_object,0,2,40020000,pick up the alphabet soup and place it in the basket,h8_at72,True,154,16,64,0,False,False
+object__t0_i2,main,Object,,libero_object_object,0,2,40020000,pick up the alphabet soup and place it in the basket,p3_at72,True,154,16,64,0,False,False
+object__t0_i2,main,Object,,libero_object_object,0,2,40020000,pick up the alphabet soup and place it in the basket,p3_event,True,114,8,32,0,False,False
+environment__t0_i2,main,Environment,,libero_object_env,0,2,42020000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t0_i2,main,Environment,,libero_object_env,0,2,42020000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t0_i2,main,Environment,,libero_object_env,0,2,42020000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t0_i2,main,Environment,,libero_object_env,0,2,42020000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t0_i2,main,Environment,,libero_object_env,0,2,42020000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.1_t0_i1,main,Position,x0.1,libero_object_temp,0,1,50010000,pick up the alphabet soup and place it in the basket,first_k1,True,143,9,9,0,False,False
+position_x0.1_t0_i1,main,Position,x0.1,libero_object_temp,0,1,50010000,pick up the alphabet soup and place it in the basket,max_value_h16,True,143,9,36,0,False,False
+position_x0.1_t0_i1,main,Position,x0.1,libero_object_temp,0,1,50010000,pick up the alphabet soup and place it in the basket,h8_at72,True,143,14,56,0,False,False
+position_x0.1_t0_i1,main,Position,x0.1,libero_object_temp,0,1,50010000,pick up the alphabet soup and place it in the basket,p3_at72,True,143,14,56,0,False,False
+position_x0.1_t0_i1,main,Position,x0.1,libero_object_temp,0,1,50010000,pick up the alphabet soup and place it in the basket,p3_event,True,143,9,36,0,False,False
+position_x0.2_t0_i1,main,Position,x0.2,libero_object_temp,0,1,52010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t0_i1,main,Position,x0.2,libero_object_temp,0,1,52010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t0_i1,main,Position,x0.2,libero_object_temp,0,1,52010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t0_i1,main,Position,x0.2,libero_object_temp,0,1,52010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.2_t0_i1,main,Position,x0.2,libero_object_temp,0,1,52010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t0_i1,main,Position,x0.3,libero_object_temp,0,1,54010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t0_i1,main,Position,x0.3,libero_object_temp,0,1,54010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t0_i1,main,Position,x0.3,libero_object_temp,0,1,54010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.3_t0_i1,main,Position,x0.3,libero_object_temp,0,1,54010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.3_t0_i1,main,Position,x0.3,libero_object_temp,0,1,54010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t0_i1,main,Position,x0.4,libero_object_temp,0,1,56010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t0_i1,main,Position,x0.4,libero_object_temp,0,1,56010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t0_i1,main,Position,x0.4,libero_object_temp,0,1,56010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t0_i1,main,Position,x0.4,libero_object_temp,0,1,56010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t0_i1,main,Position,x0.4,libero_object_temp,0,1,56010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t0_i1,main,Position,x0.5,libero_object_temp,0,1,58010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t0_i1,main,Position,x0.5,libero_object_temp,0,1,58010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t0_i1,main,Position,x0.5,libero_object_temp,0,1,58010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.5_t0_i1,main,Position,x0.5,libero_object_temp,0,1,58010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.5_t0_i1,main,Position,x0.5,libero_object_temp,0,1,58010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t0_i1,main,Position,y0.1,libero_object_temp,0,1,60010000,pick up the alphabet soup and place it in the basket,first_k1,True,130,9,9,0,False,False
+position_y0.1_t0_i1,main,Position,y0.1,libero_object_temp,0,1,60010000,pick up the alphabet soup and place it in the basket,max_value_h16,True,129,9,36,0,False,False
+position_y0.1_t0_i1,main,Position,y0.1,libero_object_temp,0,1,60010000,pick up the alphabet soup and place it in the basket,h8_at72,True,129,13,52,0,False,False
+position_y0.1_t0_i1,main,Position,y0.1,libero_object_temp,0,1,60010000,pick up the alphabet soup and place it in the basket,p3_at72,True,129,13,52,0,False,False
+position_y0.1_t0_i1,main,Position,y0.1,libero_object_temp,0,1,60010000,pick up the alphabet soup and place it in the basket,p3_event,True,129,9,36,0,False,False
+position_y0.2_t0_i1,main,Position,y0.2,libero_object_temp,0,1,62010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t0_i1,main,Position,y0.2,libero_object_temp,0,1,62010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.2_t0_i1,main,Position,y0.2,libero_object_temp,0,1,62010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.2_t0_i1,main,Position,y0.2,libero_object_temp,0,1,62010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.2_t0_i1,main,Position,y0.2,libero_object_temp,0,1,62010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.3_t0_i1,main,Position,y0.3,libero_object_temp,0,1,64010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t0_i1,main,Position,y0.3,libero_object_temp,0,1,64010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t0_i1,main,Position,y0.3,libero_object_temp,0,1,64010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t0_i1,main,Position,y0.3,libero_object_temp,0,1,64010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t0_i1,main,Position,y0.3,libero_object_temp,0,1,64010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t0_i1,main,Position,y0.4,libero_object_temp,0,1,66010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.4_t0_i1,main,Position,y0.4,libero_object_temp,0,1,66010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.4_t0_i1,main,Position,y0.4,libero_object_temp,0,1,66010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t0_i1,main,Position,y0.4,libero_object_temp,0,1,66010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.4_t0_i1,main,Position,y0.4,libero_object_temp,0,1,66010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.5_t0_i1,main,Position,y0.5,libero_object_temp,0,1,68010000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t0_i1,main,Position,y0.5,libero_object_temp,0,1,68010000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t0_i1,main,Position,y0.5,libero_object_temp,0,1,68010000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t0_i1,main,Position,y0.5,libero_object_temp,0,1,68010000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t0_i1,main,Position,y0.5,libero_object_temp,0,1,68010000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t1_i2,main,Object,,libero_object_object,1,2,40120000,pick up the cream cheese and place it in the basket,first_k1,True,120,8,8,0,False,False
+object__t1_i2,main,Object,,libero_object_object,1,2,40120000,pick up the cream cheese and place it in the basket,max_value_h16,True,119,8,32,0,False,False
+object__t1_i2,main,Object,,libero_object_object,1,2,40120000,pick up the cream cheese and place it in the basket,h8_at72,True,119,11,44,0,False,False
+object__t1_i2,main,Object,,libero_object_object,1,2,40120000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,True,False
+object__t1_i2,main,Object,,libero_object_object,1,2,40120000,pick up the cream cheese and place it in the basket,p3_event,True,119,8,32,0,False,False
+environment__t1_i2,main,Environment,,libero_object_env,1,2,42120000,pick up the cream cheese and place it in the basket,first_k1,True,142,9,9,0,False,False
+environment__t1_i2,main,Environment,,libero_object_env,1,2,42120000,pick up the cream cheese and place it in the basket,max_value_h16,True,138,9,36,0,False,False
+environment__t1_i2,main,Environment,,libero_object_env,1,2,42120000,pick up the cream cheese and place it in the basket,h8_at72,True,135,13,52,0,False,False
+environment__t1_i2,main,Environment,,libero_object_env,1,2,42120000,pick up the cream cheese and place it in the basket,p3_at72,True,135,13,52,0,False,False
+environment__t1_i2,main,Environment,,libero_object_env,1,2,42120000,pick up the cream cheese and place it in the basket,p3_event,True,138,9,36,0,False,False
+position_x0.1_t1_i1,main,Position,x0.1,libero_object_temp,1,1,50110000,pick up the cream cheese and place it in the basket,first_k1,True,116,8,8,0,False,False
+position_x0.1_t1_i1,main,Position,x0.1,libero_object_temp,1,1,50110000,pick up the cream cheese and place it in the basket,max_value_h16,True,116,8,32,0,False,False
+position_x0.1_t1_i1,main,Position,x0.1,libero_object_temp,1,1,50110000,pick up the cream cheese and place it in the basket,h8_at72,True,114,11,44,0,False,False
+position_x0.1_t1_i1,main,Position,x0.1,libero_object_temp,1,1,50110000,pick up the cream cheese and place it in the basket,p3_at72,True,114,11,44,0,False,False
+position_x0.1_t1_i1,main,Position,x0.1,libero_object_temp,1,1,50110000,pick up the cream cheese and place it in the basket,p3_event,True,116,8,32,0,False,False
+position_x0.2_t1_i1,main,Position,x0.2,libero_object_temp,1,1,52110000,pick up the cream cheese and place it in the basket,first_k1,True,120,8,8,0,False,False
+position_x0.2_t1_i1,main,Position,x0.2,libero_object_temp,1,1,52110000,pick up the cream cheese and place it in the basket,max_value_h16,True,119,8,32,0,False,False
+position_x0.2_t1_i1,main,Position,x0.2,libero_object_temp,1,1,52110000,pick up the cream cheese and place it in the basket,h8_at72,True,123,12,48,0,False,False
+position_x0.2_t1_i1,main,Position,x0.2,libero_object_temp,1,1,52110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,True,False
+position_x0.2_t1_i1,main,Position,x0.2,libero_object_temp,1,1,52110000,pick up the cream cheese and place it in the basket,p3_event,True,119,8,32,0,False,False
+position_x0.3_t1_i1,main,Position,x0.3,libero_object_temp,1,1,54110000,pick up the cream cheese and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t1_i1,main,Position,x0.3,libero_object_temp,1,1,54110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t1_i1,main,Position,x0.3,libero_object_temp,1,1,54110000,pick up the cream cheese and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t1_i1,main,Position,x0.3,libero_object_temp,1,1,54110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_x0.3_t1_i1,main,Position,x0.3,libero_object_temp,1,1,54110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t1_i1,main,Position,x0.4,libero_object_temp,1,1,56110000,pick up the cream cheese and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t1_i1,main,Position,x0.4,libero_object_temp,1,1,56110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t1_i1,main,Position,x0.4,libero_object_temp,1,1,56110000,pick up the cream cheese and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t1_i1,main,Position,x0.4,libero_object_temp,1,1,56110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_x0.4_t1_i1,main,Position,x0.4,libero_object_temp,1,1,56110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t1_i1,main,Position,x0.5,libero_object_temp,1,1,58110000,pick up the cream cheese and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t1_i1,main,Position,x0.5,libero_object_temp,1,1,58110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t1_i1,main,Position,x0.5,libero_object_temp,1,1,58110000,pick up the cream cheese and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t1_i1,main,Position,x0.5,libero_object_temp,1,1,58110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_x0.5_t1_i1,main,Position,x0.5,libero_object_temp,1,1,58110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t1_i1,main,Position,y0.1,libero_object_temp,1,1,60110000,pick up the cream cheese and place it in the basket,first_k1,True,157,10,10,0,False,False
+position_y0.1_t1_i1,main,Position,y0.1,libero_object_temp,1,1,60110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,True,False
+position_y0.1_t1_i1,main,Position,y0.1,libero_object_temp,1,1,60110000,pick up the cream cheese and place it in the basket,h8_at72,True,158,16,64,0,False,False
+position_y0.1_t1_i1,main,Position,y0.1,libero_object_temp,1,1,60110000,pick up the cream cheese and place it in the basket,p3_at72,True,158,16,64,0,False,False
+position_y0.1_t1_i1,main,Position,y0.1,libero_object_temp,1,1,60110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,True,False
+position_y0.2_t1_i1,main,Position,y0.2,libero_object_temp,1,1,62110000,pick up the cream cheese and place it in the basket,first_k1,True,220,14,14,0,False,False
+position_y0.2_t1_i1,main,Position,y0.2,libero_object_temp,1,1,62110000,pick up the cream cheese and place it in the basket,max_value_h16,True,174,11,44,0,False,False
+position_y0.2_t1_i1,main,Position,y0.2,libero_object_temp,1,1,62110000,pick up the cream cheese and place it in the basket,h8_at72,True,178,19,76,0,False,False
+position_y0.2_t1_i1,main,Position,y0.2,libero_object_temp,1,1,62110000,pick up the cream cheese and place it in the basket,p3_at72,True,168,14,56,1,False,False
+position_y0.2_t1_i1,main,Position,y0.2,libero_object_temp,1,1,62110000,pick up the cream cheese and place it in the basket,p3_event,True,174,11,44,0,False,False
+position_y0.3_t1_i1,main,Position,y0.3,libero_object_temp,1,1,64110000,pick up the cream cheese and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.3_t1_i1,main,Position,y0.3,libero_object_temp,1,1,64110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.3_t1_i1,main,Position,y0.3,libero_object_temp,1,1,64110000,pick up the cream cheese and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t1_i1,main,Position,y0.3,libero_object_temp,1,1,64110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t1_i1,main,Position,y0.3,libero_object_temp,1,1,64110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.4_t1_i1,main,Position,y0.4,libero_object_temp,1,1,66110000,pick up the cream cheese and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.4_t1_i1,main,Position,y0.4,libero_object_temp,1,1,66110000,pick up the cream cheese and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.4_t1_i1,main,Position,y0.4,libero_object_temp,1,1,66110000,pick up the cream cheese and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t1_i1,main,Position,y0.4,libero_object_temp,1,1,66110000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_y0.4_t1_i1,main,Position,y0.4,libero_object_temp,1,1,66110000,pick up the cream cheese and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t2_i2,main,Object,,libero_object_object,2,2,40220000,pick up the salad dressing and place it in the basket,first_k1,True,124,8,8,0,False,False
+object__t2_i2,main,Object,,libero_object_object,2,2,40220000,pick up the salad dressing and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t2_i2,main,Object,,libero_object_object,2,2,40220000,pick up the salad dressing and place it in the basket,h8_at72,True,125,12,48,0,False,False
+object__t2_i2,main,Object,,libero_object_object,2,2,40220000,pick up the salad dressing and place it in the basket,p3_at72,True,125,12,48,0,False,False
+object__t2_i2,main,Object,,libero_object_object,2,2,40220000,pick up the salad dressing and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t2_i2,main,Environment,,libero_object_env,2,2,42220000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t2_i2,main,Environment,,libero_object_env,2,2,42220000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t2_i2,main,Environment,,libero_object_env,2,2,42220000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t2_i2,main,Environment,,libero_object_env,2,2,42220000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t2_i2,main,Environment,,libero_object_env,2,2,42220000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.1_t2_i1,main,Position,x0.1,libero_object_temp,2,1,50210000,pick up the salad dressing and place it in the basket,first_k1,True,113,8,8,0,False,False
+position_x0.1_t2_i1,main,Position,x0.1,libero_object_temp,2,1,50210000,pick up the salad dressing and place it in the basket,max_value_h16,True,112,7,28,0,False,False
+position_x0.1_t2_i1,main,Position,x0.1,libero_object_temp,2,1,50210000,pick up the salad dressing and place it in the basket,h8_at72,True,113,11,44,0,False,False
+position_x0.1_t2_i1,main,Position,x0.1,libero_object_temp,2,1,50210000,pick up the salad dressing and place it in the basket,p3_at72,True,113,11,44,0,False,False
+position_x0.1_t2_i1,main,Position,x0.1,libero_object_temp,2,1,50210000,pick up the salad dressing and place it in the basket,p3_event,True,112,7,28,0,False,False
+position_x0.2_t2_i1,main,Position,x0.2,libero_object_temp,2,1,52210000,pick up the salad dressing and place it in the basket,first_k1,True,174,11,11,0,False,False
+position_x0.2_t2_i1,main,Position,x0.2,libero_object_temp,2,1,52210000,pick up the salad dressing and place it in the basket,max_value_h16,True,169,11,44,0,False,False
+position_x0.2_t2_i1,main,Position,x0.2,libero_object_temp,2,1,52210000,pick up the salad dressing and place it in the basket,h8_at72,True,169,18,72,0,False,False
+position_x0.2_t2_i1,main,Position,x0.2,libero_object_temp,2,1,52210000,pick up the salad dressing and place it in the basket,p3_at72,True,196,18,72,1,False,False
+position_x0.2_t2_i1,main,Position,x0.2,libero_object_temp,2,1,52210000,pick up the salad dressing and place it in the basket,p3_event,True,169,11,44,0,False,False
+position_x0.3_t2_i1,main,Position,x0.3,libero_object_temp,2,1,54210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t2_i1,main,Position,x0.3,libero_object_temp,2,1,54210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t2_i1,main,Position,x0.3,libero_object_temp,2,1,54210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t2_i1,main,Position,x0.3,libero_object_temp,2,1,54210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_x0.3_t2_i1,main,Position,x0.3,libero_object_temp,2,1,54210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t2_i1,main,Position,x0.4,libero_object_temp,2,1,56210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t2_i1,main,Position,x0.4,libero_object_temp,2,1,56210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t2_i1,main,Position,x0.4,libero_object_temp,2,1,56210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t2_i1,main,Position,x0.4,libero_object_temp,2,1,56210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t2_i1,main,Position,x0.4,libero_object_temp,2,1,56210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t2_i1,main,Position,x0.5,libero_object_temp,2,1,58210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t2_i1,main,Position,x0.5,libero_object_temp,2,1,58210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t2_i1,main,Position,x0.5,libero_object_temp,2,1,58210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t2_i1,main,Position,x0.5,libero_object_temp,2,1,58210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t2_i1,main,Position,x0.5,libero_object_temp,2,1,58210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t2_i1,main,Position,y0.1,libero_object_temp,2,1,60210000,pick up the salad dressing and place it in the basket,first_k1,True,213,14,14,0,False,False
+position_y0.1_t2_i1,main,Position,y0.1,libero_object_temp,2,1,60210000,pick up the salad dressing and place it in the basket,max_value_h16,True,211,14,56,0,False,False
+position_y0.1_t2_i1,main,Position,y0.1,libero_object_temp,2,1,60210000,pick up the salad dressing and place it in the basket,h8_at72,True,216,23,92,0,False,False
+position_y0.1_t2_i1,main,Position,y0.1,libero_object_temp,2,1,60210000,pick up the salad dressing and place it in the basket,p3_at72,True,216,23,92,0,False,False
+position_y0.1_t2_i1,main,Position,y0.1,libero_object_temp,2,1,60210000,pick up the salad dressing and place it in the basket,p3_event,True,211,14,56,0,False,False
+position_y0.2_t2_i1,main,Position,y0.2,libero_object_temp,2,1,62210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t2_i1,main,Position,y0.2,libero_object_temp,2,1,62210000,pick up the salad dressing and place it in the basket,max_value_h16,True,245,16,64,0,False,False
+position_y0.2_t2_i1,main,Position,y0.2,libero_object_temp,2,1,62210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.2_t2_i1,main,Position,y0.2,libero_object_temp,2,1,62210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.2_t2_i1,main,Position,y0.2,libero_object_temp,2,1,62210000,pick up the salad dressing and place it in the basket,p3_event,True,245,16,64,0,False,False
+position_y0.3_t2_i1,main,Position,y0.3,libero_object_temp,2,1,64210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t2_i1,main,Position,y0.3,libero_object_temp,2,1,64210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t2_i1,main,Position,y0.3,libero_object_temp,2,1,64210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t2_i1,main,Position,y0.3,libero_object_temp,2,1,64210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t2_i1,main,Position,y0.3,libero_object_temp,2,1,64210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t2_i1,main,Position,y0.4,libero_object_temp,2,1,66210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.4_t2_i1,main,Position,y0.4,libero_object_temp,2,1,66210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.4_t2_i1,main,Position,y0.4,libero_object_temp,2,1,66210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t2_i1,main,Position,y0.4,libero_object_temp,2,1,66210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.4_t2_i1,main,Position,y0.4,libero_object_temp,2,1,66210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.5_t2_i1,main,Position,y0.5,libero_object_temp,2,1,68210000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t2_i1,main,Position,y0.5,libero_object_temp,2,1,68210000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t2_i1,main,Position,y0.5,libero_object_temp,2,1,68210000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t2_i1,main,Position,y0.5,libero_object_temp,2,1,68210000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t2_i1,main,Position,y0.5,libero_object_temp,2,1,68210000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t3_i2,main,Object,,libero_object_object,3,2,40320000,pick up the bbq sauce and place it in the basket,first_k1,True,126,8,8,0,False,False
+object__t3_i2,main,Object,,libero_object_object,3,2,40320000,pick up the bbq sauce and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t3_i2,main,Object,,libero_object_object,3,2,40320000,pick up the bbq sauce and place it in the basket,h8_at72,True,126,12,48,0,False,False
+object__t3_i2,main,Object,,libero_object_object,3,2,40320000,pick up the bbq sauce and place it in the basket,p3_at72,True,126,12,48,0,False,False
+object__t3_i2,main,Object,,libero_object_object,3,2,40320000,pick up the bbq sauce and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t3_i2,main,Environment,,libero_object_env,3,2,42320000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t3_i2,main,Environment,,libero_object_env,3,2,42320000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t3_i2,main,Environment,,libero_object_env,3,2,42320000,pick up the bbq sauce and place it in the basket,h8_at72,True,240,26,104,0,True,False
+environment__t3_i2,main,Environment,,libero_object_env,3,2,42320000,pick up the bbq sauce and place it in the basket,p3_at72,True,240,26,104,0,True,False
+environment__t3_i2,main,Environment,,libero_object_env,3,2,42320000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.1_t3_i1,main,Position,x0.1,libero_object_temp,3,1,50310000,pick up the bbq sauce and place it in the basket,first_k1,True,119,8,8,0,False,False
+position_x0.1_t3_i1,main,Position,x0.1,libero_object_temp,3,1,50310000,pick up the bbq sauce and place it in the basket,max_value_h16,True,121,8,32,0,False,False
+position_x0.1_t3_i1,main,Position,x0.1,libero_object_temp,3,1,50310000,pick up the bbq sauce and place it in the basket,h8_at72,True,118,11,44,0,False,False
+position_x0.1_t3_i1,main,Position,x0.1,libero_object_temp,3,1,50310000,pick up the bbq sauce and place it in the basket,p3_at72,True,118,11,44,0,False,False
+position_x0.1_t3_i1,main,Position,x0.1,libero_object_temp,3,1,50310000,pick up the bbq sauce and place it in the basket,p3_event,True,121,8,32,0,False,False
+position_x0.2_t3_i1,main,Position,x0.2,libero_object_temp,3,1,52310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t3_i1,main,Position,x0.2,libero_object_temp,3,1,52310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t3_i1,main,Position,x0.2,libero_object_temp,3,1,52310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t3_i1,main,Position,x0.2,libero_object_temp,3,1,52310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.2_t3_i1,main,Position,x0.2,libero_object_temp,3,1,52310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t3_i1,main,Position,x0.3,libero_object_temp,3,1,54310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t3_i1,main,Position,x0.3,libero_object_temp,3,1,54310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t3_i1,main,Position,x0.3,libero_object_temp,3,1,54310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t3_i1,main,Position,x0.3,libero_object_temp,3,1,54310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.3_t3_i1,main,Position,x0.3,libero_object_temp,3,1,54310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t3_i1,main,Position,x0.4,libero_object_temp,3,1,56310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t3_i1,main,Position,x0.4,libero_object_temp,3,1,56310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t3_i1,main,Position,x0.4,libero_object_temp,3,1,56310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t3_i1,main,Position,x0.4,libero_object_temp,3,1,56310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t3_i1,main,Position,x0.4,libero_object_temp,3,1,56310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t3_i1,main,Position,x0.5,libero_object_temp,3,1,58310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t3_i1,main,Position,x0.5,libero_object_temp,3,1,58310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.5_t3_i1,main,Position,x0.5,libero_object_temp,3,1,58310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t3_i1,main,Position,x0.5,libero_object_temp,3,1,58310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t3_i1,main,Position,x0.5,libero_object_temp,3,1,58310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.1_t3_i1,main,Position,y0.1,libero_object_temp,3,1,60310000,pick up the bbq sauce and place it in the basket,first_k1,True,121,8,8,0,False,False
+position_y0.1_t3_i1,main,Position,y0.1,libero_object_temp,3,1,60310000,pick up the bbq sauce and place it in the basket,max_value_h16,True,117,8,32,0,False,False
+position_y0.1_t3_i1,main,Position,y0.1,libero_object_temp,3,1,60310000,pick up the bbq sauce and place it in the basket,h8_at72,True,114,11,44,0,False,False
+position_y0.1_t3_i1,main,Position,y0.1,libero_object_temp,3,1,60310000,pick up the bbq sauce and place it in the basket,p3_at72,True,114,11,44,0,False,False
+position_y0.1_t3_i1,main,Position,y0.1,libero_object_temp,3,1,60310000,pick up the bbq sauce and place it in the basket,p3_event,True,117,8,32,0,False,False
+position_y0.2_t3_i1,main,Position,y0.2,libero_object_temp,3,1,62310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t3_i1,main,Position,y0.2,libero_object_temp,3,1,62310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.2_t3_i1,main,Position,y0.2,libero_object_temp,3,1,62310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.2_t3_i1,main,Position,y0.2,libero_object_temp,3,1,62310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.2_t3_i1,main,Position,y0.2,libero_object_temp,3,1,62310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.3_t3_i1,main,Position,y0.3,libero_object_temp,3,1,64310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t3_i1,main,Position,y0.3,libero_object_temp,3,1,64310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t3_i1,main,Position,y0.3,libero_object_temp,3,1,64310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_y0.3_t3_i1,main,Position,y0.3,libero_object_temp,3,1,64310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_y0.3_t3_i1,main,Position,y0.3,libero_object_temp,3,1,64310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t3_i1,main,Position,y0.4,libero_object_temp,3,1,66310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.4_t3_i1,main,Position,y0.4,libero_object_temp,3,1,66310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.4_t3_i1,main,Position,y0.4,libero_object_temp,3,1,66310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_y0.4_t3_i1,main,Position,y0.4,libero_object_temp,3,1,66310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_y0.4_t3_i1,main,Position,y0.4,libero_object_temp,3,1,66310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.5_t3_i1,main,Position,y0.5,libero_object_temp,3,1,68310000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t3_i1,main,Position,y0.5,libero_object_temp,3,1,68310000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t3_i1,main,Position,y0.5,libero_object_temp,3,1,68310000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t3_i1,main,Position,y0.5,libero_object_temp,3,1,68310000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t3_i1,main,Position,y0.5,libero_object_temp,3,1,68310000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t4_i2,main,Object,,libero_object_object,4,2,40420000,pick up the ketchup and place it in the basket,first_k1,True,136,9,9,0,False,False
+object__t4_i2,main,Object,,libero_object_object,4,2,40420000,pick up the ketchup and place it in the basket,max_value_h16,True,134,9,36,0,False,False
+object__t4_i2,main,Object,,libero_object_object,4,2,40420000,pick up the ketchup and place it in the basket,h8_at72,True,134,13,52,0,False,False
+object__t4_i2,main,Object,,libero_object_object,4,2,40420000,pick up the ketchup and place it in the basket,p3_at72,True,274,28,112,1,True,False
+object__t4_i2,main,Object,,libero_object_object,4,2,40420000,pick up the ketchup and place it in the basket,p3_event,True,134,9,36,0,False,False
+environment__t4_i2,main,Environment,,libero_object_env,4,2,42420000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t4_i2,main,Environment,,libero_object_env,4,2,42420000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t4_i2,main,Environment,,libero_object_env,4,2,42420000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t4_i2,main,Environment,,libero_object_env,4,2,42420000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t4_i2,main,Environment,,libero_object_env,4,2,42420000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.1_t4_i1,main,Position,x0.1,libero_object_temp,4,1,50410000,pick up the ketchup and place it in the basket,first_k1,True,139,9,9,0,False,False
+position_x0.1_t4_i1,main,Position,x0.1,libero_object_temp,4,1,50410000,pick up the ketchup and place it in the basket,max_value_h16,True,137,9,36,0,False,False
+position_x0.1_t4_i1,main,Position,x0.1,libero_object_temp,4,1,50410000,pick up the ketchup and place it in the basket,h8_at72,True,137,14,56,0,False,False
+position_x0.1_t4_i1,main,Position,x0.1,libero_object_temp,4,1,50410000,pick up the ketchup and place it in the basket,p3_at72,True,137,14,56,0,False,False
+position_x0.1_t4_i1,main,Position,x0.1,libero_object_temp,4,1,50410000,pick up the ketchup and place it in the basket,p3_event,True,137,9,36,0,False,False
+position_x0.2_t4_i1,main,Position,x0.2,libero_object_temp,4,1,52410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t4_i1,main,Position,x0.2,libero_object_temp,4,1,52410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t4_i1,main,Position,x0.2,libero_object_temp,4,1,52410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t4_i1,main,Position,x0.2,libero_object_temp,4,1,52410000,pick up the ketchup and place it in the basket,p3_at72,False,280,29,116,1,False,False
+position_x0.2_t4_i1,main,Position,x0.2,libero_object_temp,4,1,52410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t4_i1,main,Position,x0.3,libero_object_temp,4,1,54410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t4_i1,main,Position,x0.3,libero_object_temp,4,1,54410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t4_i1,main,Position,x0.3,libero_object_temp,4,1,54410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t4_i1,main,Position,x0.3,libero_object_temp,4,1,54410000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.3_t4_i1,main,Position,x0.3,libero_object_temp,4,1,54410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t4_i1,main,Position,x0.4,libero_object_temp,4,1,56410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t4_i1,main,Position,x0.4,libero_object_temp,4,1,56410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t4_i1,main,Position,x0.4,libero_object_temp,4,1,56410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t4_i1,main,Position,x0.4,libero_object_temp,4,1,56410000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t4_i1,main,Position,x0.4,libero_object_temp,4,1,56410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t4_i1,main,Position,x0.5,libero_object_temp,4,1,58410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.5_t4_i1,main,Position,x0.5,libero_object_temp,4,1,58410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.5_t4_i1,main,Position,x0.5,libero_object_temp,4,1,58410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t4_i1,main,Position,x0.5,libero_object_temp,4,1,58410000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t4_i1,main,Position,x0.5,libero_object_temp,4,1,58410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.1_t4_i1,main,Position,y0.1,libero_object_temp,4,1,60410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.1_t4_i1,main,Position,y0.1,libero_object_temp,4,1,60410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,True,False
+position_y0.1_t4_i1,main,Position,y0.1,libero_object_temp,4,1,60410000,pick up the ketchup and place it in the basket,h8_at72,True,126,12,48,0,False,False
+position_y0.1_t4_i1,main,Position,y0.1,libero_object_temp,4,1,60410000,pick up the ketchup and place it in the basket,p3_at72,True,211,20,80,1,True,False
+position_y0.1_t4_i1,main,Position,y0.1,libero_object_temp,4,1,60410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,True,False
+position_y0.2_t4_i1,main,Position,y0.2,libero_object_temp,4,1,62410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t4_i1,main,Position,y0.2,libero_object_temp,4,1,62410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.2_t4_i1,main,Position,y0.2,libero_object_temp,4,1,62410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.2_t4_i1,main,Position,y0.2,libero_object_temp,4,1,62410000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.2_t4_i1,main,Position,y0.2,libero_object_temp,4,1,62410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.3_t4_i1,main,Position,y0.3,libero_object_temp,4,1,64410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t4_i1,main,Position,y0.3,libero_object_temp,4,1,64410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.3_t4_i1,main,Position,y0.3,libero_object_temp,4,1,64410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t4_i1,main,Position,y0.3,libero_object_temp,4,1,64410000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t4_i1,main,Position,y0.3,libero_object_temp,4,1,64410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.4_t4_i1,main,Position,y0.4,libero_object_temp,4,1,66410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.4_t4_i1,main,Position,y0.4,libero_object_temp,4,1,66410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.4_t4_i1,main,Position,y0.4,libero_object_temp,4,1,66410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t4_i1,main,Position,y0.4,libero_object_temp,4,1,66410000,pick up the ketchup and place it in the basket,p3_at72,False,280,28,112,1,False,True
+position_y0.4_t4_i1,main,Position,y0.4,libero_object_temp,4,1,66410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.5_t4_i1,main,Position,y0.5,libero_object_temp,4,1,68410000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t4_i1,main,Position,y0.5,libero_object_temp,4,1,68410000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t4_i1,main,Position,y0.5,libero_object_temp,4,1,68410000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t4_i1,main,Position,y0.5,libero_object_temp,4,1,68410000,pick up the ketchup and place it in the basket,p3_at72,False,280,28,112,1,False,False
+position_y0.5_t4_i1,main,Position,y0.5,libero_object_temp,4,1,68410000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t5_i2,main,Object,,libero_object_object,5,2,40520000,pick up the tomato sauce and place it in the basket,first_k1,True,123,8,8,0,False,False
+object__t5_i2,main,Object,,libero_object_object,5,2,40520000,pick up the tomato sauce and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t5_i2,main,Object,,libero_object_object,5,2,40520000,pick up the tomato sauce and place it in the basket,h8_at72,True,124,12,48,0,False,False
+object__t5_i2,main,Object,,libero_object_object,5,2,40520000,pick up the tomato sauce and place it in the basket,p3_at72,True,127,12,48,1,False,False
+object__t5_i2,main,Object,,libero_object_object,5,2,40520000,pick up the tomato sauce and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t5_i2,main,Environment,,libero_object_env,5,2,42520000,pick up the tomato sauce and place it in the basket,first_k1,True,119,8,8,0,False,False
+environment__t5_i2,main,Environment,,libero_object_env,5,2,42520000,pick up the tomato sauce and place it in the basket,max_value_h16,True,118,8,32,0,False,False
+environment__t5_i2,main,Environment,,libero_object_env,5,2,42520000,pick up the tomato sauce and place it in the basket,h8_at72,True,126,12,48,0,False,False
+environment__t5_i2,main,Environment,,libero_object_env,5,2,42520000,pick up the tomato sauce and place it in the basket,p3_at72,True,126,12,48,0,False,False
+environment__t5_i2,main,Environment,,libero_object_env,5,2,42520000,pick up the tomato sauce and place it in the basket,p3_event,True,118,8,32,0,False,False
+position_x0.1_t5_i1,main,Position,x0.1,libero_object_temp,5,1,50510000,pick up the tomato sauce and place it in the basket,first_k1,True,128,8,8,0,False,False
+position_x0.1_t5_i1,main,Position,x0.1,libero_object_temp,5,1,50510000,pick up the tomato sauce and place it in the basket,max_value_h16,True,124,8,32,0,False,False
+position_x0.1_t5_i1,main,Position,x0.1,libero_object_temp,5,1,50510000,pick up the tomato sauce and place it in the basket,h8_at72,True,125,12,48,0,False,False
+position_x0.1_t5_i1,main,Position,x0.1,libero_object_temp,5,1,50510000,pick up the tomato sauce and place it in the basket,p3_at72,True,125,12,48,0,False,False
+position_x0.1_t5_i1,main,Position,x0.1,libero_object_temp,5,1,50510000,pick up the tomato sauce and place it in the basket,p3_event,True,124,8,32,0,False,False
+position_x0.2_t5_i1,main,Position,x0.2,libero_object_temp,5,1,52510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t5_i1,main,Position,x0.2,libero_object_temp,5,1,52510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t5_i1,main,Position,x0.2,libero_object_temp,5,1,52510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,True,False
+position_x0.2_t5_i1,main,Position,x0.2,libero_object_temp,5,1,52510000,pick up the tomato sauce and place it in the basket,p3_at72,True,153,12,48,1,False,False
+position_x0.2_t5_i1,main,Position,x0.2,libero_object_temp,5,1,52510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t5_i1,main,Position,x0.3,libero_object_temp,5,1,54510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t5_i1,main,Position,x0.3,libero_object_temp,5,1,54510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.3_t5_i1,main,Position,x0.3,libero_object_temp,5,1,54510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t5_i1,main,Position,x0.3,libero_object_temp,5,1,54510000,pick up the tomato sauce and place it in the basket,p3_at72,True,268,30,120,1,False,False
+position_x0.3_t5_i1,main,Position,x0.3,libero_object_temp,5,1,54510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.4_t5_i1,main,Position,x0.4,libero_object_temp,5,1,56510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t5_i1,main,Position,x0.4,libero_object_temp,5,1,56510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t5_i1,main,Position,x0.4,libero_object_temp,5,1,56510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t5_i1,main,Position,x0.4,libero_object_temp,5,1,56510000,pick up the tomato sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t5_i1,main,Position,x0.4,libero_object_temp,5,1,56510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t5_i1,main,Position,x0.5,libero_object_temp,5,1,58510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t5_i1,main,Position,x0.5,libero_object_temp,5,1,58510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t5_i1,main,Position,x0.5,libero_object_temp,5,1,58510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t5_i1,main,Position,x0.5,libero_object_temp,5,1,58510000,pick up the tomato sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t5_i1,main,Position,x0.5,libero_object_temp,5,1,58510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t5_i1,main,Position,y0.1,libero_object_temp,5,1,60510000,pick up the tomato sauce and place it in the basket,first_k1,True,151,10,10,0,False,False
+position_y0.1_t5_i1,main,Position,y0.1,libero_object_temp,5,1,60510000,pick up the tomato sauce and place it in the basket,max_value_h16,True,151,10,40,0,False,False
+position_y0.1_t5_i1,main,Position,y0.1,libero_object_temp,5,1,60510000,pick up the tomato sauce and place it in the basket,h8_at72,True,154,16,64,0,False,False
+position_y0.1_t5_i1,main,Position,y0.1,libero_object_temp,5,1,60510000,pick up the tomato sauce and place it in the basket,p3_at72,True,176,16,64,1,False,False
+position_y0.1_t5_i1,main,Position,y0.1,libero_object_temp,5,1,60510000,pick up the tomato sauce and place it in the basket,p3_event,True,151,10,40,0,False,False
+position_y0.2_t5_i1,main,Position,y0.2,libero_object_temp,5,1,62510000,pick up the tomato sauce and place it in the basket,first_k1,True,172,11,11,0,False,False
+position_y0.2_t5_i1,main,Position,y0.2,libero_object_temp,5,1,62510000,pick up the tomato sauce and place it in the basket,max_value_h16,True,179,12,48,0,False,False
+position_y0.2_t5_i1,main,Position,y0.2,libero_object_temp,5,1,62510000,pick up the tomato sauce and place it in the basket,h8_at72,True,267,30,120,0,False,False
+position_y0.2_t5_i1,main,Position,y0.2,libero_object_temp,5,1,62510000,pick up the tomato sauce and place it in the basket,p3_at72,True,267,30,120,0,False,False
+position_y0.2_t5_i1,main,Position,y0.2,libero_object_temp,5,1,62510000,pick up the tomato sauce and place it in the basket,p3_event,True,179,12,48,0,False,False
+position_y0.3_t5_i1,main,Position,y0.3,libero_object_temp,5,1,64510000,pick up the tomato sauce and place it in the basket,first_k1,True,250,16,16,0,False,False
+position_y0.3_t5_i1,main,Position,y0.3,libero_object_temp,5,1,64510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t5_i1,main,Position,y0.3,libero_object_temp,5,1,64510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t5_i1,main,Position,y0.3,libero_object_temp,5,1,64510000,pick up the tomato sauce and place it in the basket,p3_at72,True,219,21,84,1,False,False
+position_y0.3_t5_i1,main,Position,y0.3,libero_object_temp,5,1,64510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t5_i1,main,Position,y0.4,libero_object_temp,5,1,66510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.4_t5_i1,main,Position,y0.4,libero_object_temp,5,1,66510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.4_t5_i1,main,Position,y0.4,libero_object_temp,5,1,66510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t5_i1,main,Position,y0.4,libero_object_temp,5,1,66510000,pick up the tomato sauce and place it in the basket,p3_at72,False,280,31,124,1,False,True
+position_y0.4_t5_i1,main,Position,y0.4,libero_object_temp,5,1,66510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.5_t5_i1,main,Position,y0.5,libero_object_temp,5,1,68510000,pick up the tomato sauce and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.5_t5_i1,main,Position,y0.5,libero_object_temp,5,1,68510000,pick up the tomato sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.5_t5_i1,main,Position,y0.5,libero_object_temp,5,1,68510000,pick up the tomato sauce and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_y0.5_t5_i1,main,Position,y0.5,libero_object_temp,5,1,68510000,pick up the tomato sauce and place it in the basket,p3_at72,False,280,31,124,1,False,False
+position_y0.5_t5_i1,main,Position,y0.5,libero_object_temp,5,1,68510000,pick up the tomato sauce and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t6_i2,main,Object,,libero_object_object,6,2,40620000,pick up the butter and place it in the basket,first_k1,True,147,10,10,0,False,False
+object__t6_i2,main,Object,,libero_object_object,6,2,40620000,pick up the butter and place it in the basket,max_value_h16,True,140,9,36,0,False,False
+object__t6_i2,main,Object,,libero_object_object,6,2,40620000,pick up the butter and place it in the basket,h8_at72,True,143,14,56,0,False,False
+object__t6_i2,main,Object,,libero_object_object,6,2,40620000,pick up the butter and place it in the basket,p3_at72,True,143,14,56,0,False,False
+object__t6_i2,main,Object,,libero_object_object,6,2,40620000,pick up the butter and place it in the basket,p3_event,True,140,9,36,0,False,False
+environment__t6_i2,main,Environment,,libero_object_env,6,2,42620000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t6_i2,main,Environment,,libero_object_env,6,2,42620000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t6_i2,main,Environment,,libero_object_env,6,2,42620000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t6_i2,main,Environment,,libero_object_env,6,2,42620000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t6_i2,main,Environment,,libero_object_env,6,2,42620000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.1_t6_i1,main,Position,x0.1,libero_object_temp,6,1,50610000,pick up the butter and place it in the basket,first_k1,True,151,10,10,0,False,False
+position_x0.1_t6_i1,main,Position,x0.1,libero_object_temp,6,1,50610000,pick up the butter and place it in the basket,max_value_h16,True,151,10,40,0,False,False
+position_x0.1_t6_i1,main,Position,x0.1,libero_object_temp,6,1,50610000,pick up the butter and place it in the basket,h8_at72,True,153,16,64,0,False,False
+position_x0.1_t6_i1,main,Position,x0.1,libero_object_temp,6,1,50610000,pick up the butter and place it in the basket,p3_at72,True,153,16,64,0,False,False
+position_x0.1_t6_i1,main,Position,x0.1,libero_object_temp,6,1,50610000,pick up the butter and place it in the basket,p3_event,True,151,10,40,0,False,False
+position_x0.2_t6_i1,main,Position,x0.2,libero_object_temp,6,1,52610000,pick up the butter and place it in the basket,first_k1,True,223,14,14,0,False,False
+position_x0.2_t6_i1,main,Position,x0.2,libero_object_temp,6,1,52610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t6_i1,main,Position,x0.2,libero_object_temp,6,1,52610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,True,False
+position_x0.2_t6_i1,main,Position,x0.2,libero_object_temp,6,1,52610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,True,False
+position_x0.2_t6_i1,main,Position,x0.2,libero_object_temp,6,1,52610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t6_i1,main,Position,x0.3,libero_object_temp,6,1,54610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t6_i1,main,Position,x0.3,libero_object_temp,6,1,54610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t6_i1,main,Position,x0.3,libero_object_temp,6,1,54610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t6_i1,main,Position,x0.3,libero_object_temp,6,1,54610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.3_t6_i1,main,Position,x0.3,libero_object_temp,6,1,54610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t6_i1,main,Position,x0.4,libero_object_temp,6,1,56610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t6_i1,main,Position,x0.4,libero_object_temp,6,1,56610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t6_i1,main,Position,x0.4,libero_object_temp,6,1,56610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.4_t6_i1,main,Position,x0.4,libero_object_temp,6,1,56610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.4_t6_i1,main,Position,x0.4,libero_object_temp,6,1,56610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t6_i1,main,Position,x0.5,libero_object_temp,6,1,58610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.5_t6_i1,main,Position,x0.5,libero_object_temp,6,1,58610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.5_t6_i1,main,Position,x0.5,libero_object_temp,6,1,58610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t6_i1,main,Position,x0.5,libero_object_temp,6,1,58610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t6_i1,main,Position,x0.5,libero_object_temp,6,1,58610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.1_t6_i1,main,Position,y0.1,libero_object_temp,6,1,60610000,pick up the butter and place it in the basket,first_k1,True,179,12,12,0,False,False
+position_y0.1_t6_i1,main,Position,y0.1,libero_object_temp,6,1,60610000,pick up the butter and place it in the basket,max_value_h16,True,137,9,36,0,False,False
+position_y0.1_t6_i1,main,Position,y0.1,libero_object_temp,6,1,60610000,pick up the butter and place it in the basket,h8_at72,True,139,14,56,0,False,False
+position_y0.1_t6_i1,main,Position,y0.1,libero_object_temp,6,1,60610000,pick up the butter and place it in the basket,p3_at72,True,139,14,56,0,False,False
+position_y0.1_t6_i1,main,Position,y0.1,libero_object_temp,6,1,60610000,pick up the butter and place it in the basket,p3_event,True,137,9,36,0,False,False
+position_y0.2_t6_i1,main,Position,y0.2,libero_object_temp,6,1,62610000,pick up the butter and place it in the basket,first_k1,True,279,18,18,0,False,False
+position_y0.2_t6_i1,main,Position,y0.2,libero_object_temp,6,1,62610000,pick up the butter and place it in the basket,max_value_h16,True,278,18,72,0,False,False
+position_y0.2_t6_i1,main,Position,y0.2,libero_object_temp,6,1,62610000,pick up the butter and place it in the basket,h8_at72,True,272,30,120,0,False,False
+position_y0.2_t6_i1,main,Position,y0.2,libero_object_temp,6,1,62610000,pick up the butter and place it in the basket,p3_at72,True,184,16,64,1,False,False
+position_y0.2_t6_i1,main,Position,y0.2,libero_object_temp,6,1,62610000,pick up the butter and place it in the basket,p3_event,True,278,18,72,0,False,False
+position_y0.3_t6_i1,main,Position,y0.3,libero_object_temp,6,1,64610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t6_i1,main,Position,y0.3,libero_object_temp,6,1,64610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t6_i1,main,Position,y0.3,libero_object_temp,6,1,64610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t6_i1,main,Position,y0.3,libero_object_temp,6,1,64610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t6_i1,main,Position,y0.3,libero_object_temp,6,1,64610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t6_i1,main,Position,y0.4,libero_object_temp,6,1,66610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.4_t6_i1,main,Position,y0.4,libero_object_temp,6,1,66610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.4_t6_i1,main,Position,y0.4,libero_object_temp,6,1,66610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t6_i1,main,Position,y0.4,libero_object_temp,6,1,66610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.4_t6_i1,main,Position,y0.4,libero_object_temp,6,1,66610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.5_t6_i1,main,Position,y0.5,libero_object_temp,6,1,68610000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t6_i1,main,Position,y0.5,libero_object_temp,6,1,68610000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t6_i1,main,Position,y0.5,libero_object_temp,6,1,68610000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t6_i1,main,Position,y0.5,libero_object_temp,6,1,68610000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t6_i1,main,Position,y0.5,libero_object_temp,6,1,68610000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t7_i2,main,Object,,libero_object_object,7,2,40720000,pick up the milk and place it in the basket,first_k1,True,131,9,9,0,False,False
+object__t7_i2,main,Object,,libero_object_object,7,2,40720000,pick up the milk and place it in the basket,max_value_h16,True,137,9,36,0,False,False
+object__t7_i2,main,Object,,libero_object_object,7,2,40720000,pick up the milk and place it in the basket,h8_at72,True,136,13,52,0,False,False
+object__t7_i2,main,Object,,libero_object_object,7,2,40720000,pick up the milk and place it in the basket,p3_at72,True,136,13,52,0,False,False
+object__t7_i2,main,Object,,libero_object_object,7,2,40720000,pick up the milk and place it in the basket,p3_event,True,137,9,36,0,False,False
+environment__t7_i2,main,Environment,,libero_object_env,7,2,42720000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t7_i2,main,Environment,,libero_object_env,7,2,42720000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t7_i2,main,Environment,,libero_object_env,7,2,42720000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t7_i2,main,Environment,,libero_object_env,7,2,42720000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t7_i2,main,Environment,,libero_object_env,7,2,42720000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.1_t7_i1,main,Position,x0.1,libero_object_temp,7,1,50710000,pick up the milk and place it in the basket,first_k1,True,126,8,8,0,False,False
+position_x0.1_t7_i1,main,Position,x0.1,libero_object_temp,7,1,50710000,pick up the milk and place it in the basket,max_value_h16,True,126,8,32,0,False,False
+position_x0.1_t7_i1,main,Position,x0.1,libero_object_temp,7,1,50710000,pick up the milk and place it in the basket,h8_at72,True,126,12,48,0,False,False
+position_x0.1_t7_i1,main,Position,x0.1,libero_object_temp,7,1,50710000,pick up the milk and place it in the basket,p3_at72,True,126,12,48,0,False,False
+position_x0.1_t7_i1,main,Position,x0.1,libero_object_temp,7,1,50710000,pick up the milk and place it in the basket,p3_event,True,126,8,32,0,False,False
+position_x0.2_t7_i1,main,Position,x0.2,libero_object_temp,7,1,52710000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t7_i1,main,Position,x0.2,libero_object_temp,7,1,52710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t7_i1,main,Position,x0.2,libero_object_temp,7,1,52710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t7_i1,main,Position,x0.2,libero_object_temp,7,1,52710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.2_t7_i1,main,Position,x0.2,libero_object_temp,7,1,52710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t7_i1,main,Position,x0.3,libero_object_temp,7,1,54710000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t7_i1,main,Position,x0.3,libero_object_temp,7,1,54710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t7_i1,main,Position,x0.3,libero_object_temp,7,1,54710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.3_t7_i1,main,Position,x0.3,libero_object_temp,7,1,54710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.3_t7_i1,main,Position,x0.3,libero_object_temp,7,1,54710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t7_i1,main,Position,x0.4,libero_object_temp,7,1,56710000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.4_t7_i1,main,Position,x0.4,libero_object_temp,7,1,56710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t7_i1,main,Position,x0.4,libero_object_temp,7,1,56710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.4_t7_i1,main,Position,x0.4,libero_object_temp,7,1,56710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.4_t7_i1,main,Position,x0.4,libero_object_temp,7,1,56710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t7_i1,main,Position,x0.5,libero_object_temp,7,1,58710000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.5_t7_i1,main,Position,x0.5,libero_object_temp,7,1,58710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t7_i1,main,Position,x0.5,libero_object_temp,7,1,58710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.5_t7_i1,main,Position,x0.5,libero_object_temp,7,1,58710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.5_t7_i1,main,Position,x0.5,libero_object_temp,7,1,58710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t7_i1,main,Position,y0.1,libero_object_temp,7,1,60710000,pick up the milk and place it in the basket,first_k1,True,119,8,8,0,False,False
+position_y0.1_t7_i1,main,Position,y0.1,libero_object_temp,7,1,60710000,pick up the milk and place it in the basket,max_value_h16,True,124,8,32,0,False,False
+position_y0.1_t7_i1,main,Position,y0.1,libero_object_temp,7,1,60710000,pick up the milk and place it in the basket,h8_at72,True,124,12,48,0,False,False
+position_y0.1_t7_i1,main,Position,y0.1,libero_object_temp,7,1,60710000,pick up the milk and place it in the basket,p3_at72,True,124,12,48,0,False,False
+position_y0.1_t7_i1,main,Position,y0.1,libero_object_temp,7,1,60710000,pick up the milk and place it in the basket,p3_event,True,124,8,32,0,False,False
+position_y0.2_t7_i1,main,Position,y0.2,libero_object_temp,7,1,62710000,pick up the milk and place it in the basket,first_k1,True,179,12,12,0,False,False
+position_y0.2_t7_i1,main,Position,y0.2,libero_object_temp,7,1,62710000,pick up the milk and place it in the basket,max_value_h16,True,177,12,48,0,False,False
+position_y0.2_t7_i1,main,Position,y0.2,libero_object_temp,7,1,62710000,pick up the milk and place it in the basket,h8_at72,True,190,20,80,0,False,False
+position_y0.2_t7_i1,main,Position,y0.2,libero_object_temp,7,1,62710000,pick up the milk and place it in the basket,p3_at72,True,177,15,60,1,False,False
+position_y0.2_t7_i1,main,Position,y0.2,libero_object_temp,7,1,62710000,pick up the milk and place it in the basket,p3_event,True,177,12,48,0,False,False
+position_y0.3_t7_i1,main,Position,y0.3,libero_object_temp,7,1,64710000,pick up the milk and place it in the basket,first_k1,True,195,13,13,0,False,False
+position_y0.3_t7_i1,main,Position,y0.3,libero_object_temp,7,1,64710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t7_i1,main,Position,y0.3,libero_object_temp,7,1,64710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t7_i1,main,Position,y0.3,libero_object_temp,7,1,64710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t7_i1,main,Position,y0.3,libero_object_temp,7,1,64710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t7_i1,main,Position,y0.4,libero_object_temp,7,1,66710000,pick up the milk and place it in the basket,first_k1,True,217,14,14,0,False,False
+position_y0.4_t7_i1,main,Position,y0.4,libero_object_temp,7,1,66710000,pick up the milk and place it in the basket,max_value_h16,True,201,13,52,0,False,False
+position_y0.4_t7_i1,main,Position,y0.4,libero_object_temp,7,1,66710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t7_i1,main,Position,y0.4,libero_object_temp,7,1,66710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.4_t7_i1,main,Position,y0.4,libero_object_temp,7,1,66710000,pick up the milk and place it in the basket,p3_event,True,201,13,52,0,False,False
+position_y0.5_t7_i1,main,Position,y0.5,libero_object_temp,7,1,68710000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t7_i1,main,Position,y0.5,libero_object_temp,7,1,68710000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t7_i1,main,Position,y0.5,libero_object_temp,7,1,68710000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t7_i1,main,Position,y0.5,libero_object_temp,7,1,68710000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t7_i1,main,Position,y0.5,libero_object_temp,7,1,68710000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t8_i2,main,Object,,libero_object_object,8,2,40820000,pick up the chocolate pudding and place it in the basket,first_k1,True,147,10,10,0,False,False
+object__t8_i2,main,Object,,libero_object_object,8,2,40820000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,146,10,40,0,False,False
+object__t8_i2,main,Object,,libero_object_object,8,2,40820000,pick up the chocolate pudding and place it in the basket,h8_at72,True,144,14,56,0,False,False
+object__t8_i2,main,Object,,libero_object_object,8,2,40820000,pick up the chocolate pudding and place it in the basket,p3_at72,True,144,14,56,0,False,False
+object__t8_i2,main,Object,,libero_object_object,8,2,40820000,pick up the chocolate pudding and place it in the basket,p3_event,True,146,10,40,0,False,False
+environment__t8_i2,main,Environment,,libero_object_env,8,2,42820000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t8_i2,main,Environment,,libero_object_env,8,2,42820000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t8_i2,main,Environment,,libero_object_env,8,2,42820000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t8_i2,main,Environment,,libero_object_env,8,2,42820000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t8_i2,main,Environment,,libero_object_env,8,2,42820000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.1_t8_i1,main,Position,x0.1,libero_object_temp,8,1,50810000,pick up the chocolate pudding and place it in the basket,first_k1,True,144,9,9,0,False,False
+position_x0.1_t8_i1,main,Position,x0.1,libero_object_temp,8,1,50810000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,143,9,36,0,False,False
+position_x0.1_t8_i1,main,Position,x0.1,libero_object_temp,8,1,50810000,pick up the chocolate pudding and place it in the basket,h8_at72,True,145,15,60,0,False,False
+position_x0.1_t8_i1,main,Position,x0.1,libero_object_temp,8,1,50810000,pick up the chocolate pudding and place it in the basket,p3_at72,True,145,15,60,0,False,False
+position_x0.1_t8_i1,main,Position,x0.1,libero_object_temp,8,1,50810000,pick up the chocolate pudding and place it in the basket,p3_event,True,143,9,36,0,False,False
+position_x0.2_t8_i1,main,Position,x0.2,libero_object_temp,8,1,52810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t8_i1,main,Position,x0.2,libero_object_temp,8,1,52810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.2_t8_i1,main,Position,x0.2,libero_object_temp,8,1,52810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t8_i1,main,Position,x0.2,libero_object_temp,8,1,52810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.2_t8_i1,main,Position,x0.2,libero_object_temp,8,1,52810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.3_t8_i1,main,Position,x0.3,libero_object_temp,8,1,54810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.3_t8_i1,main,Position,x0.3,libero_object_temp,8,1,54810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.3_t8_i1,main,Position,x0.3,libero_object_temp,8,1,54810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t8_i1,main,Position,x0.3,libero_object_temp,8,1,54810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.3_t8_i1,main,Position,x0.3,libero_object_temp,8,1,54810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.4_t8_i1,main,Position,x0.4,libero_object_temp,8,1,56810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t8_i1,main,Position,x0.4,libero_object_temp,8,1,56810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.4_t8_i1,main,Position,x0.4,libero_object_temp,8,1,56810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t8_i1,main,Position,x0.4,libero_object_temp,8,1,56810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t8_i1,main,Position,x0.4,libero_object_temp,8,1,56810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_x0.5_t8_i1,main,Position,x0.5,libero_object_temp,8,1,58810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_x0.5_t8_i1,main,Position,x0.5,libero_object_temp,8,1,58810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_x0.5_t8_i1,main,Position,x0.5,libero_object_temp,8,1,58810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_x0.5_t8_i1,main,Position,x0.5,libero_object_temp,8,1,58810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_x0.5_t8_i1,main,Position,x0.5,libero_object_temp,8,1,58810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.1_t8_i1,main,Position,y0.1,libero_object_temp,8,1,60810000,pick up the chocolate pudding and place it in the basket,first_k1,True,207,13,13,0,False,False
+position_y0.1_t8_i1,main,Position,y0.1,libero_object_temp,8,1,60810000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,209,14,56,0,False,False
+position_y0.1_t8_i1,main,Position,y0.1,libero_object_temp,8,1,60810000,pick up the chocolate pudding and place it in the basket,h8_at72,True,210,23,92,0,False,False
+position_y0.1_t8_i1,main,Position,y0.1,libero_object_temp,8,1,60810000,pick up the chocolate pudding and place it in the basket,p3_at72,True,191,17,68,1,False,False
+position_y0.1_t8_i1,main,Position,y0.1,libero_object_temp,8,1,60810000,pick up the chocolate pudding and place it in the basket,p3_event,True,209,14,56,0,False,False
+position_y0.2_t8_i1,main,Position,y0.2,libero_object_temp,8,1,62810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t8_i1,main,Position,y0.2,libero_object_temp,8,1,62810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.2_t8_i1,main,Position,y0.2,libero_object_temp,8,1,62810000,pick up the chocolate pudding and place it in the basket,h8_at72,True,226,25,100,0,False,False
+position_y0.2_t8_i1,main,Position,y0.2,libero_object_temp,8,1,62810000,pick up the chocolate pudding and place it in the basket,p3_at72,True,195,18,72,1,False,False
+position_y0.2_t8_i1,main,Position,y0.2,libero_object_temp,8,1,62810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.3_t8_i1,main,Position,y0.3,libero_object_temp,8,1,64810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.3_t8_i1,main,Position,y0.3,libero_object_temp,8,1,64810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.3_t8_i1,main,Position,y0.3,libero_object_temp,8,1,64810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t8_i1,main,Position,y0.3,libero_object_temp,8,1,64810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t8_i1,main,Position,y0.3,libero_object_temp,8,1,64810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.4_t8_i1,main,Position,y0.4,libero_object_temp,8,1,66810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.4_t8_i1,main,Position,y0.4,libero_object_temp,8,1,66810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.4_t8_i1,main,Position,y0.4,libero_object_temp,8,1,66810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.4_t8_i1,main,Position,y0.4,libero_object_temp,8,1,66810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.4_t8_i1,main,Position,y0.4,libero_object_temp,8,1,66810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.5_t8_i1,main,Position,y0.5,libero_object_temp,8,1,68810000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t8_i1,main,Position,y0.5,libero_object_temp,8,1,68810000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t8_i1,main,Position,y0.5,libero_object_temp,8,1,68810000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t8_i1,main,Position,y0.5,libero_object_temp,8,1,68810000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t8_i1,main,Position,y0.5,libero_object_temp,8,1,68810000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t9_i2,main,Object,,libero_object_object,9,2,40920000,pick up the orange juice and place it in the basket,first_k1,True,136,9,9,0,False,False
+object__t9_i2,main,Object,,libero_object_object,9,2,40920000,pick up the orange juice and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t9_i2,main,Object,,libero_object_object,9,2,40920000,pick up the orange juice and place it in the basket,h8_at72,True,127,12,48,0,False,False
+object__t9_i2,main,Object,,libero_object_object,9,2,40920000,pick up the orange juice and place it in the basket,p3_at72,True,127,12,48,0,False,False
+object__t9_i2,main,Object,,libero_object_object,9,2,40920000,pick up the orange juice and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t9_i2,main,Environment,,libero_object_env,9,2,42920000,pick up the orange juice and place it in the basket,first_k1,True,114,8,8,0,False,False
+environment__t9_i2,main,Environment,,libero_object_env,9,2,42920000,pick up the orange juice and place it in the basket,max_value_h16,True,113,8,32,0,False,False
+environment__t9_i2,main,Environment,,libero_object_env,9,2,42920000,pick up the orange juice and place it in the basket,h8_at72,True,119,11,44,0,False,False
+environment__t9_i2,main,Environment,,libero_object_env,9,2,42920000,pick up the orange juice and place it in the basket,p3_at72,True,119,11,44,0,False,False
+environment__t9_i2,main,Environment,,libero_object_env,9,2,42920000,pick up the orange juice and place it in the basket,p3_event,True,113,8,32,0,False,False
+position_x0.1_t9_i1,main,Position,x0.1,libero_object_temp,9,1,50910000,pick up the orange juice and place it in the basket,first_k1,True,108,7,7,0,False,False
+position_x0.1_t9_i1,main,Position,x0.1,libero_object_temp,9,1,50910000,pick up the orange juice and place it in the basket,max_value_h16,True,108,7,28,0,False,False
+position_x0.1_t9_i1,main,Position,x0.1,libero_object_temp,9,1,50910000,pick up the orange juice and place it in the basket,h8_at72,True,107,10,40,0,False,False
+position_x0.1_t9_i1,main,Position,x0.1,libero_object_temp,9,1,50910000,pick up the orange juice and place it in the basket,p3_at72,True,107,10,40,0,False,False
+position_x0.1_t9_i1,main,Position,x0.1,libero_object_temp,9,1,50910000,pick up the orange juice and place it in the basket,p3_event,True,108,7,28,0,False,False
+position_x0.2_t9_i1,main,Position,x0.2,libero_object_temp,9,1,52910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.2_t9_i1,main,Position,x0.2,libero_object_temp,9,1,52910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,True,False
+position_x0.2_t9_i1,main,Position,x0.2,libero_object_temp,9,1,52910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.2_t9_i1,main,Position,x0.2,libero_object_temp,9,1,52910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.2_t9_i1,main,Position,x0.2,libero_object_temp,9,1,52910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,True,False
+position_x0.3_t9_i1,main,Position,x0.3,libero_object_temp,9,1,54910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.3_t9_i1,main,Position,x0.3,libero_object_temp,9,1,54910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.3_t9_i1,main,Position,x0.3,libero_object_temp,9,1,54910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.3_t9_i1,main,Position,x0.3,libero_object_temp,9,1,54910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.3_t9_i1,main,Position,x0.3,libero_object_temp,9,1,54910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.4_t9_i1,main,Position,x0.4,libero_object_temp,9,1,56910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.4_t9_i1,main,Position,x0.4,libero_object_temp,9,1,56910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.4_t9_i1,main,Position,x0.4,libero_object_temp,9,1,56910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.4_t9_i1,main,Position,x0.4,libero_object_temp,9,1,56910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.4_t9_i1,main,Position,x0.4,libero_object_temp,9,1,56910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_x0.5_t9_i1,main,Position,x0.5,libero_object_temp,9,1,58910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_x0.5_t9_i1,main,Position,x0.5,libero_object_temp,9,1,58910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_x0.5_t9_i1,main,Position,x0.5,libero_object_temp,9,1,58910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_x0.5_t9_i1,main,Position,x0.5,libero_object_temp,9,1,58910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_x0.5_t9_i1,main,Position,x0.5,libero_object_temp,9,1,58910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.1_t9_i1,main,Position,y0.1,libero_object_temp,9,1,60910000,pick up the orange juice and place it in the basket,first_k1,True,157,10,10,0,False,False
+position_y0.1_t9_i1,main,Position,y0.1,libero_object_temp,9,1,60910000,pick up the orange juice and place it in the basket,max_value_h16,True,159,10,40,0,False,False
+position_y0.1_t9_i1,main,Position,y0.1,libero_object_temp,9,1,60910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.1_t9_i1,main,Position,y0.1,libero_object_temp,9,1,60910000,pick up the orange juice and place it in the basket,p3_at72,True,139,11,44,1,False,False
+position_y0.1_t9_i1,main,Position,y0.1,libero_object_temp,9,1,60910000,pick up the orange juice and place it in the basket,p3_event,True,159,10,40,0,False,False
+position_y0.2_t9_i1,main,Position,y0.2,libero_object_temp,9,1,62910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.2_t9_i1,main,Position,y0.2,libero_object_temp,9,1,62910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.2_t9_i1,main,Position,y0.2,libero_object_temp,9,1,62910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.2_t9_i1,main,Position,y0.2,libero_object_temp,9,1,62910000,pick up the orange juice and place it in the basket,p3_at72,True,169,14,56,1,False,False
+position_y0.2_t9_i1,main,Position,y0.2,libero_object_temp,9,1,62910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.3_t9_i1,main,Position,y0.3,libero_object_temp,9,1,64910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.3_t9_i1,main,Position,y0.3,libero_object_temp,9,1,64910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.3_t9_i1,main,Position,y0.3,libero_object_temp,9,1,64910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.3_t9_i1,main,Position,y0.3,libero_object_temp,9,1,64910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.3_t9_i1,main,Position,y0.3,libero_object_temp,9,1,64910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+position_y0.4_t9_i1,main,Position,y0.4,libero_object_temp,9,1,66910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,True
+position_y0.4_t9_i1,main,Position,y0.4,libero_object_temp,9,1,66910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+position_y0.4_t9_i1,main,Position,y0.4,libero_object_temp,9,1,66910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,True
+position_y0.4_t9_i1,main,Position,y0.4,libero_object_temp,9,1,66910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,True
+position_y0.4_t9_i1,main,Position,y0.4,libero_object_temp,9,1,66910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,True
+position_y0.5_t9_i1,main,Position,y0.5,libero_object_temp,9,1,68910000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+position_y0.5_t9_i1,main,Position,y0.5,libero_object_temp,9,1,68910000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+position_y0.5_t9_i1,main,Position,y0.5,libero_object_temp,9,1,68910000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,False
+position_y0.5_t9_i1,main,Position,y0.5,libero_object_temp,9,1,68910000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,False
+position_y0.5_t9_i1,main,Position,y0.5,libero_object_temp,9,1,68910000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t0_i3,main,Object,,libero_object_object,0,3,40030000,pick up the alphabet soup and place it in the basket,first_k1,True,127,8,8,0,False,False
+object__t0_i3,main,Object,,libero_object_object,0,3,40030000,pick up the alphabet soup and place it in the basket,max_value_h16,True,126,8,32,0,False,False
+object__t0_i3,main,Object,,libero_object_object,0,3,40030000,pick up the alphabet soup and place it in the basket,h8_at72,True,234,26,104,0,False,False
+object__t0_i3,main,Object,,libero_object_object,0,3,40030000,pick up the alphabet soup and place it in the basket,p3_at72,True,234,26,104,0,False,False
+object__t0_i3,main,Object,,libero_object_object,0,3,40030000,pick up the alphabet soup and place it in the basket,p3_event,True,126,8,32,0,False,False
+environment__t0_i3,main,Environment,,libero_object_env,0,3,42030000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t0_i3,main,Environment,,libero_object_env,0,3,42030000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t0_i3,main,Environment,,libero_object_env,0,3,42030000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t0_i3,main,Environment,,libero_object_env,0,3,42030000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t0_i3,main,Environment,,libero_object_env,0,3,42030000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t1_i3,main,Object,,libero_object_object,1,3,40130000,pick up the cream cheese and place it in the basket,first_k1,True,121,8,8,0,False,False
+object__t1_i3,main,Object,,libero_object_object,1,3,40130000,pick up the cream cheese and place it in the basket,max_value_h16,True,121,8,32,0,False,False
+object__t1_i3,main,Object,,libero_object_object,1,3,40130000,pick up the cream cheese and place it in the basket,h8_at72,True,122,12,48,0,False,False
+object__t1_i3,main,Object,,libero_object_object,1,3,40130000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,True,False
+object__t1_i3,main,Object,,libero_object_object,1,3,40130000,pick up the cream cheese and place it in the basket,p3_event,True,121,8,32,0,False,False
+environment__t1_i3,main,Environment,,libero_object_env,1,3,42130000,pick up the cream cheese and place it in the basket,first_k1,True,146,10,10,0,False,False
+environment__t1_i3,main,Environment,,libero_object_env,1,3,42130000,pick up the cream cheese and place it in the basket,max_value_h16,True,145,10,40,0,False,False
+environment__t1_i3,main,Environment,,libero_object_env,1,3,42130000,pick up the cream cheese and place it in the basket,h8_at72,True,145,15,60,0,False,False
+environment__t1_i3,main,Environment,,libero_object_env,1,3,42130000,pick up the cream cheese and place it in the basket,p3_at72,True,145,15,60,0,False,False
+environment__t1_i3,main,Environment,,libero_object_env,1,3,42130000,pick up the cream cheese and place it in the basket,p3_event,True,145,10,40,0,False,False
+object__t2_i3,main,Object,,libero_object_object,2,3,40230000,pick up the salad dressing and place it in the basket,first_k1,True,114,8,8,0,False,False
+object__t2_i3,main,Object,,libero_object_object,2,3,40230000,pick up the salad dressing and place it in the basket,max_value_h16,True,114,8,32,0,False,False
+object__t2_i3,main,Object,,libero_object_object,2,3,40230000,pick up the salad dressing and place it in the basket,h8_at72,True,114,11,44,0,False,False
+object__t2_i3,main,Object,,libero_object_object,2,3,40230000,pick up the salad dressing and place it in the basket,p3_at72,True,222,21,84,1,True,False
+object__t2_i3,main,Object,,libero_object_object,2,3,40230000,pick up the salad dressing and place it in the basket,p3_event,True,114,8,32,0,False,False
+environment__t2_i3,main,Environment,,libero_object_env,2,3,42230000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t2_i3,main,Environment,,libero_object_env,2,3,42230000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t2_i3,main,Environment,,libero_object_env,2,3,42230000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t2_i3,main,Environment,,libero_object_env,2,3,42230000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t2_i3,main,Environment,,libero_object_env,2,3,42230000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t3_i3,main,Object,,libero_object_object,3,3,40330000,pick up the bbq sauce and place it in the basket,first_k1,False,280,18,18,0,False,False
+object__t3_i3,main,Object,,libero_object_object,3,3,40330000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+object__t3_i3,main,Object,,libero_object_object,3,3,40330000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,False,False
+object__t3_i3,main,Object,,libero_object_object,3,3,40330000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,False,False
+object__t3_i3,main,Object,,libero_object_object,3,3,40330000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,False,False
+environment__t3_i3,main,Environment,,libero_object_env,3,3,42330000,pick up the bbq sauce and place it in the basket,first_k1,True,120,8,8,0,False,False
+environment__t3_i3,main,Environment,,libero_object_env,3,3,42330000,pick up the bbq sauce and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+environment__t3_i3,main,Environment,,libero_object_env,3,3,42330000,pick up the bbq sauce and place it in the basket,h8_at72,True,120,11,44,0,False,False
+environment__t3_i3,main,Environment,,libero_object_env,3,3,42330000,pick up the bbq sauce and place it in the basket,p3_at72,True,120,11,44,0,False,False
+environment__t3_i3,main,Environment,,libero_object_env,3,3,42330000,pick up the bbq sauce and place it in the basket,p3_event,True,120,8,32,0,False,False
+object__t4_i3,main,Object,,libero_object_object,4,3,40430000,pick up the ketchup and place it in the basket,first_k1,True,143,9,9,0,False,False
+object__t4_i3,main,Object,,libero_object_object,4,3,40430000,pick up the ketchup and place it in the basket,max_value_h16,True,144,9,36,0,False,False
+object__t4_i3,main,Object,,libero_object_object,4,3,40430000,pick up the ketchup and place it in the basket,h8_at72,True,142,14,56,0,False,False
+object__t4_i3,main,Object,,libero_object_object,4,3,40430000,pick up the ketchup and place it in the basket,p3_at72,True,246,24,96,1,True,False
+object__t4_i3,main,Object,,libero_object_object,4,3,40430000,pick up the ketchup and place it in the basket,p3_event,True,144,9,36,0,False,False
+environment__t4_i3,main,Environment,,libero_object_env,4,3,42430000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t4_i3,main,Environment,,libero_object_env,4,3,42430000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t4_i3,main,Environment,,libero_object_env,4,3,42430000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t4_i3,main,Environment,,libero_object_env,4,3,42430000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t4_i3,main,Environment,,libero_object_env,4,3,42430000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t5_i3,main,Object,,libero_object_object,5,3,40530000,pick up the tomato sauce and place it in the basket,first_k1,True,115,8,8,0,False,False
+object__t5_i3,main,Object,,libero_object_object,5,3,40530000,pick up the tomato sauce and place it in the basket,max_value_h16,True,117,8,32,0,False,False
+object__t5_i3,main,Object,,libero_object_object,5,3,40530000,pick up the tomato sauce and place it in the basket,h8_at72,True,117,11,44,0,False,False
+object__t5_i3,main,Object,,libero_object_object,5,3,40530000,pick up the tomato sauce and place it in the basket,p3_at72,True,117,11,44,0,False,False
+object__t5_i3,main,Object,,libero_object_object,5,3,40530000,pick up the tomato sauce and place it in the basket,p3_event,True,117,8,32,0,False,False
+environment__t5_i3,main,Environment,,libero_object_env,5,3,42530000,pick up the tomato sauce and place it in the basket,first_k1,True,122,8,8,0,False,False
+environment__t5_i3,main,Environment,,libero_object_env,5,3,42530000,pick up the tomato sauce and place it in the basket,max_value_h16,True,122,8,32,0,False,False
+environment__t5_i3,main,Environment,,libero_object_env,5,3,42530000,pick up the tomato sauce and place it in the basket,h8_at72,True,120,11,44,0,False,False
+environment__t5_i3,main,Environment,,libero_object_env,5,3,42530000,pick up the tomato sauce and place it in the basket,p3_at72,True,120,11,44,0,False,False
+environment__t5_i3,main,Environment,,libero_object_env,5,3,42530000,pick up the tomato sauce and place it in the basket,p3_event,True,122,8,32,0,False,False
+object__t6_i3,main,Object,,libero_object_object,6,3,40630000,pick up the butter and place it in the basket,first_k1,True,150,10,10,0,False,False
+object__t6_i3,main,Object,,libero_object_object,6,3,40630000,pick up the butter and place it in the basket,max_value_h16,True,153,10,40,0,False,False
+object__t6_i3,main,Object,,libero_object_object,6,3,40630000,pick up the butter and place it in the basket,h8_at72,True,148,15,60,0,False,False
+object__t6_i3,main,Object,,libero_object_object,6,3,40630000,pick up the butter and place it in the basket,p3_at72,True,148,15,60,0,False,False
+object__t6_i3,main,Object,,libero_object_object,6,3,40630000,pick up the butter and place it in the basket,p3_event,True,153,10,40,0,False,False
+environment__t6_i3,main,Environment,,libero_object_env,6,3,42630000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t6_i3,main,Environment,,libero_object_env,6,3,42630000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t6_i3,main,Environment,,libero_object_env,6,3,42630000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t6_i3,main,Environment,,libero_object_env,6,3,42630000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t6_i3,main,Environment,,libero_object_env,6,3,42630000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t7_i3,main,Object,,libero_object_object,7,3,40730000,pick up the milk and place it in the basket,first_k1,True,126,8,8,0,False,False
+object__t7_i3,main,Object,,libero_object_object,7,3,40730000,pick up the milk and place it in the basket,max_value_h16,True,128,8,32,0,False,False
+object__t7_i3,main,Object,,libero_object_object,7,3,40730000,pick up the milk and place it in the basket,h8_at72,True,127,12,48,0,False,False
+object__t7_i3,main,Object,,libero_object_object,7,3,40730000,pick up the milk and place it in the basket,p3_at72,True,127,12,48,0,False,False
+object__t7_i3,main,Object,,libero_object_object,7,3,40730000,pick up the milk and place it in the basket,p3_event,True,128,8,32,0,False,False
+environment__t7_i3,main,Environment,,libero_object_env,7,3,42730000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t7_i3,main,Environment,,libero_object_env,7,3,42730000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t7_i3,main,Environment,,libero_object_env,7,3,42730000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t7_i3,main,Environment,,libero_object_env,7,3,42730000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t7_i3,main,Environment,,libero_object_env,7,3,42730000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t8_i3,main,Object,,libero_object_object,8,3,40830000,pick up the chocolate pudding and place it in the basket,first_k1,True,145,10,10,0,False,False
+object__t8_i3,main,Object,,libero_object_object,8,3,40830000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,145,10,40,0,False,False
+object__t8_i3,main,Object,,libero_object_object,8,3,40830000,pick up the chocolate pudding and place it in the basket,h8_at72,True,144,14,56,0,False,False
+object__t8_i3,main,Object,,libero_object_object,8,3,40830000,pick up the chocolate pudding and place it in the basket,p3_at72,True,144,14,56,0,False,False
+object__t8_i3,main,Object,,libero_object_object,8,3,40830000,pick up the chocolate pudding and place it in the basket,p3_event,True,145,10,40,0,False,False
+environment__t8_i3,main,Environment,,libero_object_env,8,3,42830000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t8_i3,main,Environment,,libero_object_env,8,3,42830000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t8_i3,main,Environment,,libero_object_env,8,3,42830000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t8_i3,main,Environment,,libero_object_env,8,3,42830000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t8_i3,main,Environment,,libero_object_env,8,3,42830000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t9_i3,main,Object,,libero_object_object,9,3,40930000,pick up the orange juice and place it in the basket,first_k1,True,106,7,7,0,False,False
+object__t9_i3,main,Object,,libero_object_object,9,3,40930000,pick up the orange juice and place it in the basket,max_value_h16,True,105,7,28,0,False,False
+object__t9_i3,main,Object,,libero_object_object,9,3,40930000,pick up the orange juice and place it in the basket,h8_at72,True,105,10,40,0,False,False
+object__t9_i3,main,Object,,libero_object_object,9,3,40930000,pick up the orange juice and place it in the basket,p3_at72,True,105,10,40,0,False,False
+object__t9_i3,main,Object,,libero_object_object,9,3,40930000,pick up the orange juice and place it in the basket,p3_event,True,105,7,28,0,False,False
+environment__t9_i3,main,Environment,,libero_object_env,9,3,42930000,pick up the orange juice and place it in the basket,first_k1,True,120,8,8,0,False,False
+environment__t9_i3,main,Environment,,libero_object_env,9,3,42930000,pick up the orange juice and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+environment__t9_i3,main,Environment,,libero_object_env,9,3,42930000,pick up the orange juice and place it in the basket,h8_at72,True,118,11,44,0,False,False
+environment__t9_i3,main,Environment,,libero_object_env,9,3,42930000,pick up the orange juice and place it in the basket,p3_at72,True,118,11,44,0,False,False
+environment__t9_i3,main,Environment,,libero_object_env,9,3,42930000,pick up the orange juice and place it in the basket,p3_event,True,120,8,32,0,False,False
+object__t0_i4,main,Object,,libero_object_object,0,4,40040000,pick up the alphabet soup and place it in the basket,first_k1,True,130,9,9,0,False,False
+object__t0_i4,main,Object,,libero_object_object,0,4,40040000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+object__t0_i4,main,Object,,libero_object_object,0,4,40040000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+object__t0_i4,main,Object,,libero_object_object,0,4,40040000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+object__t0_i4,main,Object,,libero_object_object,0,4,40040000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+environment__t0_i4,main,Environment,,libero_object_env,0,4,42040000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t0_i4,main,Environment,,libero_object_env,0,4,42040000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t0_i4,main,Environment,,libero_object_env,0,4,42040000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t0_i4,main,Environment,,libero_object_env,0,4,42040000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t0_i4,main,Environment,,libero_object_env,0,4,42040000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t1_i4,main,Object,,libero_object_object,1,4,40140000,pick up the cream cheese and place it in the basket,first_k1,True,123,8,8,0,False,False
+object__t1_i4,main,Object,,libero_object_object,1,4,40140000,pick up the cream cheese and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t1_i4,main,Object,,libero_object_object,1,4,40140000,pick up the cream cheese and place it in the basket,h8_at72,True,123,12,48,0,False,False
+object__t1_i4,main,Object,,libero_object_object,1,4,40140000,pick up the cream cheese and place it in the basket,p3_at72,True,123,12,48,0,False,False
+object__t1_i4,main,Object,,libero_object_object,1,4,40140000,pick up the cream cheese and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t1_i4,main,Environment,,libero_object_env,1,4,42140000,pick up the cream cheese and place it in the basket,first_k1,True,150,10,10,0,False,False
+environment__t1_i4,main,Environment,,libero_object_env,1,4,42140000,pick up the cream cheese and place it in the basket,max_value_h16,True,148,10,40,0,False,False
+environment__t1_i4,main,Environment,,libero_object_env,1,4,42140000,pick up the cream cheese and place it in the basket,h8_at72,True,147,15,60,0,False,False
+environment__t1_i4,main,Environment,,libero_object_env,1,4,42140000,pick up the cream cheese and place it in the basket,p3_at72,True,147,15,60,0,False,False
+environment__t1_i4,main,Environment,,libero_object_env,1,4,42140000,pick up the cream cheese and place it in the basket,p3_event,True,148,10,40,0,False,False
+object__t2_i4,main,Object,,libero_object_object,2,4,40240000,pick up the salad dressing and place it in the basket,first_k1,True,115,8,8,0,False,False
+object__t2_i4,main,Object,,libero_object_object,2,4,40240000,pick up the salad dressing and place it in the basket,max_value_h16,True,112,7,28,0,False,False
+object__t2_i4,main,Object,,libero_object_object,2,4,40240000,pick up the salad dressing and place it in the basket,h8_at72,True,114,11,44,0,False,False
+object__t2_i4,main,Object,,libero_object_object,2,4,40240000,pick up the salad dressing and place it in the basket,p3_at72,True,114,11,44,0,False,False
+object__t2_i4,main,Object,,libero_object_object,2,4,40240000,pick up the salad dressing and place it in the basket,p3_event,True,112,7,28,0,False,False
+environment__t2_i4,main,Environment,,libero_object_env,2,4,42240000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t2_i4,main,Environment,,libero_object_env,2,4,42240000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t2_i4,main,Environment,,libero_object_env,2,4,42240000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t2_i4,main,Environment,,libero_object_env,2,4,42240000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t2_i4,main,Environment,,libero_object_env,2,4,42240000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t3_i4,main,Object,,libero_object_object,3,4,40340000,pick up the bbq sauce and place it in the basket,first_k1,True,165,11,11,0,True,False
+object__t3_i4,main,Object,,libero_object_object,3,4,40340000,pick up the bbq sauce and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+object__t3_i4,main,Object,,libero_object_object,3,4,40340000,pick up the bbq sauce and place it in the basket,h8_at72,True,119,11,44,0,False,False
+object__t3_i4,main,Object,,libero_object_object,3,4,40340000,pick up the bbq sauce and place it in the basket,p3_at72,True,119,11,44,0,False,False
+object__t3_i4,main,Object,,libero_object_object,3,4,40340000,pick up the bbq sauce and place it in the basket,p3_event,True,120,8,32,0,False,False
+environment__t3_i4,main,Environment,,libero_object_env,3,4,42340000,pick up the bbq sauce and place it in the basket,first_k1,True,120,8,8,0,False,False
+environment__t3_i4,main,Environment,,libero_object_env,3,4,42340000,pick up the bbq sauce and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+environment__t3_i4,main,Environment,,libero_object_env,3,4,42340000,pick up the bbq sauce and place it in the basket,h8_at72,True,120,11,44,0,False,False
+environment__t3_i4,main,Environment,,libero_object_env,3,4,42340000,pick up the bbq sauce and place it in the basket,p3_at72,True,120,11,44,0,False,False
+environment__t3_i4,main,Environment,,libero_object_env,3,4,42340000,pick up the bbq sauce and place it in the basket,p3_event,True,120,8,32,0,False,False
+object__t4_i4,main,Object,,libero_object_object,4,4,40440000,pick up the ketchup and place it in the basket,first_k1,True,137,9,9,0,False,False
+object__t4_i4,main,Object,,libero_object_object,4,4,40440000,pick up the ketchup and place it in the basket,max_value_h16,True,137,9,36,0,False,False
+object__t4_i4,main,Object,,libero_object_object,4,4,40440000,pick up the ketchup and place it in the basket,h8_at72,True,135,13,52,0,False,False
+object__t4_i4,main,Object,,libero_object_object,4,4,40440000,pick up the ketchup and place it in the basket,p3_at72,True,135,13,52,0,False,False
+object__t4_i4,main,Object,,libero_object_object,4,4,40440000,pick up the ketchup and place it in the basket,p3_event,True,137,9,36,0,False,False
+environment__t4_i4,main,Environment,,libero_object_env,4,4,42440000,pick up the ketchup and place it in the basket,first_k1,True,182,12,12,0,False,False
+environment__t4_i4,main,Environment,,libero_object_env,4,4,42440000,pick up the ketchup and place it in the basket,max_value_h16,True,183,12,48,0,False,False
+environment__t4_i4,main,Environment,,libero_object_env,4,4,42440000,pick up the ketchup and place it in the basket,h8_at72,True,185,20,80,0,False,False
+environment__t4_i4,main,Environment,,libero_object_env,4,4,42440000,pick up the ketchup and place it in the basket,p3_at72,True,185,20,80,0,False,False
+environment__t4_i4,main,Environment,,libero_object_env,4,4,42440000,pick up the ketchup and place it in the basket,p3_event,True,183,12,48,0,False,False
+object__t5_i4,main,Object,,libero_object_object,5,4,40540000,pick up the tomato sauce and place it in the basket,first_k1,True,164,11,11,0,False,False
+object__t5_i4,main,Object,,libero_object_object,5,4,40540000,pick up the tomato sauce and place it in the basket,max_value_h16,True,118,8,32,0,False,False
+object__t5_i4,main,Object,,libero_object_object,5,4,40540000,pick up the tomato sauce and place it in the basket,h8_at72,True,122,12,48,0,False,False
+object__t5_i4,main,Object,,libero_object_object,5,4,40540000,pick up the tomato sauce and place it in the basket,p3_at72,True,122,12,48,0,False,False
+object__t5_i4,main,Object,,libero_object_object,5,4,40540000,pick up the tomato sauce and place it in the basket,p3_event,True,118,8,32,0,False,False
+environment__t5_i4,main,Environment,,libero_object_env,5,4,42540000,pick up the tomato sauce and place it in the basket,first_k1,True,121,8,8,0,False,False
+environment__t5_i4,main,Environment,,libero_object_env,5,4,42540000,pick up the tomato sauce and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+environment__t5_i4,main,Environment,,libero_object_env,5,4,42540000,pick up the tomato sauce and place it in the basket,h8_at72,True,120,11,44,0,False,False
+environment__t5_i4,main,Environment,,libero_object_env,5,4,42540000,pick up the tomato sauce and place it in the basket,p3_at72,True,120,11,44,0,False,False
+environment__t5_i4,main,Environment,,libero_object_env,5,4,42540000,pick up the tomato sauce and place it in the basket,p3_event,True,120,8,32,0,False,False
+object__t6_i4,main,Object,,libero_object_object,6,4,40640000,pick up the butter and place it in the basket,first_k1,True,149,10,10,0,False,False
+object__t6_i4,main,Object,,libero_object_object,6,4,40640000,pick up the butter and place it in the basket,max_value_h16,True,150,10,40,0,False,False
+object__t6_i4,main,Object,,libero_object_object,6,4,40640000,pick up the butter and place it in the basket,h8_at72,True,149,15,60,0,False,False
+object__t6_i4,main,Object,,libero_object_object,6,4,40640000,pick up the butter and place it in the basket,p3_at72,True,149,15,60,0,False,False
+object__t6_i4,main,Object,,libero_object_object,6,4,40640000,pick up the butter and place it in the basket,p3_event,True,150,10,40,0,False,False
+environment__t6_i4,main,Environment,,libero_object_env,6,4,42640000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t6_i4,main,Environment,,libero_object_env,6,4,42640000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t6_i4,main,Environment,,libero_object_env,6,4,42640000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t6_i4,main,Environment,,libero_object_env,6,4,42640000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t6_i4,main,Environment,,libero_object_env,6,4,42640000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t7_i4,main,Object,,libero_object_object,7,4,40740000,pick up the milk and place it in the basket,first_k1,True,166,11,11,0,False,False
+object__t7_i4,main,Object,,libero_object_object,7,4,40740000,pick up the milk and place it in the basket,max_value_h16,True,127,8,32,0,False,False
+object__t7_i4,main,Object,,libero_object_object,7,4,40740000,pick up the milk and place it in the basket,h8_at72,True,131,13,52,0,False,False
+object__t7_i4,main,Object,,libero_object_object,7,4,40740000,pick up the milk and place it in the basket,p3_at72,True,131,13,52,0,False,False
+object__t7_i4,main,Object,,libero_object_object,7,4,40740000,pick up the milk and place it in the basket,p3_event,True,127,8,32,0,False,False
+environment__t7_i4,main,Environment,,libero_object_env,7,4,42740000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t7_i4,main,Environment,,libero_object_env,7,4,42740000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t7_i4,main,Environment,,libero_object_env,7,4,42740000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t7_i4,main,Environment,,libero_object_env,7,4,42740000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t7_i4,main,Environment,,libero_object_env,7,4,42740000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t8_i4,main,Object,,libero_object_object,8,4,40840000,pick up the chocolate pudding and place it in the basket,first_k1,True,152,10,10,0,False,False
+object__t8_i4,main,Object,,libero_object_object,8,4,40840000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,152,10,40,0,False,False
+object__t8_i4,main,Object,,libero_object_object,8,4,40840000,pick up the chocolate pudding and place it in the basket,h8_at72,True,151,15,60,0,False,False
+object__t8_i4,main,Object,,libero_object_object,8,4,40840000,pick up the chocolate pudding and place it in the basket,p3_at72,True,151,15,60,0,False,False
+object__t8_i4,main,Object,,libero_object_object,8,4,40840000,pick up the chocolate pudding and place it in the basket,p3_event,True,152,10,40,0,False,False
+environment__t8_i4,main,Environment,,libero_object_env,8,4,42840000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t8_i4,main,Environment,,libero_object_env,8,4,42840000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t8_i4,main,Environment,,libero_object_env,8,4,42840000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t8_i4,main,Environment,,libero_object_env,8,4,42840000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t8_i4,main,Environment,,libero_object_env,8,4,42840000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t9_i4,main,Object,,libero_object_object,9,4,40940000,pick up the orange juice and place it in the basket,first_k1,True,125,8,8,0,False,False
+object__t9_i4,main,Object,,libero_object_object,9,4,40940000,pick up the orange juice and place it in the basket,max_value_h16,True,124,8,32,0,False,False
+object__t9_i4,main,Object,,libero_object_object,9,4,40940000,pick up the orange juice and place it in the basket,h8_at72,True,127,12,48,0,False,False
+object__t9_i4,main,Object,,libero_object_object,9,4,40940000,pick up the orange juice and place it in the basket,p3_at72,True,127,12,48,0,False,False
+object__t9_i4,main,Object,,libero_object_object,9,4,40940000,pick up the orange juice and place it in the basket,p3_event,True,124,8,32,0,False,False
+environment__t9_i4,main,Environment,,libero_object_env,9,4,42940000,pick up the orange juice and place it in the basket,first_k1,True,120,8,8,0,False,False
+environment__t9_i4,main,Environment,,libero_object_env,9,4,42940000,pick up the orange juice and place it in the basket,max_value_h16,True,120,8,32,0,False,False
+environment__t9_i4,main,Environment,,libero_object_env,9,4,42940000,pick up the orange juice and place it in the basket,h8_at72,True,119,11,44,0,False,False
+environment__t9_i4,main,Environment,,libero_object_env,9,4,42940000,pick up the orange juice and place it in the basket,p3_at72,True,119,11,44,0,False,False
+environment__t9_i4,main,Environment,,libero_object_env,9,4,42940000,pick up the orange juice and place it in the basket,p3_event,True,120,8,32,0,False,False
+object__t0_i5,main,Object,,libero_object_object,0,5,40050000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+object__t0_i5,main,Object,,libero_object_object,0,5,40050000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+object__t0_i5,main,Object,,libero_object_object,0,5,40050000,pick up the alphabet soup and place it in the basket,h8_at72,True,207,22,88,0,False,False
+object__t0_i5,main,Object,,libero_object_object,0,5,40050000,pick up the alphabet soup and place it in the basket,p3_at72,True,207,22,88,0,False,False
+object__t0_i5,main,Object,,libero_object_object,0,5,40050000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+environment__t0_i5,main,Environment,,libero_object_env,0,5,42050000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t0_i5,main,Environment,,libero_object_env,0,5,42050000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t0_i5,main,Environment,,libero_object_env,0,5,42050000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t0_i5,main,Environment,,libero_object_env,0,5,42050000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t0_i5,main,Environment,,libero_object_env,0,5,42050000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t1_i5,main,Object,,libero_object_object,1,5,40150000,pick up the cream cheese and place it in the basket,first_k1,True,126,8,8,0,False,False
+object__t1_i5,main,Object,,libero_object_object,1,5,40150000,pick up the cream cheese and place it in the basket,max_value_h16,True,128,8,32,0,False,False
+object__t1_i5,main,Object,,libero_object_object,1,5,40150000,pick up the cream cheese and place it in the basket,h8_at72,True,128,12,48,0,False,False
+object__t1_i5,main,Object,,libero_object_object,1,5,40150000,pick up the cream cheese and place it in the basket,p3_at72,False,280,28,112,1,True,False
+object__t1_i5,main,Object,,libero_object_object,1,5,40150000,pick up the cream cheese and place it in the basket,p3_event,True,128,8,32,0,False,False
+environment__t1_i5,main,Environment,,libero_object_env,1,5,42150000,pick up the cream cheese and place it in the basket,first_k1,True,147,10,10,0,False,False
+environment__t1_i5,main,Environment,,libero_object_env,1,5,42150000,pick up the cream cheese and place it in the basket,max_value_h16,True,148,10,40,0,False,False
+environment__t1_i5,main,Environment,,libero_object_env,1,5,42150000,pick up the cream cheese and place it in the basket,h8_at72,True,144,14,56,0,False,False
+environment__t1_i5,main,Environment,,libero_object_env,1,5,42150000,pick up the cream cheese and place it in the basket,p3_at72,True,144,14,56,0,False,False
+environment__t1_i5,main,Environment,,libero_object_env,1,5,42150000,pick up the cream cheese and place it in the basket,p3_event,True,148,10,40,0,False,False
+object__t2_i5,main,Object,,libero_object_object,2,5,40250000,pick up the salad dressing and place it in the basket,first_k1,True,117,8,8,0,False,False
+object__t2_i5,main,Object,,libero_object_object,2,5,40250000,pick up the salad dressing and place it in the basket,max_value_h16,True,117,8,32,0,False,False
+object__t2_i5,main,Object,,libero_object_object,2,5,40250000,pick up the salad dressing and place it in the basket,h8_at72,True,117,11,44,0,False,False
+object__t2_i5,main,Object,,libero_object_object,2,5,40250000,pick up the salad dressing and place it in the basket,p3_at72,True,117,11,44,0,False,False
+object__t2_i5,main,Object,,libero_object_object,2,5,40250000,pick up the salad dressing and place it in the basket,p3_event,True,117,8,32,0,False,False
+environment__t2_i5,main,Environment,,libero_object_env,2,5,42250000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t2_i5,main,Environment,,libero_object_env,2,5,42250000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t2_i5,main,Environment,,libero_object_env,2,5,42250000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t2_i5,main,Environment,,libero_object_env,2,5,42250000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t2_i5,main,Environment,,libero_object_env,2,5,42250000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t3_i5,main,Object,,libero_object_object,3,5,40350000,pick up the bbq sauce and place it in the basket,first_k1,True,128,8,8,0,False,False
+object__t3_i5,main,Object,,libero_object_object,3,5,40350000,pick up the bbq sauce and place it in the basket,max_value_h16,True,127,8,32,0,False,False
+object__t3_i5,main,Object,,libero_object_object,3,5,40350000,pick up the bbq sauce and place it in the basket,h8_at72,True,129,13,52,0,False,False
+object__t3_i5,main,Object,,libero_object_object,3,5,40350000,pick up the bbq sauce and place it in the basket,p3_at72,True,129,13,52,0,False,False
+object__t3_i5,main,Object,,libero_object_object,3,5,40350000,pick up the bbq sauce and place it in the basket,p3_event,True,127,8,32,0,False,False
+environment__t3_i5,main,Environment,,libero_object_env,3,5,42350000,pick up the bbq sauce and place it in the basket,first_k1,True,120,8,8,0,False,False
+environment__t3_i5,main,Environment,,libero_object_env,3,5,42350000,pick up the bbq sauce and place it in the basket,max_value_h16,False,280,18,72,0,True,False
+environment__t3_i5,main,Environment,,libero_object_env,3,5,42350000,pick up the bbq sauce and place it in the basket,h8_at72,False,280,31,124,0,True,True
+environment__t3_i5,main,Environment,,libero_object_env,3,5,42350000,pick up the bbq sauce and place it in the basket,p3_at72,False,280,31,124,0,True,True
+environment__t3_i5,main,Environment,,libero_object_env,3,5,42350000,pick up the bbq sauce and place it in the basket,p3_event,False,280,18,72,0,True,False
+object__t4_i5,main,Object,,libero_object_object,4,5,40450000,pick up the ketchup and place it in the basket,first_k1,True,141,9,9,0,False,False
+object__t4_i5,main,Object,,libero_object_object,4,5,40450000,pick up the ketchup and place it in the basket,max_value_h16,True,141,9,36,0,False,False
+object__t4_i5,main,Object,,libero_object_object,4,5,40450000,pick up the ketchup and place it in the basket,h8_at72,True,140,14,56,0,False,False
+object__t4_i5,main,Object,,libero_object_object,4,5,40450000,pick up the ketchup and place it in the basket,p3_at72,True,140,14,56,0,False,False
+object__t4_i5,main,Object,,libero_object_object,4,5,40450000,pick up the ketchup and place it in the basket,p3_event,True,141,9,36,0,False,False
+environment__t4_i5,main,Environment,,libero_object_env,4,5,42450000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t4_i5,main,Environment,,libero_object_env,4,5,42450000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t4_i5,main,Environment,,libero_object_env,4,5,42450000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t4_i5,main,Environment,,libero_object_env,4,5,42450000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t4_i5,main,Environment,,libero_object_env,4,5,42450000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t5_i5,main,Object,,libero_object_object,5,5,40550000,pick up the tomato sauce and place it in the basket,first_k1,True,140,9,9,0,False,False
+object__t5_i5,main,Object,,libero_object_object,5,5,40550000,pick up the tomato sauce and place it in the basket,max_value_h16,True,139,9,36,0,False,False
+object__t5_i5,main,Object,,libero_object_object,5,5,40550000,pick up the tomato sauce and place it in the basket,h8_at72,True,139,14,56,0,False,False
+object__t5_i5,main,Object,,libero_object_object,5,5,40550000,pick up the tomato sauce and place it in the basket,p3_at72,True,139,14,56,0,False,False
+object__t5_i5,main,Object,,libero_object_object,5,5,40550000,pick up the tomato sauce and place it in the basket,p3_event,True,139,9,36,0,False,False
+environment__t5_i5,main,Environment,,libero_object_env,5,5,42550000,pick up the tomato sauce and place it in the basket,first_k1,True,115,8,8,0,False,True
+environment__t5_i5,main,Environment,,libero_object_env,5,5,42550000,pick up the tomato sauce and place it in the basket,max_value_h16,True,114,8,32,0,False,True
+environment__t5_i5,main,Environment,,libero_object_env,5,5,42550000,pick up the tomato sauce and place it in the basket,h8_at72,True,120,11,44,0,False,True
+environment__t5_i5,main,Environment,,libero_object_env,5,5,42550000,pick up the tomato sauce and place it in the basket,p3_at72,True,120,11,44,0,False,True
+environment__t5_i5,main,Environment,,libero_object_env,5,5,42550000,pick up the tomato sauce and place it in the basket,p3_event,True,114,8,32,0,False,True
+object__t6_i5,main,Object,,libero_object_object,6,5,40650000,pick up the butter and place it in the basket,first_k1,True,147,10,10,0,False,False
+object__t6_i5,main,Object,,libero_object_object,6,5,40650000,pick up the butter and place it in the basket,max_value_h16,True,147,10,40,0,False,False
+object__t6_i5,main,Object,,libero_object_object,6,5,40650000,pick up the butter and place it in the basket,h8_at72,True,146,15,60,0,False,False
+object__t6_i5,main,Object,,libero_object_object,6,5,40650000,pick up the butter and place it in the basket,p3_at72,True,146,15,60,0,False,False
+object__t6_i5,main,Object,,libero_object_object,6,5,40650000,pick up the butter and place it in the basket,p3_event,True,147,10,40,0,False,False
+environment__t6_i5,main,Environment,,libero_object_env,6,5,42650000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t6_i5,main,Environment,,libero_object_env,6,5,42650000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t6_i5,main,Environment,,libero_object_env,6,5,42650000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t6_i5,main,Environment,,libero_object_env,6,5,42650000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t6_i5,main,Environment,,libero_object_env,6,5,42650000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t7_i5,main,Object,,libero_object_object,7,5,40750000,pick up the milk and place it in the basket,first_k1,True,131,9,9,0,False,False
+object__t7_i5,main,Object,,libero_object_object,7,5,40750000,pick up the milk and place it in the basket,max_value_h16,True,131,9,36,0,False,False
+object__t7_i5,main,Object,,libero_object_object,7,5,40750000,pick up the milk and place it in the basket,h8_at72,True,130,13,52,0,False,False
+object__t7_i5,main,Object,,libero_object_object,7,5,40750000,pick up the milk and place it in the basket,p3_at72,True,130,13,52,0,False,False
+object__t7_i5,main,Object,,libero_object_object,7,5,40750000,pick up the milk and place it in the basket,p3_event,True,131,9,36,0,False,False
+environment__t7_i5,main,Environment,,libero_object_env,7,5,42750000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t7_i5,main,Environment,,libero_object_env,7,5,42750000,pick up the milk and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t7_i5,main,Environment,,libero_object_env,7,5,42750000,pick up the milk and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t7_i5,main,Environment,,libero_object_env,7,5,42750000,pick up the milk and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t7_i5,main,Environment,,libero_object_env,7,5,42750000,pick up the milk and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t8_i5,main,Object,,libero_object_object,8,5,40850000,pick up the chocolate pudding and place it in the basket,first_k1,True,150,10,10,0,False,False
+object__t8_i5,main,Object,,libero_object_object,8,5,40850000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,146,10,40,0,False,False
+object__t8_i5,main,Object,,libero_object_object,8,5,40850000,pick up the chocolate pudding and place it in the basket,h8_at72,True,145,15,60,0,False,False
+object__t8_i5,main,Object,,libero_object_object,8,5,40850000,pick up the chocolate pudding and place it in the basket,p3_at72,True,145,15,60,0,False,False
+object__t8_i5,main,Object,,libero_object_object,8,5,40850000,pick up the chocolate pudding and place it in the basket,p3_event,True,146,10,40,0,False,False
+environment__t8_i5,main,Environment,,libero_object_env,8,5,42850000,pick up the chocolate pudding and place it in the basket,first_k1,True,127,8,8,0,False,False
+environment__t8_i5,main,Environment,,libero_object_env,8,5,42850000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,126,8,32,0,False,False
+environment__t8_i5,main,Environment,,libero_object_env,8,5,42850000,pick up the chocolate pudding and place it in the basket,h8_at72,True,127,12,48,0,False,False
+environment__t8_i5,main,Environment,,libero_object_env,8,5,42850000,pick up the chocolate pudding and place it in the basket,p3_at72,True,127,12,48,0,False,False
+environment__t8_i5,main,Environment,,libero_object_env,8,5,42850000,pick up the chocolate pudding and place it in the basket,p3_event,True,126,8,32,0,False,False
+object__t9_i5,main,Object,,libero_object_object,9,5,40950000,pick up the orange juice and place it in the basket,first_k1,True,120,8,8,0,False,False
+object__t9_i5,main,Object,,libero_object_object,9,5,40950000,pick up the orange juice and place it in the basket,max_value_h16,True,132,9,36,0,False,False
+object__t9_i5,main,Object,,libero_object_object,9,5,40950000,pick up the orange juice and place it in the basket,h8_at72,True,130,13,52,0,False,False
+object__t9_i5,main,Object,,libero_object_object,9,5,40950000,pick up the orange juice and place it in the basket,p3_at72,True,130,13,52,0,False,False
+object__t9_i5,main,Object,,libero_object_object,9,5,40950000,pick up the orange juice and place it in the basket,p3_event,True,132,9,36,0,False,False
+environment__t9_i5,main,Environment,,libero_object_env,9,5,42950000,pick up the orange juice and place it in the basket,first_k1,True,117,8,8,0,False,False
+environment__t9_i5,main,Environment,,libero_object_env,9,5,42950000,pick up the orange juice and place it in the basket,max_value_h16,True,116,8,32,0,False,False
+environment__t9_i5,main,Environment,,libero_object_env,9,5,42950000,pick up the orange juice and place it in the basket,h8_at72,True,118,11,44,0,False,False
+environment__t9_i5,main,Environment,,libero_object_env,9,5,42950000,pick up the orange juice and place it in the basket,p3_at72,True,118,11,44,0,False,False
+environment__t9_i5,main,Environment,,libero_object_env,9,5,42950000,pick up the orange juice and place it in the basket,p3_event,True,116,8,32,0,False,False
+object__t0_i6,main,Object,,libero_object_object,0,6,40060000,pick up the alphabet soup and place it in the basket,first_k1,True,128,8,8,0,False,False
+object__t0_i6,main,Object,,libero_object_object,0,6,40060000,pick up the alphabet soup and place it in the basket,max_value_h16,True,127,8,32,0,False,False
+object__t0_i6,main,Object,,libero_object_object,0,6,40060000,pick up the alphabet soup and place it in the basket,h8_at72,True,131,13,52,0,False,False
+object__t0_i6,main,Object,,libero_object_object,0,6,40060000,pick up the alphabet soup and place it in the basket,p3_at72,True,131,13,52,0,False,False
+object__t0_i6,main,Object,,libero_object_object,0,6,40060000,pick up the alphabet soup and place it in the basket,p3_event,True,127,8,32,0,False,False
+environment__t0_i6,main,Environment,,libero_object_env,0,6,42060000,pick up the alphabet soup and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t0_i6,main,Environment,,libero_object_env,0,6,42060000,pick up the alphabet soup and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t0_i6,main,Environment,,libero_object_env,0,6,42060000,pick up the alphabet soup and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t0_i6,main,Environment,,libero_object_env,0,6,42060000,pick up the alphabet soup and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t0_i6,main,Environment,,libero_object_env,0,6,42060000,pick up the alphabet soup and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t1_i6,main,Object,,libero_object_object,1,6,40160000,pick up the cream cheese and place it in the basket,first_k1,True,120,8,8,0,False,False
+object__t1_i6,main,Object,,libero_object_object,1,6,40160000,pick up the cream cheese and place it in the basket,max_value_h16,True,123,8,32,0,False,False
+object__t1_i6,main,Object,,libero_object_object,1,6,40160000,pick up the cream cheese and place it in the basket,h8_at72,True,120,11,44,0,False,False
+object__t1_i6,main,Object,,libero_object_object,1,6,40160000,pick up the cream cheese and place it in the basket,p3_at72,True,123,11,44,1,False,False
+object__t1_i6,main,Object,,libero_object_object,1,6,40160000,pick up the cream cheese and place it in the basket,p3_event,True,123,8,32,0,False,False
+environment__t1_i6,main,Environment,,libero_object_env,1,6,42160000,pick up the cream cheese and place it in the basket,first_k1,True,149,10,10,0,False,False
+environment__t1_i6,main,Environment,,libero_object_env,1,6,42160000,pick up the cream cheese and place it in the basket,max_value_h16,True,147,10,40,0,False,False
+environment__t1_i6,main,Environment,,libero_object_env,1,6,42160000,pick up the cream cheese and place it in the basket,h8_at72,True,147,15,60,0,False,False
+environment__t1_i6,main,Environment,,libero_object_env,1,6,42160000,pick up the cream cheese and place it in the basket,p3_at72,True,147,15,60,0,False,False
+environment__t1_i6,main,Environment,,libero_object_env,1,6,42160000,pick up the cream cheese and place it in the basket,p3_event,True,147,10,40,0,False,False
+object__t2_i6,main,Object,,libero_object_object,2,6,40260000,pick up the salad dressing and place it in the basket,first_k1,True,127,8,8,0,False,False
+object__t2_i6,main,Object,,libero_object_object,2,6,40260000,pick up the salad dressing and place it in the basket,max_value_h16,True,125,8,32,0,False,False
+object__t2_i6,main,Object,,libero_object_object,2,6,40260000,pick up the salad dressing and place it in the basket,h8_at72,True,125,12,48,0,False,False
+object__t2_i6,main,Object,,libero_object_object,2,6,40260000,pick up the salad dressing and place it in the basket,p3_at72,True,125,12,48,0,False,False
+object__t2_i6,main,Object,,libero_object_object,2,6,40260000,pick up the salad dressing and place it in the basket,p3_event,True,125,8,32,0,False,False
+environment__t2_i6,main,Environment,,libero_object_env,2,6,42260000,pick up the salad dressing and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t2_i6,main,Environment,,libero_object_env,2,6,42260000,pick up the salad dressing and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t2_i6,main,Environment,,libero_object_env,2,6,42260000,pick up the salad dressing and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t2_i6,main,Environment,,libero_object_env,2,6,42260000,pick up the salad dressing and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t2_i6,main,Environment,,libero_object_env,2,6,42260000,pick up the salad dressing and place it in the basket,p3_event,False,280,18,72,0,False,False
+object__t3_i6,main,Object,,libero_object_object,3,6,40360000,pick up the bbq sauce and place it in the basket,first_k1,True,124,8,8,0,False,False
+object__t3_i6,main,Object,,libero_object_object,3,6,40360000,pick up the bbq sauce and place it in the basket,max_value_h16,True,124,8,32,0,False,False
+object__t3_i6,main,Object,,libero_object_object,3,6,40360000,pick up the bbq sauce and place it in the basket,h8_at72,True,123,12,48,0,False,False
+object__t3_i6,main,Object,,libero_object_object,3,6,40360000,pick up the bbq sauce and place it in the basket,p3_at72,True,123,12,48,0,False,False
+object__t3_i6,main,Object,,libero_object_object,3,6,40360000,pick up the bbq sauce and place it in the basket,p3_event,True,124,8,32,0,False,False
+environment__t3_i6,main,Environment,,libero_object_env,3,6,42360000,pick up the bbq sauce and place it in the basket,first_k1,True,198,13,13,0,False,True
+environment__t3_i6,main,Environment,,libero_object_env,3,6,42360000,pick up the bbq sauce and place it in the basket,max_value_h16,True,198,13,52,0,False,True
+environment__t3_i6,main,Environment,,libero_object_env,3,6,42360000,pick up the bbq sauce and place it in the basket,h8_at72,True,213,23,92,0,False,True
+environment__t3_i6,main,Environment,,libero_object_env,3,6,42360000,pick up the bbq sauce and place it in the basket,p3_at72,True,213,23,92,0,False,True
+environment__t3_i6,main,Environment,,libero_object_env,3,6,42360000,pick up the bbq sauce and place it in the basket,p3_event,True,198,13,52,0,False,True
+object__t4_i6,main,Object,,libero_object_object,4,6,40460000,pick up the ketchup and place it in the basket,first_k1,True,141,9,9,0,False,False
+object__t4_i6,main,Object,,libero_object_object,4,6,40460000,pick up the ketchup and place it in the basket,max_value_h16,True,138,9,36,0,False,False
+object__t4_i6,main,Object,,libero_object_object,4,6,40460000,pick up the ketchup and place it in the basket,h8_at72,True,139,14,56,0,False,False
+object__t4_i6,main,Object,,libero_object_object,4,6,40460000,pick up the ketchup and place it in the basket,p3_at72,True,139,14,56,0,False,False
+object__t4_i6,main,Object,,libero_object_object,4,6,40460000,pick up the ketchup and place it in the basket,p3_event,True,138,9,36,0,False,False
+environment__t4_i6,main,Environment,,libero_object_env,4,6,42460000,pick up the ketchup and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t4_i6,main,Environment,,libero_object_env,4,6,42460000,pick up the ketchup and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t4_i6,main,Environment,,libero_object_env,4,6,42460000,pick up the ketchup and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t4_i6,main,Environment,,libero_object_env,4,6,42460000,pick up the ketchup and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t4_i6,main,Environment,,libero_object_env,4,6,42460000,pick up the ketchup and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t5_i6,main,Object,,libero_object_object,5,6,40560000,pick up the tomato sauce and place it in the basket,first_k1,True,126,8,8,0,False,False
+object__t5_i6,main,Object,,libero_object_object,5,6,40560000,pick up the tomato sauce and place it in the basket,max_value_h16,True,126,8,32,0,False,False
+object__t5_i6,main,Object,,libero_object_object,5,6,40560000,pick up the tomato sauce and place it in the basket,h8_at72,True,126,12,48,0,False,False
+object__t5_i6,main,Object,,libero_object_object,5,6,40560000,pick up the tomato sauce and place it in the basket,p3_at72,True,267,27,108,1,False,False
+object__t5_i6,main,Object,,libero_object_object,5,6,40560000,pick up the tomato sauce and place it in the basket,p3_event,True,126,8,32,0,False,False
+environment__t5_i6,main,Environment,,libero_object_env,5,6,42560000,pick up the tomato sauce and place it in the basket,first_k1,True,116,8,8,0,False,False
+environment__t5_i6,main,Environment,,libero_object_env,5,6,42560000,pick up the tomato sauce and place it in the basket,max_value_h16,True,115,8,32,0,False,False
+environment__t5_i6,main,Environment,,libero_object_env,5,6,42560000,pick up the tomato sauce and place it in the basket,h8_at72,True,118,11,44,0,False,False
+environment__t5_i6,main,Environment,,libero_object_env,5,6,42560000,pick up the tomato sauce and place it in the basket,p3_at72,True,118,11,44,0,False,False
+environment__t5_i6,main,Environment,,libero_object_env,5,6,42560000,pick up the tomato sauce and place it in the basket,p3_event,True,115,8,32,0,False,False
+object__t6_i6,main,Object,,libero_object_object,6,6,40660000,pick up the butter and place it in the basket,first_k1,True,149,10,10,0,False,False
+object__t6_i6,main,Object,,libero_object_object,6,6,40660000,pick up the butter and place it in the basket,max_value_h16,True,146,10,40,0,False,False
+object__t6_i6,main,Object,,libero_object_object,6,6,40660000,pick up the butter and place it in the basket,h8_at72,True,144,14,56,0,False,False
+object__t6_i6,main,Object,,libero_object_object,6,6,40660000,pick up the butter and place it in the basket,p3_at72,True,144,14,56,0,False,False
+object__t6_i6,main,Object,,libero_object_object,6,6,40660000,pick up the butter and place it in the basket,p3_event,True,146,10,40,0,False,False
+environment__t6_i6,main,Environment,,libero_object_env,6,6,42660000,pick up the butter and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t6_i6,main,Environment,,libero_object_env,6,6,42660000,pick up the butter and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t6_i6,main,Environment,,libero_object_env,6,6,42660000,pick up the butter and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t6_i6,main,Environment,,libero_object_env,6,6,42660000,pick up the butter and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t6_i6,main,Environment,,libero_object_env,6,6,42660000,pick up the butter and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t7_i6,main,Object,,libero_object_object,7,6,40760000,pick up the milk and place it in the basket,first_k1,True,133,9,9,0,False,False
+object__t7_i6,main,Object,,libero_object_object,7,6,40760000,pick up the milk and place it in the basket,max_value_h16,True,133,9,36,0,False,False
+object__t7_i6,main,Object,,libero_object_object,7,6,40760000,pick up the milk and place it in the basket,h8_at72,True,132,13,52,0,False,False
+object__t7_i6,main,Object,,libero_object_object,7,6,40760000,pick up the milk and place it in the basket,p3_at72,True,132,13,52,0,False,False
+object__t7_i6,main,Object,,libero_object_object,7,6,40760000,pick up the milk and place it in the basket,p3_event,True,133,9,36,0,False,False
+environment__t7_i6,main,Environment,,libero_object_env,7,6,42760000,pick up the milk and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t7_i6,main,Environment,,libero_object_env,7,6,42760000,pick up the milk and place it in the basket,max_value_h16,True,179,12,48,0,False,False
+environment__t7_i6,main,Environment,,libero_object_env,7,6,42760000,pick up the milk and place it in the basket,h8_at72,True,214,23,92,0,False,False
+environment__t7_i6,main,Environment,,libero_object_env,7,6,42760000,pick up the milk and place it in the basket,p3_at72,True,214,23,92,0,False,False
+environment__t7_i6,main,Environment,,libero_object_env,7,6,42760000,pick up the milk and place it in the basket,p3_event,True,179,12,48,0,False,False
+object__t8_i6,main,Object,,libero_object_object,8,6,40860000,pick up the chocolate pudding and place it in the basket,first_k1,True,138,9,9,0,False,False
+object__t8_i6,main,Object,,libero_object_object,8,6,40860000,pick up the chocolate pudding and place it in the basket,max_value_h16,True,139,9,36,0,False,False
+object__t8_i6,main,Object,,libero_object_object,8,6,40860000,pick up the chocolate pudding and place it in the basket,h8_at72,True,139,14,56,0,False,False
+object__t8_i6,main,Object,,libero_object_object,8,6,40860000,pick up the chocolate pudding and place it in the basket,p3_at72,True,139,14,56,0,False,False
+object__t8_i6,main,Object,,libero_object_object,8,6,40860000,pick up the chocolate pudding and place it in the basket,p3_event,True,139,9,36,0,False,False
+environment__t8_i6,main,Environment,,libero_object_env,8,6,42860000,pick up the chocolate pudding and place it in the basket,first_k1,False,280,18,18,0,False,True
+environment__t8_i6,main,Environment,,libero_object_env,8,6,42860000,pick up the chocolate pudding and place it in the basket,max_value_h16,False,280,18,72,0,False,True
+environment__t8_i6,main,Environment,,libero_object_env,8,6,42860000,pick up the chocolate pudding and place it in the basket,h8_at72,False,280,31,124,0,False,False
+environment__t8_i6,main,Environment,,libero_object_env,8,6,42860000,pick up the chocolate pudding and place it in the basket,p3_at72,False,280,31,124,0,False,False
+environment__t8_i6,main,Environment,,libero_object_env,8,6,42860000,pick up the chocolate pudding and place it in the basket,p3_event,False,280,18,72,0,False,True
+object__t9_i6,main,Object,,libero_object_object,9,6,40960000,pick up the orange juice and place it in the basket,first_k1,True,124,8,8,0,False,False
+object__t9_i6,main,Object,,libero_object_object,9,6,40960000,pick up the orange juice and place it in the basket,max_value_h16,True,124,8,32,0,False,False
+object__t9_i6,main,Object,,libero_object_object,9,6,40960000,pick up the orange juice and place it in the basket,h8_at72,True,129,13,52,0,False,False
+object__t9_i6,main,Object,,libero_object_object,9,6,40960000,pick up the orange juice and place it in the basket,p3_at72,True,129,13,52,0,False,False
+object__t9_i6,main,Object,,libero_object_object,9,6,40960000,pick up the orange juice and place it in the basket,p3_event,True,124,8,32,0,False,False
+environment__t9_i6,main,Environment,,libero_object_env,9,6,42960000,pick up the orange juice and place it in the basket,first_k1,False,280,18,18,0,False,False
+environment__t9_i6,main,Environment,,libero_object_env,9,6,42960000,pick up the orange juice and place it in the basket,max_value_h16,False,280,18,72,0,False,False
+environment__t9_i6,main,Environment,,libero_object_env,9,6,42960000,pick up the orange juice and place it in the basket,h8_at72,False,280,31,124,0,False,True
+environment__t9_i6,main,Environment,,libero_object_env,9,6,42960000,pick up the orange juice and place it in the basket,p3_at72,False,280,31,124,0,False,True
+environment__t9_i6,main,Environment,,libero_object_env,9,6,42960000,pick up the orange juice and place it in the basket,p3_event,False,280,18,72,0,False,False

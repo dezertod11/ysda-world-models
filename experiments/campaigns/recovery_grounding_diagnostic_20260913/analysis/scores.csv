@@ -1,0 +1,9 @@
+cohort,arm,n,successes,sr
+replication,rgb_replay,16,10,0.625
+replication,oracle_xy_fixed_gate,16,11,0.6875
+replication,oracle_xyz_fixed_gate,16,10,0.625
+replication,oracle_xyz_physical_gate,16,12,0.75
+transfer,rgb_replay,16,0,0.0
+transfer,oracle_xy_fixed_gate,16,3,0.1875
+transfer,oracle_xyz_fixed_gate,16,2,0.125
+transfer,oracle_xyz_physical_gate,16,2,0.125

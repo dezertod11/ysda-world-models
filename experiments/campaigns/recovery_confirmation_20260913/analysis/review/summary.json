@@ -1,48 +1,48 @@
 {
-  "analysis_complete": false,
-  "inference_withheld": true,
-  "fully_matched_cases": 108,
-  "fully_matched_branches": 432,
-  "committed_main_branches": 441,
-  "remaining_main_branches": 71,
-  "partial_case_outcomes_excluded": 9,
+  "analysis_complete": true,
+  "inference_withheld": false,
+  "fully_matched_cases": 128,
+  "fully_matched_branches": 512,
+  "committed_main_branches": 512,
+  "remaining_main_branches": 0,
+  "partial_case_outcomes_excluded": 0,
   "scores": [
     {
       "cohort": "replication",
       "arm": "baseline_h16",
-      "n": 61,
-      "successes": 16,
-      "sr": 0.26229508196721313,
-      "macro_cell_sr": 0.2611607142857143
+      "n": 64,
+      "successes": 17,
+      "sr": 0.265625,
+      "macro_cell_sr": 0.265625
     },
     {
       "cohort": "replication",
       "arm": "continue_h8",
-      "n": 61,
+      "n": 64,
       "successes": 16,
-      "sr": 0.26229508196721313,
-      "macro_cell_sr": 0.25669642857142855
+      "sr": 0.25,
+      "macro_cell_sr": 0.25
     },
     {
       "cohort": "replication",
       "arm": "physical_regrasp",
-      "n": 61,
-      "successes": 40,
-      "sr": 0.6557377049180327,
-      "macro_cell_sr": 0.6495535714285714
+      "n": 64,
+      "successes": 41,
+      "sr": 0.640625,
+      "macro_cell_sr": 0.640625
     },
     {
       "cohort": "replication",
       "arm": "refresh_preserve_only",
-      "n": 61,
-      "successes": 40,
-      "sr": 0.6557377049180327,
-      "macro_cell_sr": 0.6473214285714286
+      "n": 64,
+      "successes": 41,
+      "sr": 0.640625,
+      "macro_cell_sr": 0.640625
     },
     {
       "cohort": "transfer",
       "arm": "baseline_h16",
-      "n": 47,
+      "n": 64,
       "successes": 0,
       "sr": 0.0,
       "macro_cell_sr": 0.0
@@ -50,7 +50,7 @@
     {
       "cohort": "transfer",
       "arm": "continue_h8",
-      "n": 47,
+      "n": 64,
       "successes": 0,
       "sr": 0.0,
       "macro_cell_sr": 0.0
@@ -58,18 +58,18 @@
     {
       "cohort": "transfer",
       "arm": "physical_regrasp",
-      "n": 47,
+      "n": 64,
       "successes": 1,
-      "sr": 0.02127659574468085,
-      "macro_cell_sr": 0.020833333333333332
+      "sr": 0.015625,
+      "macro_cell_sr": 0.015625
     },
     {
       "cohort": "transfer",
       "arm": "refresh_preserve_only",
-      "n": 47,
+      "n": 64,
       "successes": 1,
-      "sr": 0.02127659574468085,
-      "macro_cell_sr": 0.020833333333333332
+      "sr": 0.015625,
+      "macro_cell_sr": 0.015625
     }
   ],
   "paired_descriptive": [
@@ -77,31 +77,31 @@
       "cohort": "replication",
       "method": "physical_regrasp",
       "control": "continue_h8",
-      "n": 61,
-      "successes_method": 40,
+      "n": 64,
+      "successes_method": 41,
       "successes_control": 16,
-      "rescue": 26,
+      "rescue": 27,
       "harm": 2,
-      "difference_pp": 39.34426229508197
+      "difference_pp": 39.0625
     },
     {
       "cohort": "replication",
       "method": "physical_regrasp",
       "control": "baseline_h16",
-      "n": 61,
-      "successes_method": 40,
-      "successes_control": 16,
+      "n": 64,
+      "successes_method": 41,
+      "successes_control": 17,
       "rescue": 28,
       "harm": 4,
-      "difference_pp": 39.34426229508197
+      "difference_pp": 37.5
     },
     {
       "cohort": "replication",
       "method": "refresh_preserve_only",
       "control": "physical_regrasp",
-      "n": 61,
-      "successes_method": 40,
-      "successes_control": 40,
+      "n": 64,
+      "successes_method": 41,
+      "successes_control": 41,
       "rescue": 1,
       "harm": 1,
       "difference_pp": 0.0
@@ -110,40 +110,40 @@
       "cohort": "replication",
       "method": "continue_h8",
       "control": "baseline_h16",
-      "n": 61,
+      "n": 64,
       "successes_method": 16,
-      "successes_control": 16,
+      "successes_control": 17,
       "rescue": 11,
-      "harm": 11,
-      "difference_pp": 0.0
+      "harm": 12,
+      "difference_pp": -1.5625
     },
     {
       "cohort": "transfer",
       "method": "physical_regrasp",
       "control": "continue_h8",
-      "n": 47,
+      "n": 64,
       "successes_method": 1,
       "successes_control": 0,
       "rescue": 1,
       "harm": 0,
-      "difference_pp": 2.127659574468085
+      "difference_pp": 1.5625
     },
     {
       "cohort": "transfer",
       "method": "physical_regrasp",
       "control": "baseline_h16",
-      "n": 47,
+      "n": 64,
       "successes_method": 1,
       "successes_control": 0,
       "rescue": 1,
       "harm": 0,
-      "difference_pp": 2.127659574468085
+      "difference_pp": 1.5625
     },
     {
       "cohort": "transfer",
       "method": "refresh_preserve_only",
       "control": "physical_regrasp",
-      "n": 47,
+      "n": 64,
       "successes_method": 1,
       "successes_control": 1,
       "rescue": 0,
@@ -154,7 +154,7 @@
       "cohort": "transfer",
       "method": "continue_h8",
       "control": "baseline_h16",
-      "n": 47,
+      "n": 64,
       "successes_method": 0,
       "successes_control": 0,
       "rescue": 0,
@@ -165,88 +165,88 @@
   "gates": [
     {
       "cohort": "replication",
-      "n": 61,
-      "initial_allowed": 40,
-      "full_regrasp": 40,
-      "confidence_pass": 53,
-      "workspace_pass": 47,
-      "miss_distance_pass": 54
+      "n": 64,
+      "initial_allowed": 42,
+      "full_regrasp": 42,
+      "confidence_pass": 55,
+      "workspace_pass": 49,
+      "miss_distance_pass": 57
     },
     {
       "cohort": "transfer",
-      "n": 47,
-      "initial_allowed": 18,
-      "full_regrasp": 15,
-      "confidence_pass": 18,
-      "workspace_pass": 33,
-      "miss_distance_pass": 46
+      "n": 64,
+      "initial_allowed": 24,
+      "full_regrasp": 20,
+      "confidence_pass": 24,
+      "workspace_pass": 44,
+      "miss_distance_pass": 63
     }
   ],
   "offline_pose": [
     {
       "cohort": "replication",
       "subset": "all",
-      "n": 61,
-      "measured": 61,
-      "median_xy_error_m": 0.02532375699900482,
-      "p90_xy_error_m": 0.23203755558492162,
-      "xy_error_over_5cm": 14,
-      "xy_error_over_10cm": 14
+      "n": 64,
+      "measured": 64,
+      "median_xy_error_m": 0.025323756999004812,
+      "p90_xy_error_m": 0.30999446771912,
+      "xy_error_over_5cm": 15,
+      "xy_error_over_10cm": 15
     },
     {
       "cohort": "replication",
       "subset": "initial_allowed",
-      "n": 40,
-      "measured": 40,
+      "n": 42,
+      "measured": 42,
       "median_xy_error_m": 0.011192017681284505,
-      "p90_xy_error_m": 0.03269285920552156,
+      "p90_xy_error_m": 0.032570331142206164,
       "xy_error_over_5cm": 0,
       "xy_error_over_10cm": 0
     },
     {
       "cohort": "replication",
       "subset": "full_regrasp",
-      "n": 40,
-      "measured": 40,
+      "n": 42,
+      "measured": 42,
       "median_xy_error_m": 0.011192017681284505,
-      "p90_xy_error_m": 0.03269285920552156,
+      "p90_xy_error_m": 0.032570331142206164,
       "xy_error_over_5cm": 0,
       "xy_error_over_10cm": 0
     },
     {
       "cohort": "transfer",
       "subset": "all",
-      "n": 47,
-      "measured": 47,
+      "n": 64,
+      "measured": 64,
       "median_xy_error_m": 0.23497516127416468,
-      "p90_xy_error_m": 0.5193323967876982,
-      "xy_error_over_5cm": 46,
-      "xy_error_over_10cm": 33
+      "p90_xy_error_m": 0.5197946940035759,
+      "xy_error_over_5cm": 63,
+      "xy_error_over_10cm": 44
     },
     {
       "cohort": "transfer",
       "subset": "initial_allowed",
-      "n": 18,
-      "measured": 18,
-      "median_xy_error_m": 0.19798819323831499,
-      "p90_xy_error_m": 0.698281424278387,
-      "xy_error_over_5cm": 18,
-      "xy_error_over_10cm": 9
+      "n": 24,
+      "measured": 24,
+      "median_xy_error_m": 0.0955704572069438,
+      "p90_xy_error_m": 1.2170489534100406,
+      "xy_error_over_5cm": 24,
+      "xy_error_over_10cm": 11
     },
     {
       "cohort": "transfer",
       "subset": "full_regrasp",
-      "n": 15,
-      "measured": 15,
-      "median_xy_error_m": 0.3004059292696862,
-      "p90_xy_error_m": 0.30829445584807397,
-      "xy_error_over_5cm": 15,
-      "xy_error_over_10cm": 8
+      "n": 20,
+      "measured": 20,
+      "median_xy_error_m": 0.09557045720694379,
+      "p90_xy_error_m": 0.3071553038711109,
+      "xy_error_over_5cm": 20,
+      "xy_error_over_10cm": 9
     }
   ],
   "source_sha256": {
-    "summary.json": "43036f66aaa2332e6454eb9c0c4c0e95a6694166fefc0f550072896f948223c1",
-    "branch_outcomes.json": "cbacb8e052eaf013ccaaa67aaefd8d737bafb1f1bc5871d7bcb8a34d153eae4e"
+    "summary.json": "96af39c4d5317e8a1d5fac2fba60260d4a5c3e6420c7ac9014f2819e6eac8bcc",
+    "branch_outcomes.json": "4d95bef0e1a8641e69219017e52d1f04dcb8f6b3c92d6ea3528ae71a706d1b46"
   },
   "new_event_controller_results": false,
   "no_gpu_experiments_launched": true

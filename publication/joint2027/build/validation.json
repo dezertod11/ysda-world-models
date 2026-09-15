@@ -1,0 +1,162 @@
+{
+  "evidence": {
+    "snapshot": "2026-09-15",
+    "contributed_rows": 60,
+    "scoped_v2_complete": false,
+    "retreat_v2_complete": false,
+    "scientifically_reviewed": false,
+    "submitted": false,
+    "inputs": [
+      {
+        "path": "experiments/RESULTS2.md",
+        "sha256": "003932f4e55889895ac7bda1ac2b2de75984bc4e9884614314d6800334deae6d"
+      },
+      {
+        "path": "experiments/campaigns/p3c_audit_20260910/comparisons.csv",
+        "sha256": "a0d632e5f65c05f09df13c1b79c3a9477e58c764096fdcd415e2045064e6b9fd"
+      },
+      {
+        "path": "experiments/campaigns/perception_regrasp_transfer_ablation_20260905/analysis/development/cohort_method_summary.csv",
+        "sha256": "bdacdcb0e1e50e5a4eff950336e6ad4c7fe203f591a7839b080fedba69ef15d4"
+      },
+      {
+        "path": "experiments/campaigns/perception_regrasp_transfer_ablation_20260905/analysis/development/paired_cases.csv",
+        "sha256": "55577d0620ad349e9af9d4f36a61c182c66e887612ccdb8ead287d5a11975933"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/analysis/review/cohort_scores.csv",
+        "sha256": "c393bd4686254124d83a03e2177b05ed224428904367fbeffd9ed816773b1f46"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/analysis/main/paired_effects.csv",
+        "sha256": "6dde1563b43f7b7e34c5b2b2ee2bcab9a371d86b212c2c7d0f47ec63e1559c9e"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/analysis/review/cell_scores.csv",
+        "sha256": "ce811a0653f92dd8b52690e028c4c51ac4eea0d40ca314c1c77976920982531f"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/analysis/timing/aggregate_scores.csv",
+        "sha256": "7827dcb1c7803d3793e976e1d41046b7bd9b87f3e82d2ecaad03d20f17ef5650"
+      },
+      {
+        "path": "experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/scores.csv",
+        "sha256": "16713c914841f6ca97d4a1d492147d8a28db32b70626acb2b6748213080f2d65"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/analysis/review/summary.json",
+        "sha256": "6d627ea25061496edcc2f11fccab8a24b3ca015dee5e1b5f7641f75d3e8d3953"
+      },
+      {
+        "path": "experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/geometry.csv",
+        "sha256": "cd3a81c3073b31649ed94f1b9e65f891ca07feadd24f58f5e99cd062c73eef18"
+      },
+      {
+        "path": "experiments/frozen_models/perception_regrasp_20260904/calibration_manifest.csv",
+        "sha256": "8ce6eb5dce46a2c5325d8726f113001ab46e8fee9a59284f3287f313617374bb"
+      },
+      {
+        "path": "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_localizer.npz",
+        "sha256": "2e7851b8a8d084c8e9c29f0a69d1b1efed94cf81f63c9764718fff8692f09333"
+      },
+      {
+        "path": "experiments/frozen_models/perception_regrasp_20260904/perception_regrasp_trigger_v1.json",
+        "sha256": "ac3ca6d33c847eb8fe47e69a5234fbe179f819a37e7320ab9cab168796cef0a9"
+      },
+      {
+        "path": "experiments/campaigns/recovery_confirmation_20260913/config.json",
+        "sha256": "a3c73f4b93ee7249e12536104269aa6ab35d603e5e8e5fdc395426c5f6e5eb15"
+      },
+      {
+        "path": "experiments/P3C_IMPLEMENTATION_AUDIT_20260910.md",
+        "sha256": "b79230c23d0ed8eeecf6a75a4cba4343c27a4ff3670642f1243ff1633cf91c67"
+      },
+      {
+        "path": "experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/factor_scores.csv",
+        "sha256": "9c547169e47ab8309f6692eb10cc8c4200f2e9ae3cd87408d49dc626f25a14cc"
+      },
+      {
+        "path": "experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/summary.json",
+        "sha256": "a56532e5ebcada7d526709025e9b5cda3f771a564e98ef4321894d7bb1de1c68"
+      },
+      {
+        "path": "experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/paired_effects.csv",
+        "sha256": "e7c63bdc73f70e850084c1ca7ff6ebc8db2fc9fd3a0202ee076807d6e4ad2121"
+      },
+      {
+        "path": "experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/config.json",
+        "sha256": "10d8f0530edaaa024e734769d007553659bfe1bd7060e5f3f936805239293446"
+      },
+      {
+        "path": "experiments/runtime_replay_v2/operations/review_20260915/validation.json",
+        "sha256": "46187f69c22c244c75a7d883204436d5af6c0015057e8fd73acd82d17310d99d"
+      },
+      {
+        "path": "experiments/campaigns/object_q4_shared_prefix_replication_20260902/analysis/object_q4_shared_prefix/primary_strict_endpoint.csv",
+        "sha256": "03a8b8b561ab797c0ae5554fd51e07cb8fc29c8e60829733c311ee28a688e01e"
+      },
+      {
+        "path": "experiments/campaigns/decoder_token_medoid_20260911/night_analysis/seed_controls__rates.csv",
+        "sha256": "63286ddd2037835778f1383a962677f03cd128dba7fcb8e4d808f6a65d18c0c0"
+      },
+      {
+        "path": "experiments/campaigns/decoder_token_medoid_20260911/review_20260912/decoder_seed_group_bias.csv",
+        "sha256": "3bd71d762b179e00ecc5b301f3722605aa56b6a6bd19834bfdcee58ebe974ca5"
+      },
+      {
+        "path": "experiments/campaigns/decoder_token_medoid_20260911/night_analysis/horizon8__rates.csv",
+        "sha256": "74425334a2861bdd14a9d1273c99865f5ede220d728eebdca698c80d58a2b135"
+      }
+    ],
+    "source_quality": "Collaborator rows transcribed from supplied aggregate registry; raw audit pending"
+  },
+  "documents": [
+    {
+      "file": "icra2027.pdf",
+      "pages": 6,
+      "sha256": "18a88b85d220354f2599e8929b4c2e7f2128afa5f1ada8f700cf27ac6f7c94b2",
+      "fonts": [
+        "/AKHCZK+CMMI7",
+        "/BMQQDV+DejaVuSans",
+        "/BZIVMZ+NimbusRomNo9L-MediItal",
+        "/CAFSZL+CMR10",
+        "/DDIEWW+CMSY10",
+        "/FKPJSN+MSBM10",
+        "/IHAIZV+NimbusRomNo9L-Regu",
+        "/IXFAWU+NimbusRomNo9L-Medi",
+        "/JAGKKY+CMBX10",
+        "/KPXLOM+CMMI8",
+        "/NOMARO+CMEX10",
+        "/PVTTLK+CMSY7",
+        "/TQTHRL+NimbusRomNo9L-ReguItal",
+        "/UTACNV+CMMI9",
+        "/VDVGTR+CMR7",
+        "/YEUUOC+CMMI10"
+      ]
+    },
+    {
+      "file": "iclr2027.pdf",
+      "pages": 9,
+      "sha256": "3cc321c24670f1f5b08bd7cdf35ddc6e2b5ec9378cdde5d01a89b8c394eed6c4",
+      "fonts": [
+        "/AKHCZK+CMMI7",
+        "/BMQQDV+DejaVuSans",
+        "/BZIVMZ+NimbusRomNo9L-Regu",
+        "/CAFSZL+CMR10",
+        "/DDIEWW+CMSY10",
+        "/FKPJSN+MSBM10",
+        "/IHAIZV+NimbusSanL-Bold",
+        "/IXFAWU+NimbusRomNo9L-Medi",
+        "/JAGKKY+CMBX10",
+        "/KPXLOM+CMMI9",
+        "/NOMARO+CMEX10",
+        "/PVTTLK+CMSY7",
+        "/TQTHRL+NimbusRomNo9L-ReguItal",
+        "/UTACNV+NimbusMonL-Regu",
+        "/VDVGTR+CMR7",
+        "/YEUUOC+CMMI10"
+      ],
+      "main_end_page": 8
+    }
+  ]
+}

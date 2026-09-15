@@ -1,0 +1,215 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{bibliography.bib}
+
+\title{ICRA2027 - WAMPlan}
+\author{Author Author, Author Author}
+\date{September 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Vision--language--action (VLA) policies combine visual and linguistic
+representations with generative motor decoders~\cite{rt1,rt2,octo,openvla}.
+Diffusion and flow-based policies can represent multimodal, temporally coherent
+action chunks~\cite{diffusionpolicy}, while video-conditioned models insert a
+learned future representation before action decoding~\cite{cosmos,mimicvideo}.
+For a fixed observation and instruction, however, repeated stochastic queries
+may produce incompatible chunks. Executing one arbitrary sample makes a closed-
+loop controller sensitive to the random seed even when another sample would have
+been competent.
+
+We study whether this variability can be exploited at inference time, without
+fine-tuning, extra demonstrations, or a learned critic. Our consensus planner
+samples a small candidate set and executes the action-space medoid. Its distance
+is control-aware: it accounts separately for translation, orientation on
+$SO(3)$, gripper mode, and the prefix actually executed before the next query.
+We additionally evaluate a decoder action-token medoid, which selects an existing
+sample in an internal representation rather than synthesising an averaged action.
+Both procedures are deliberately lightweight and model-agnostic.
+
+The central question is empirical: does agreement among sampled actions predict
+correctness under distribution shift? We answer it with episode-level,
+seed-controlled evaluations of MIMIC-Video, GR00T N1.7, and Xiaomi Robotics 0 on
+SIMPLER-Bridge and the official INT-ACT Object-OOD suite, with additional LIBERO,
+LIBERO-Pro, and LIBERO-Plus slices. Comparisons use the same episodes, two-sided
+95\% Wilson intervals, and paired episode tests where rollout sets are shared.
+Across models and benchmarks, consensus is not a reliable proxy for success:
+some configurations improve a local slice, while others are unchanged or worse.
+The contribution is therefore a reproducible characterization of when
+inference-time reranking helps and when it fails, not a claim of a new universal
+planner. We also separate state uncertainty, candidate ranking, feedback value,
+and physical recovery, following the diagnostic questions developed in the
+broader diagnostic study reported in this work.
+
+Our contributions are (1) a training-free, control-aware consensus-medoid
+protocol and an internal decoder-token variant; (2) a controlled cross-model
+evaluation under in-distribution and object/background shifts; and (3) an
+empirical diagnosis of seed instability and of the distinction between
+disagreement, action ranking, feedback, and recovery. The evidence supports a
+conservative conclusion: medoids may yield local gains, but require
+benchmark- and seed-matched validation.
+
+
+\section{Related Work}
+\subsection{Related Work: Ilya}
+
+\paragraph{Generative robot policies and world-action models.}
+RT-1 mapped images, language, and robot state to actions, and RT-2 transferred
+vision--language knowledge to robotic control~\cite{rt1,rt2}. Octo and OpenVLA
+provide generalist VLA interfaces~\cite{octo,openvla}; diffusion policies model
+distributions over action trajectories~\cite{diffusionpolicy}. Cosmos Policy and
+MIMIC-Video use video/world representations before action decoding~\cite{cosmos,mimicvideo};
+GR00T N1.x and Xiaomi Robotics 0 are recent foundation models evaluated here
+~\cite{groot,xiaomi}. These systems motivate selection among stochastic chunks.
+
+\paragraph{Sampling, consensus, and test-time selection.}
+Multi-sample selection is related to self-consistency and best-of-$N$ inference.
+KeyStone is the closest robotics precedent: it uses multi-sample action-space
+medoid selection~\cite{keystone}. Other methods rank candidates with learned
+values or predicted consequences, changing the scoring model or compute budget.
+We hold the pretrained policy fixed, use a small candidate set, and test whether
+a physically meaningful distance over the executable prefix transfers across
+models. The decoder-token variant asks whether internal agreement is more useful
+than agreement after decoding.
+
+\paragraph{Uncertainty, feedback, and recovery.}
+Disagreement can trigger replanning or another observation, but state risk,
+ranking of current candidates, and intervention value are distinct quantities.
+An agreeing policy can still be wrong, and a regrasp can disturb a useful
+contact. Our diagnostic study therefore treats monitoring,
+consequence prediction, observation contracts, and RGB recovery as separate
+axes, related to prior failure-monitoring and recovery work~\cite{sentinel,rewind,save}.
+
+\paragraph{Evaluation under distribution shift.}
+LIBERO benchmarks language-conditioned manipulation and knowledge transfer, while
+SIMPLER provides reproducible simulation counterparts for real-robot policies
+~\cite{libero,simpler}. INT-ACT probes generalization boundaries including
+object-OOD episodes~\cite{intact}; LIBERO-Pro and LIBERO-Plus add held-out
+object, texture, and scene variations~\cite{liberopro,liberoplus}. We keep these
+distributions separate and report each slice independently, so selector quality
+is not confounded with task difficulty or benchmark saturation.
+
+
+\subsection{Related Work: Nikita}
+cur status: draft.
+
+Recent embodied foundation models increasingly integrate perception, action generation, and future-state prediction. World-action models (WAMs) extend conventional visuomotor policies by jointly modeling robot actions and future observations, providing a potential interface for planning and action selection. This formulation raises the question of whether predicted future states reliably characterize the actions generated by the model.
+
+BadWAM investigates the consistency between future imagination and action generation from an adversarial perspective \cite{li2026badwam}. The proposed World-Action Drift Attack perturbs the model input to induce a substantial change in the generated action while preserving the predicted future. Experiments demonstrate that WAMs can exhibit significant action changes despite relatively stable and plausible future predictions, indicating that future prediction alone is insufficient as a measure of action reliability. This line of work reveals a potential decoupling between what a WAM predicts and what it executes, but considers this phenomenon under deliberately constructed adversarial perturbations. Our work addresses the complementary problem of reliable action selection under naturally occurring model errors, where a WAM may produce incorrect or hallucinated predictions with high confidence. We therefore investigate whether predicted futures can be used not only to generate candidate actions, but also to assess their reliability for planning.
+
+Ruan et al. \cite{ruan2026future} study the reliability of WAMs through action-state consistency, measuring the agreement between predicted future states and the states observed after executing the corresponding actions. They show that consistency is correlated with task success and propose using agreement among multiple predicted futures as a value-free signal for test-time action selection. While this approach improves action selection without additional training or reward modeling, its reliability is limited by failure modes such as background collapse, where failed trajectories may produce nearly static and consequently highly consistent predictions. Moreover, the direct consistency measure requires execution of candidate actions, while the proposed consensus-based selection serves only as an internal proxy for the true action-state consistency.
+
+
+\section{Preliminaries}
+
+\section{Consensus Planning}
+\label{sec:method}
+
+Large generative action models can represent multiple plausible continuations
+from the same observation. This stochasticity, however, creates a practical
+decision problem at test time: a single sampled action chunk may be locally
+implausible even when other samples agree on a competent continuation. We
+introduce \emph{consensus planning}, a training-free test-time procedure that
+selects a representative action chunk from a small set of samples. The method
+operates entirely in action space, requires neither additional supervision nor
+access to a value function, and can therefore be applied to a pretrained
+generative policy without modifying its parameters.
+
+\subsection{Action-Chunk Generation}
+
+At control query $q$, the policy receives the current observation history and a
+language instruction, denoted jointly by $x_q$. It produces a horizon-$T$
+action chunk
+\begin{equation}
+    \mathbf{a}^{(i)} = \left(a^{(i)}_1,\ldots,a^{(i)}_T\right),
+    \qquad \mathbf{a}^{(i)} \sim p_\theta(\mathbf{a}\mid x_q; s_i),
+    \label{eq:candidates}
+\end{equation}
+where $s_i$ is the sampling seed and $i\in\{1,\ldots,K\}$ indexes a candidate.
+In our implementation, $K=3$ and the candidate seeds are fixed to $\{0,1,2\}$
+for reproducible test-time selection. This seed controls the stochastic
+generation of an action chunk; it is distinct from the benchmark episode seed,
+which specifies the scene instance.
+
+Each action $a_t$ contains a translational command $p_t\in\mathbb{R}^3$, a
+continuous 6D rotation representation $r_t\in\mathbb{R}^6$, and a scalar
+gripper command $g_t$. Although a chunk contains $T$ proposed actions, the
+controller executes only its first $H$ actions before requesting a new chunk.
+Consequently, consensus is evaluated on this executable prefix rather than on
+long-horizon predictions that will be discarded by closed-loop replanning.
+
+\subsection{Control-Aware Distance Between Chunks}
+
+We compare candidates using a distance aligned with the robot control
+parameterization. Let $R(r)\in SO(3)$ denote the rotation matrix obtained from
+the 6D representation by orthonormalizing its two three-dimensional vectors.
+For two individual actions $a$ and $b$, we define
+\begin{equation}
+\begin{split}
+    d_{\mathrm{act}}(a,b) ={}& \lambda_p\frac{\lVert p_a-p_b\rVert_2}{\sqrt{3}}
+    + \lambda_r\frac{\arccos\!\left(
+        \operatorname{clip}\!\left(
+        \frac{\operatorname{tr}(R(r_a)R(r_b)^\top)-1}{2},-1,1
+        \right)\right)}{\pi} \\
+    &+ \lambda_g\,\mathbf{1}\!\left[\operatorname{sign}(g_a)
+        \neq \operatorname{sign}(g_b)\right],
+    \label{eq:action-distance}
+\end{split}
+\end{equation}
+where the first term measures normalized translational disagreement, the second
+is the normalized geodesic distance on $SO(3)$, and the third penalizes an
+incompatible gripper mode. We use $\lambda_p=1$, $\lambda_r=0.5$, and
+$\lambda_g=0.25$. These terms prevent a high-dimensional Euclidean distance
+from conflating translation, orientation, and discrete gripper decisions.
+
+The distance between two candidate chunks is a temporally discounted average
+over their executable prefixes:
+\begin{equation}
+    D_H\!\left(\mathbf{a}^{(i)},\mathbf{a}^{(j)}\right)
+    =
+    \frac{\sum_{t=1}^{H}\gamma^{t-1}
+    d_{\mathrm{act}}\!\left(a^{(i)}_t,a^{(j)}_t\right)}
+    {\sum_{t=1}^{H}\gamma^{t-1}},
+    \label{eq:chunk-distance}
+\end{equation}
+with $\gamma=0.9$. The discount assigns greater importance to actions that
+will be executed sooner and whose errors cannot be corrected before the next
+query.
+
+\subsection{Medoid Selection and Closed-Loop Execution}
+
+Consensus planning selects the candidate with minimum mean disagreement to the
+remaining candidates:
+\begin{equation}
+    i^* = \arg\min_{i\in\{1,\ldots,K\}}
+    \frac{1}{K-1}\sum_{\substack{j=1 \\ j\neq i}}^K
+    D_H\!\left(\mathbf{a}^{(i)},\mathbf{a}^{(j)}\right).
+    \label{eq:medoid}
+\end{equation}
+This is a medoid rather than an action-space average: the selected chunk is an
+actual sample from the generative policy. The distinction is important for
+robot actions, since averaging two valid but qualitatively different motions can
+produce an invalid intermediate command, especially near gripper transitions or
+rotational discontinuities.
+
+The controller executes the prefix
+$\left(a^{(i^*)}_1,\ldots,a^{(i^*)}_H\right)$, observes the resulting state,
+and repeats Eqs.~\eqref{eq:candidates}--\eqref{eq:medoid}. Thus, consensus is
+not a commitment to a full predicted trajectory: it is a receding-horizon
+selection rule that uses sample agreement as a local reliability signal. When
+the candidates are close, the procedure retains a representative prediction;
+when one candidate is an outlier, its larger average distance makes it unlikely
+to be executed. The method does not assume that agreement proves task success,
+and its empirical utility must therefore be established by the evaluations in
+the subsequent sections.
+
+\printbibliography
+\end{document}

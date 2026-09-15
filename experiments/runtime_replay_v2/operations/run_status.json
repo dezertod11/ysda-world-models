@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-09-15T10:06:12.349523+00:00",
+  "stages": [
+    {
+      "campaign": "p3_benchmark_runtime_v2_20260915_s0",
+      "status": "completed",
+      "stage": "analysis_complete",
+      "pid": 174205,
+      "active": {},
+      "expected_rollouts": 995,
+      "deadline_epoch": 1789473939.0,
+      "started_at": 1789460386.4751735,
+      "updated_at": "2026-09-15T10:04:37.269281+00:00",
+      "matched_cases": 199,
+      "completed_rollouts": 995,
+      "seconds_until_deadline": 7261,
+      "eta_remaining_seconds": 0,
+      "waiting_for_idle_gpu": false
+    }
+  ],
+  "status": "completed",
+  "supervisor_alive": false,
+  "deadline_epoch": 1789473939,
+  "seconds_until_deadline": 7166.650459766388,
+  "matched_main_cases": 199,
+  "expected_main_cases": 199
+}

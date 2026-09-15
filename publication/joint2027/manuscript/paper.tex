@@ -1,0 +1,428 @@
+\begin{abstract}
+Generative robot policies produce multiple plausible action chunks, but
+agreement among predictions need not identify a successful action. We examine
+test-time selection through complementary evaluations of action-space and
+decoder-space medoids on MIMIC-Video, GR00T N1.7, Xiaomi Robotics 0, and Cosmos
+Policy. We preserve the distinct benchmark populations and execution
+contracts rather than pooling their success rates. Three-seed GR00T results
+show mean decoder-medoid gains of 4.51 percentage points on SIMPLER and 3.65
+on INT-ACT, but the corresponding Xiaomi effects are negative. In a matched
+Cosmos transfer study, decoder medoid and joint-value selection each achieve
+112/180 successes, with seven rescues and seven harms. Decoder selection
+strongly favors particular fixed noise seeds, motivating controls that
+separate representation agreement from seed identity. Complementary feedback
+and physical-recovery studies distinguish selecting another prediction from
+obtaining another observation or changing the physical state. Large historical
+recovery gains are local: a corrected-runtime broad comparison finds no
+significant aggregate improvement. These results motivate a controlled
+evaluation of state risk, candidate quality, and intervention benefit as
+different quantities, not a claim of a universally better planner.
+\end{abstract}
+
+\section{Introduction}
+Diffusion and flow-based robot policies generate temporally coherent actions
+by transforming stochastic noise into action chunks \citep{diffusion_policy}.
+World-action models additionally predict future observations, potentially
+providing a way to evaluate an action before execution
+\citep{cosmos_policy,mimic_video}. These interfaces invite test-time scaling:
+sample several continuations and choose a reliable one without changing the
+policy weights. However, similar samples can share the same mistake, an
+accurate failure monitor may not rank available actions, and requesting a
+new observation can change both computational cost and control behavior.
+
+We study these distinctions through two complementary experimental programs.
+The first evaluates action-space and decoder-space medoids across multiple
+generative policies and distribution shifts. The second transfers decoder
+selection to Cosmos and compares changes to candidate selection, feedback
+frequency, and physical recovery. These programs share a scientific question
+and some algorithmic components, but not an interchangeable task population.
+Our comparisons therefore remain within matched model--benchmark contracts.
+
+Self-consistency and representative-sample selection are established ideas
+\citep{self_consistency,keystone,kdpe}. Our contribution is not the invention
+of medoids. Instead, we examine three practical questions:
+\emph{Does agreement improve closed-loop success across seeds and models?}
+\emph{Does a selector exploit state-dependent quality or fixed noise identity?}
+\emph{How does selection differ from feedback and physical correction?}
+We report positive, null, and negative comparisons together with the controls
+needed to interpret them. This separates useful scoped findings from claims
+of broad robustness that the data do not support.
+
+\section{Related Work}
+\paragraph{Generative policies and inference-time selection.}
+Diffusion Policy models action trajectories directly
+\citep{diffusion_policy}; MIMIC-Video and Cosmos connect video representations
+to robot control \citep{mimic_video,cosmos_policy}. GR00T and Xiaomi Robotics 0
+provide additional generative VLA interfaces \citep{groot17,xiaomi0}.
+KeyStone uses shared-context sampling and a guarded cluster-medoid selector
+\citep{keystone}; KDPE uses geometry-aware density estimation
+\citep{kdpe}. Our global medoid, sample counts, action adapters, and seed
+schedules differ from those systems. Accordingly, our results are not a
+reproduction or refutation of their full published protocols. Small
+selector overhead also does not imply negligible multi-sample inference cost.
+
+\paragraph{Prediction reliability and recovery.}
+Ruan et al. connect action-state consistency to success and study future
+consensus, including deceptively consistent low-dynamics failures
+\citep{future_compatible}. BadWAM demonstrates action--imagination
+decoupling under adversarial perturbations \citep{badwam}.
+We examine natural and benchmark-induced failures, rather than adversarial
+attacks. Sentinel separates consistency from task progress
+\citep{sentinel}; Rewind-IL combines failure detection with recovery
+\citep{rewind_il}. These works motivate distinguishing the detection of
+difficulty from the benefit of a particular intervention. Our physical
+recovery consumes actions in the reached state; simulator branching is only
+an experimental measurement tool, not an online ability of the robot.
+
+\paragraph{Evaluation under distribution shift.}
+SIMPLER evaluates manipulation policies in simulation, INT-ACT probes
+generalization boundaries, and LIBERO and its extensions vary manipulation
+conditions \citep{simpler,intact,libero,libero_pro,libero_plus}.
+We keep standard LIBERO, LIBERO-PRO, LIBERO-Plus, SIMPLER, and INT-ACT
+separate. Confidence intervals and repeated-seed comparisons must also
+respect their experimental unit \citep{rliable}; an episode count is not
+the number of independent tasks or trained models.
+
+\section{Problem and Methods}
+\subsection{Candidate generation and execution}
+At query $q$, let $x_q$ denote the available real observations, robot state,
+and instruction. A frozen policy generates candidates
+\begin{equation}
+A_q^{(i)}=G_\theta(x_q,\xi_{q,i}),\quad
+A_q^{(i)}\in\R^{T\times d},\quad i=1,\ldots,K.
+\end{equation}
+The controller selects one candidate and executes its first $H\le T$
+actions. The metric may use a distinct scoring prefix $L\le T$.
+Distinguishing $T$, $L$, and $H$ prevents a change in execution horizon
+from being misattributed to a better selector.
+
+For Cosmos, inputs are external and wrist RGB, nine-dimensional proprioception,
+and a precomputed instruction embedding. Each joint generation predicts a
+$16\times7$ action chunk, future observations/proprioception, and value.
+Our value baseline selects $i_V=\argmax_i V_i$ from these joint samples.
+It is not the original paper's rollout-finetuned autoregressive
+$a\rightarrow s'\rightarrow v$ planning procedure \citep{cosmos_policy}.
+After execution, ordinary queries receive actual images, not imagined ones.
+
+\subsection{Action-space medoid}
+Write an action as translation $u$, orientation $R$, and gripper command $g$.
+After the model-specific action adapter, the control-aware distance is
+\begin{equation}
+\begin{split}
+d(a,b)={}&\frac{\|u_a-u_b\|_2}{\sqrt3}
++\frac{0.5}{\pi}\theta(R_aR_b^\top)\\
+&+0.25\,\ind[\operatorname{sign}(g_a)\ne\operatorname{sign}(g_b)],
+\end{split}
+\end{equation}
+where $\theta(R)=\arccos(\operatorname{clip}((\operatorname{tr}R-1)/2,-1,1))$.
+For a model with 6D rotation output, $R$ is obtained by orthonormalization;
+Cosmos uses native three-dimensional rotation-vector commands instead.
+Translation is measured in the adapter's command units: the $\sqrt3$
+factor alone is not a physical normalization across embodiments.
+The temporally weighted distance and selected index are
+\begin{align}
+D_L(i,j)&=\frac{\sum_{t=1}^{L}0.9^{t-1}d(a_{i,t},a_{j,t})}
+{\sum_{t=1}^{L}0.9^{t-1}},\\
+i_A&=\argmin_i\frac1{K-1}\sum_{j\ne i}D_L(i,j).
+\end{align}
+The chosen chunk is an actual sample, not the average of incompatible motions.
+This is a global medoid, distinct from KeyStone's guarded dominant-cluster
+medoid. In the Cosmos transfer control, $L=5$ while $H=16$; this historical
+setting is explicitly retained rather than described as an executable-prefix
+match that was not used.
+
+\subsection{Decoder-space medoid}
+The decoder variant compares aligned hidden action representations at the
+last captured conditional denoising call. For temporal tokens $z_{i,t}$,
+\begin{align}
+D_Z(i,j)&=\frac{\sum_t w_t[1-\cos(z_{i,t},z_{j,t})]}{\sum_t w_t},\\
+w_t&=4\ \text{for }t\le4,\quad w_t=1\ \text{otherwise},\\
+i_Z&=\argmin_i\frac1{K-1}\sum_{j\ne i}D_Z(i,j).
+\end{align}
+Cosine norms are lower-bounded by $10^{-12}$; exact ties select the first
+index. GR00T excludes its state token and scores the generated action-token
+sequence, although only four actions are executed on SIMPLER. MIMIC extracts
+its action segment with its own decoder adapter. These implementations
+must not be interpreted as identical hidden tensors across architectures.
+
+Cosmos requires a spatial adaptation. Its action latent frame has
+$16\times28\times28$ scalar elements containing 112 copies of a
+$16\times7$ action block. The last DiT hidden grid provides 196 spatial
+tokens of width 2048. A patch is not one action time. Let $C_{pt}$ count
+decoded scalars belonging to time $t$ within patch $p$. We use
+\begin{align}
+\widetilde w_p&=\frac{\sum_t C_{pt}w_t}{\sum_{r,t}C_{rt}w_t},\\
+D_Z(i,j)&=\sum_p\widetilde w_p[1-\cos(z_{i,p},z_{j,p})].
+\end{align}
+Features are captured read-only, without additional denoiser calls.
+The prefix-eight ablation sets weights of times nine through sixteen to zero.
+
+\subsection{Sampling contracts and uncertainty}
+The decoder experiments use $K=3$ and predefined seed groups. The inspected
+GR00T wrapper and Cosmos transfer reuse each candidate's seed on every query,
+so observations change while noise identity is retained. This is a valid
+fixed-noise policy family, not fresh independent noise at every query.
+Our recovery experiments instead use
+$s_{q,i}=s_{\mathrm{rollout}}+1000q+i$ with $K=4$.
+Comparisons across these contracts are not pooled.
+
+Medoid centrality is neither variance nor a calibrated failure probability.
+For stochastic action vectors, a descriptive componentwise spread can be
+written as $U_A=(Hd)^{-1}\sum_{t,k}\operatorname{Std}_i A_{i,t,k}$;
+the first-action version fixes $t=1$. A scalar state-level spread does not
+rank candidates: subtracting the same $\lambda U(x_q)$ from every $V_i$
+leaves the value argmax unchanged. Candidate ranking requires a
+candidate-dependent score. Moreover, disagreement between distinct joint
+action--future samples mixes different plans; it is not repeated uncertainty
+about one fixed action's consequence.
+
+\subsection{Feedback and physical recovery}
+Feedback replaces an unexecuted suffix using a fresh observation. Our
+scheduled physical recovery additionally localizes the target in external RGB
+using a separately trained DeepLabV3--ResNet50 heatmap localizer. The maximum
+heatmap location is projected through calibrated camera geometry and an
+object-conditioned height estimate. The gate checks finite values, heatmap
+score range, workspace/reach, and target--end-effector separation between
+0.08 and 0.50 m. Score range is a heuristic, not calibrated confidence.
+The localizer uses 388 calibration images from 194 groups; consequently,
+the full system is not training-free even though Cosmos remains frozen.
+
+An accepted correction opens and retreats, obtains another localization,
+approaches and descends, closes, and lifts. The stages allow at most
+$3+7+6+4+5=25$ physical actions, all charged to the 280-action episode budget.
+The policy then continues with $H=8$. We compare this to H8 continuation,
+H16 continuation, and sensing/requery controls. Historical assessment times
+56, 72, and 88 are scheduled ablations, not a universal learned failure time.
+
+\section{Experimental Design}
+\subsection{Separate populations, matched comparisons}
+SIMPLER-Bridge contains four tasks with 24 episodes each. The official
+INT-ACT Object-OOD subset contains eight tasks with 24 episodes each; the
+16-task development extension is excluded. For GR00T and Xiaomi, the
+three reported primary seeds are 1, 2, and 3. Candidate groups are
+$(1,999,998)$, $(2,997,996)$, and $(3,995,994)$. MIMIC uses the additional
+groups stated in Table~\ref{tab:other}; they are not interchangeable replicates.
+
+The additional LIBERO experiments include standard Spatial with 100 episodes,
+GR00T's PRO Spatial aggregate with 400 episodes across four OOD slices,
+and a first-100 Background Textures slice of LIBERO-Plus. These are not
+our Cosmos PRO Object-suite benchmark. The latter uses Object, Environment,
+and Position perturbations with 50, 50, and 99 valid cases, respectively.
+The decoder transfer grid instead contains 180 matched cases, 60 per factor,
+and three seed groups; its Position support is restricted to x0.2/y0.2.
+No headline SR is computed by merging these populations.
+
+All Cosmos decoder comparisons generate 16 actions with five denoising
+evaluations per candidate and execute H16 unless labeled H8. A common initial
+state and cached first-query pool are shared between compared methods.
+Later observations and candidate pools naturally diverge after different
+actions. The 1440-rollout decoder program includes 720 main H16 rollouts,
+360 fixed-candidate controls, and 360 H8 controls, not 1440 independent tasks.
+
+\subsection{Outcomes, uncertainty, and audit}
+The primary outcome is the simulator's terminal task-success condition;
+timeouts are failures, whereas technical errors are missing data, not
+negative outcomes. We report counts and within-population SR. Micro-SR
+weights episodes equally; factor-macro SR weights perturbation factors equally.
+For paired outcomes,
+\begin{equation}
+\Delta\mathrm{SR}_{\mathrm{micro}}=
+\frac{N_{\mathrm{rescue}}-N_{\mathrm{harm}}}{N}.
+\end{equation}
+Cross-model seed means are descriptive. Wilson intervals for individual
+binomial proportions do not replace a paired interval for a method's effect.
+Exact McNemar tests are reported where paired outcomes were available;
+repeated observations of shared task/init groups require clustered analysis.
+Cosmos decoder intervals resample tasks within factors while retaining seed
+repeats. Broad recovery uses stratified task/init clusters, 5000 bootstrap
+replicates, 20000 sign flips, and Holm correction for four planned contrasts.
+An interval containing zero does not establish equivalence.
+
+An audit identified missing solver warmstart and sensor-cache state in an
+earlier simulator snapshot implementation. Snapshot v2 stores complete MuJoCo
+integration state and observable caches. The broad v2 experiment includes
+995 completed rollouts and explicit no-intervention replay checks. Historical
+scoped and shared-prefix studies are labeled separately; a broad v2 audit
+does not retroactively validate those measurements.
+\ScopedRuntimeStatus
+
+\section{Results}
+\subsection{Consensus gains depend on model and seed}
+Table~\ref{tab:cross} reports all three matched seed groups for the two
+models with complete three-seed SIMPLER and INT-ACT comparisons. Decoder
+medoid improves GR00T's mean SR by 4.51 and 3.65 points, respectively.
+However, SIMPLER's seed-specific effects are $+17.71$, $-5.21$, and $+1.04$
+points. The first group's 49/96 to 66/96 improvement has reported paired
+$p=0.0076$, but is not a stable per-seed improvement. INT-ACT's effects
+are more consistent in sign ($+5.73$, $0$, $+5.21$ points), without an
+established aggregate significance claim from the available summaries.
+
+\begin{table*}[t]
+\centering\small
+\caption{Complete three-seed comparisons. Entries are success counts for
+primary seeds 1/2/3; $n$ is episodes per seed. The last columns are arithmetic
+mean SR across those seeds, not a pooled confidence interval.}
+\label{tab:cross}
+\input{tables/cross_seed}
+\end{table*}
+
+Xiaomi shows no corresponding decoder improvement: its mean effects are
+$-0.69$ points on SIMPLER and $-1.74$ on INT-ACT. Action medoid is also
+heterogeneous, including a reported significant degradation for Xiaomi's
+SIMPLER seed 1 ($p=0.0169$). These observations caution against selecting
+the most favorable seed as a method's representative result.
+
+\begin{figure}[t]
+\centering\includegraphics[width=\linewidth]{seed_effects.pdf}
+\caption{Decoder-medoid minus matched K1 success rate for every available
+seed in the complete three-seed groups. Dots are descriptive effects, not
+confidence intervals. The direction of benefit is not model-invariant.}
+\label{fig:seeds}
+\end{figure}
+
+Table~\ref{tab:other} summarizes the remaining slices. MIMIC's INT-ACT
+baseline varies from 73/192 to 9/192 across seeds 0--2, making sampler and
+seed-matched controls essential. GR00T's PRO decoder gain of 7/400 on seed 1
+is accompanied by a loss of 3/400 on seed 2; the reported paired $p$ values
+are 0.0654 and 0.664. The Plus slice is saturated at 100/100 for every arm;
+this is neither a measured gain nor evidence about the complete benchmark.
+
+\begin{table*}[t]
+\centering\small
+\caption{Additional slices, kept separate. Counts separated by slashes in
+multi-seed rows are listed in the seed order specified. A dash is an absent
+matched result, not zero success. Different candidate groups are noted.}
+\label{tab:other}
+\ifdefined\ICLRLayout
+\resizebox{\textwidth}{!}{\input{tables/other_results}}
+\else
+\input{tables/other_results}
+\fi
+\end{table*}
+
+\subsection{Decoder agreement does not improve Cosmos ranking}
+In the matched H16 Cosmos grid, first-candidate selection achieves 105/180,
+action medoid 110/180, and both decoder medoid and max-value 112/180.
+Decoder versus value yields seven rescues and seven harms, with task-cluster
+95\% interval $[-3.33,3.33]$ points. Fixed second and third candidates achieve
+110/180 and 109/180. The results do not establish extra utility from
+hidden-space selection over these seed controls.
+
+The hidden selector nevertheless makes structured choices. For the three
+seed groups, a different favored seed is selected in 84.46\%, 83.25\%, and
+81.18\% of queries. Equal weighting of episodes preserves the pattern
+(85.90\%, 84.99\%, 82.70\%), so it is not explained solely by longer failed
+episodes contributing more queries. This supports a hypothesis that hidden
+centrality partly reflects fixed noise identity. It does not prove that noise
+fully causes the observed performance or that every hidden selector behaves
+this way. Pooling candidate indices across groups would hide the preference.
+
+\subsection{More feedback is not an unconditional improvement}
+On the matched 120-case H8 subset, max-value H16 achieves macro-SR 65.00\%
+versus 59.44\% for H8. The difference interval includes zero. Full decoder
+H8 achieves 57.78\%; prefix-eight decoder reaches 59.44\%, matching its
+H8 value control rather than surpassing it. H8 roughly doubles logical
+candidate evaluations, with factor-wise ratios of 1.93--2.07. These are
+logical counts, not clean wall-clock latency measurements on the shared server.
+
+A separate historical shared-prefix study on one Object task records
+46/100 to 64/100 successes after a fresh-observation suffix replacement,
+with 31 rescues, 13 harms, and init-cluster interval $[4,32]$ points.
+It uses 50 initial states and two repeats per state. This local finding
+and the broader H8 comparison concern different supports and are not
+contradictory. The historical replay contract requires a separate v2 audit.
+
+\subsection{Physical correction: strong scope, limited transfer}
+On eight development-selected, calibration-familiar Position cells,
+historical recovery comparisons record 13/40 to 24/40, 6/40 to 25/40,
+and 16/64 to 41/64 successes relative to H8 continuation. The last effect
+is $+39.06$ points, with 27 rescues, two harms, and recorded init-cluster
+interval $[29.69,48.44]$. A matched retreat/requery control achieves 8/40
+versus full recovery's 25/40. This supports a physical-correction mechanism
+within that population, subject to the scoped runtime check; it is not a
+latency-matched decomposition of every maneuver stage.
+
+The transfer boundary is substantial: calibration-unseen x0.3 cells achieve
+0/64 for continuation and 1/64 for recovery. In the corrected broad benchmark
+(Table~\ref{tab:broad}), scheduled recovery gains only 0.68 macro points
+over H16, with interval $[-3.00,4.36]$, nine rescues, and six harms.
+Its mean query count is 23.00 versus 13.86 for H16. The event-triggered arm
+performs no interventions in 199 cases; its equal SR is a coverage failure
+of the tested trigger, not evidence for effective adaptive recovery.
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{Corrected-runtime broad Cosmos comparison. Object/Environment/
+Position have 50/50/99 cases. Macro-SR is the equal-factor average, not
+successes divided by 199.}
+\label{tab:broad}
+\input{tables/broad}
+\end{table}
+
+\ScopedRuntimeResults
+\ScopedAblationResults
+
+\section{Discussion: What Should a Reliability Score Predict?}
+For a fixed state $s$, candidate pool, horizon, and continuation policy,
+define $Q(s,A_i)$ as the success probability after executing candidate $i$
+and following that continuation. The selector's shortfall decomposes as
+\begin{equation}
+\begin{split}
+1-Q(s,A_{\hat i})={}&[1-\max_i Q(s,A_i)]\\
+&+[\max_i Q(s,A_i)-Q(s,A_{\hat i})].
+\end{split}
+\end{equation}
+This identity separates limitations of the given pool/continuation from
+loss due to selecting its wrong member. It is not a new theorem or an
+already estimated oracle bound in every study. Reliable estimation requires
+repeated suffix outcomes and held-out evaluation of a chosen candidate;
+selecting and evaluating an oracle on the same outcomes is optimistic.
+
+Three distinct targets follow: state risk $P(Y=0\mid s,\pi)$, candidate
+quality $Q(s,A_i)$, and recovery advantage
+\begin{equation}
+\Delta_R(s)=E[Y\mid\operatorname{do}(R),s]
+-E[Y\mid\operatorname{do}(C),s].
+\end{equation}
+A high failure-detection AUROC does not establish within-pool ranking
+or positive recovery advantage. Our geometric gate does not estimate
+$\Delta_R$. Similarly, prediction error against an actual future observation
+is only available after execution and cannot be used as a pre-execution
+score for that same chunk. Predicted T16 futures must not be compared to
+H8 observations without temporal alignment.
+
+The present evidence favors targeted controlled tests over additional
+coefficient searches on already inspected failures. Hidden-seed preference
+should be tested with fixed-candidate and fresh-noise controls; candidate
+quality should be measured within a common state/pool; recovery should be
+evaluated against its observation and action-budget controls. The positive
+findings in different cohorts do not yet prove that physical recovery
+rescues precisely the states in which consensus is uninformative.
+
+\section{Limitations and Conclusion}
+The study combines complementary but heterogeneous model--benchmark
+experiments. Several cross-model results are supported by aggregate records
+rather than a common reprocessed episode-level archive. Three seed groups
+provide limited evidence about sampler generalization; some positive effects
+were identified during development. The P3 scope is calibration-dependent,
+its historical timing is scheduled, and its strongest historical measurements
+require corrected-runtime confirmation. We do not claim SOTA, universal
+consensus failure, a new backbone, or deployment on physical hardware.
+
+Within these limits, the central finding is useful for designing inference-time
+methods: agreement, candidate quality, feedback value, and physical recovery
+are not interchangeable. Cross-model seed controls and matched interventions
+make their distinction observable. Reported local gains motivate further
+work, but neither a favorable seed nor an accurate monitor alone establishes
+a better closed-loop controller.
+
+\section*{Reproducibility and AI Use}
+Tables and figures are generated from versioned aggregate or episode-level
+artifacts, with explicit support, seed groups, and runtime versions.
+The source package records evidence provenance and technical checks;
+it is not itself a release of all model weights or raw simulator artifacts.
+OpenAI ChatGPT/Codex assisted with literature synthesis, experimental tooling,
+analysis code, and drafting across the manuscript. Human authors are
+responsible for checking the scientific claims, references, and submitted
+artifacts. No generative model is listed as an author.
+\label{sec:main_end}

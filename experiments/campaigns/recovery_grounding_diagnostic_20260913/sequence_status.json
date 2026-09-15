@@ -1,38 +1,19 @@
 {
-  "status": "running",
+  "status": "failed",
   "pid": 3546594,
-  "active": {
-    "6": {
-      "pid": 3556844,
-      "jobs": [
-        "x0.2_t5_i25",
-        "x0.2_t6_i25",
-        "x0.2_t9_i25",
-        "x0.2_t5_i26"
-      ],
-      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_grounding_diagnostic_20260913/batches/oracle_1789292083951772408_gpu6.log"
-    },
-    "0": {
-      "pid": 3556847,
-      "jobs": [
-        "y0.2_t4_i25",
-        "y0.2_t6_i25",
-        "y0.2_t9_i25",
-        "y0.2_t4_i26"
-      ],
-      "log": "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_grounding_diagnostic_20260913/batches/oracle_1789292083961787895_gpu0.log"
-    }
-  },
+  "active": {},
   "completed": {
     "geometry": 32,
     "smoke": 2,
-    "oracle": 0
+    "oracle": 32,
+    "shadow": 0
   },
   "started_at": "2026-09-13T09:26:59.777772+00:00",
   "deadline_epoch": 1789323160.2128422,
-  "stage": "oracle",
-  "planned_cases": 32,
-  "waiting_for_idle_gpu": false,
-  "updated_at": "2026-09-13T09:36:53.370809+00:00",
-  "seconds_until_deadline": 30946
+  "stage": "shadow",
+  "planned_cases": 2,
+  "waiting_for_idle_gpu": true,
+  "updated_at": "2026-09-13T12:20:14.589058+00:00",
+  "seconds_until_deadline": 21145,
+  "error": "RuntimeError('Worker exit 1: /home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/recovery_grounding_diagnostic_20260913/batches/shadow_1789301990506536761_gpu6.log')"
 }

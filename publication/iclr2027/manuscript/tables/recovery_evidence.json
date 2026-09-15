@@ -1,0 +1,159 @@
+{
+  "primary": [
+    {
+      "label": "New init (P3c)",
+      "n": 40,
+      "baseline": 13,
+      "method": 24,
+      "rescue": 12,
+      "harm": 1,
+      "delta_pp": 27.5,
+      "low_pp": 12.5,
+      "high_pp": 42.5
+    },
+    {
+      "label": "Replication (P3d)",
+      "n": 40,
+      "baseline": 6,
+      "method": 25,
+      "rescue": 20,
+      "harm": 1,
+      "delta_pp": 47.5,
+      "low_pp": 30.0,
+      "high_pp": 65.0
+    },
+    {
+      "label": "Confirmation",
+      "n": 64,
+      "baseline": 16,
+      "method": 41,
+      "rescue": 27,
+      "harm": 2,
+      "delta_pp": 39.0625,
+      "low_pp": 29.6875,
+      "high_pp": 48.4375
+    }
+  ],
+  "full_vs_retreat": {
+    "replication": {
+      "full_only": 17,
+      "retreat_only": 0
+    },
+    "all": {
+      "full_only": 23,
+      "retreat_only": 3
+    }
+  },
+  "cells": [
+    "x0.2_t5",
+    "x0.2_t6",
+    "x0.2_t9",
+    "y0.2_t4",
+    "y0.2_t6",
+    "y0.2_t9",
+    "y0.3_t1",
+    "y0.3_t5"
+  ],
+  "supporting_feedback": {
+    "n": 100,
+    "init_clusters": 50,
+    "control": 46,
+    "feedback": 64,
+    "rescues": 31,
+    "harms": 13,
+    "historical_replay_pass": true,
+    "corrected_runtime_audit_complete": false
+  },
+  "descriptive_cell_contrasts": [
+    {
+      "cell": "x0.2_t5",
+      "n": 8,
+      "h16": 1,
+      "h8": 6,
+      "recovery": 8,
+      "net_vs_h8": 2,
+      "net_vs_h16": 7
+    },
+    {
+      "cell": "x0.2_t6",
+      "n": 8,
+      "h16": 6,
+      "h8": 4,
+      "recovery": 5,
+      "net_vs_h8": 1,
+      "net_vs_h16": -1
+    },
+    {
+      "cell": "x0.2_t9",
+      "n": 8,
+      "h16": 1,
+      "h8": 2,
+      "recovery": 1,
+      "net_vs_h8": -1,
+      "net_vs_h16": 0
+    },
+    {
+      "cell": "y0.2_t4",
+      "n": 8,
+      "h16": 0,
+      "h8": 0,
+      "recovery": 0,
+      "net_vs_h8": 0,
+      "net_vs_h16": 0
+    },
+    {
+      "cell": "y0.2_t6",
+      "n": 8,
+      "h16": 0,
+      "h8": 3,
+      "recovery": 8,
+      "net_vs_h8": 5,
+      "net_vs_h16": 8
+    },
+    {
+      "cell": "y0.2_t9",
+      "n": 8,
+      "h16": 4,
+      "h8": 0,
+      "recovery": 7,
+      "net_vs_h8": 7,
+      "net_vs_h16": 3
+    },
+    {
+      "cell": "y0.3_t1",
+      "n": 8,
+      "h16": 4,
+      "h8": 0,
+      "recovery": 8,
+      "net_vs_h8": 8,
+      "net_vs_h16": 4
+    },
+    {
+      "cell": "y0.3_t5",
+      "n": 8,
+      "h16": 1,
+      "h8": 1,
+      "recovery": 4,
+      "net_vs_h8": 3,
+      "net_vs_h16": 3
+    }
+  ],
+  "support_selected_on_evaluation_outcomes": false,
+  "narrative_selected_after_broader_exploration": true,
+  "uncalibrated_transfer": {
+    "n": 64,
+    "control": 0,
+    "recovery": 1
+  },
+  "broader_p3_benchmark_included": true,
+  "broader_p3_cases": 199,
+  "broader_p3_seed_replication_complete": false,
+  "broader_runtime_version": 2,
+  "scoped_runtime_v2_replication_complete": false,
+  "submission_ready": false,
+  "readiness_blockers": [
+    "Scoped recovery requires corrected-runtime replication",
+    "Human scientific and citation review",
+    "Anonymous executable artifact release"
+  ]
+}

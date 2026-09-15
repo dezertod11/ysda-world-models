@@ -1,0 +1,16 @@
+seed_group,arm,factor,sum,size,mean
+0,first_k1,Environment,20,50,0.4
+0,first_k1,Object,48,50,0.96
+0,first_k1,Position,29,99,0.29292929292929293
+0,h8_at72,Environment,21,50,0.42
+0,h8_at72,Object,48,50,0.96
+0,h8_at72,Position,26,99,0.26262626262626265
+0,max_value_h16,Environment,20,50,0.4
+0,max_value_h16,Object,47,50,0.94
+0,max_value_h16,Position,26,99,0.26262626262626265
+0,p3_at72,Environment,21,50,0.42
+0,p3_at72,Object,45,50,0.9
+0,p3_at72,Position,30,99,0.30303030303030304
+0,p3_event,Environment,20,50,0.4
+0,p3_event,Object,47,50,0.94
+0,p3_event,Position,26,99,0.26262626262626265

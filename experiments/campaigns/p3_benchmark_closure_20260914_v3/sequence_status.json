@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "stage": "analysis_complete",
+  "pid": 85152,
+  "active": {},
+  "expected_rollouts": 995,
+  "deadline_epoch": 1789450200.0,
+  "started_at": 1789381046.4893472,
+  "updated_at": "2026-09-14T23:18:34.335415+00:00",
+  "matched_cases": 199,
+  "completed_rollouts": 995,
+  "seconds_until_deadline": 22285,
+  "eta_remaining_seconds": 0,
+  "waiting_for_idle_gpu": false
+}

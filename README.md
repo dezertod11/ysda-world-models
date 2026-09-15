@@ -1,5 +1,13 @@
 # YSDA World Models: Uncertainty-Aware Planning
 
+**Joint paper, 15 September 2026:**
+[ICRA manuscript (PDF)](publication/joint2027/build/icra2027.pdf),
+[portable LaTeX sources](publication/joint2027/build/joint_paper_sources.zip),
+[paper workspace and build instructions](publication/joint2027/README.md).
+The joint article separates cross-model consensus results from Cosmos feedback
+and recovery studies. [Scoped runtime-v2 replication protocol](experiments/publication_finish_20260915/PROTOCOL.md)
+documents the new overnight experiments; pending runs are not completed evidence.
+
 **September 13 follow-up launched:**
 [Frozen recovery resume and grounding diagnostic protocol](experiments/RECOVERY_GROUNDING_DIAGNOSTIC_PROTOCOL_20260913.md).
 Finish missing main/timing outcomes; separately audit32prefixes,128matched

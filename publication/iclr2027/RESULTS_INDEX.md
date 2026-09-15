@@ -18,7 +18,7 @@ Regenerate from the project root:
 /home/alexander/venvs/cosmos_policy_libero/bin/python publication/iclr2027/tools/index_results.py
 ```
 
-Local source files: **503**.
+Local source files: **554**.
 
 ## early_exploration (13)
 
@@ -62,7 +62,7 @@ Local source files: **503**.
 | [experiments/campaigns/decoder_token_medoid_20260911/reference/eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/encoder_latent_medoid_robust/summary.json](../../experiments/campaigns/decoder_token_medoid_20260911/reference/eval_outputs/simpler_bridge/latent_medoid_four_selectors_fixedseeds_2_996_997_20260907_200056/encoder_latent_medoid_robust/summary.json) | summary |
 | [experiments/campaigns/decoder_token_medoid_20260911/reference/eval_outputs/simpler_bridge/rank_fusion_action_hidden_k3_full96_20260902_133327/summary.json](../../experiments/campaigns/decoder_token_medoid_20260911/reference/eval_outputs/simpler_bridge/rank_fusion_action_hidden_k3_full96_20260902_133327/summary.json) | summary |
 
-## machine_summary (185)
+## machine_summary (198)
 
 | Source | Title |
 |---|---|
@@ -140,6 +140,9 @@ Local source files: **503**.
 | [experiments/campaigns/observation_contract_20260911/analysis/smoke/summary.json](../../experiments/campaigns/observation_contract_20260911/analysis/smoke/summary.json) | summary |
 | [experiments/campaigns/observation_contract_20260911/prior_audit/summary.json](../../experiments/campaigns/observation_contract_20260911/prior_audit/summary.json) | summary |
 | [experiments/campaigns/observation_contract_20260911/review_20260912/summary.json](../../experiments/campaigns/observation_contract_20260911/review_20260912/summary.json) | summary |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/summary.json](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/summary.json) | summary |
+| [experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/summary.json](../../experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/summary.json) | summary |
+| [experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/summary.json](../../experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/summary.json) | summary |
 | [experiments/campaigns/p3c_audit_20260910/summary.json](../../experiments/campaigns/p3c_audit_20260910/summary.json) | summary |
 | [experiments/campaigns/p4_residual_dynamics_20260906/analysis/summary.json](../../experiments/campaigns/p4_residual_dynamics_20260906/analysis/summary.json) | summary |
 | [experiments/campaigns/p4b_residual_risk_20260907/development/summary.json](../../experiments/campaigns/p4b_residual_risk_20260907/development/summary.json) | summary |
@@ -192,6 +195,13 @@ Local source files: **503**.
 | [experiments/campaigns/proposal_opportunity_k16_20260830/analysis/terminal_opportunity_atlas/summary.json](../../experiments/campaigns/proposal_opportunity_k16_20260830/analysis/terminal_opportunity_atlas/summary.json) | summary |
 | [experiments/campaigns/proposal_opportunity_k16_20260830/analysis/value_ranking/summary.json](../../experiments/campaigns/proposal_opportunity_k16_20260830/analysis/value_ranking/summary.json) | summary |
 | [experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/summary.json](../../experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/review/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/review/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/main/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/main/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/review/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/review/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/summary.json) | summary |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/timing/summary.json](../../experiments/campaigns/recovery_confirmation_20260913/analysis/timing/summary.json) | summary |
+| [experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/summary.json](../../experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/summary.json) | summary |
 | [experiments/campaigns/recovery_outcome_router_holdout_20260906/analysis/holdout/summary.json](../../experiments/campaigns/recovery_outcome_router_holdout_20260906/analysis/holdout/summary.json) | summary |
 | [experiments/campaigns/recovery_proposal_opportunity_20260904/analysis/oracle_summary.json](../../experiments/campaigns/recovery_proposal_opportunity_20260904/analysis/oracle_summary.json) | oracle_summary |
 | [experiments/campaigns/replication_safety_analysis_20260813/summary.json](../../experiments/campaigns/replication_safety_analysis_20260813/summary.json) | summary |
@@ -218,6 +228,9 @@ Local source files: **503**.
 | [experiments/frozen_models/perception_regrasp_20260904/heatmap_fold_2_summary.json](../../experiments/frozen_models/perception_regrasp_20260904/heatmap_fold_2_summary.json) | heatmap_fold_2_summary |
 | [experiments/frozen_models/perception_regrasp_20260904/heatmap_localization_summary.json](../../experiments/frozen_models/perception_regrasp_20260904/heatmap_localization_summary.json) | heatmap_localization_summary |
 | [experiments/frozen_models/recovery_outcome_router_20260906/summary.json](../../experiments/frozen_models/recovery_outcome_router_20260906/summary.json) | summary |
+| [experiments/runtime_replay_v2/local_diagnostic/summary.json](../../experiments/runtime_replay_v2/local_diagnostic/summary.json) | summary |
+| [experiments/runtime_replay_v2/local_warmstart_ablation/summary.json](../../experiments/runtime_replay_v2/local_warmstart_ablation/summary.json) | summary |
+| [experiments/runtime_replay_v2/server_diagnostic/summary.json](../../experiments/runtime_replay_v2/server_diagnostic/summary.json) | summary |
 | [experiments/uncertainty/codex_ood_mini__analysis/summary.json](../../experiments/uncertainty/codex_ood_mini__analysis/summary.json) | summary |
 | [experiments/uncertainty/codex_ood_task0_ep3__analysis/summary.json](../../experiments/uncertainty/codex_ood_task0_ep3__analysis/summary.json) | summary |
 | [experiments/uncertainty/controlled_fail_gripper_open_q3_smoke_20260518__analysis/summary.json](../../experiments/uncertainty/controlled_fail_gripper_open_q3_smoke_20260518__analysis/summary.json) | summary |
@@ -252,7 +265,7 @@ Local source files: **503**.
 | [experiments/uncertainty/planning_video4_milk_task5_init0_fast12_20260529__libero_spatial_with_milk__task5__init0__uncertainty_penalty_combined__l2p0__analysis/summary.json](../../experiments/uncertainty/planning_video4_milk_task5_init0_fast12_20260529__libero_spatial_with_milk__task5__init0__uncertainty_penalty_combined__l2p0__analysis/summary.json) | summary |
 | [experiments/uncertainty/planning_video4_milk_task5_init0_fast12_20260529__libero_spatial_with_milk__task5__init0__uncertainty_penalty_value__l2p0__analysis/summary.json](../../experiments/uncertainty/planning_video4_milk_task5_init0_fast12_20260529__libero_spatial_with_milk__task5__init0__uncertainty_penalty_value__l2p0__analysis/summary.json) | summary |
 
-## protocol_or_navigation (76)
+## protocol_or_navigation (82)
 
 | Source | Title |
 |---|---|
@@ -266,6 +279,8 @@ Local source files: **503**.
 | [experiments/COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md](../../experiments/COUNTERFACTUAL_FEEDBACK_PROTOCOL_20260826.md) | Counterfactual feedback and grounded candidate protocol |
 | [experiments/DECODER_MEDOID_NIGHT_20260912.md](../../experiments/DECODER_MEDOID_NIGHT_20260912.md) | Ночная проверка decoder medoid: до 10:00 MSK 12 сентября |
 | [experiments/DECODER_TOKEN_MEDOID_PROTOCOL_20260911.md](../../experiments/DECODER_TOKEN_MEDOID_PROTOCOL_20260911.md) | Decoder action-token medoid: перенос GR00T/MIMIC на Cosmos Policy |
+| [experiments/EVENT_FEEDBACK_MIGRATION_20260913.md](../../experiments/EVENT_FEEDBACK_MIGRATION_20260913.md) | Событийные версии вместо обязательного t=72 |
+| [experiments/EXPERIMENT_REVIEW_20260914_EVENING.md](../../experiments/EXPERIMENT_REVIEW_20260914_EVENING.md) | Результаты и проверка доступности: вечер 14 сентября 2026 |
 | [experiments/FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md](../../experiments/FACTORIAL_SELECTION_HORIZON_PROTOCOL_20260820.md) | Candidate selection x feedback horizon |
 | [experiments/FACTOR_ROUTED_REQUERY_TRANSFER_PROTOCOL_20260830.md](../../experiments/FACTOR_ROUTED_REQUERY_TRANSFER_PROTOCOL_20260830.md) | Factor-routed re-query transfer: confirmatory protocol |
 | [experiments/FEEDBACK_CONTROLS_PROTOCOL_20260910.md](../../experiments/FEEDBACK_CONTROLS_PROTOCOL_20260910.md) | Matched-K feedback и continuity: замороженный механизм-screen |
@@ -295,6 +310,8 @@ Local source files: **503**.
 | [experiments/P3C_IMPLEMENTATION_AUDIT_20260910.md](../../experiments/P3C_IMPLEMENTATION_AUDIT_20260910.md) | P3c/P3d: проверка реализации и причин ухудшения |
 | [experiments/P3E_RECOVERY_OUTCOME_ROUTER_PROTOCOL_20260906.md](../../experiments/P3E_RECOVERY_OUTCOME_ROUTER_PROTOCOL_20260906.md) | P3e: frozen Recovery Outcome Ensemble holdout |
 | [experiments/P3E_RECOVERY_OUTCOME_ROUTER_RUN_20260906.md](../../experiments/P3E_RECOVERY_OUTCOME_ROUTER_RUN_20260906.md) | P3e Recovery Outcome Ensemble: run record |
+| [experiments/P3_BENCHMARK_CLOSURE_PROTOCOL_20260914.md](../../experiments/P3_BENCHMARK_CLOSURE_PROTOCOL_20260914.md) | One-day closure: P3 on common LIBERO-PRO support |
+| [experiments/P3_NIGHT_REPLICATION_PROTOCOL_20260915.md](../../experiments/P3_NIGHT_REPLICATION_PROTOCOL_20260915.md) | P3: досчёт и репликации до 09:00 МСК |
 | [experiments/P4B_RESIDUAL_RISK_PROTOCOL_20260907.md](../../experiments/P4B_RESIDUAL_RISK_PROTOCOL_20260907.md) | P4b: calibrated residual-risk candidate selection |
 | [experiments/P4B_RESIDUAL_RISK_RUN_20260907.md](../../experiments/P4B_RESIDUAL_RISK_RUN_20260907.md) | P4b residual-risk run card |
 | [experiments/P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md](../../experiments/P4_RESIDUAL_DYNAMICS_PROTOCOL_20260906.md) | P4: independent residual-dynamics ensemble and conformal OOD routing |
@@ -310,9 +327,11 @@ Local source files: **503**.
 | [experiments/PROPOSAL_OPPORTUNITY_K16_PROTOCOL_20260830.md](../../experiments/PROPOSAL_OPPORTUNITY_K16_PROTOCOL_20260830.md) | K16 proposal-opportunity screen |
 | [experiments/README.md](../../experiments/README.md) | Эксперименты |
 | [experiments/REAL_OBSERVATION_REQUERY_PROTOCOL_20260830.md](../../experiments/REAL_OBSERVATION_REQUERY_PROTOCOL_20260830.md) | Real-observation re-query: confirmatory protocol |
+| [experiments/RECOVERY_GROUNDING_DIAGNOSTIC_PROTOCOL_20260913.md](../../experiments/RECOVERY_GROUNDING_DIAGNOSTIC_PROTOCOL_20260913.md) | Recovery: продолжение серии и диагностика зрительного наведения |
 | [experiments/RECOVERY_PROPOSAL_OPPORTUNITY_PROTOCOL_20260904.md](../../experiments/RECOVERY_PROPOSAL_OPPORTUNITY_PROTOCOL_20260904.md) | P3 recovery-proposal opportunity screen (frozen 2026-09-04) |
 | [experiments/RECOVERY_PROPOSAL_OPPORTUNITY_RUN_20260904.md](../../experiments/RECOVERY_PROPOSAL_OPPORTUNITY_RUN_20260904.md) | P3 recovery-proposal campaign launch |
 | [experiments/RECOVERY_TIMING_DECISION_20260909.md](../../experiments/RECOVERY_TIMING_DECISION_20260909.md) | Recovery: от фиксированного t=72 к выбору полезного вмешательства |
+| [experiments/RECOVERY_TWO_DAY_PLAN_20260913.md](../../experiments/RECOVERY_TWO_DAY_PLAN_20260913.md) | Финальные два дня: подтвердить recovery, отделить эффект от времени и контакта |
 | [experiments/RESEARCH_PRIORITIES_20260909.md](../../experiments/RESEARCH_PRIORITIES_20260909.md) | Ближайшие исследования: быстрее получить проверяемый научный результат |
 | [experiments/RESEARCH_PRIORITIES_20260910.md](../../experiments/RESEARCH_PRIORITIES_20260910.md) | Приоритеты исследований после аудитов 10 сентября |
 | [experiments/RESEARCH_PRIORITIES_20260910_EVENING.md](../../experiments/RESEARCH_PRIORITIES_20260910_EVENING.md) | Приоритеты после завершения P5 replication и K4 controls |
@@ -333,7 +352,7 @@ Local source files: **503**.
 | [experiments/TRAJECTORY_CONSENSUS_PROTOCOL_20260908.md](../../experiments/TRAJECTORY_CONSENSUS_PROTOCOL_20260908.md) | P4c2: trajectory-density consensus for Cosmos Policy |
 | [experiments/TRAJECTORY_CONSENSUS_RUN_20260908.md](../../experiments/TRAJECTORY_CONSENSUS_RUN_20260908.md) | P4c2: автономная полная проверка |
 
-## research_report (57)
+## research_report (63)
 
 | Source | Title |
 |---|---|
@@ -371,6 +390,9 @@ Local source files: **503**.
 | [experiments/OBJECT_Q4_SHARED_PREFIX_REPLICATION_RESULTS_20260902.md](../../experiments/OBJECT_Q4_SHARED_PREFIX_REPLICATION_RESULTS_20260902.md) | Object task-0 query-4 shared-prefix replication: results |
 | [experiments/OBSERVATION_CONTRACT_RESULTS_20260912.md](../../experiments/OBSERVATION_CONTRACT_RESULTS_20260912.md) | Observation Contract: результаты и выводы по каждому методу |
 | [experiments/P3E_RECOVERY_OUTCOME_ROUTER_RESULTS_20260906.md](../../experiments/P3E_RECOVERY_OUTCOME_ROUTER_RESULTS_20260906.md) | P3e: frozen Recovery Outcome Ensemble holdout results |
+| [experiments/P3_BENCHMARK_FINAL_RESULTS_20260915.md](../../experiments/P3_BENCHMARK_FINAL_RESULTS_20260915.md) | P3: полный benchmark и выводы |
+| [experiments/P3_BENCHMARK_PARTIAL_RESULTS_20260915.md](../../experiments/P3_BENCHMARK_PARTIAL_RESULTS_20260915.md) | P3: доступ восстановлен, серия прервана |
+| [experiments/P3_RUNTIME_V2_RESULTS_20260915.md](../../experiments/P3_RUNTIME_V2_RESULTS_20260915.md) | P3 после исправления runtime: полный результат S0 |
 | [experiments/P4B_RESIDUAL_RISK_RESULTS_20260907.md](../../experiments/P4B_RESIDUAL_RISK_RESULTS_20260907.md) | P4b residual-risk candidate selection: results |
 | [experiments/P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md](../../experiments/P4_RESIDUAL_DYNAMICS_RESULTS_20260906.md) | P4: independent residual-dynamics ensemble results |
 | [experiments/P5_AND_FEEDBACK_FINAL_RESULTS_20260910.md](../../experiments/P5_AND_FEEDBACK_FINAL_RESULTS_20260910.md) | P5 replication и matched-K feedback: окончательный разбор |
@@ -382,8 +404,11 @@ Local source files: **503**.
 | [experiments/PROBE_VERIFY_REPAIR_RESULTS_20260911.md](../../experiments/PROBE_VERIFY_REPAIR_RESULTS_20260911.md) | Probe → Verify → Repair: результаты и диагностика |
 | [experiments/PROPOSAL_OPPORTUNITY_K16_RESULTS_20260830.md](../../experiments/PROPOSAL_OPPORTUNITY_K16_RESULTS_20260830.md) | K16 proposal-opportunity screen: results |
 | [experiments/REAL_OBSERVATION_REQUERY_RESULTS_20260830.md](../../experiments/REAL_OBSERVATION_REQUERY_RESULTS_20260830.md) | Real-observation re-query: results |
+| [experiments/RECOVERY_CONFIRMATION_INTERIM_RESULTS_20260913.md](../../experiments/RECOVERY_CONFIRMATION_INTERIM_RESULTS_20260913.md) | Recovery confirmation: промежуточные результаты 13 сентября |
+| [experiments/RECOVERY_FINAL_RESULTS_20260914.md](../../experiments/RECOVERY_FINAL_RESULTS_20260914.md) | Recovery: final confirmation and grounding diagnostic |
 | [experiments/RECOVERY_PROPOSAL_OPPORTUNITY_RESULTS_20260904.md](../../experiments/RECOVERY_PROPOSAL_OPPORTUNITY_RESULTS_20260904.md) | P3 recovery proposals: результаты и разбор метода |
 | [experiments/RESEARCH_SYNTHESIS_AND_PUBLICATION_READINESS_20260908.md](../../experiments/RESEARCH_SYNTHESIS_AND_PUBLICATION_READINESS_20260908.md) | Итоги исследования и готовность к научной публикации |
+| [experiments/RESULTS2.md](../../experiments/RESULTS2.md) | Experiment Registry |
 | [experiments/SEMANTIC_VOF_RESULTS_20260831.md](../../experiments/SEMANTIC_VOF_RESULTS_20260831.md) | Semantic predicted-consequence experiments |
 | [experiments/SIGNED_VOF_NEW_TASK_BASELINE_ATLAS_RESULTS_20260903.md](../../experiments/SIGNED_VOF_NEW_TASK_BASELINE_ATLAS_RESULTS_20260903.md) | LIBERO-PRO Object New-Task Baseline Atlas Result |
 | [experiments/SIGNED_VOF_NEW_TASK_HOLDOUT_RESULTS_20260903.md](../../experiments/SIGNED_VOF_NEW_TASK_HOLDOUT_RESULTS_20260903.md) | Signed-VoF router: prospective new-task holdout |
@@ -395,7 +420,7 @@ Local source files: **503**.
 | [experiments/TRAJECTORY_CONSENSUS_INTERIM_RESULTS_20260908.md](../../experiments/TRAJECTORY_CONSENSUS_INTERIM_RESULTS_20260908.md) | OSC trajectory medoid: промежуточный результат и сравнение со статьями |
 | [experiments/TRAJECTORY_CONSENSUS_SMOKE_RESULTS_20260908.md](../../experiments/TRAJECTORY_CONSENSUS_SMOKE_RESULTS_20260908.md) | P4c2: результаты подготовки и smoke |
 
-## stage_report_or_notes (108)
+## stage_report_or_notes (123)
 
 | Source | Title |
 |---|---|
@@ -450,6 +475,12 @@ Local source files: **503**.
 | [experiments/campaigns/observation_contract_20260911/LAUNCH_VERIFIED.md](../../experiments/campaigns/observation_contract_20260911/LAUNCH_VERIFIED.md) | Observation Contract: Verified Launch |
 | [experiments/campaigns/observation_contract_20260911/analysis/screen/RESULTS.md](../../experiments/campaigns/observation_contract_20260911/analysis/screen/RESULTS.md) | Observation contract: screen |
 | [experiments/campaigns/observation_contract_20260911/prior_audit/README.md](../../experiments/campaigns/observation_contract_20260911/prior_audit/README.md) | Previous-prefix geometry audit |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/LAUNCH_VERIFIED.md](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/LAUNCH_VERIFIED.md) | P3 closure: verified launch |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/RESULTS.md](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/RESULTS.md) | P3: three-factor comparison |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis_tools/README.md](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis_tools/README.md) | Reporting-only repair, 15 September 2026 |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/operations/publication_audit/RESULTS.md](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/operations/publication_audit/RESULTS.md) | P3 night: seed replication and coverage audit |
+| [experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/RESULTS.md](../../experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/RESULTS.md) | P3: three-factor comparison |
+| [experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/RESULTS.md](../../experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/RESULTS.md) | P3: three-factor comparison |
 | [experiments/campaigns/p5_boundary_candidates_20260909/p5_analysis/RESULTS.md](../../experiments/campaigns/p5_boundary_candidates_20260909/p5_analysis/RESULTS.md) | P5 boundary pilot: data opportunity, not method efficacy |
 | [experiments/campaigns/p5_candidate_replication_20260910/analysis/RESULTS.md](../../experiments/campaigns/p5_candidate_replication_20260910/analysis/RESULTS.md) | Conditional candidate replication |
 | [experiments/campaigns/p5_candidate_replication_20260910/review_before_feedback_queue_20260910/RESULTS.md](../../experiments/campaigns/p5_candidate_replication_20260910/review_before_feedback_queue_20260910/RESULTS.md) | Conditional candidate replication |
@@ -474,6 +505,12 @@ Local source files: **503**.
 | [experiments/campaigns/proposal_opportunity_k16_20260830/analysis/terminal_opportunity_atlas/RESULTS.md](../../experiments/campaigns/proposal_opportunity_k16_20260830/analysis/terminal_opportunity_atlas/RESULTS.md) | Terminal proposal-opportunity atlas |
 | [experiments/campaigns/proposal_opportunity_k16_20260830/analysis/value_ranking/RESULTS.md](../../experiments/campaigns/proposal_opportunity_k16_20260830/analysis/value_ranking/RESULTS.md) | Candidate value-ranking diagnostics |
 | [experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/RESULTS.md](../../experiments/campaigns/real_observation_requery_20260830/analysis/real_observation_requery/RESULTS.md) | Real-observation re-query: holdout results |
+| [experiments/campaigns/recovery_confirmation_20260913/LAUNCH_VERIFIED.md](../../experiments/campaigns/recovery_confirmation_20260913/LAUNCH_VERIFIED.md) | Recovery confirmation: акт запуска |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/RESULTS.md](../../experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/RESULTS.md) | Recovery confirmation: main |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/main/RESULTS.md](../../experiments/campaigns/recovery_confirmation_20260913/analysis/main/RESULTS.md) | Recovery confirmation: main |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/timing/RESULTS.md](../../experiments/campaigns/recovery_confirmation_20260913/analysis/timing/RESULTS.md) | Recovery confirmation: timing |
+| [experiments/campaigns/recovery_grounding_diagnostic_20260913/LAUNCH_VERIFIED.md](../../experiments/campaigns/recovery_grounding_diagnostic_20260913/LAUNCH_VERIFIED.md) | Verified follow-up launch |
+| [experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/RESULTS.md](../../experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/RESULTS.md) | Grounding diagnostic |
 | [experiments/campaigns/recovery_outcome_router_diagnostic_videos_20260906/diagnostics/README.md](../../experiments/campaigns/recovery_outcome_router_diagnostic_videos_20260906/diagnostics/README.md) | P3e diagnostic videos |
 | [experiments/campaigns/recovery_outcome_router_holdout_20260906/analysis/holdout/RESULTS.md](../../experiments/campaigns/recovery_outcome_router_holdout_20260906/analysis/holdout/RESULTS.md) | P3e frozen recovery outcome router holdout |
 | [experiments/campaigns/recovery_proposal_opportunity_20260904/analysis/RESULTS.md](../../experiments/campaigns/recovery_proposal_opportunity_20260904/analysis/RESULTS.md) | P3 recovery-proposal opportunity results |
@@ -507,8 +544,11 @@ Local source files: **503**.
 | [experiments/final_results_media/safety_violations_20260730/README.md](../../experiments/final_results_media/safety_violations_20260730/README.md) | LIBERO-Safety: official violation videos |
 | [experiments/final_results_media/surrogate_confirmatory_20260819/README.md](../../experiments/final_results_media/surrogate_confirmatory_20260819/README.md) | Surrogate/requery confirmatory replays |
 | [experiments/frozen_models/recovery_outcome_router_20260906/RESULTS.md](../../experiments/frozen_models/recovery_outcome_router_20260906/RESULTS.md) | P3e recovery outcome router: development OOF |
+| [experiments/runtime_replay_v2/LAUNCH_20260915.md](../../experiments/runtime_replay_v2/LAUNCH_20260915.md) | Запуск v2 для проверки результатов статьи |
+| [experiments/runtime_replay_v2/README.md](../../experiments/runtime_replay_v2/README.md) | P3 snapshot v2: исправление воспроизводимости |
+| [experiments/runtime_replay_v2/operations/publication_audit/RESULTS.md](../../experiments/runtime_replay_v2/operations/publication_audit/RESULTS.md) | P3 night: seed replication and coverage audit |
 
-## technical_report (10)
+## technical_report (11)
 
 | Source | Title |
 |---|---|
@@ -520,10 +560,11 @@ Local source files: **503**.
 | [experiments/campaigns/observation_contract_20260911/analysis/smoke/RESULTS.md](../../experiments/campaigns/observation_contract_20260911/analysis/smoke/RESULTS.md) | Observation contract: smoke |
 | [experiments/campaigns/probe_verify_repair_20260910/analysis/smoke/RESULTS.md](../../experiments/campaigns/probe_verify_repair_20260910/analysis/smoke/RESULTS.md) | Probe/verify/repair smoke |
 | [experiments/campaigns/probe_verify_repair_20260910_v2/analysis/smoke/RESULTS.md](../../experiments/campaigns/probe_verify_repair_20260910_v2/analysis/smoke/RESULTS.md) | Probe/verify/repair smoke |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/RESULTS.md](../../experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/RESULTS.md) | Recovery confirmation: smoke |
 | [experiments/campaigns/timing_eligibility_20260911_v2/analysis/smoke/RESULTS.md](../../experiments/campaigns/timing_eligibility_20260911_v2/analysis/smoke/RESULTS.md) | Timing and eligibility: smoke |
 | [experiments/campaigns/trajectory_consensus_20260908_smoke/trajectory_analysis/RESULTS.md](../../experiments/campaigns/trajectory_consensus_20260908_smoke/trajectory_analysis/RESULTS.md) | Trajectory consensus campaign |
 
-## video_gallery (35)
+## video_gallery (45)
 
 | Source | Title |
 |---|---|
@@ -536,17 +577,27 @@ Local source files: **503**.
 | [experiments/campaigns/observation_contract_20260911/analysis/screen/videos.html](../../experiments/campaigns/observation_contract_20260911/analysis/screen/videos.html) | videos |
 | [experiments/campaigns/observation_contract_20260911/analysis/smoke/videos.html](../../experiments/campaigns/observation_contract_20260911/analysis/smoke/videos.html) | videos |
 | [experiments/campaigns/observation_contract_20260911/review_20260912/selected_videos.html](../../experiments/campaigns/observation_contract_20260911/review_20260912/selected_videos.html) | selected_videos |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/videos.html](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/analysis/videos.html) | videos |
+| [experiments/campaigns/p3_benchmark_closure_20260914_v3/operations/publication_audit/comparison_videos.html](../../experiments/campaigns/p3_benchmark_closure_20260914_v3/operations/publication_audit/comparison_videos.html) | comparison_videos |
+| [experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/videos.html](../../experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0/analysis/videos.html) | videos |
+| [experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/videos.html](../../experiments/campaigns/p3_benchmark_seed_replication_20260915_s1/analysis/videos.html) | videos |
 | [experiments/campaigns/p5_candidate_replication_20260910/videos.html](../../experiments/campaigns/p5_candidate_replication_20260910/videos.html) | videos |
 | [experiments/campaigns/p5_repeat_feedback_20260910/videos.html](../../experiments/campaigns/p5_repeat_feedback_20260910/videos.html) | videos |
 | [experiments/campaigns/probe_verify_repair_20260910/analysis/smoke/videos.html](../../experiments/campaigns/probe_verify_repair_20260910/analysis/smoke/videos.html) | videos |
 | [experiments/campaigns/probe_verify_repair_20260910_v2/analysis/screen/videos.html](../../experiments/campaigns/probe_verify_repair_20260910_v2/analysis/screen/videos.html) | videos |
 | [experiments/campaigns/probe_verify_repair_20260910_v2/analysis/smoke/videos.html](../../experiments/campaigns/probe_verify_repair_20260910_v2/analysis/smoke/videos.html) | videos |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/videos.html](../../experiments/campaigns/recovery_confirmation_20260913/analysis/interim_20260913/videos.html) | videos |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/main/videos.html](../../experiments/campaigns/recovery_confirmation_20260913/analysis/main/videos.html) | videos |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/videos.html](../../experiments/campaigns/recovery_confirmation_20260913/analysis/smoke/videos.html) | videos |
+| [experiments/campaigns/recovery_confirmation_20260913/analysis/timing/videos.html](../../experiments/campaigns/recovery_confirmation_20260913/analysis/timing/videos.html) | videos |
+| [experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/videos.html](../../experiments/campaigns/recovery_grounding_diagnostic_20260913/analysis/videos.html) | videos |
 | [experiments/campaigns/timing_eligibility_20260911_v2/analysis/screen/videos.html](../../experiments/campaigns/timing_eligibility_20260911_v2/analysis/screen/videos.html) | videos |
 | [experiments/campaigns/timing_eligibility_20260911_v2/analysis/smoke/videos.html](../../experiments/campaigns/timing_eligibility_20260911_v2/analysis/smoke/videos.html) | videos |
 | [experiments/campaigns/timing_eligibility_20260911_v2/review_20260911/selected_videos.html](../../experiments/campaigns/timing_eligibility_20260911_v2/review_20260911/selected_videos.html) | selected_videos |
 | [experiments/campaigns/trajectory_consensus_20260908_development/trajectory_analysis/videos.html](../../experiments/campaigns/trajectory_consensus_20260908_development/trajectory_analysis/videos.html) | videos |
 | [experiments/campaigns/trajectory_consensus_20260908_smoke/trajectory_analysis/videos.html](../../experiments/campaigns/trajectory_consensus_20260908_smoke/trajectory_analysis/videos.html) | videos |
 | [experiments/campaigns/trajectory_consensus_20260909_valid199/trajectory_analysis/videos.html](../../experiments/campaigns/trajectory_consensus_20260909_valid199/trajectory_analysis/videos.html) | videos |
+| [experiments/runtime_replay_v2/operations/publication_audit/comparison_videos.html](../../experiments/runtime_replay_v2/operations/publication_audit/comparison_videos.html) | comparison_videos |
 | [experiments/uncertainty/boundary_milk_yellow_tasks_0_3_4_5_20260519__analysis/mostly_fail_pair_task5_init0/video_gallery.html](../../experiments/uncertainty/boundary_milk_yellow_tasks_0_3_4_5_20260519__analysis/mostly_fail_pair_task5_init0/video_gallery.html) | video_gallery |
 | [experiments/uncertainty/hard_condition_search_20260519__analysis/comparison/video_gallery.html](../../experiments/uncertainty/hard_condition_search_20260519__analysis/comparison/video_gallery.html) | video_gallery |
 | [experiments/uncertainty/holdout_milk_task5_init0_seed70000_20260527__analysis/group_holdout_seed70000_12/video_gallery.html](../../experiments/uncertainty/holdout_milk_task5_init0_seed70000_20260527__analysis/group_holdout_seed70000_12/video_gallery.html) | video_gallery |

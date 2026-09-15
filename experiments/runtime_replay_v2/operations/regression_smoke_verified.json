@@ -1,0 +1,20 @@
+{
+  "checked_at_msk": "2026-09-15T11:11:00+03:00",
+  "campaign": "p3_benchmark_runtime_v2_20260915_s0",
+  "case": "parity_environment__t3_i2",
+  "config_sha256": "10d8f0530edaaa024e734769d007553659bfe1bd7060e5f3f936805239293446",
+  "rollout_seed": 52320000,
+  "branches": 6,
+  "audit_pass": true,
+  "full_episode_accounting": true,
+  "passive_shadow_parity": true,
+  "videos_decoded": true,
+  "h16_final_t": 237,
+  "event_final_t": 237,
+  "event_interventions": [],
+  "actions_exact": true,
+  "final_state_exact": true,
+  "video_sha_equal": true,
+  "query_input_hashes_equal": true,
+  "scope": "One technical regression test, not a new aggregate SR result"
+}

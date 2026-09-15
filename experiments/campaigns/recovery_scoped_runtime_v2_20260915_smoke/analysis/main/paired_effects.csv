@@ -1,0 +1,5 @@
+boundary,scope,family,left,right,pairs,clusters,delta,ci_low,ci_high,rescues,harms,cluster_sign_p,holm_p
+72,replication,primary,physical_regrasp,continue_h8,1,1,0.0,0.0,0.0,0,0,1.0,1.0
+72,transfer,primary,physical_regrasp,continue_h8,1,1,0.0,0.0,0.0,0,0,1.0,1.0
+72,all,primary,refresh_preserve_only,physical_regrasp,2,2,0.0,0.0,0.0,0,0,1.0,1.0
+72,all,primary,physical_regrasp,baseline_h16,2,2,0.5,0.5,0.5,1,0,1.0,1.0

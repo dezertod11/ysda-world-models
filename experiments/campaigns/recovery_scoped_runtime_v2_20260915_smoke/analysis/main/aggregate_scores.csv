@@ -1,0 +1,9 @@
+boundary,cohort,arm,n,successes,sr
+72,replication,baseline_h16,1,0,0.0
+72,replication,continue_h8,1,1,1.0
+72,replication,physical_regrasp,1,1,1.0
+72,replication,refresh_preserve_only,1,1,1.0
+72,transfer,baseline_h16,1,0,0.0
+72,transfer,continue_h8,1,0,0.0
+72,transfer,physical_regrasp,1,0,0.0
+72,transfer,refresh_preserve_only,1,0,0.0

@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-09-14T21:57:55.243248+00:00",
+  "status_file_updated_at": "2026-09-14T11:40:55.816951+00:00",
+  "status_file_status": "running",
+  "actual_supervisor_workers": [],
+  "matched_cases": 61,
+  "config_sha256": "eeb5a2a9590b1b20cc0b26f6b9193a1f22b619abc1eb71c6f696c2dee67f4479",
+  "gpu_snapshot": "0, 0, 1, 81559\n1, 0, 1, 81559\n2, 0, 1, 81559\n3, 0, 1, 81559\n4, 0, 1, 81559\n5, 0, 1, 81559\n6, 0, 1, 81559\n7, 0, 1, 81559\n",
+  "uptime_seconds": 36541.55,
+  "new_rollouts_launched": false,
+  "new_results_fetched": true,
+  "remote_artifact_audit_pass": true,
+  "matched_arm_outcomes": 305,
+  "completed_arm_outcomes": 307,
+  "planned_arm_outcomes": 995,
+  "planned_cases": 199,
+  "missing_cases": 138,
+  "missing_arm_outcomes": 688
+}

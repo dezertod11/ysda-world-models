@@ -1,0 +1,14 @@
+{
+  "deadline_epoch": 1789473939,
+  "deadline_msk": "2026-09-15T15:05:39+03:00",
+  "supervisor_pid": 174205,
+  "stages": [
+    "/home/jovyan/shares/SR006.nfs2/spiridonov/malnev_world_model/YSDA_WORD_MODELS_PP/experiments/campaigns/p3_benchmark_runtime_v2_20260915_s0"
+  ],
+  "resource_authorization": "User requested faster turnaround: S0 only, four-hour total cap from original start, early exit on completion. S1/S2 deferred, not failed or completed.",
+  "expected_main_cases": 199,
+  "expected_main_rollouts": 995,
+  "expected_smoke_rollouts": 18,
+  "partial_stages_descriptive_only": true,
+  "auditor_sha256": "515a7a440a8249d229f8209a22ca95e113dc0f7d4e14437a39833b047d43bb85"
+}

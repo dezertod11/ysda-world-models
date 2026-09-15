@@ -1,0 +1,156 @@
+{
+  "phase": "main",
+  "complete": true,
+  "missing": [],
+  "cases": 2,
+  "planned_cases": 2,
+  "branches": 8,
+  "audit": {
+    "artifacts": 8,
+    "exact_replay": 0,
+    "video_frames": 0,
+    "selected_actions": 1405,
+    "no_intervention_parity": 0,
+    "full_prefix_checks": 6
+  },
+  "automatic_holdout": false,
+  "inference_withheld": true,
+  "scope": "Fresh snapshot-v2 collection on the unchanged historical init25-32 support; technical validation only",
+  "transfer_scope": "x0.3 cells absent in localizer calibration; not new objects or official whole benchmark",
+  "effects": [
+    {
+      "boundary": 72,
+      "scope": "replication",
+      "family": "primary",
+      "left": "physical_regrasp",
+      "right": "continue_h8",
+      "pairs": 1,
+      "clusters": 1,
+      "delta": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0,
+      "rescues": 0,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    },
+    {
+      "boundary": 72,
+      "scope": "transfer",
+      "family": "primary",
+      "left": "physical_regrasp",
+      "right": "continue_h8",
+      "pairs": 1,
+      "clusters": 1,
+      "delta": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0,
+      "rescues": 0,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    },
+    {
+      "boundary": 72,
+      "scope": "all",
+      "family": "primary",
+      "left": "refresh_preserve_only",
+      "right": "physical_regrasp",
+      "pairs": 2,
+      "clusters": 2,
+      "delta": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0,
+      "rescues": 0,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    },
+    {
+      "boundary": 72,
+      "scope": "all",
+      "family": "primary",
+      "left": "physical_regrasp",
+      "right": "baseline_h16",
+      "pairs": 2,
+      "clusters": 2,
+      "delta": 0.5,
+      "ci_low": 0.5,
+      "ci_high": 0.5,
+      "rescues": 1,
+      "harms": 0,
+      "cluster_sign_p": 1.0,
+      "holm_p": 1.0
+    }
+  ],
+  "aggregate": [
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "baseline_h16",
+      "n": 1,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "continue_h8",
+      "n": 1,
+      "successes": 1,
+      "sr": 1.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "physical_regrasp",
+      "n": 1,
+      "successes": 1,
+      "sr": 1.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "replication",
+      "arm": "refresh_preserve_only",
+      "n": 1,
+      "successes": 1,
+      "sr": 1.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "baseline_h16",
+      "n": 1,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "continue_h8",
+      "n": 1,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "physical_regrasp",
+      "n": 1,
+      "successes": 0,
+      "sr": 0.0
+    },
+    {
+      "boundary": 72,
+      "cohort": "transfer",
+      "arm": "refresh_preserve_only",
+      "n": 1,
+      "successes": 0,
+      "sr": 0.0
+    }
+  ],
+  "runtime_snapshot_version": 2,
+  "checked_v2_prefixes": 2,
+  "config_sha256": "82224e054729549354740b951ac1a862041aaae00106d5bac77400108cc95497",
+  "technical_only": true
+}
